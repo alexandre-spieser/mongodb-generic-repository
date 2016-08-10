@@ -11,7 +11,9 @@ AureliaAspNetCoreAuth is under MIT license - http://www.opensource.org/licenses/
 **Alexandre Spieser**
 
 ## Donations
+Feeling like my work is worth a coffee? 
+Donations are welcome and will go towards further development of this project as well as other MongoDb related projects. Use the wallet address below to donate.
+BTC Donations: 1Qc5ZpNA7g66KEEMcz7MXxwNyyoRyKJJZ
 
-Feeling like my work is worth a coffee? BTC Donations: 1Qc5ZpNA7g66KEEMcz7MXxwNyyoRyKJJZ
+*Thank you for your support and generosity!*
 
-Greatly appreciated!
