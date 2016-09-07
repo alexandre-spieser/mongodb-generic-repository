@@ -5,7 +5,7 @@ An example of generic repository implementation using the MongoDB C# Sharp 2.0 d
 Copyright © 2016
 
 ## License
-AureliaAspNetCoreAuth is under MIT license - http://www.opensource.org/licenses/mit-license.php
+mongodb-generic-repository is under MIT license - http://www.opensource.org/licenses/mit-license.php
 
 ## Author
 **Alexandre Spieser**
