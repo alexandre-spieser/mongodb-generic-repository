@@ -1,41 +1,35 @@
-﻿using MongoDbGenericRepository;
+﻿using IntegrationTests.Infrastructure;
 using MongoDbGenericRepository.Models;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Threading.Tasks;
 
 namespace IntegrationTests
 {
-
-    public class TestsRepository : BaseMongoRepository, ITestsRepository
-    {
-        /// <inheritdoc />
-        public TestsRepository(string connectionString, string databaseName) : base(connectionString, databaseName)
-        {
-        }
-
-        public void DropTestCollection<TDocument>()
-        {
-            _mongoDbContext.DropCollection<TDocument>();
-        }
-    }
-
-    public class InsertTests
+    public class CreateTests
     {
         /// <summary>
         /// SUT: System Under Test
         /// </summary>
-        private static ITestsRepository SUT { get; set; }
+        private static ITestRepository SUT { get; set; }
 
         [OneTimeSetUp]
         public void Init()
         {
             var connectionString = ConfigurationManager.ConnectionStrings["MongoDbTests"].ConnectionString;
-            SUT = new TestsRepository(connectionString, "MongoDbTests");
+            SUT = new TestRepository(connectionString, "MongoDbTests");
+        }
+
+        [OneTimeTearDown]
+        public void Cleanup()
+        {
+            // We drop the collection at the end of each test session.
+            SUT.DropTestCollection<InsertTestsDocument>();
         }
 
         [Test]
-        public void InsertOne()
+        public void AddOne()
         {
             // Arrange
             var document = new InsertTestsDocument();
@@ -47,24 +41,36 @@ namespace IntegrationTests
         }
 
         [Test]
-        public void InsertOneAsync()
+        public async Task AddOneAsync()
         {
             // Arrange
             var document = new InsertTestsDocument();
             // Act
-            SUT.AddOne(document);
+            await SUT.AddOneAsync(document);
             // Assert
             long count = SUT.Count<InsertTestsDocument>(e => e.Id == document.Id);
             Assert.AreEqual(1, count);
         }
 
         [Test]
-        public void InsertMany()
+        public void AddMany()
         {
             // Arrange
             var documents = new List<InsertTestsDocument> { new InsertTestsDocument(), new InsertTestsDocument() };
             // Act
             SUT.AddMany(documents);
+            // Assert
+            long count = SUT.Count<InsertTestsDocument>(e => e.Id == documents[0].Id || e.Id == documents[1].Id);
+            Assert.AreEqual(2, count);
+        }
+
+        [Test]
+        public async Task AddManyAsync()
+        {
+            // Arrange
+            var documents = new List<InsertTestsDocument> { new InsertTestsDocument(), new InsertTestsDocument() };
+            // Act
+            await SUT.AddManyAsync(documents);
             // Assert
             long count = SUT.Count<InsertTestsDocument>(e => e.Id == documents[0].Id || e.Id == documents[1].Id);
             Assert.AreEqual(2, count);

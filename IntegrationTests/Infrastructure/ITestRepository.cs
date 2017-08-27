@@ -2,7 +2,7 @@
 
 namespace IntegrationTests
 {
-    public interface ITestsRepository : IBaseMongoRepository
+    public interface ITestRepository : IBaseMongoRepository
     {
         void DropTestCollection<TDocument>();
     }
