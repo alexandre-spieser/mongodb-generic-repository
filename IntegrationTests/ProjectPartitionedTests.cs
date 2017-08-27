@@ -7,20 +7,9 @@ using System.Threading.Tasks;
 
 namespace IntegrationTests
 {
-    public class Nested
+    public class ProjectTestsPartitionedDocument : PartitionedDocument
     {
-        public DateTime SomeDate { get; set; }
-    }
-
-    public class MyProjection
-    {
-        public DateTime SomeDate { get; set; }
-        public string SomeContent { get; set; }
-    }
-
-    public class ProjectTestsDocument : Document
-    {
-        public ProjectTestsDocument()
+        public ProjectTestsPartitionedDocument() : base("TestPartitionKey")
         {
             Version = 2;
             Nested = new Nested
@@ -34,12 +23,10 @@ namespace IntegrationTests
         public Nested Nested { get; set; }
     }
 
-    public class ProjectTests : BaseMongoDbRepositoryTests<ProjectTestsDocument>
+    public class ProjectPartitionedTests : BaseMongoDbRepositoryTests<ProjectTestsPartitionedDocument>
     {
-
-
         [Test]
-        public async Task ProjectOneAsync()
+        public async Task PartitionedProjectOneAsync()
         {
             // Arrange
             const string someContent = "ProjectOneAsyncContent";
@@ -49,13 +36,14 @@ namespace IntegrationTests
             document.Nested.SomeDate = someDate;
             SUT.AddOne(document);
             // Act
-            var result = await SUT.ProjectOneAsync<ProjectTestsDocument, MyProjection>(
-                x => x.Id == document.Id, 
+            var result = await SUT.ProjectOneAsync<ProjectTestsPartitionedDocument, MyProjection>(
+                x => x.Id == document.Id,
                 x => new MyProjection
                 {
                     SomeContent = x.SomeContent,
                     SomeDate = x.Nested.SomeDate
-                });
+                },
+                PartitionKey);
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(someContent, result.SomeContent);
@@ -64,7 +52,7 @@ namespace IntegrationTests
         }
 
         [Test]
-        public void ProjectOne()
+        public void PartitionedProjectOne()
         {
             // Arrange
             const string someContent = "ProjectOneContent";
@@ -74,13 +62,14 @@ namespace IntegrationTests
             document.Nested.SomeDate = someDate;
             SUT.AddOne(document);
             // Act
-            var result = SUT.ProjectOne<ProjectTestsDocument, MyProjection>(
+            var result = SUT.ProjectOne<ProjectTestsPartitionedDocument, MyProjection>(
                 x => x.Id == document.Id,
                 x => new MyProjection
                 {
                     SomeContent = x.SomeContent,
                     SomeDate = x.Nested.SomeDate
-                });
+                },
+                PartitionKey);
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(someContent, result.SomeContent);
@@ -89,7 +78,7 @@ namespace IntegrationTests
         }
 
         [Test]
-        public async Task ProjectManyAsync()
+        public async Task PartitionedProjectManyAsync()
         {
             // Arrange
             const string someContent = "ProjectManyAsyncContent";
@@ -103,13 +92,14 @@ namespace IntegrationTests
 
             SUT.AddMany(document);
             // Act
-            var result = await SUT.ProjectManyAsync<ProjectTestsDocument, MyProjection>(
+            var result = await SUT.ProjectManyAsync<ProjectTestsPartitionedDocument, MyProjection>(
                 x => x.SomeContent == someContent,
                 x => new MyProjection
                 {
                     SomeContent = x.SomeContent,
                     SomeDate = x.Nested.SomeDate
-                });
+                },
+                PartitionKey);
             // Assert
             Assert.AreEqual(5, result.Count);
             Assert.AreEqual(someContent, result.First().SomeContent);
@@ -118,7 +108,7 @@ namespace IntegrationTests
         }
 
         [Test]
-        public void ProjectMany()
+        public void PartitionedProjectMany()
         {
             // Arrange
             const string someContent = "ProjectManyContent";
@@ -132,13 +122,14 @@ namespace IntegrationTests
 
             SUT.AddMany(document);
             // Act
-            var result = SUT.ProjectMany<ProjectTestsDocument, MyProjection>(
+            var result = SUT.ProjectMany<ProjectTestsPartitionedDocument, MyProjection>(
                 x => x.SomeContent == someContent,
                 x => new MyProjection
                 {
                     SomeContent = x.SomeContent,
                     SomeDate = x.Nested.SomeDate
-                });
+                },
+                PartitionKey);
             // Assert
             Assert.AreEqual(5, result.Count);
             Assert.AreEqual(someContent, result.First().SomeContent);
