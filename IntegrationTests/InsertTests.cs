@@ -7,54 +7,31 @@ using System.Configuration;
 namespace IntegrationTests
 {
 
-    public class InsertTestsRepository : BaseMongoRepository
+    public class TestsRepository : BaseMongoRepository, ITestsRepository
     {
         /// <inheritdoc />
-        public InsertTestsRepository(string connectionString, string databaseName) : base(connectionString, databaseName)
+        public TestsRepository(string connectionString, string databaseName) : base(connectionString, databaseName)
         {
         }
 
         public void DropTestCollection<TDocument>()
         {
-            _mongoDbContext
+            _mongoDbContext.DropCollection<TDocument>();
         }
     }
 
     public class InsertTests
     {
-
-        private class InsertTestsDocument : Document
-        {
-            public InsertTestsDocument()
-            {
-                Version = 2;
-            }
-            public string SomeContent { get; set; }
-        }
-
-
-        private void Cleanup(InsertTestsDocument document)
-        {
-            SUT.DeleteOne(document);
-            Assert.AreEqual(0, SUT.Count<InsertTestsDocument>(e => e.Id == document.Id));
-        }
-
-        private void Cleanup(List<InsertTestsDocument> documents)
-        {
-            SUT.DeleteMany(documents);
-            SUT.Count<InsertTestsDocument>(e => e.Id == documents[0].Id || e.Id == documents[1].Id);
-        }
-
         /// <summary>
         /// SUT: System Under Test
         /// </summary>
-        private static InsertTestsRepository SUT { get; set; }
+        private static ITestsRepository SUT { get; set; }
 
         [OneTimeSetUp]
         public void Init()
         {
             var connectionString = ConfigurationManager.ConnectionStrings["MongoDbTests"].ConnectionString;
-            SUT = new InsertTestsRepository(connectionString, "MongoDbTests");
+            SUT = new TestsRepository(connectionString, "MongoDbTests");
         }
 
         [Test]
@@ -67,8 +44,18 @@ namespace IntegrationTests
             // Assert
             long count = SUT.Count<InsertTestsDocument>(e => e.Id == document.Id);
             Assert.AreEqual(1, count);
-            // Cleanup
-            Cleanup(document);
+        }
+
+        [Test]
+        public void InsertOneAsync()
+        {
+            // Arrange
+            var document = new InsertTestsDocument();
+            // Act
+            SUT.AddOne(document);
+            // Assert
+            long count = SUT.Count<InsertTestsDocument>(e => e.Id == document.Id);
+            Assert.AreEqual(1, count);
         }
 
         [Test]
@@ -81,8 +68,20 @@ namespace IntegrationTests
             // Assert
             long count = SUT.Count<InsertTestsDocument>(e => e.Id == documents[0].Id || e.Id == documents[1].Id);
             Assert.AreEqual(2, count);
-            // Cleanup
-            Cleanup(documents);
         }
+
+
+        #region Utils
+
+        private class InsertTestsDocument : Document
+        {
+            public InsertTestsDocument()
+            {
+                Version = 2;
+            }
+            public string SomeContent { get; set; }
+        }
+
+        #endregion
     }
 }

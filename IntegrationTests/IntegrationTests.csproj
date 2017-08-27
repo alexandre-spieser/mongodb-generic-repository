@@ -56,8 +56,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ITestsRepository.cs" />
     <Compile Include="InsertTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UpdateTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
