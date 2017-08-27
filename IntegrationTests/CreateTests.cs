@@ -2,41 +2,31 @@
 using MongoDbGenericRepository.Models;
 using NUnit.Framework;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Threading.Tasks;
 
 namespace IntegrationTests
 {
-    public class CreateTests
+    public class CreateTestsDocument : Document
     {
-        /// <summary>
-        /// SUT: System Under Test
-        /// </summary>
-        private static ITestRepository SUT { get; set; }
-
-        [OneTimeSetUp]
-        public void Init()
+        public CreateTestsDocument()
         {
-            var connectionString = ConfigurationManager.ConnectionStrings["MongoDbTests"].ConnectionString;
-            SUT = new TestRepository(connectionString, "MongoDbTests");
+            Version = 2;
         }
+        public string SomeContent { get; set; }
+    }
 
-        [OneTimeTearDown]
-        public void Cleanup()
-        {
-            // We drop the collection at the end of each test session.
-            SUT.DropTestCollection<InsertTestsDocument>();
-        }
-
+    [TestFixture]
+    public class CreateTests : BaseMongoDbRepositoryTests<CreateTestsDocument>
+    {
         [Test]
         public void AddOne()
         {
             // Arrange
-            var document = new InsertTestsDocument();
+            var document = new CreateTestsDocument();
             // Act
             SUT.AddOne(document);
             // Assert
-            long count = SUT.Count<InsertTestsDocument>(e => e.Id == document.Id);
+            long count = SUT.Count<CreateTestsDocument>(e => e.Id == document.Id);
             Assert.AreEqual(1, count);
         }
 
@@ -44,11 +34,11 @@ namespace IntegrationTests
         public async Task AddOneAsync()
         {
             // Arrange
-            var document = new InsertTestsDocument();
+            var document = new CreateTestsDocument();
             // Act
             await SUT.AddOneAsync(document);
             // Assert
-            long count = SUT.Count<InsertTestsDocument>(e => e.Id == document.Id);
+            long count = SUT.Count<CreateTestsDocument>(e => e.Id == document.Id);
             Assert.AreEqual(1, count);
         }
 
@@ -56,11 +46,11 @@ namespace IntegrationTests
         public void AddMany()
         {
             // Arrange
-            var documents = new List<InsertTestsDocument> { new InsertTestsDocument(), new InsertTestsDocument() };
+            var documents = new List<CreateTestsDocument> { new CreateTestsDocument(), new CreateTestsDocument() };
             // Act
             SUT.AddMany(documents);
             // Assert
-            long count = SUT.Count<InsertTestsDocument>(e => e.Id == documents[0].Id || e.Id == documents[1].Id);
+            long count = SUT.Count<CreateTestsDocument>(e => e.Id == documents[0].Id || e.Id == documents[1].Id);
             Assert.AreEqual(2, count);
         }
 
@@ -68,26 +58,12 @@ namespace IntegrationTests
         public async Task AddManyAsync()
         {
             // Arrange
-            var documents = new List<InsertTestsDocument> { new InsertTestsDocument(), new InsertTestsDocument() };
+            var documents = new List<CreateTestsDocument> { new CreateTestsDocument(), new CreateTestsDocument() };
             // Act
             await SUT.AddManyAsync(documents);
             // Assert
-            long count = SUT.Count<InsertTestsDocument>(e => e.Id == documents[0].Id || e.Id == documents[1].Id);
+            long count = SUT.Count<CreateTestsDocument>(e => e.Id == documents[0].Id || e.Id == documents[1].Id);
             Assert.AreEqual(2, count);
         }
-
-
-        #region Utils
-
-        private class InsertTestsDocument : Document
-        {
-            public InsertTestsDocument()
-            {
-                Version = 2;
-            }
-            public string SomeContent { get; set; }
-        }
-
-        #endregion
     }
 }

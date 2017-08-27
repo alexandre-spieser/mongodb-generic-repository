@@ -56,10 +56,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Infrastructure\BaseMongoDbRepositoryTests.cs" />
+    <Compile Include="CreatePartitionedTests.cs" />
     <Compile Include="Infrastructure\ITestRepository.cs" />
     <Compile Include="Infrastructure\TestRepository.cs" />
     <Compile Include="CreateTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReadTests.cs" />
     <Compile Include="UpdateTests.cs" />
   </ItemGroup>
   <ItemGroup>

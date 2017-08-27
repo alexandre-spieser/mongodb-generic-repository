@@ -10,6 +10,41 @@ namespace MongoDbGenericRepository
 {
     public interface IBaseMongoRepository
     {
+        #region Create
+
+        /// <summary>
+        /// Asynchronously adds a document to the collection.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="document">The document you want to add.</param>
+        Task AddOneAsync<TDocument>(TDocument document) where TDocument : IDocument;
+
+        /// <summary>
+        /// Adds a document to the collection.
+        /// Populates the Id and AddedAtUtc fields if necessary.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="document">The document you want to add.</param>
+        void AddOne<TDocument>(TDocument document) where TDocument : IDocument;
+
+        /// <summary>
+        /// Asynchronously adds a list of documents to the collection.
+        /// Populates the Id and AddedAtUtc fields if necessary.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="document">The document you want to add.</param>
+        Task AddManyAsync<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument;
+
+        /// <summary>
+        /// Adds a list of documents to the collection.
+        /// Populates the Id and AddedAtUtc fields if necessary.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="document">The document you want to add.</param>
+        void AddMany<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument;
+
+        #endregion
+
         #region Read
 
         /// <summary>
@@ -80,46 +115,16 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
-        long Count<TDocument>(Expression<Func<TDocument, bool>> filter) where TDocument : IDocument;
+        long Count<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument;
 
         #endregion Get
 
-        #region Create
-
-        /// <summary>
-        /// Asynchronously adds a document to the collection.
-        /// </summary>
-        /// <typeparam name="TDocument"></typeparam>
-        /// <param name="document">The document you want to add.</param>
-        Task AddOneAsync<TDocument>(TDocument document) where TDocument : IDocument;
-
-        /// <summary>
-        /// Adds a document to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
-        /// </summary>
-        /// <typeparam name="TDocument"></typeparam>
-        /// <param name="document">The document you want to add.</param>
-        void AddOne<TDocument>(TDocument document) where TDocument : IDocument;
-
-        /// <summary>
-        /// Asynchronously adds a list of documents to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
-        /// </summary>
-        /// <typeparam name="TDocument"></typeparam>
-        /// <param name="document">The document you want to add.</param>
-        Task AddManyAsync<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument;
-
-        /// <summary>
-        /// Adds a list of documents to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
-        /// </summary>
-        /// <typeparam name="TDocument"></typeparam>
-        /// <param name="document">The document you want to add.</param>
-        void AddMany<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument;
-
-        #endregion
     }
 
+    /// <summary>
+    /// The base Repository, it is meant to be inherited from by your custom custom MongoRepository implementation.
+    /// Its constructor must be given a connection string and a database name.
+    /// </summary>
     public abstract class BaseMongoRepository : IBaseMongoRepository
     {
         public string ConnectionString { get; set; }
@@ -136,6 +141,68 @@ namespace MongoDbGenericRepository
         }
 
         protected IMongoDbContext _mongoDbContext = null;
+
+        #region Create
+
+        /// <summary>
+        /// Asynchronously adds a document to the collection.
+        /// Populates the Id and AddedAtUtc fields if necessary.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="document">The document you want to add.</param>
+        public async Task AddOneAsync<TDocument>(TDocument document) where TDocument : IDocument
+        {
+            FormatDocument(document);
+            await HandlePartitioned(document).InsertOneAsync(document);
+        }
+
+        /// <summary>
+        /// Adds a document to the collection.
+        /// Populates the Id and AddedAtUtc fields if necessary.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="document">The document you want to add.</param>
+        public void AddOne<TDocument>(TDocument document) where TDocument : IDocument
+        {
+            FormatDocument(document);
+            HandlePartitioned(document).InsertOne(document);
+        }
+
+        /// <summary>
+        /// Asynchronously adds a list of documents to the collection.
+        /// Populates the Id and AddedAtUtc fields if necessary.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="document">The document you want to add.</param>
+        public async Task AddManyAsync<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument
+        {
+            if (!documents.Any())
+            {
+                return;
+            }
+            foreach (var doc in documents)
+            {
+                FormatDocument(doc);
+            }
+            await HandlePartitioned(documents.FirstOrDefault()).InsertManyAsync(documents);
+        }
+
+        /// <summary>
+        /// Adds a list of documents to the collection.
+        /// Populates the Id and AddedAtUtc fields if necessary.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="document">The document you want to add.</param>
+        public void AddMany<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument
+        {
+            foreach (var document in documents)
+            {
+                FormatDocument(document);
+            }
+            HandlePartitioned(documents.FirstOrDefault()).InsertMany(documents);
+        }
+
+        #endregion Create
 
         #region Read
 
@@ -227,6 +294,7 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="partitionKey">An optional partitionKey</param>
         public async Task<long> CountAsync<TDocument>(Expression<Func<TDocument, bool>> filter) where TDocument : IDocument
         {
             return await GetCollection<TDocument>().CountAsync(filter);
@@ -237,9 +305,10 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
-        public long Count<TDocument>(Expression<Func<TDocument, bool>> filter) where TDocument : IDocument
+        /// <param name="partitionKey">An optional partitionKey</param>
+        public long Count<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
         {
-            return GetCollection<TDocument>().Find(filter).Count();
+            return HandlePartitioned<TDocument>(partitionKey).Find(filter).Count();
         }
 
         /// <summary>
@@ -271,78 +340,6 @@ namespace MongoDbGenericRepository
         }
 
         #endregion Get
-
-        #region Create
-
-
-        private void FormatDocument<TDocument>(TDocument document) where TDocument : IDocument
-        {
-            if (document.Id == default(Guid))
-            {
-                document.Id = Guid.NewGuid();
-            }
-
-            if (document.AddedAtUtc == default(DateTime))
-            {
-                document.AddedAtUtc = DateTime.UtcNow;
-            }
-        }
-
-        /// <summary>
-        /// Asynchronously adds a document to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
-        /// </summary>
-        /// <typeparam name="TDocument"></typeparam>
-        /// <param name="document">The document you want to add.</param>
-        public async Task AddOneAsync<TDocument>(TDocument document) where TDocument : IDocument
-        {
-            FormatDocument(document);
-            await GetCollection<TDocument>().InsertOneAsync(document);
-        }
-
-        /// <summary>
-        /// Adds a document to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
-        /// </summary>
-        /// <typeparam name="TDocument"></typeparam>
-        /// <param name="document">The document you want to add.</param>
-        public void AddOne<TDocument>(TDocument document) where TDocument : IDocument
-        {
-            FormatDocument(document);
-            GetCollection<TDocument>().InsertOne(document);
-        }
-
-        /// <summary>
-        /// Asynchronously adds a list of documents to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
-        /// </summary>
-        /// <typeparam name="TDocument"></typeparam>
-        /// <param name="document">The document you want to add.</param>
-        public async Task AddManyAsync<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument
-        {
-            foreach (var document in documents)
-            {
-                FormatDocument(document);
-            }
-            await GetCollection<TDocument>().InsertManyAsync(documents);
-        }
-
-        /// <summary>
-        /// Adds a list of documents to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
-        /// </summary>
-        /// <typeparam name="TDocument"></typeparam>
-        /// <param name="document">The document you want to add.</param>
-        public void AddMany<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument
-        {
-            foreach (var document in documents)
-            {
-                FormatDocument(document);
-            }
-            GetCollection<TDocument>().InsertMany(documents);
-        }
-
-        #endregion Create
 
         #region Delete
 
@@ -509,13 +506,14 @@ namespace MongoDbGenericRepository
         #endregion Find And Update
 
         /// <summary>
-        /// The private GetCollection method
+        /// 
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
+        /// <param name="partitionKey"></param>
         /// <returns></returns>
-        private IMongoCollection<TDocument> GetCollection<TDocument>(TDocument document) where TDocument : IDocument
+        private IMongoCollection<TDocument> GetCollection<TDocument>(string partitionKey) where TDocument : IDocument
         {
-            return _mongoDbContext.GetCollection<TDocument>(document);
+            return _mongoDbContext.GetCollection<TDocument>(partitionKey);
         }
 
         /// <summary>
@@ -526,6 +524,41 @@ namespace MongoDbGenericRepository
         private IMongoCollection<TDocument> GetCollection<TDocument>() where TDocument : IDocument
         {
             return _mongoDbContext.GetCollection<TDocument>();
+        }
+
+        private IMongoCollection<TDocument> HandlePartitioned<TDocument>(TDocument document) where TDocument : IDocument
+        {
+            if (document is IPartitionedDocument)
+            {
+                return GetCollection<TDocument>(((IPartitionedDocument)document).PartitionKey);
+            }
+            return GetCollection<TDocument>();
+        }
+
+        private IMongoCollection<TDocument> HandlePartitioned<TDocument>(string partitionKey) where TDocument : IDocument
+        {
+            if (!string.IsNullOrEmpty(partitionKey))
+            {
+                return GetCollection<TDocument>(partitionKey);
+            }
+            return GetCollection<TDocument>();
+        }
+
+        private void FormatDocument<TDocument>(TDocument document) where TDocument : IDocument
+        {
+            if (document == null)
+            {
+                throw new ArgumentNullException(nameof(document));
+            }
+            if (document.Id == default(Guid))
+            {
+                document.Id = Guid.NewGuid();
+            }
+
+            if (document.AddedAtUtc == default(DateTime))
+            {
+                document.AddedAtUtc = DateTime.UtcNow;
+            }
         }
     }
 }

@@ -35,13 +35,13 @@ namespace MongoDbGenericRepository
         }
 
         /// <summary>
-        /// The private GetCollection method
+        /// Returns a collection for a document type that has a partition key.
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
-        /// <returns></returns>
-        public IMongoCollection<TDocument> GetCollection<TDocument>(TDocument document) where TDocument : IDocument
+        /// <param name="partitionKey">The value of the partition key.</param>
+        public IMongoCollection<TDocument> GetCollection<TDocument>(string partitionKey) where TDocument : IDocument
         {
-            return _database.GetCollection<TDocument>(PluralizePartitioned(document));
+            return _database.GetCollection<TDocument>(partitionKey +"-"+ Pluralize<TDocument>());
         }
 
         /// <summary>
@@ -53,14 +53,18 @@ namespace MongoDbGenericRepository
             _database.DropCollection(Pluralize<TDocument>());
         }
 
+        /// <summary>
+        /// Drops a collection having a partitionkey, use very carefully.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        public void DropCollection<TDocument>(string partitionKey)
+        {
+            _database.DropCollection(partitionKey + "-" + Pluralize<TDocument>());
+        }
+
         private string Pluralize<TDocument>()
         {
             return typeof(TDocument).Name.ToLower() + "s";
-        }
-
-        private string PluralizePartitioned<TDocument>(TDocument document) where TDocument : IDocument
-        {
-            return document.PartitionKey + typeof(TDocument).Name.ToLower() + "s";
         }
     }
 }

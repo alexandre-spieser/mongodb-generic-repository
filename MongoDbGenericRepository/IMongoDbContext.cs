@@ -9,20 +9,25 @@ namespace MongoDbGenericRepository
         /// The private GetCollection method
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
-        /// <returns></returns>
         IMongoCollection<TDocument> GetCollection<TDocument>();
 
         /// <summary>
-        /// The private GetCollection method
+        /// Returns a collection for a document type that has a partition key.
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
-        /// <returns></returns>
-        IMongoCollection<TDocument> GetCollection<TDocument>(TDocument document) where TDocument : IDocument;
+        /// <param name="partitionKey">The value of the partition key.</param>
+        IMongoCollection<TDocument> GetCollection<TDocument>(string partitionKey) where TDocument : IDocument;
 
         /// <summary>
         /// Drops a collection, use very carefully.
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
         void DropCollection<TDocument>();
+
+        /// <summary>
+        /// Drops a collection having a partitionkey, use very carefully.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        void DropCollection<TDocument>(string partitionKey);
     }
 }

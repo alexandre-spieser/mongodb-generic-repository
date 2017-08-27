@@ -13,5 +13,10 @@ namespace IntegrationTests.Infrastructure
         {
             _mongoDbContext.DropCollection<TDocument>();
         }
+
+        public void DropTestCollection<TDocument>(string partitionKey)
+        {
+            _mongoDbContext.DropCollection<TDocument>(partitionKey);
+        }
     }
 }
