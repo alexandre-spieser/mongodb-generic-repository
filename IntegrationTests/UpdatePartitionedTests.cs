@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 
 namespace IntegrationTests
 {
-    public class UpdateTestsDocument : Document
+    public class UpdateTestsPartitionedDocument : PartitionedDocument
     {
-        public UpdateTestsDocument()
+        public UpdateTestsPartitionedDocument() : base("TestPartitionKey")
         {
             Version = 2;
         }
         public string SomeContent { get; set; }
     }
 
-    public class UpdateTests : BaseMongoDbRepositoryTests<UpdateTestsDocument>
+    public class UpdatePartitionedTests : BaseMongoDbRepositoryTests<UpdateTestsPartitionedDocument>
     {
         [Test]
         public void UpdateOne()
@@ -27,7 +27,7 @@ namespace IntegrationTests
             var result = SUT.UpdateOne(document);
             // Assert
             Assert.IsTrue(result);
-            var updatedDocument = SUT.GetById<UpdateTestsDocument>(document.Id);
+            var updatedDocument = SUT.GetById<UpdateTestsPartitionedDocument>(document.Id, PartitionKey);
             Assert.IsNotNull(updatedDocument);
             Assert.AreEqual("UpdateOneContent", updatedDocument.SomeContent);
         }
@@ -43,7 +43,7 @@ namespace IntegrationTests
             var result = await SUT.UpdateOneAsync(document);
             // Assert
             Assert.IsTrue(result);
-            var updatedDocument = SUT.GetById<UpdateTestsDocument>(document.Id);
+            var updatedDocument = SUT.GetById<UpdateTestsPartitionedDocument>(document.Id, PartitionKey);
             Assert.IsNotNull(updatedDocument);
             Assert.AreEqual("UpdateOneAsyncContent", updatedDocument.SomeContent);
         }

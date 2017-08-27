@@ -8,6 +8,9 @@ namespace MongoDbGenericRepository
     /// </summary>
     public class MongoDbContext : IMongoDbContext
     {
+        private readonly IMongoClient _client;
+        private readonly IMongoDatabase _database;
+
         static MongoDbContext()
         {
             // Avoid legacy UUID representation: use Binary 0x04 subtype.
@@ -16,13 +19,9 @@ namespace MongoDbGenericRepository
 
         public MongoDbContext(string connectionString, string databaseName)
         {
-            
             _client = new MongoClient(connectionString);
             _database = _client.GetDatabase(databaseName);
         }
-
-        private readonly IMongoClient _client;
-        private readonly IMongoDatabase _database;
 
         /// <summary>
         /// The private GetCollection method
@@ -62,6 +61,11 @@ namespace MongoDbGenericRepository
             _database.DropCollection(partitionKey + "-" + Pluralize<TDocument>());
         }
 
+        /// <summary>
+        /// Very naively pluralizes a TDocument type name.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <returns></returns>
         private string Pluralize<TDocument>()
         {
             return typeof(TDocument).Name.ToLower() + "s";

@@ -56,6 +56,14 @@ namespace MongoDbGenericRepository
         Task<TDocument> GetByIdAsync<TDocument>(Guid id, string partitionKey = null) where TDocument : IDocument;
 
         /// <summary>
+        /// Returns one document given its id.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="id">The Id of the document you want to get.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        TDocument GetById<TDocument>(Guid id, string partitionKey = null) where TDocument : IDocument;
+
+        /// <summary>
         /// Asynchronously returns one document given an expression filter.
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
@@ -127,7 +135,27 @@ namespace MongoDbGenericRepository
         /// <param name="partitionKey">An optional partition key.</param>
         long Count<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument;
 
-        #endregion Get
+        #endregion
+
+        #region Update
+
+        /// <summary>
+        /// Asynchronously Updates a document.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="modifiedDocument">The document with the modifications you want to persist.</param>
+        Task<bool> UpdateOneAsync<TDocument>(TDocument modifiedDocument) where TDocument : IDocument;
+
+        /// <summary>
+        /// Updates a document.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="modifiedDocument">The document with the modifications you want to persist.</param>
+        bool UpdateOne<TDocument>(TDocument modifiedDocument) where TDocument : IDocument;
+
+        #endregion
+
+
 
     }
 
@@ -230,6 +258,18 @@ namespace MongoDbGenericRepository
         {
             var filter = Builders<TDocument>.Filter.Eq("Id", id);
             return await HandlePartitioned<TDocument>(partitionKey).Find(filter).FirstOrDefaultAsync();
+        }
+
+        /// <summary>
+        /// Returns one document given its id.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="id">The Id of the document you want to get.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        public TDocument GetById<TDocument>(Guid id, string partitionKey = null) where TDocument : IDocument
+        {
+            var filter = Builders<TDocument>.Filter.Eq("Id", id);
+            return HandlePartitioned<TDocument>(partitionKey).Find(filter).FirstOrDefault();
         }
 
         /// <summary>
@@ -472,43 +512,27 @@ namespace MongoDbGenericRepository
         #region Update
 
         /// <summary>
-        /// Updates a document
+        /// Asynchronously Updates a document.
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
-        /// <param name="entity"></param>
-        /// <returns></returns>
-        public async Task<bool> UpdateOneAsync<TDocument>(TDocument entity) where TDocument : IDocument
+        /// <param name="modifiedDocument">The document with the modifications you want to persist.</param>
+        public async Task<bool> UpdateOneAsync<TDocument>(TDocument modifiedDocument) where TDocument : IDocument
         {
-            var updateRes = await GetCollection<TDocument>().ReplaceOneAsync(x => x.Id == entity.Id, entity);
-            return updateRes.ModifiedCount < 1;
+            var updateRes = await HandlePartitioned(modifiedDocument).ReplaceOneAsync(x => x.Id == modifiedDocument.Id, modifiedDocument);
+            return updateRes.ModifiedCount == 1;
         }
 
         /// <summary>
-        /// UpdateOne with filter
+        /// Updates a document.
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
-        /// <param name="filter"></param>
-        /// <param name="update"></param>
-        /// <returns></returns>
-        private async Task<long> UpdateOne<TDocument>(FilterDefinition<TDocument> filter, UpdateDefinition<TDocument> update) where TDocument : IDocument
+        /// <param name="modifiedDocument">The document with the modifications you want to persist.</param>
+        public bool UpdateOne<TDocument>(TDocument modifiedDocument) where TDocument : IDocument
         {
-            var updateRes = await GetCollection<TDocument>().UpdateOneAsync(filter, update);
-            return updateRes.ModifiedCount;
+            var updateRes = HandlePartitioned(modifiedDocument).ReplaceOne(x => x.Id == modifiedDocument.Id, modifiedDocument);
+            return updateRes.ModifiedCount == 1;
         }
 
-        /// <summary>
-        /// UpdateMany with filter
-        /// </summary>
-        /// <typeparam name="TDocument"></typeparam>
-        /// <param name="filter"></param>
-        /// <param name="update"></param>
-        /// <returns></returns>
-        public async Task<long> UpdateMany<TDocument>(FilterDefinition<TDocument> filter, UpdateDefinition<TDocument> update) where TDocument : IDocument
-        {
-            var collection = GetCollection<TDocument>();
-            var updateRes = await collection.UpdateManyAsync(filter, update);
-            return updateRes.ModifiedCount;
-        }
         #endregion Update
 
         #region Find And Update

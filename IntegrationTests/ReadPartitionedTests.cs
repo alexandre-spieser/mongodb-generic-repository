@@ -18,13 +18,25 @@ namespace IntegrationTests
     public class ReadPartitionedTests : BaseMongoDbRepositoryTests<ReadTestsPartitionedDocument>
     {
         [Test]
-        public async Task PartitionedGetById()
+        public async Task PartitionedGetByIdAsync()
         {
             // Arrange
             var document = CreateTestDocument();
             SUT.AddOne(document);
             // Act
             var result = await SUT.GetByIdAsync<ReadTestsPartitionedDocument>(document.Id, PartitionKey);
+            // Assert
+            Assert.IsNotNull(result);
+        }
+
+        [Test]
+        public void PartitionedGetById()
+        {
+            // Arrange
+            var document = CreateTestDocument();
+            SUT.AddOne(document);
+            // Act
+            var result = SUT.GetById<ReadTestsPartitionedDocument>(document.Id, PartitionKey);
             // Assert
             Assert.IsNotNull(result);
         }

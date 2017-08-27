@@ -19,13 +19,25 @@ namespace IntegrationTests
     public class ReadTests : BaseMongoDbRepositoryTests<ReadTestsDocument>
     {
         [Test]
-        public async Task GetById()
+        public async Task GetByIdAsync()
         {
             // Arrange
             var document = CreateTestDocument();
             SUT.AddOne(document);
             // Act
             var result = await SUT.GetByIdAsync<ReadTestsDocument>(document.Id);
+            // Assert
+            Assert.IsNotNull(result);
+        }
+
+        [Test]
+        public void GetById()
+        {
+            // Arrange
+            var document = CreateTestDocument();
+            SUT.AddOne(document);
+            // Act
+            var result = SUT.GetById<ReadTestsDocument>(document.Id);
             // Assert
             Assert.IsNotNull(result);
         }

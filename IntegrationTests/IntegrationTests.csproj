@@ -64,6 +64,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadPartitionedTests.cs" />
     <Compile Include="ReadTests.cs" />
+    <Compile Include="UpdatePartitionedTests.cs" />
     <Compile Include="UpdateTests.cs" />
   </ItemGroup>
   <ItemGroup>
