@@ -1,122 +1,73 @@
 ﻿using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
-using MongoDbGenericRepository.ViewModels;
 using System.Threading.Tasks;
-using MongoDbGenericRepository.Services;
-
 using MongoDB.Bson;
+using System.Linq.Expressions;
+using MongoDbGenericRepository.Models;
 
 namespace MongoDbGenericRepository
 {
-    public class MongoRepository : IMongoDbRepository
+    public abstract class BaseMongoRepository
     {
+        public string ConnectionString { get; set; }
+        public string DatabaseName { get; set; }
 
-        private MongoDbContext _mongoDbContext = null;
-        public MongoRepository(MongoDbContext mongoDbContext = null)
+        /// <summary>
+        /// The base constructor
+        /// </summary>
+        /// <param name="connectionString">The connection string of the MongoDb server.</param>
+        /// <param name="databaseName">The name of the database against which you want to perform operations.</param>
+        protected BaseMongoRepository(string connectionString, string databaseName)
         {
-            _mongoDbContext = mongoDbContext != null ? mongoDbContext : new MongoDbContext();
+            _mongoDbContext = new MongoDbContext(connectionString, databaseName);
         }
+
+        protected IMongoDbContext _mongoDbContext = null;
 
         #region Get
         /// <summary>
         /// A generic GetOne method
         /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
+        /// <typeparam name="TDocument"></typeparam>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<GetOneResult<TEntity>> GetOne<TEntity>(string id) where TEntity : class, new()
+        public async Task<TDocument> GetOne<TDocument>(string id) where TDocument : IDocument
         {
-            var filter = Builders<TEntity>.Filter.Eq("Id", id);
-            return await GetOne<TEntity>(filter);
+            var filter = Builders<TDocument>.Filter.Eq("Id", id);
+            return await GetOne<TDocument>(filter);
         }
 
         /// <summary>
         /// A generic GetOne method
         /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
+        /// <typeparam name="TDocument"></typeparam>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<GetOneResult<TEntity>> GetOne<TEntity>(FilterDefinition<TEntity> filter) where TEntity : class, new()
+        public async Task<TDocument> GetOne<TDocument>(FilterDefinition<TDocument> filter) where TDocument : IDocument
         {
-            var res = new GetOneResult<TEntity>();
-            try
-            {
-                var collection = GetCollection<TEntity>();
-                var entity = await collection.Find(filter).SingleOrDefaultAsync();
-                if (entity != null)
-                {
-                    res.Entity = entity;
-                }
-                res.Success = true;
-                return res;
-            }
-            catch (Exception ex)
-            {
-                res.Message = HelperService.NotifyException("GetOne", "Exception getting one " + typeof(TEntity).Name, ex);
-                return res;
-            }
-        }
-
-        /// <summary>
-        /// A generic get many method
-        /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
-        /// <param name="ids"></param>
-        /// <returns></returns>
-        public async Task<GetManyResult<TEntity>> GetMany<TEntity>(IEnumerable<string> ids) where TEntity : class, new()
-        {
-            try
-            {
-                var collection = GetCollection<TEntity>();
-                var filter = Builders<TEntity>.Filter.Eq("Id", ids);
-                return await GetMany<TEntity>(filter);
-            }
-            catch (Exception ex)
-            {
-                var res = new GetManyResult<TEntity>();
-                res.Message = HelperService.NotifyException("GetMany", "Exception getting many " + typeof(TEntity).Name + "s", ex);
-                return res;
-            }
+            return await GetCollection<TDocument>().Find(filter).FirstOrDefaultAsync();
         }
 
         /// <summary>
         /// A generic get many method with filter
         /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
-        /// <param name="ids"></param>
+        /// <typeparam name="TDocument"></typeparam>
         /// <returns></returns>
-        public async Task<GetManyResult<TEntity>> GetMany<TEntity>(FilterDefinition<TEntity> filter) where TEntity : class, new()
+        public async Task<List<TDocument>> GetAll<TDocument>(FilterDefinition<TDocument> filter) where TDocument : IDocument
         {
-            var res = new GetManyResult<TEntity>();
-            try
-            {
-                var collection = GetCollection<TEntity>();
-                var entities = await collection.Find(filter).ToListAsync();
-                if (entities != null)
-                {
-                    res.Entities = entities;
-                }
-                res.Success = true;
-                return res;
-            }
-            catch (Exception ex)
-            {
-                res.Message = HelperService.NotifyException("GetMany", "Exception getting many " + typeof(TEntity).Name + "s", ex);
-                return res;
-            }
+            return await GetCollection<TDocument>().Find(filter).ToListAsync();
         }
 
         /// <summary>
         /// FindCursor
         /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
+        /// <typeparam name="TDocument"></typeparam>
         /// <param name="filter"></param>
         /// <returns>A cursor for the query</returns>
-        public IFindFluent<TEntity, TEntity> FindCursor<TEntity>(FilterDefinition<TEntity> filter) where TEntity : class, new()
+        public IFindFluent<TDocument, TDocument> FindCursor<TDocument>(FilterDefinition<TDocument> filter) where TDocument : IDocument
         {
-            var res = new GetManyResult<TEntity>();
-            var collection = GetCollection<TEntity>();
+            var collection = GetCollection<TDocument>();
             var cursor = collection.Find(filter);
             return cursor;
         }
@@ -124,38 +75,23 @@ namespace MongoDbGenericRepository
         /// <summary>
         /// A generic get all method
         /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
+        /// <typeparam name="TDocument"></typeparam>
         /// <returns></returns>
-        public async Task<GetManyResult<TEntity>> GetAll<TEntity>() where TEntity : class, new()
+        public async Task<List<TDocument>> GetAll<TDocument>() where TDocument : IDocument
         {
-            var res = new GetManyResult<TEntity>();
-            try
-            {
-                var collection = GetCollection<TEntity>();
-                var entities = await collection.Find(new BsonDocument()).ToListAsync();
-                if (entities != null)
-                {
-                    res.Entities = entities;
-                }
-                res.Success = true;
-                return res;
-            }
-            catch (Exception ex)
-            {
-                res.Message = HelperService.NotifyException("GetAll", "Exception getting all " + typeof(TEntity).Name + "s", ex);
-                return res;
-            }
+            var collection = GetCollection<TDocument>();
+            return await collection.Find(new BsonDocument()).ToListAsync();
         }
 
         /// <summary>
         /// A generic Exists method
         /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
+        /// <typeparam name="TDocument"></typeparam>
         /// <param name="key"></param>
         /// <returns></returns>
-        public async Task<bool> Exists<TEntity>(string id) where TEntity : class, new()
+        public async Task<bool> Exists<TDocument>(string id) where TDocument : IDocument
         {
-            var collection = GetCollection<TEntity>();
+            var collection = GetCollection<TDocument>();
             var query = new BsonDocument("Id", id);
             var cursor = collection.Find(query);
             var count = await cursor.CountAsync();
@@ -165,223 +101,226 @@ namespace MongoDbGenericRepository
         /// <summary>
         /// A generic count method
         /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
+        /// <typeparam name="TDocument"></typeparam>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<long> Count<TEntity>(string id) where TEntity : class, new()
+        public async Task<long> Count<TDocument>(string id) where TDocument : IDocument
         {
-            var filter = new FilterDefinitionBuilder<TEntity>().Eq("Id", id);
-            return await Count<TEntity>(filter);
+            var filter = new FilterDefinitionBuilder<TDocument>().Eq("Id", id);
+            return await Count<TDocument>(filter);
         }
 
         /// <summary>
         /// A generic count method
         /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
+        /// <typeparam name="TDocument"></typeparam>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<long> Count<TEntity>(FilterDefinition<TEntity> filter) where TEntity : class, new()
+        public async Task<long> Count<TDocument>(FilterDefinition<TDocument> filter) where TDocument : IDocument
         {
-            var collection = GetCollection<TEntity>();
+            var collection = GetCollection<TDocument>();
             var cursor = collection.Find(filter);
             var count = await cursor.CountAsync();
             return count;
         }
+
+        /// <summary>
+        /// A generic count method
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<long> CountAsync<TDocument>(Expression<Func<TDocument, bool>> filter) where TDocument : IDocument
+        {
+            var collection = GetCollection<TDocument>();
+            var cursor = collection.Find(filter);
+            var count = await cursor.CountAsync();
+            return count;
+        }
+
+        /// <summary>
+        /// A generic count method
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public long Count<TDocument>(Expression<Func<TDocument, bool>> filter) where TDocument : IDocument
+        {
+            return GetCollection<TDocument>().Find(filter).Count();
+        }
+
+        /// <summary>
+        /// Returns a list of projected objects
+        /// </summary>
+        /// <typeparam name="TDocument">T is a DbEntity</typeparam>
+        /// <typeparam name="TProjection"></typeparam>
+        /// <returns></returns>
+        public async Task<TProjection> ProjectBy<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection)
+            where TDocument : IDocument
+            where TProjection : class, new()
+        {
+            return await GetCollection<TDocument>().Find(Builders<TDocument>.Filter.Where(filter))
+                                                   .Project(projection)
+                                                   .FirstOrDefaultAsync();
+        }
+
         #endregion Get
 
         #region Create
         /// <summary>
-        /// A generic Add One method
+        /// A generic Add One method async
         /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
+        /// <typeparam name="TDocument"></typeparam>
         /// <param name="item"></param>
         /// <returns></returns>
-        public async Task<Result> AddOne<TEntity>(TEntity item) where TEntity : class, new()
+        public async Task AddOneAsync<TDocument>(TDocument item) where TDocument : IDocument
         {
-            var res = new Result();
-            try
-            {
-                var collection = GetCollection<TEntity>();
-                await collection.InsertOneAsync(item);
-                res.Success = true;
-                res.Message = "OK";
-                return res;
-            }
-            catch (Exception ex)
-            {
-                res.Message = HelperService.NotifyException("AddOne", "Exception adding one " + typeof(TEntity).Name, ex);
-                return res;
-            }
+            await GetCollection<TDocument>().InsertOneAsync(item);
         }
+
+        /// <summary>
+        /// A generic method to add a document
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public void AddOne<TDocument>(TDocument item) where TDocument : IDocument
+        {
+            if (item.Id == default(Guid))
+            {
+                item.Id = Guid.NewGuid();
+            }
+
+            if (item.AddedAtUtc == default(DateTime))
+            {
+                item.AddedAtUtc = DateTime.UtcNow;
+            }
+
+            GetCollection<TDocument>().InsertOne(item);
+        }
+
+        /// <summary>
+        /// A generic Add Many method, performs a bulk insert in mongo
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="items"></param>
+        /// <returns></returns>
+        public async Task AddManyAsync<TDocument>(IEnumerable<TDocument> items) where TDocument : IDocument
+        {
+            await GetCollection<TDocument>().InsertManyAsync(items);
+        }
+
+        /// <summary>
+        /// A generic Add Many method, performs a bulk insert in mongo
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="items"></param>
+        /// <returns></returns>
+        public void AddMany<TDocument>(IEnumerable<TDocument> items) where TDocument : IDocument
+        {
+            GetCollection<TDocument>().InsertMany(items);
+        }
+
         #endregion Create
 
         #region Delete
+
         /// <summary>
         /// A generic delete one method
         /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
+        /// <typeparam name="TDocument"></typeparam>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<Result> DeleteOne<TEntity>(string id) where TEntity : class, new()
+        public async Task<long> DeleteOneAsync<TDocument>(TDocument document) where TDocument : IDocument
         {
-            var filter = new FilterDefinitionBuilder<TEntity>().Eq("Id", id);
-            return await DeleteOne<TEntity>(filter);
+            return await DeleteOneAsync<TDocument>(x => x.Id == document.Id);
         }
 
         /// <summary>
         /// A generic delete one method
         /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
+        /// <typeparam name="TDocument"></typeparam>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<Result> DeleteOne<TEntity>(FilterDefinition<TEntity> filter) where TEntity : class, new()
+        public long DeleteOne<TDocument>(TDocument document) where TDocument : IDocument
         {
-            var result = new Result();
-            try
-            {
-                var collection = GetCollection<TEntity>();
-                var deleteRes = await collection.DeleteOneAsync(filter);
-                result.Success = true;
-                result.Message = "OK";
-                return result;
-            }
-            catch (Exception ex)
-            {
-                result.Message = HelperService.NotifyException("DeleteOne", "Exception deleting one " + typeof(TEntity).Name, ex);
-                return result;
-            }
+            return DeleteOne<TDocument>(x => x.Id == document.Id);
+        }
+
+        /// <summary>
+        /// A generic delete one method
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public long DeleteOne<TDocument>(Expression<Func<TDocument, bool>> filter) where TDocument : IDocument
+        {
+            return GetCollection<TDocument>().DeleteOne(filter).DeletedCount;
+        }
+
+        /// <summary>
+        /// A generic delete one method
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public async Task<long> DeleteOneAsync<TDocument>(Expression<Func<TDocument, bool>> filter) where TDocument : IDocument
+        {
+            return (await GetCollection<TDocument>().DeleteOneAsync(filter)).DeletedCount;
         }
 
         /// <summary>
         /// A generic delete many method
         /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
-        /// <param name="ids"></param>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="filter"></param>
         /// <returns></returns>
-        public async Task<Result> DeleteMany<TEntity>(IEnumerable<string> ids) where TEntity : class, new()
+        public async Task<long> DeleteMany<TDocument>(Expression<Func<TDocument, bool>> filter) where TDocument : IDocument
         {
-            var filter = new FilterDefinitionBuilder<TEntity>().In("Id", ids);
-            return await DeleteMany<TEntity>(filter);
-        }
-
-        /// <summary>
-        /// A generic delete many method
-        /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
-        /// <param name="ids"></param>
-        /// <returns></returns>
-        public async Task<Result> DeleteMany<TEntity>(FilterDefinition<TEntity> filter) where TEntity : class, new()
-        {
-            var result = new Result();
-            try
-            {
-                var collection = GetCollection<TEntity>();
-                var deleteRes = await collection.DeleteManyAsync(filter);
-                if (deleteRes.DeletedCount < 1)
-                {
-                    var ex = new Exception();
-                    result.Message = HelperService.NotifyException("DeleteMany", "Some " + typeof(TEntity).Name + "s could not be deleted.", ex);
-                    return result;
-                }
-                result.Success = true;
-                result.Message = "OK";
-                return result;
-            }
-            catch (Exception ex)
-            {
-                result.Message = HelperService.NotifyException("DeleteMany", "Some " + typeof(TEntity).Name + "s could not be deleted.", ex);
-                return result;
-            }
+            var deleteRes = await GetCollection<TDocument>().DeleteManyAsync(filter);
+            return deleteRes.DeletedCount;
         }
         #endregion Delete
 
         #region Update
+
         /// <summary>
-        /// UpdateOne by id
+        /// Updates a document
         /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
-        /// <param name="id"></param>
-        /// <param name="update"></param>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="entity"></param>
         /// <returns></returns>
-        public async Task<Result> UpdateOne<TEntity>(string id, UpdateDefinition<TEntity> update) where TEntity : class, new()
+        public async Task<bool> UpdateOneAsync<TDocument>(TDocument entity) where TDocument : IDocument
         {
-            var filter = new FilterDefinitionBuilder<TEntity>().Eq("Id", id);
-            return await UpdateOne<TEntity>(filter, update);
+            var updateRes = await GetCollection<TDocument>().ReplaceOneAsync(x => x.Id == entity.Id, entity);
+            return updateRes.ModifiedCount < 1;
         }
 
         /// <summary>
         /// UpdateOne with filter
         /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
+        /// <typeparam name="TDocument"></typeparam>
         /// <param name="filter"></param>
         /// <param name="update"></param>
         /// <returns></returns>
-        public async Task<Result> UpdateOne<TEntity>(FilterDefinition<TEntity> filter, UpdateDefinition<TEntity> update) where TEntity : class, new()
+        private async Task<long> UpdateOne<TDocument>(FilterDefinition<TDocument> filter, UpdateDefinition<TDocument> update) where TDocument : IDocument
         {
-            var result = new Result();
-            try
-            {
-                var collection = GetCollection<TEntity>();
-                var updateRes = await collection.UpdateOneAsync(filter, update);
-                if (updateRes.ModifiedCount < 1)
-                {
-                    var ex = new Exception();
-                    result.Message = HelperService.NotifyException("UpdateOne", "ERROR: updateRes.ModifiedCount < 1 for entity: " + typeof(TEntity).Name, ex);
-                    return result;
-                }
-                result.Success = true;
-                result.Message = "OK";
-                return result;
-            }
-            catch (Exception ex)
-            {
-                result.Message = HelperService.NotifyException("UpdateOne", "Exception updating entity: " + typeof(TEntity).Name, ex);
-                return result;
-            }
-        }
-
-        /// <summary>
-        /// UpdateMany with Ids
-        /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
-        /// <param name="id"></param>
-        /// <param name="update"></param>
-        /// <returns></returns>
-        public async Task<Result> UpdateMany<TEntity>(IEnumerable<string> ids, UpdateDefinition<TEntity> update) where TEntity : class, new()
-        {
-            var filter = new FilterDefinitionBuilder<TEntity>().In("Id", ids);
-            return await UpdateOne<TEntity>(filter, update);
+            var updateRes = await GetCollection<TDocument>().UpdateOneAsync(filter, update);
+            return updateRes.ModifiedCount;
         }
 
         /// <summary>
         /// UpdateMany with filter
         /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
+        /// <typeparam name="TDocument"></typeparam>
         /// <param name="filter"></param>
         /// <param name="update"></param>
         /// <returns></returns>
-        public async Task<Result> UpdateMany<TEntity>(FilterDefinition<TEntity> filter, UpdateDefinition<TEntity> update) where TEntity : class, new()
+        public async Task<long> UpdateMany<TDocument>(FilterDefinition<TDocument> filter, UpdateDefinition<TDocument> update) where TDocument : IDocument
         {
-            var result = new Result();
-            try
-            {
-                var collection = GetCollection<TEntity>();
-                var updateRes = await collection.UpdateManyAsync(filter, update);
-                if (updateRes.ModifiedCount < 1)
-                {
-                    var ex = new Exception();
-                    result.Message = HelperService.NotifyException("UpdateMany", "ERROR: updateRes.ModifiedCount < 1 for entities: " + typeof(TEntity).Name + "s", ex);
-                    return result;
-                }
-                result.Success = true;
-                result.Message = "OK";
-                return result;
-            }
-            catch (Exception ex)
-            {
-                result.Message = HelperService.NotifyException("UpdateMany", "Exception updating entities: " + typeof(TEntity).Name + "s", ex);
-                return result;
-            }
+            var collection = GetCollection<TDocument>();
+            var updateRes = await collection.UpdateManyAsync(filter, update);
+            return updateRes.ModifiedCount;
         }
         #endregion Update
 
@@ -390,27 +329,14 @@ namespace MongoDbGenericRepository
         /// <summary>
         /// GetAndUpdateOne with filter
         /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
+        /// <typeparam name="TDocument"></typeparam>
         /// <param name="filter"></param>
         /// <param name="update"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public async Task<GetOneResult<TEntity>> GetAndUpdateOne<TEntity>(FilterDefinition<TEntity> filter, UpdateDefinition<TEntity> update, FindOneAndUpdateOptions<TEntity, TEntity> options) where TEntity : class, new()
+        public async Task<TDocument> GetAndUpdateOne<TDocument>(FilterDefinition<TDocument> filter, UpdateDefinition<TDocument> update, FindOneAndUpdateOptions<TDocument, TDocument> options) where TDocument : IDocument
         {
-            var result = new GetOneResult<TEntity>();
-            try
-            {
-                var collection = GetCollection<TEntity>();
-                result.Entity = await collection.FindOneAndUpdateAsync(filter, update, options);
-                result.Success = true;
-                result.Message = "OK";
-                return result;
-            }
-            catch (Exception ex)
-            {
-                result.Message = HelperService.NotifyException("GetAndUpdateOne", "Exception getting and updating entity: " + typeof(TEntity).Name, ex);
-                return result;
-            }
+            return await GetCollection<TDocument>().FindOneAndUpdateAsync(filter, update, options);
         }
 
         #endregion Find And Update
@@ -419,11 +345,21 @@ namespace MongoDbGenericRepository
         /// <summary>
         /// The private GetCollection method
         /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
+        /// <typeparam name="TDocument"></typeparam>
         /// <returns></returns>
-        private IMongoCollection<TEntity> GetCollection<TEntity>()
+        private IMongoCollection<TDocument> GetCollection<TDocument>(TDocument document) where TDocument : IDocument
         {
-            return _mongoDbContext.GetCollection<TEntity>();
+            return _mongoDbContext.GetCollection<TDocument>(document);
+        }
+
+        /// <summary>
+        /// The private GetCollection method
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <returns></returns>
+        private IMongoCollection<TDocument> GetCollection<TDocument>() where TDocument : IDocument
+        {
+            return _mongoDbContext.GetCollection<TDocument>();
         }
     }
 }

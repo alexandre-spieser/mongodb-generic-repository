@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoDbGenericRepository", "MongoDbGenericRepository\MongoDbGenericRepository.csproj", "{D154E7D0-9A3C-43AB-8E90-ED92BC4343F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{A484A355-A015-40CC-9B35-A4E872421128}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{D154E7D0-9A3C-43AB-8E90-ED92BC4343F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D154E7D0-9A3C-43AB-8E90-ED92BC4343F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D154E7D0-9A3C-43AB-8E90-ED92BC4343F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A484A355-A015-40CC-9B35-A4E872421128}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A484A355-A015-40CC-9B35-A4E872421128}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A484A355-A015-40CC-9B35-A4E872421128}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A484A355-A015-40CC-9B35-A4E872421128}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -23,3 +23,19 @@ c:\users\alex\documents\visual studio 2015\Projects\MongoDbGenericRepository\Mon
 c:\users\alex\documents\visual studio 2015\Projects\MongoDbGenericRepository\MongoDbGenericRepository\obj\Debug\MongoDbGenericRepository.dll
 c:\users\alex\documents\visual studio 2015\Projects\MongoDbGenericRepository\MongoDbGenericRepository\obj\Debug\MongoDbGenericRepository.pdb
 c:\users\alex\documents\visual studio 2015\Projects\MongoDbGenericRepository\MongoDbGenericRepository\bin\ApplicationInsights.config
+C:\dev\MongoDbRepoUpdate\MongoDbGenericRepository\bin\ApplicationInsights.config
+C:\dev\MongoDbRepoUpdate\MongoDbGenericRepository\bin\MongoDbGenericRepository.dll.config
+C:\dev\MongoDbRepoUpdate\MongoDbGenericRepository\bin\MongoDbGenericRepository.dll
+C:\dev\MongoDbRepoUpdate\MongoDbGenericRepository\bin\MongoDbGenericRepository.pdb
+C:\dev\MongoDbRepoUpdate\MongoDbGenericRepository\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\dev\MongoDbRepoUpdate\MongoDbGenericRepository\bin\MongoDB.Bson.dll
+C:\dev\MongoDbRepoUpdate\MongoDbGenericRepository\bin\MongoDB.Driver.Core.dll
+C:\dev\MongoDbRepoUpdate\MongoDbGenericRepository\bin\MongoDB.Driver.dll
+C:\dev\MongoDbRepoUpdate\MongoDbGenericRepository\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\dev\MongoDbRepoUpdate\MongoDbGenericRepository\bin\MongoDB.Bson.xml
+C:\dev\MongoDbRepoUpdate\MongoDbGenericRepository\bin\MongoDB.Driver.xml
+C:\dev\MongoDbRepoUpdate\MongoDbGenericRepository\obj\Debug\MongoDbGenericRepository.dll
+C:\dev\MongoDbRepoUpdate\MongoDbGenericRepository\obj\Debug\MongoDbGenericRepository.pdb
+C:\dev\MongoDbRepoUpdate\MongoDbGenericRepository\obj\Debug\MongoDbGenericRepository.csprojResolveAssemblyReference.cache
+C:\dev\MongoDbRepoUpdate\MongoDbGenericRepository\bin\System.Runtime.InteropServices.RuntimeInformation.dll
+C:\dev\MongoDbRepoUpdate\MongoDbGenericRepository\bin\MongoDB.Driver.Core.xml
