@@ -17,7 +17,7 @@ namespace IntegrationTests
     public class UpdatePartitionedTests : BaseMongoDbRepositoryTests<UpdateTestsPartitionedDocument>
     {
         [Test]
-        public void UpdateOne()
+        public void PartitionedUpdateOne()
         {
             // Arrange
             var document = CreateTestDocument();
@@ -33,7 +33,7 @@ namespace IntegrationTests
         }
 
         [Test]
-        public async Task UpdateOneAsync()
+        public async Task PartitionedUpdateOneAsync()
         {
             // Arrange
             var document = CreateTestDocument();

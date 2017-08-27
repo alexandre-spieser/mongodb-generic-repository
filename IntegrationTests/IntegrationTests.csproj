@@ -56,6 +56,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeletePartitionedTests.cs" />
+    <Compile Include="DeleteTests.cs" />
     <Compile Include="Infrastructure\BaseMongoDbRepositoryTests.cs" />
     <Compile Include="CreatePartitionedTests.cs" />
     <Compile Include="Infrastructure\ITestRepository.cs" />

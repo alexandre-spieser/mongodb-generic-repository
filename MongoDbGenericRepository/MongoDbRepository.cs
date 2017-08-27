@@ -155,7 +155,77 @@ namespace MongoDbGenericRepository
 
         #endregion
 
+        #region Delete
 
+        /// <summary>
+        /// Asynchronously deletes a document.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="TDocument">The document you want to delete.</param>
+        /// <returns>The number of documents deleted.</returns>
+        Task<long> DeleteOneAsync<TDocument>(TDocument document) where TDocument : IDocument;
+
+        /// <summary>
+        /// Asynchronously deletes a document matching the condition of the LINQ expression filter.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <returns>The number of documents deleted.</returns>
+        Task<long> DeleteOneAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument;
+
+        /// <summary>
+        /// Deletes a document.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="TDocument">The document you want to delete.</param>
+        /// <returns>The number of documents deleted.</returns>
+        long DeleteOne<TDocument>(TDocument document) where TDocument : IDocument;
+
+        /// <summary>
+        /// Deletes a document matching the condition of the LINQ expression filter.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <returns>The number of documents deleted.</returns>
+        long DeleteOne<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument;
+
+        /// <summary>
+        /// Asynchronously deletes the documents matching the condition of the LINQ expression filter.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <returns>The number of documents deleted.</returns>
+        Task<long> DeleteManyAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument;
+
+        /// <summary>
+        /// Asynchronously deletes a list of documents.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="documents">The list of documents to delete.</param>
+        /// <returns>The number of documents deleted.</returns>
+        Task<long> DeleteManyAsync<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument;
+
+        /// <summary>
+        /// Deletes a list of documents.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="documents">The list of documents to delete.</param>
+        /// <returns>The number of documents deleted.</returns>
+        long DeleteMany<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument;
+
+        /// <summary>
+        /// Deletes the documents matching the condition of the LINQ expression filter.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <returns>The number of documents deleted.</returns>
+        long DeleteMany<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument;
+
+        #endregion
 
     }
 
@@ -373,141 +443,7 @@ namespace MongoDbGenericRepository
             return HandlePartitioned<TDocument>(partitionKey).Find(filter).Count();
         }
 
-        /// <summary>
-        /// Asynchronously returns a paginated list of the documents matching the filter condition.
-        /// </summary>
-        /// <typeparam name="TDocument"></typeparam>
-        /// <param name="filter"></param>
-        /// <param name="skipNumber">The number of documents you want to skip. Default value is 0.</param>
-        /// <param name="takeNumber">The number of documents you want to take. Default value is 50.</param>
-        /// <param name="partitionKey">An optional partition key.</param>
-        public async Task<List<TDocument>> GetPaginatedAsync<TDocument>(Expression<Func<TDocument, bool>> filter, int skipNumber = 0, int takeNumber = 50, string partitionKey = null) where TDocument : IDocument
-        {
-            return await HandlePartitioned<TDocument>(partitionKey).Find(filter).Skip(skipNumber).Limit(takeNumber).ToListAsync();
-        }
-
-
-        /// <summary>
-        /// Returns a list of projected objects
-        /// </summary>
-        /// <typeparam name="TDocument">T is a DbEntity</typeparam>
-        /// <typeparam name="TProjection"></typeparam>
-        /// <returns></returns>
-        public async Task<TProjection> ProjectBy<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey = null)
-            where TDocument : IDocument
-            where TProjection : class, new()
-        {
-            return await HandlePartitioned<TDocument>(partitionKey).Find(filter)
-                                                                   .Project(projection)
-                                                                   .FirstOrDefaultAsync();
-        }
-
-        #endregion Get
-
-        #region Delete
-
-        /// <summary>
-        /// A generic delete one method
-        /// </summary>
-        /// <typeparam name="TDocument"></typeparam>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task<long> DeleteOneAsync<TDocument>(TDocument document) where TDocument : IDocument
-        {
-            return await DeleteOneAsync<TDocument>(x => x.Id == document.Id);
-        }
-
-        /// <summary>
-        /// A generic delete one method
-        /// </summary>
-        /// <typeparam name="TDocument"></typeparam>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public long DeleteOne<TDocument>(TDocument document) where TDocument : IDocument
-        {
-            return DeleteOne<TDocument>(x => x.Id == document.Id);
-        }
-
-        /// <summary>
-        /// A generic delete one method
-        /// </summary>
-        /// <typeparam name="TDocument"></typeparam>
-        /// <param name="filter"></param>
-        /// <returns></returns>
-        public long DeleteOne<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
-        {
-            return GetCollection<TDocument>().DeleteOne(filter).DeletedCount;
-        }
-
-        /// <summary>
-        /// A generic delete one method
-        /// </summary>
-        /// <typeparam name="TDocument"></typeparam>
-        /// <param name="filter"></param>
-        /// <returns></returns>
-        public async Task<long> DeleteOneAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
-        {
-            return (await GetCollection<TDocument>().DeleteOneAsync(filter)).DeletedCount;
-        }
-
-        /// <summary>
-        /// A generic delete many method
-        /// </summary>
-        /// <typeparam name="TDocument"></typeparam>
-        /// <param name="filter"></param>
-        /// <returns></returns>
-        public async Task<long> DeleteManyAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
-        {
-            var deleteRes = await GetCollection<TDocument>().DeleteManyAsync(filter);
-            return deleteRes.DeletedCount;
-        }
-
-        /// <summary>
-        /// A generic delete many method
-        /// </summary>
-        /// <typeparam name="TDocument"></typeparam>
-        /// <param name="filter"></param>
-        /// <returns></returns>
-        public async Task<long> DeleteManyAsync<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument
-        {
-            if (!documents.Any())
-            {
-                return 0;
-            }
-            var idsTodelete = documents.Select(e => e.Id).ToArray();
-            var deleteRes = await GetCollection<TDocument>().DeleteManyAsync(x => idsTodelete.Contains(x.Id));
-            return deleteRes.DeletedCount;
-        }
-
-        /// <summary>
-        /// A generic delete many method
-        /// </summary>
-        /// <typeparam name="TDocument"></typeparam>
-        /// <param name="filter"></param>
-        /// <returns></returns>
-        public long DeleteMany<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument
-        {
-            if (!documents.Any())
-            {
-                return 0;
-            }
-            var idsTodelete = documents.Select(e => e.Id).ToArray();
-            var deleteRes = GetCollection<TDocument>().DeleteMany(x => idsTodelete.Contains(x.Id));
-            return deleteRes.DeletedCount;
-        }
-
-        /// <summary>
-        /// A generic delete many method
-        /// </summary>
-        /// <typeparam name="TDocument"></typeparam>
-        /// <param name="filter"></param>
-        /// <returns></returns>
-        public long DeleteMany<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
-        {
-            var deleteRes = GetCollection<TDocument>().DeleteMany(filter);
-            return deleteRes.DeletedCount;
-        }
-        #endregion Delete
+        #endregion
 
         #region Update
 
@@ -535,6 +471,147 @@ namespace MongoDbGenericRepository
 
         #endregion Update
 
+        #region Delete
+
+        /// <summary>
+        /// Asynchronously deletes a document.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="TDocument">The document you want to delete.</param>
+        /// <returns>The number of documents deleted.</returns>
+        public async Task<long> DeleteOneAsync<TDocument>(TDocument document) where TDocument : IDocument
+        {
+            return (await HandlePartitioned(document).DeleteOneAsync(x => x.Id == document.Id)).DeletedCount;
+        }
+
+        /// <summary>
+        /// Deletes a document.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="TDocument">The document you want to delete.</param>
+        /// <returns>The number of documents deleted.</returns>
+        public long DeleteOne<TDocument>(TDocument document) where TDocument : IDocument
+        {
+            return HandlePartitioned(document).DeleteOne(x => x.Id == document.Id).DeletedCount;
+        }
+
+        /// <summary>
+        /// Deletes a document matching the condition of the LINQ expression filter.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <returns>The number of documents deleted.</returns>
+        public long DeleteOne<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
+        {
+            return HandlePartitioned<TDocument>(partitionKey).DeleteOne(filter).DeletedCount;
+        }
+
+        /// <summary>
+        /// Asynchronously deletes a document matching the condition of the LINQ expression filter.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <returns>The number of documents deleted.</returns>
+        public async Task<long> DeleteOneAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
+        {
+            return (await HandlePartitioned<TDocument>(partitionKey).DeleteOneAsync(filter)).DeletedCount;
+        }
+
+        /// <summary>
+        /// Asynchronously deletes the documents matching the condition of the LINQ expression filter.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <returns>The number of documents deleted.</returns>
+        public async Task<long> DeleteManyAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
+        {
+            return (await HandlePartitioned<TDocument>(partitionKey).DeleteManyAsync(filter)).DeletedCount;
+        }
+
+        /// <summary>
+        /// Asynchronously deletes a list of documents.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="documents">The list of documents to delete.</param>
+        /// <returns>The number of documents deleted.</returns>
+        public async Task<long> DeleteManyAsync<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument
+        {
+            if (!documents.Any())
+            {
+                return 0;
+            }
+            var idsTodelete = documents.Select(e => e.Id).ToArray();
+            return (await HandlePartitioned(documents.FirstOrDefault()).DeleteManyAsync(x => idsTodelete.Contains(x.Id))).DeletedCount;
+        }
+
+        /// <summary>
+        /// Deletes a list of documents.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="documents">The list of documents to delete.</param>
+        /// <returns>The number of documents deleted.</returns>
+        public long DeleteMany<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument
+        {
+            if (!documents.Any())
+            {
+                return 0;
+            }
+            var idsTodelete = documents.Select(e => e.Id).ToArray();
+            return HandlePartitioned(documents.FirstOrDefault()).DeleteMany(x => idsTodelete.Contains(x.Id)).DeletedCount;
+        }
+
+        /// <summary>
+        /// Deletes the documents matching the condition of the LINQ expression filter.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <returns>The number of documents deleted.</returns>
+        public long DeleteMany<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
+        {
+            return HandlePartitioned<TDocument>(partitionKey).DeleteMany(filter).DeletedCount;
+        }
+
+        #endregion Delete
+
+        #region Projection
+
+        /// <summary>
+        /// Asynchronously returns a list of projected document matching the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <typeparam name="TProjection"></typeparam>
+        /// <param name="filter"></param>
+        /// <param name="projection">The projection expression.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        public async Task<TProjection> GetProjectedAsync<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey = null)
+            where TDocument : IDocument
+            where TProjection : class, new()
+        {
+            return await HandlePartitioned<TDocument>(partitionKey).Find(filter)
+                                                                   .Project(projection)
+                                                                   .FirstOrDefaultAsync();
+        }
+
+        #endregion
+
+
+        /// <summary>
+        /// Asynchronously returns a paginated list of the documents matching the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="filter"></param>
+        /// <param name="skipNumber">The number of documents you want to skip. Default value is 0.</param>
+        /// <param name="takeNumber">The number of documents you want to take. Default value is 50.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        public async Task<List<TDocument>> GetPaginatedAsync<TDocument>(Expression<Func<TDocument, bool>> filter, int skipNumber = 0, int takeNumber = 50, string partitionKey = null) where TDocument : IDocument
+        {
+            return await HandlePartitioned<TDocument>(partitionKey).Find(filter).Skip(skipNumber).Limit(takeNumber).ToListAsync();
+        }
+
         #region Find And Update
 
         /// <summary>
@@ -552,22 +629,13 @@ namespace MongoDbGenericRepository
 
         #endregion Find And Update
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="TDocument"></typeparam>
-        /// <param name="partitionKey"></param>
-        /// <returns></returns>
+        #region Private Methods
+
         private IMongoCollection<TDocument> GetCollection<TDocument>(string partitionKey) where TDocument : IDocument
         {
             return _mongoDbContext.GetCollection<TDocument>(partitionKey);
         }
 
-        /// <summary>
-        /// The private GetCollection method
-        /// </summary>
-        /// <typeparam name="TDocument"></typeparam>
-        /// <returns></returns>
         private IMongoCollection<TDocument> GetCollection<TDocument>() where TDocument : IDocument
         {
             return _mongoDbContext.GetCollection<TDocument>();
@@ -607,5 +675,7 @@ namespace MongoDbGenericRepository
                 document.AddedAtUtc = DateTime.UtcNow;
             }
         }
+
+        #endregion
     }
 }
