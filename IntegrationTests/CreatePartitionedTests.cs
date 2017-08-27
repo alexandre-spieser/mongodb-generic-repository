@@ -18,7 +18,7 @@ namespace IntegrationTests
     public class CreatePartitionedTests : BaseMongoDbRepositoryTests<CreateTestsPartitionedDocument>
     {
         [Test]
-        public void AddOne()
+        public void PartitionedAddOne()
         {
             // Arrange
             var document = new CreateTestsPartitionedDocument();
@@ -30,7 +30,7 @@ namespace IntegrationTests
         }
 
         [Test]
-        public async Task AddOneAsync()
+        public async Task PartitionedAddOneAsync()
         {
             // Arrange
             var document = new CreateTestsPartitionedDocument();
@@ -42,7 +42,7 @@ namespace IntegrationTests
         }
 
         [Test]
-        public void AddMany()
+        public void PartitionedAddMany()
         {
             // Arrange
             var documents = new List<CreateTestsPartitionedDocument> { new CreateTestsPartitionedDocument(), new CreateTestsPartitionedDocument() };
@@ -54,7 +54,7 @@ namespace IntegrationTests
         }
 
         [Test]
-        public async Task AddManyAsync()
+        public async Task PartitionedAddManyAsync()
         {
             // Arrange
             var documents = new List<CreateTestsPartitionedDocument> { new CreateTestsPartitionedDocument(), new CreateTestsPartitionedDocument() };

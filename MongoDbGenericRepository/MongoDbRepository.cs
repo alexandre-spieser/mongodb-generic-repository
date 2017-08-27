@@ -52,69 +52,79 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
         /// <param name="id">The Id of the document you want to get.</param>
-        Task<TDocument> GetById<TDocument>(Guid id) where TDocument : IDocument;
+        /// <param name="partitionKey">An optional partition key.</param>
+        Task<TDocument> GetByIdAsync<TDocument>(Guid id, string partitionKey = null) where TDocument : IDocument;
 
         /// <summary>
         /// Asynchronously returns one document given an expression filter.
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
-        Task<TDocument> GetOneAsync<TDocument>(Expression<Func<TDocument, bool>> filter) where TDocument : IDocument;
+        /// <param name="partitionKey">An optional partition key.</param>
+        Task<TDocument> GetOneAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument;
 
         /// <summary>
         /// Returns one document given an expression filter.
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
-        TDocument GetOne<TDocument>(Expression<Func<TDocument, bool>> filter) where TDocument : IDocument;
+        /// <param name="partitionKey">An optional partition key.</param>
+        TDocument GetOne<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument;
 
         /// <summary>
         /// Returns a collection cursor.
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
-        IFindFluent<TDocument, TDocument> GetCursor<TDocument>(Expression<Func<TDocument, bool>> filter) where TDocument : IDocument;
+        /// <param name="partitionKey">An optional partition key.</param>
+        IFindFluent<TDocument, TDocument> GetCursor<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument;
 
         /// <summary>
         /// Asynchronously returns true if any of the document of the collection matches the filter condition.
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
-        Task<bool> AnyAsync<TDocument>(Expression<Func<TDocument, bool>> filter) where TDocument : IDocument;
+        /// <param name="partitionKey">An optional partition key.</param>
+        Task<bool> AnyAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument;
 
         /// <summary>
         /// Returns true if any of the document of the collection matches the filter condition.
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
-        bool Any<TDocument>(Expression<Func<TDocument, bool>> filter) where TDocument : IDocument;
+        /// <param name="partitionKey">An optional partition key.</param>
+        bool Any<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument;
 
         /// <summary>
         /// Asynchronously returns a list of the documents matching the filter condition.
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
-        Task<List<TDocument>> GetAllAsync<TDocument>(Expression<Func<TDocument, bool>> filter) where TDocument : IDocument;
+        /// <param name="partitionKey">An optional partition key.</param>
+        Task<List<TDocument>> GetAllAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument;
 
         /// <summary>
         /// Returns a list of the documents matching the filter condition.
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
-        List<TDocument> GetAll<TDocument>(Expression<Func<TDocument, bool>> filter) where TDocument : IDocument;
+        /// <param name="partitionKey">An optional partition key.</param>
+        List<TDocument> GetAll<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument;
 
         /// <summary>
         /// Asynchronously counts how many documents match the filter condition.
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
-        Task<long> CountAsync<TDocument>(Expression<Func<TDocument, bool>> filter) where TDocument : IDocument;
+        /// <param name="partitionKey">An optional partition key.</param>
+        Task<long> CountAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument;
 
         /// <summary>
         /// Counts how many documents match the filter condition.
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
         long Count<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument;
 
         #endregion Get
@@ -211,10 +221,11 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
         /// <param name="id">The Id of the document you want to get.</param>
-        public async Task<TDocument> GetById<TDocument>(Guid id) where TDocument : IDocument
+        /// <param name="partitionKey">An optional partition key.</param>
+        public async Task<TDocument> GetByIdAsync<TDocument>(Guid id, string partitionKey = null) where TDocument : IDocument
         {
             var filter = Builders<TDocument>.Filter.Eq("Id", id);
-            return await GetCollection<TDocument>().Find(filter).FirstOrDefaultAsync();
+            return await HandlePartitioned<TDocument>(partitionKey).Find(filter).FirstOrDefaultAsync();
         }
 
         /// <summary>
@@ -222,7 +233,8 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
-        public async Task<TDocument> GetOneAsync<TDocument>(Expression<Func<TDocument, bool>> filter) where TDocument : IDocument
+        /// <param name="partitionKey">An optional partition key.</param>
+        public async Task<TDocument> GetOneAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
         {
             return await GetCollection<TDocument>().Find(filter).FirstOrDefaultAsync();
         }
@@ -232,7 +244,8 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
-        public TDocument GetOne<TDocument>(Expression<Func<TDocument, bool>> filter) where TDocument : IDocument
+        /// <param name="partitionKey">An optional partition key.</param>
+        public TDocument GetOne<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
         {
             return GetCollection<TDocument>().Find(filter).FirstOrDefault();
         }
@@ -242,7 +255,8 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
-        public IFindFluent<TDocument, TDocument> GetCursor<TDocument>(Expression<Func<TDocument, bool>> filter) where TDocument : IDocument
+        /// <param name="partitionKey">An optional partition key.</param>
+        public IFindFluent<TDocument, TDocument> GetCursor<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
         {
             return GetCollection<TDocument>().Find(filter);
         }
@@ -252,7 +266,8 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
-        public async Task<bool> AnyAsync<TDocument>(Expression<Func<TDocument, bool>> filter) where TDocument : IDocument
+        /// <param name="partitionKey">An optional partition key.</param>
+        public async Task<bool> AnyAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
         {
             var count = await GetCollection<TDocument>().CountAsync(filter);
             return (count > 0);
@@ -263,7 +278,8 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
-        public bool Any<TDocument>(Expression<Func<TDocument, bool>> filter) where TDocument : IDocument
+        /// <param name="partitionKey">An optional partition key.</param>
+        public bool Any<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
         {
             var count = GetCollection<TDocument>().Count(filter);
             return (count > 0);
@@ -274,7 +290,8 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
-        public async Task<List<TDocument>> GetAllAsync<TDocument>(Expression<Func<TDocument, bool>> filter) where TDocument : IDocument
+        /// <param name="partitionKey">An optional partition key.</param>
+        public async Task<List<TDocument>> GetAllAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
         {
             return await GetCollection<TDocument>().Find(filter).ToListAsync();
         }
@@ -284,7 +301,8 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
-        public List<TDocument> GetAll<TDocument>(Expression<Func<TDocument, bool>> filter) where TDocument : IDocument
+        /// <param name="partitionKey">An optional partition key.</param>
+        public List<TDocument> GetAll<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
         {
             return GetCollection<TDocument>().Find(filter).ToList();
         }
@@ -295,7 +313,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument"></typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="partitionKey">An optional partitionKey</param>
-        public async Task<long> CountAsync<TDocument>(Expression<Func<TDocument, bool>> filter) where TDocument : IDocument
+        public async Task<long> CountAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
         {
             return await GetCollection<TDocument>().CountAsync(filter);
         }
@@ -318,7 +336,8 @@ namespace MongoDbGenericRepository
         /// <param name="filter"></param>
         /// <param name="skipNumber">The number of documents you want to skip. Default value is 0.</param>
         /// <param name="takeNumber">The number of documents you want to take. Default value is 50.</param>
-        public async Task<List<TDocument>> GetPaginatedAsync<TDocument>(Expression<Func<TDocument, bool>> filter, int skipNumber = 0, int takeNumber = 50) where TDocument : IDocument
+        /// <param name="partitionKey">An optional partition key.</param>
+        public async Task<List<TDocument>> GetPaginatedAsync<TDocument>(Expression<Func<TDocument, bool>> filter, int skipNumber = 0, int takeNumber = 50, string partitionKey = null) where TDocument : IDocument
         {
             return await GetCollection<TDocument>().Find(filter).Skip(skipNumber).Limit(takeNumber).ToListAsync();
         }
@@ -330,7 +349,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">T is a DbEntity</typeparam>
         /// <typeparam name="TProjection"></typeparam>
         /// <returns></returns>
-        public async Task<TProjection> ProjectBy<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection)
+        public async Task<TProjection> ProjectBy<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey = null)
             where TDocument : IDocument
             where TProjection : class, new()
         {
@@ -371,7 +390,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument"></typeparam>
         /// <param name="filter"></param>
         /// <returns></returns>
-        public long DeleteOne<TDocument>(Expression<Func<TDocument, bool>> filter) where TDocument : IDocument
+        public long DeleteOne<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
         {
             return GetCollection<TDocument>().DeleteOne(filter).DeletedCount;
         }
@@ -382,7 +401,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument"></typeparam>
         /// <param name="filter"></param>
         /// <returns></returns>
-        public async Task<long> DeleteOneAsync<TDocument>(Expression<Func<TDocument, bool>> filter) where TDocument : IDocument
+        public async Task<long> DeleteOneAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
         {
             return (await GetCollection<TDocument>().DeleteOneAsync(filter)).DeletedCount;
         }
@@ -393,7 +412,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument"></typeparam>
         /// <param name="filter"></param>
         /// <returns></returns>
-        public async Task<long> DeleteManyAsync<TDocument>(Expression<Func<TDocument, bool>> filter) where TDocument : IDocument
+        public async Task<long> DeleteManyAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
         {
             var deleteRes = await GetCollection<TDocument>().DeleteManyAsync(filter);
             return deleteRes.DeletedCount;
@@ -439,7 +458,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument"></typeparam>
         /// <param name="filter"></param>
         /// <returns></returns>
-        public long DeleteMany<TDocument>(Expression<Func<TDocument, bool>> filter) where TDocument : IDocument
+        public long DeleteMany<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
         {
             var deleteRes = GetCollection<TDocument>().DeleteMany(filter);
             return deleteRes.DeletedCount;
