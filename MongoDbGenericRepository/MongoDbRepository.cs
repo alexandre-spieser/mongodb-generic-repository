@@ -205,11 +205,15 @@ namespace MongoDbGenericRepository
         /// <param name="document">The document you want to add.</param>
         public void AddMany<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument
         {
+            if (!documents.Any())
+            {
+                return;
+            }
             foreach (var document in documents)
             {
                 FormatDocument(document);
             }
-            HandlePartitioned(documents.FirstOrDefault()).InsertMany(documents);
+            HandlePartitioned(documents.FirstOrDefault()).InsertMany(documents.ToList());
         }
 
         #endregion Create
@@ -236,7 +240,7 @@ namespace MongoDbGenericRepository
         /// <param name="partitionKey">An optional partition key.</param>
         public async Task<TDocument> GetOneAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
         {
-            return await GetCollection<TDocument>().Find(filter).FirstOrDefaultAsync();
+            return await HandlePartitioned<TDocument>(partitionKey).Find(filter).FirstOrDefaultAsync();
         }
 
         /// <summary>
@@ -247,7 +251,7 @@ namespace MongoDbGenericRepository
         /// <param name="partitionKey">An optional partition key.</param>
         public TDocument GetOne<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
         {
-            return GetCollection<TDocument>().Find(filter).FirstOrDefault();
+            return HandlePartitioned<TDocument>(partitionKey).Find(filter).FirstOrDefault();
         }
 
         /// <summary>
@@ -258,7 +262,7 @@ namespace MongoDbGenericRepository
         /// <param name="partitionKey">An optional partition key.</param>
         public IFindFluent<TDocument, TDocument> GetCursor<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
         {
-            return GetCollection<TDocument>().Find(filter);
+            return HandlePartitioned<TDocument>(partitionKey).Find(filter);
         }
 
         /// <summary>
@@ -269,7 +273,7 @@ namespace MongoDbGenericRepository
         /// <param name="partitionKey">An optional partition key.</param>
         public async Task<bool> AnyAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
         {
-            var count = await GetCollection<TDocument>().CountAsync(filter);
+            var count = await HandlePartitioned<TDocument>(partitionKey).CountAsync(filter);
             return (count > 0);
         }
 
@@ -281,7 +285,7 @@ namespace MongoDbGenericRepository
         /// <param name="partitionKey">An optional partition key.</param>
         public bool Any<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
         {
-            var count = GetCollection<TDocument>().Count(filter);
+            var count = HandlePartitioned<TDocument>(partitionKey).Count(filter);
             return (count > 0);
         }
 
@@ -293,7 +297,7 @@ namespace MongoDbGenericRepository
         /// <param name="partitionKey">An optional partition key.</param>
         public async Task<List<TDocument>> GetAllAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
         {
-            return await GetCollection<TDocument>().Find(filter).ToListAsync();
+            return await HandlePartitioned<TDocument>(partitionKey).Find(filter).ToListAsync();
         }
 
         /// <summary>
@@ -304,7 +308,7 @@ namespace MongoDbGenericRepository
         /// <param name="partitionKey">An optional partition key.</param>
         public List<TDocument> GetAll<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
         {
-            return GetCollection<TDocument>().Find(filter).ToList();
+            return HandlePartitioned<TDocument>(partitionKey).Find(filter).ToList();
         }
 
         /// <summary>
@@ -315,7 +319,7 @@ namespace MongoDbGenericRepository
         /// <param name="partitionKey">An optional partitionKey</param>
         public async Task<long> CountAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
         {
-            return await GetCollection<TDocument>().CountAsync(filter);
+            return await HandlePartitioned<TDocument>(partitionKey).CountAsync(filter);
         }
 
         /// <summary>
@@ -339,7 +343,7 @@ namespace MongoDbGenericRepository
         /// <param name="partitionKey">An optional partition key.</param>
         public async Task<List<TDocument>> GetPaginatedAsync<TDocument>(Expression<Func<TDocument, bool>> filter, int skipNumber = 0, int takeNumber = 50, string partitionKey = null) where TDocument : IDocument
         {
-            return await GetCollection<TDocument>().Find(filter).Skip(skipNumber).Limit(takeNumber).ToListAsync();
+            return await HandlePartitioned<TDocument>(partitionKey).Find(filter).Skip(skipNumber).Limit(takeNumber).ToListAsync();
         }
 
 
@@ -353,9 +357,9 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument
             where TProjection : class, new()
         {
-            return await GetCollection<TDocument>().Find(Builders<TDocument>.Filter.Where(filter))
-                                                   .Project(projection)
-                                                   .FirstOrDefaultAsync();
+            return await HandlePartitioned<TDocument>(partitionKey).Find(filter)
+                                                                   .Project(projection)
+                                                                   .FirstOrDefaultAsync();
         }
 
         #endregion Get

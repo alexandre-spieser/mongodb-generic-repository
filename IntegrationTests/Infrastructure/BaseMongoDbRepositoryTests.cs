@@ -1,19 +1,30 @@
 ﻿using MongoDbGenericRepository.Models;
 using NUnit.Framework;
+using System.Collections.Generic;
 using System.Configuration;
 
 namespace IntegrationTests.Infrastructure
 {
     public class BaseMongoDbRepositoryTests<T> where T : Document, new()
     {
-        public T GetDocumentInstance()
+        public T CreateTestDocument()
         {
             return new T();
         }
 
+        public List<T> CreateTestDocuments(int numberOfDocumentsToCreate)
+        {
+            var docs = new List<T>();
+            for(var i = 0; i < numberOfDocumentsToCreate; i++)
+            {
+                docs.Add(new T());
+            }
+            return docs;
+        }
+
         public BaseMongoDbRepositoryTests()
         {
-            var type = GetDocumentInstance();
+            var type = CreateTestDocument();
             if (type is IPartitionedDocument)
             {
                 PartitionKey = ((IPartitionedDocument)type).PartitionKey;
