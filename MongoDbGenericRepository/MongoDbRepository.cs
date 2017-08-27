@@ -227,6 +227,58 @@ namespace MongoDbGenericRepository
 
         #endregion
 
+        #region Project
+
+        /// <summary>
+        /// Asynchronously returns a projected document matching the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <typeparam name="TProjection"></typeparam>
+        /// <param name="filter"></param>
+        /// <param name="projection">The projection expression.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        Task<TProjection> ProjectOneAsync<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey = null)
+                                        where TDocument : IDocument
+                                        where TProjection : class;
+
+        /// <summary>
+        /// Returns a projected document matching the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <typeparam name="TProjection"></typeparam>
+        /// <param name="filter"></param>
+        /// <param name="projection">The projection expression.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        TProjection ProjectOne<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey = null)
+                                        where TDocument : IDocument
+                                        where TProjection : class;
+
+        /// <summary>
+        /// Asynchronously returns a list of projected documents matching the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <typeparam name="TProjection"></typeparam>
+        /// <param name="filter"></param>
+        /// <param name="projection">The projection expression.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        Task<List<TProjection>> ProjectManyAsync<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey = null)
+                                        where TDocument : IDocument
+                                        where TProjection : class;
+
+        /// <summary>
+        /// Asynchronously returns a list of projected documents matching the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <typeparam name="TProjection"></typeparam>
+        /// <param name="filter"></param>
+        /// <param name="projection">The projection expression.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        List<TProjection> ProjectMany<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey = null)
+                                        where TDocument : IDocument
+                                        where TProjection : class;
+
+        #endregion
+
     }
 
     /// <summary>
@@ -577,27 +629,77 @@ namespace MongoDbGenericRepository
 
         #endregion Delete
 
-        #region Projection
+        #region Project
 
         /// <summary>
-        /// Asynchronously returns a list of projected document matching the filter condition.
+        /// Asynchronously returns a projected document matching the filter condition.
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
         /// <typeparam name="TProjection"></typeparam>
         /// <param name="filter"></param>
         /// <param name="projection">The projection expression.</param>
         /// <param name="partitionKey">An optional partition key.</param>
-        public async Task<TProjection> GetProjectedAsync<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey = null)
+        public async Task<TProjection> ProjectOneAsync<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey = null)
             where TDocument : IDocument
-            where TProjection : class, new()
+            where TProjection : class
         {
             return await HandlePartitioned<TDocument>(partitionKey).Find(filter)
                                                                    .Project(projection)
                                                                    .FirstOrDefaultAsync();
         }
 
-        #endregion
+        /// <summary>
+        /// Returns a projected document matching the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <typeparam name="TProjection"></typeparam>
+        /// <param name="filter"></param>
+        /// <param name="projection">The projection expression.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        public TProjection ProjectOne<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey = null)
+            where TDocument : IDocument
+            where TProjection : class
+        {
+            return HandlePartitioned<TDocument>(partitionKey).Find(filter)
+                                                             .Project(projection)
+                                                             .FirstOrDefault();
+        }
 
+        /// <summary>
+        /// Asynchronously returns a list of projected documents matching the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <typeparam name="TProjection"></typeparam>
+        /// <param name="filter"></param>
+        /// <param name="projection">The projection expression.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        public async Task<List<TProjection>> ProjectManyAsync<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey = null)
+            where TDocument : IDocument
+            where TProjection : class
+        {
+            return await HandlePartitioned<TDocument>(partitionKey).Find(filter)
+                                                                   .Project(projection)
+                                                                   .ToListAsync();
+        }
+
+        /// <summary>
+        /// Asynchronously returns a list of projected documents matching the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <typeparam name="TProjection"></typeparam>
+        /// <param name="filter"></param>
+        /// <param name="projection">The projection expression.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        public List<TProjection> ProjectMany<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey = null)
+            where TDocument : IDocument
+            where TProjection : class
+        {
+            return HandlePartitioned<TDocument>(partitionKey).Find(filter)
+                                                             .Project(projection)
+                                                             .ToList();
+        }
+
+        #endregion
 
         /// <summary>
         /// Asynchronously returns a paginated list of the documents matching the filter condition.
