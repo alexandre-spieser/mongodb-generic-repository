@@ -1,5 +1,76 @@
-# mongodb-generic-repository
+# MongoDbGenericRepository
 An example of generic repository implementation using the MongoDB C# Sharp 2.0 driver (async)
+
+Now available as a nuget package:
+https://www.nuget.org/packages/MongoDbGenericRepository/
+
+# Usage examples
+
+This repository is meant to be inherited from. 
+
+You are responsible for managing its lifetime, it is advised to setup this repository as a singleton.
+
+Here is an example of repository usage, where the TestRepository is implementing 2 custom methods:
+
+```
+    public interface ITestRepository : IBaseMongoRepository
+    {
+        void DropTestCollection<TDocument>();
+        void DropTestCollection<TDocument>(string partitionKey);
+    }
+    
+    public class TestRepository : BaseMongoRepository, ITestRepository
+    {
+        public TestRepository(string connectionString, string databaseName) : base(connectionString, databaseName)
+        {
+        }
+
+        public void DropTestCollection<TDocument>()
+        {
+            _mongoDbContext.DropCollection<TDocument>();
+        }
+
+        public void DropTestCollection<TDocument>(string partitionKey)
+        {
+            _mongoDbContext.DropCollection<TDocument>(partitionKey);
+        }
+    }
+```
+
+The repository can be instantiated like so:
+
+```
+ITestRepository testRepository = new TestRepository(connectionString, "MongoDbTests");
+
+```
+
+To add a document, its class must inherit from the `Document` class or implement the `IDocument` interface:
+
+```
+    public class MyDocument : Document
+    {
+        public ReadTestsDocument()
+        {
+            Version = 2; // you can bump the version of the document schema if you change it over time
+        }
+        public string SomeContent { get; set; }
+    }
+```
+
+The `IDocument` interface can be seen below:
+
+```
+    /// <summary>
+    /// This class represents a basic document that can be stored in MongoDb.
+    /// Your document must implement this class in order for the MongoDbRepository to handle them.
+    /// </summary>
+    public interface IDocument
+    {
+        DateTime AddedAtUtc { get; set; }
+        Guid Id { get; set; }
+        int Version { get; set; }
+    }
+```
 
 ## Copyright
 Copyright © 2016
