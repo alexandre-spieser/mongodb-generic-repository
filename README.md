@@ -85,14 +85,14 @@ To use partitioned collections, you must define your documents using the Partiti
 ```
 
 This partitioned key will be used as a prefix to your collection name.
-The collection name is derived from the name of the type of your document, is set to lower case, and is currently very naively pluralized (a "s" is added at the end of the type name).
+The collection name is derived from the name of the type of your document, is set to camel case, and is pluralized using a class taken from Humanizer (https://github.com/Humanizr/Humanizer).
 
 ```
 var myDoc = new MyPartitionedDocument("myPartitionKey");
 _testRepository.AddOne(myDoc);
 ```
 
-The above code will generate a collection named `myPartitionKey-mypartitioneddocuments`.
+The above code will generate a collection named `myPartitionKey-myPartitionedDocuments`.
 
 Please refer to the IntegrationTests project for more usage examples.
 
