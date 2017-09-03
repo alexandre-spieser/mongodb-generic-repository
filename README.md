@@ -27,12 +27,12 @@ Here is an example of repository usage, where the TestRepository is implementing
 
         public void DropTestCollection<TDocument>()
         {
-            _mongoDbContext.DropCollection<TDocument>();
+            MongoDbContext.DropCollection<TDocument>();
         }
 
         public void DropTestCollection<TDocument>(string partitionKey)
         {
-            _mongoDbContext.DropCollection<TDocument>(partitionKey);
+            MongoDbContext.DropCollection<TDocument>(partitionKey);
         }
     }
 ```
@@ -85,14 +85,14 @@ To use partitioned collections, you must define your documents using the Partiti
 ```
 
 This partitioned key will be used as a prefix to your collection name.
-The collection name is derived from the name of the type of your document, is set to lower case, and is currently very naively pluralized (a "s" is added at the end of the type name).
+The collection name is derived from the name of the type of your document, is set to camel case, and is pluralized using a class taken from Humanizer (https://github.com/Humanizr/Humanizer).
 
 ```
 var myDoc = new MyPartitionedDocument("myPartitionKey");
 _testRepository.AddOne(myDoc);
 ```
 
-The above code will generate a collection named `myPartitionKey-mypartitioneddocuments`.
+The above code will generate a collection named `myPartitionKey-myPartitionedDocuments`.
 
 Please refer to the IntegrationTests project for more usage examples.
 
@@ -101,6 +101,42 @@ Copyright © 2017
 
 ## License
 mongodb-generic-repository is under MIT license - http://www.opensource.org/licenses/mit-license.php
+
+The MIT License (MIT)
+
+Copyright (c) 2016-2017 Alexandre Spieser
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+==============================================================================
+
+Inflector (https://github.com/srkirkland/Inflector)
+The MIT License (MIT)
+Copyright (c) 2013 Scott Kirkland
+
+==============================================================================
+
+Humanizer (https://github.com/Humanizr/Humanizer)
+The MIT License (MIT)
+Copyright (c) 2012-2014 Mehdi Khalili (http://omar.io)
+
+==============================================================================
 
 ## Author
 **Alexandre Spieser**
