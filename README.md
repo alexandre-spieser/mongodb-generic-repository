@@ -41,7 +41,6 @@ The repository can be instantiated like so:
 
 ```
 ITestRepository testRepository = new TestRepository(connectionString, "MongoDbTests");
-
 ```
 
 To add a document, its class must inherit from the `Document` class or implement the `IDocument` interface:
@@ -71,6 +70,29 @@ The `IDocument` interface can be seen below:
         int Version { get; set; }
     }
 ```
+This repository also allows you to partition your document accross multiple collections, this can be useful if you are running a SaaS application and want to keep good performance.
+
+To use partitioned collections, you must define your documents using the PartitionedDocument class, which implements the IPartitionedDocument interface:
+```
+    public class MyPartitionedDocument : PartitionedDocument
+    {
+        public CreateTestsPartitionedDocument(string myPartitionKey) : base(myPartitionKey)
+        {
+            Version = 1;
+        }
+        public string SomeContent { get; set; }
+    }
+```
+
+This partitioned key will be used as a prefix to your collection name.
+The collection name is derived from the name of the type of your document, is set to lower case, and is currently very naively pluralized (a "s" is added at the end of the type name).
+
+```
+var myDoc = new MyPartitionedDocument("myPartitionKey");
+_testRepository.AddOne(myDoc);
+```
+
+The above code will generate a collection named `myPartitionKey-mypartitioneddocuments`.
 
 Please refer to the IntegrationTests project for more usage examples.
 
