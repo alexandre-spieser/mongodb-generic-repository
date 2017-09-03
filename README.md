@@ -72,8 +72,10 @@ The `IDocument` interface can be seen below:
     }
 ```
 
+Please refer to the IntegrationTests project for more usage examples.
+
 ## Copyright
-Copyright © 2016
+Copyright © 2017
 
 ## License
 mongodb-generic-repository is under MIT license - http://www.opensource.org/licenses/mit-license.php
