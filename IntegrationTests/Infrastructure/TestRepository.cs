@@ -11,12 +11,12 @@ namespace IntegrationTests.Infrastructure
 
         public void DropTestCollection<TDocument>()
         {
-            _mongoDbContext.DropCollection<TDocument>();
+            MongoDbContext.DropCollection<TDocument>();
         }
 
         public void DropTestCollection<TDocument>(string partitionKey)
         {
-            _mongoDbContext.DropCollection<TDocument>(partitionKey);
+            MongoDbContext.DropCollection<TDocument>(partitionKey);
         }
     }
 }

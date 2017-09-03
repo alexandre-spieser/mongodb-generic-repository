@@ -97,6 +97,7 @@
     <Compile Include="Models\IDocument.cs" />
     <Compile Include="MongoDbContext.cs" />
     <Compile Include="MongoDbRepository.cs" />
+    <Compile Include="Pluralization.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <PropertyGroup>

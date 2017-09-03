@@ -297,10 +297,10 @@ namespace MongoDbGenericRepository
         /// <param name="databaseName">The name of the database against which you want to perform operations.</param>
         protected BaseMongoRepository(string connectionString, string databaseName)
         {
-            _mongoDbContext = new MongoDbContext(connectionString, databaseName);
+            MongoDbContext = new MongoDbContext(connectionString, databaseName);
         }
 
-        protected IMongoDbContext _mongoDbContext = null;
+        protected IMongoDbContext MongoDbContext = null;
 
         #region Create
 
@@ -735,12 +735,12 @@ namespace MongoDbGenericRepository
 
         private IMongoCollection<TDocument> GetCollection<TDocument>(string partitionKey) where TDocument : IDocument
         {
-            return _mongoDbContext.GetCollection<TDocument>(partitionKey);
+            return MongoDbContext.GetCollection<TDocument>(partitionKey);
         }
 
         private IMongoCollection<TDocument> GetCollection<TDocument>() where TDocument : IDocument
         {
-            return _mongoDbContext.GetCollection<TDocument>();
+            return MongoDbContext.GetCollection<TDocument>();
         }
 
         private IMongoCollection<TDocument> HandlePartitioned<TDocument>(TDocument document) where TDocument : IDocument

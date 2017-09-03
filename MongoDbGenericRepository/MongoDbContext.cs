@@ -68,7 +68,7 @@ namespace MongoDbGenericRepository
         /// <returns></returns>
         private string Pluralize<TDocument>()
         {
-            return typeof(TDocument).Name.ToLower() + "s";
+            return (typeof(TDocument).Name.Pluralize()).Camelize();
         }
     }
 }
