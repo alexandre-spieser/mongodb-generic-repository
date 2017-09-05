@@ -36,6 +36,7 @@ Here is an example of repository usage, where the TestRepository is implementing
         }
     }
 ```
+## Instantiation
 
 The repository can be instantiated like so:
 
@@ -43,6 +44,7 @@ The repository can be instantiated like so:
 ITestRepository testRepository = new TestRepository(connectionString, "MongoDbTests");
 ```
 
+## Adding documents
 To add a document, its class must inherit from the `Document` class or implement the `IDocument` interface:
 
 ```
@@ -70,7 +72,8 @@ The `IDocument` interface can be seen below:
         int Version { get; set; }
     }
 ```
-This repository also allows you to partition your document accross multiple collections, this can be useful if you are running a SaaS application and want to keep good performance.
+## Partitioned collections
+This repository also allows you to partition your document across multiple collections, this can be useful if you are running a SaaS application and want to keep good performance.
 
 To use partitioned collections, you must define your documents using the PartitionedDocument class, which implements the IPartitionedDocument interface:
 ```
@@ -96,8 +99,15 @@ The above code will generate a collection named `myPartitionKey-myPartitionedDoc
 
 Please refer to the IntegrationTests project for more usage examples.
 
-## Copyright
-Copyright © 2017
+## Author
+**Alexandre Spieser**
+
+## Donations
+Feeling like my work is worth a coffee? 
+Donations are welcome and will go towards further development of this project as well as other MongoDb related projects. Use the wallet address below to donate.
+BTC Donations: 1Qc5ZpNA7g66KEEMcz7MXxwNyyoRyKJJZ
+
+*Thank you for your support and generosity!*
 
 ## License
 mongodb-generic-repository is under MIT license - http://www.opensource.org/licenses/mit-license.php
@@ -138,13 +148,5 @@ Copyright (c) 2012-2014 Mehdi Khalili (http://omar.io)
 
 ==============================================================================
 
-## Author
-**Alexandre Spieser**
-
-## Donations
-Feeling like my work is worth a coffee? 
-Donations are welcome and will go towards further development of this project as well as other MongoDb related projects. Use the wallet address below to donate.
-BTC Donations: 1Qc5ZpNA7g66KEEMcz7MXxwNyyoRyKJJZ
-
-*Thank you for your support and generosity!*
-
+## Copyright
+Copyright © 2017
