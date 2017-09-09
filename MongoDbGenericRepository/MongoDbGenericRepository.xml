@@ -1,0 +1,752 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MongoDbGenericRepository</name>
+    </assembly>
+    <members>
+        <member name="M:MongoDbGenericRepository.IMongoDbContext.GetCollection``1">
+            <summary>
+            The private GetCollection method
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+        </member>
+        <member name="M:MongoDbGenericRepository.IMongoDbContext.GetCollection``1(System.String)">
+            <summary>
+            Returns a collection for a document type that has a partition key.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IMongoDbContext.DropCollection``1">
+            <summary>
+            Drops a collection, use very carefully.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+        </member>
+        <member name="M:MongoDbGenericRepository.IMongoDbContext.DropCollection``1(System.String)">
+            <summary>
+            Drops a collection having a partitionkey, use very carefully.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+        </member>
+        <member name="T:MongoDbGenericRepository.Models.Document">
+            <summary>
+            This class represents a basic document that can be stored in MongoDb
+            </summary>
+        </member>
+        <member name="M:MongoDbGenericRepository.Models.Document.#ctor">
+            <summary>
+            The document constructor
+            </summary>
+        </member>
+        <member name="P:MongoDbGenericRepository.Models.Document.Id">
+            <summary>
+            The Id of the document
+            </summary>
+        </member>
+        <member name="P:MongoDbGenericRepository.Models.Document.AddedAtUtc">
+            <summary>
+            The datetime in UTC at which the document was added.
+            </summary>
+        </member>
+        <member name="P:MongoDbGenericRepository.Models.Document.Version">
+            <summary>
+            The version of the schema of the document
+            </summary>
+        </member>
+        <member name="P:MongoDbGenericRepository.Models.PartitionedDocument.PartitionKey">
+            <summary>
+            The name of the property used for partitioning the collection
+            This will not be inserted into the collection.
+            This partition key will be prepended to the collection name to create a new collection.
+            </summary>
+        </member>
+        <member name="T:MongoDbGenericRepository.Models.IDocument">
+            <summary>
+            This class represents a basic document that can be stored in MongoDb.
+            Your document must implement this class in order for the MongoDbRepository to handle them.
+            </summary>
+        </member>
+        <member name="T:MongoDbGenericRepository.Models.IPartitionedDocument">
+            <summary>
+            This class represents a document that can be inserted in a collection that can be partitioned.
+            The partition key allows for the creation of different collections having the same document schema.
+            This can be useful if you are planning to build a Software as a Service (SaaS) Platform, or if you want to reduce indexing.
+            You could for example insert Logs in different collections based on the week and year they where created, or their Log category/source.
+            </summary>
+        </member>
+        <member name="T:MongoDbGenericRepository.MongoDbContext">
+            <summary>
+            The MongoDb context
+            </summary>
+        </member>
+        <member name="M:MongoDbGenericRepository.MongoDbContext.GetCollection``1">
+            <summary>
+            The private GetCollection method
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.MongoDbContext.GetCollection``1(System.String)">
+            <summary>
+            Returns a collection for a document type that has a partition key.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.MongoDbContext.DropCollection``1">
+            <summary>
+            Drops a collection, use very carefully.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+        </member>
+        <member name="M:MongoDbGenericRepository.MongoDbContext.DropCollection``1(System.String)">
+            <summary>
+            Drops a collection having a partitionkey, use very carefully.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+        </member>
+        <member name="M:MongoDbGenericRepository.MongoDbContext.Pluralize``1">
+            <summary>
+            Very naively pluralizes a TDocument type name.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.AddOneAsync``1(``0)">
+            <summary>
+            Asynchronously adds a document to the collection.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="document">The document you want to add.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.AddOne``1(``0)">
+            <summary>
+            Adds a document to the collection.
+            Populates the Id and AddedAtUtc fields if necessary.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="document">The document you want to add.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.AddManyAsync``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Asynchronously adds a list of documents to the collection.
+            Populates the Id and AddedAtUtc fields if necessary.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="document">The document you want to add.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.AddMany``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Adds a list of documents to the collection.
+            Populates the Id and AddedAtUtc fields if necessary.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="document">The document you want to add.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.GetByIdAsync``1(System.Guid,System.String)">
+            <summary>
+            Asynchronously returns one document given its id.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="id">The Id of the document you want to get.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.GetById``1(System.Guid,System.String)">
+            <summary>
+            Returns one document given its id.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="id">The Id of the document you want to get.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.GetOneAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Asynchronously returns one document given an expression filter.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.GetOne``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Returns one document given an expression filter.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.GetCursor``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Returns a collection cursor.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.AnyAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Asynchronously returns true if any of the document of the collection matches the filter condition.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.Any``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Returns true if any of the document of the collection matches the filter condition.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.GetAllAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Asynchronously returns a list of the documents matching the filter condition.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.GetAll``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Returns a list of the documents matching the filter condition.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.CountAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Asynchronously counts how many documents match the filter condition.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.Count``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Counts how many documents match the filter condition.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.UpdateOneAsync``1(``0)">
+            <summary>
+            Asynchronously Updates a document.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="modifiedDocument">The document with the modifications you want to persist.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.UpdateOne``1(``0)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="modifiedDocument">The document with the modifications you want to persist.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.DeleteOneAsync``1(``0)">
+            <summary>
+            Asynchronously deletes a document.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="TDocument">The document you want to delete.</param>
+            <returns>The number of documents deleted.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.DeleteOneAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Asynchronously deletes a document matching the condition of the LINQ expression filter.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+            <returns>The number of documents deleted.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.DeleteOne``1(``0)">
+            <summary>
+            Deletes a document.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="TDocument">The document you want to delete.</param>
+            <returns>The number of documents deleted.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.DeleteOne``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Deletes a document matching the condition of the LINQ expression filter.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+            <returns>The number of documents deleted.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.DeleteManyAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Asynchronously deletes the documents matching the condition of the LINQ expression filter.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+            <returns>The number of documents deleted.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.DeleteManyAsync``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Asynchronously deletes a list of documents.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="documents">The list of documents to delete.</param>
+            <returns>The number of documents deleted.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.DeleteMany``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Deletes a list of documents.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="documents">The list of documents to delete.</param>
+            <returns>The number of documents deleted.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.DeleteMany``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Deletes the documents matching the condition of the LINQ expression filter.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+            <returns>The number of documents deleted.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.ProjectOneAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1}},System.String)">
+            <summary>
+            Asynchronously returns a projected document matching the filter condition.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <typeparam name="TProjection"></typeparam>
+            <param name="filter"></param>
+            <param name="projection">The projection expression.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.ProjectOne``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1}},System.String)">
+            <summary>
+            Returns a projected document matching the filter condition.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <typeparam name="TProjection"></typeparam>
+            <param name="filter"></param>
+            <param name="projection">The projection expression.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.ProjectManyAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1}},System.String)">
+            <summary>
+            Asynchronously returns a list of projected documents matching the filter condition.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <typeparam name="TProjection"></typeparam>
+            <param name="filter"></param>
+            <param name="projection">The projection expression.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.ProjectMany``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1}},System.String)">
+            <summary>
+            Asynchronously returns a list of projected documents matching the filter condition.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <typeparam name="TProjection"></typeparam>
+            <param name="filter"></param>
+            <param name="projection">The projection expression.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="T:MongoDbGenericRepository.BaseMongoRepository">
+            <summary>
+            The base Repository, it is meant to be inherited from by your custom custom MongoRepository implementation.
+            Its constructor must be given a connection string and a database name.
+            </summary>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.#ctor(System.String,System.String)">
+            <summary>
+            The base constructor
+            </summary>
+            <param name="connectionString">The connection string of the MongoDb server.</param>
+            <param name="databaseName">The name of the database against which you want to perform operations.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.AddOneAsync``1(``0)">
+            <summary>
+            Asynchronously adds a document to the collection.
+            Populates the Id and AddedAtUtc fields if necessary.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="document">The document you want to add.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.AddOne``1(``0)">
+            <summary>
+            Adds a document to the collection.
+            Populates the Id and AddedAtUtc fields if necessary.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="document">The document you want to add.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.AddManyAsync``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Asynchronously adds a list of documents to the collection.
+            Populates the Id and AddedAtUtc fields if necessary.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="document">The document you want to add.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.AddMany``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Adds a list of documents to the collection.
+            Populates the Id and AddedAtUtc fields if necessary.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="document">The document you want to add.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.GetByIdAsync``1(System.Guid,System.String)">
+            <summary>
+            Asynchronously returns one document given its id.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="id">The Id of the document you want to get.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.GetById``1(System.Guid,System.String)">
+            <summary>
+            Returns one document given its id.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="id">The Id of the document you want to get.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.GetOneAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Asynchronously returns one document given an expression filter.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.GetOne``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Returns one document given an expression filter.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.GetCursor``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Returns a collection cursor.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.AnyAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Returns true if any of the document of the collection matches the filter condition.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.Any``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Returns true if any of the document of the collection matches the filter condition.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.GetAllAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Asynchronously returns a list of the documents matching the filter condition.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.GetAll``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Returns a list of the documents matching the filter condition.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.CountAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Asynchronously counts how many documents match the filter condition.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partitionKey</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.Count``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Counts how many documents match the filter condition.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partitionKey</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateOneAsync``1(``0)">
+            <summary>
+            Asynchronously Updates a document.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="modifiedDocument">The document with the modifications you want to persist.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateOne``1(``0)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="modifiedDocument">The document with the modifications you want to persist.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.DeleteOneAsync``1(``0)">
+            <summary>
+            Asynchronously deletes a document.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="TDocument">The document you want to delete.</param>
+            <returns>The number of documents deleted.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.DeleteOne``1(``0)">
+            <summary>
+            Deletes a document.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="TDocument">The document you want to delete.</param>
+            <returns>The number of documents deleted.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.DeleteOne``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Deletes a document matching the condition of the LINQ expression filter.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+            <returns>The number of documents deleted.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.DeleteOneAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Asynchronously deletes a document matching the condition of the LINQ expression filter.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+            <returns>The number of documents deleted.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.DeleteManyAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Asynchronously deletes the documents matching the condition of the LINQ expression filter.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+            <returns>The number of documents deleted.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.DeleteManyAsync``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Asynchronously deletes a list of documents.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="documents">The list of documents to delete.</param>
+            <returns>The number of documents deleted.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.DeleteMany``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Deletes a list of documents.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="documents">The list of documents to delete.</param>
+            <returns>The number of documents deleted.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.DeleteMany``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Deletes the documents matching the condition of the LINQ expression filter.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+            <returns>The number of documents deleted.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.ProjectOneAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1}},System.String)">
+            <summary>
+            Asynchronously returns a projected document matching the filter condition.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <typeparam name="TProjection"></typeparam>
+            <param name="filter"></param>
+            <param name="projection">The projection expression.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.ProjectOne``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1}},System.String)">
+            <summary>
+            Returns a projected document matching the filter condition.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <typeparam name="TProjection"></typeparam>
+            <param name="filter"></param>
+            <param name="projection">The projection expression.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.ProjectManyAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1}},System.String)">
+            <summary>
+            Asynchronously returns a list of projected documents matching the filter condition.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <typeparam name="TProjection"></typeparam>
+            <param name="filter"></param>
+            <param name="projection">The projection expression.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.ProjectMany``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1}},System.String)">
+            <summary>
+            Asynchronously returns a list of projected documents matching the filter condition.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <typeparam name="TProjection"></typeparam>
+            <param name="filter"></param>
+            <param name="projection">The projection expression.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.GetPaginatedAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Int32,System.Int32,System.String)">
+            <summary>
+            Asynchronously returns a paginated list of the documents matching the filter condition.
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="filter"></param>
+            <param name="skipNumber">The number of documents you want to skip. Default value is 0.</param>
+            <param name="takeNumber">The number of documents you want to take. Default value is 50.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.GetAndUpdateOne``1(MongoDB.Driver.FilterDefinition{``0},MongoDB.Driver.UpdateDefinition{``0},MongoDB.Driver.FindOneAndUpdateOptions{``0,``0})">
+            <summary>
+            GetAndUpdateOne with filter
+            </summary>
+            <typeparam name="TDocument"></typeparam>
+            <param name="filter"></param>
+            <param name="update"></param>
+            <param name="options"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MongoDbGenericRepository.Vocabularies">
+            <summary>
+            Container for registered Vocabularies.  At present, only a single vocabulary is supported: Default.
+            </summary>
+        </member>
+        <member name="P:MongoDbGenericRepository.Vocabularies.Default">
+            <summary>
+            The default vocabulary used for singular/plural irregularities.
+            Rules can be added to this vocabulary and will be picked up by called to Singularize() and Pluralize().
+            At this time, multiple vocabularies and removing existing rules are not supported.
+            </summary>
+        </member>
+        <member name="T:MongoDbGenericRepository.Vocabulary">
+            <summary>
+            A container for exceptions to simple pluralization/singularization rules.
+            Vocabularies.Default contains an extensive list of rules for US English.
+            At this time, multiple vocabularies and removing existing rules are not supported.
+            </summary>
+        </member>
+        <member name="M:MongoDbGenericRepository.Vocabulary.AddIrregular(System.String,System.String,System.Boolean)">
+            <summary>
+            Adds a word to the vocabulary which cannot easily be pluralized/singularized by RegEx, e.g. "person" and "people".
+            </summary>
+            <param name="singular">The singular form of the irregular word, e.g. "person".</param>
+            <param name="plural">The plural form of the irregular word, e.g. "people".</param>
+            <param name="matchEnding">True to match these words on their own as well as at the end of longer words. False, otherwise.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.Vocabulary.AddUncountable(System.String)">
+            <summary>
+            Adds an uncountable word to the vocabulary, e.g. "fish".  Will be ignored when plurality is changed.
+            </summary>
+            <param name="word">Word to be added to the list of uncountables.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.Vocabulary.AddPlural(System.String,System.String)">
+            <summary>
+            Adds a rule to the vocabulary that does not follow trivial rules for pluralization, e.g. "bus" -> "buses"
+            </summary>
+            <param name="rule">RegEx to be matched, case insensitive, e.g. "(bus)es$"</param>
+            <param name="replacement">RegEx replacement  e.g. "$1"</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.Vocabulary.AddSingular(System.String,System.String)">
+            <summary>
+            Adds a rule to the vocabulary that does not follow trivial rules for singularization, e.g. "vertices/indices -> "vertex/index"
+            </summary>
+            <param name="rule">RegEx to be matched, case insensitive, e.g. ""(vert|ind)ices$""</param>
+            <param name="replacement">RegEx replacement  e.g. "$1ex"</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.Vocabulary.Pluralize(System.String,System.Boolean)">
+            <summary>
+            Pluralizes the provided input considering irregular words
+            </summary>
+            <param name="word">Word to be pluralized</param>
+            <param name="inputIsKnownToBeSingular">Normally you call Pluralize on singular words; but if you're unsure call it with false</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.Vocabulary.Singularize(System.String,System.Boolean)">
+            <summary>
+            Singularizes the provided input considering irregular words
+            </summary>
+            <param name="word">Word to be singularized</param>
+            <param name="inputIsKnownToBePlural">Normally you call Singularize on plural words; but if you're unsure call it with false</param>
+            <returns></returns>
+        </member>
+        <member name="T:MongoDbGenericRepository.InflectorExtensions">
+            <summary>
+            Inflector extensions
+            </summary>
+        </member>
+        <member name="M:MongoDbGenericRepository.InflectorExtensions.Pluralize(System.String,System.Boolean)">
+            <summary>
+            Pluralizes the provided input considering irregular words
+            </summary>
+            <param name="word">Word to be pluralized</param>
+            <param name="inputIsKnownToBeSingular">Normally you call Pluralize on singular words; but if you're unsure call it with false</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.InflectorExtensions.Singularize(System.String,System.Boolean)">
+            <summary>
+            Singularizes the provided input considering irregular words
+            </summary>
+            <param name="word">Word to be singularized</param>
+            <param name="inputIsKnownToBePlural">Normally you call Singularize on plural words; but if you're unsure call it with false</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.InflectorExtensions.Pascalize(System.String)">
+            <summary>
+            By default, pascalize converts strings to UpperCamelCase also removing underscores
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.InflectorExtensions.Camelize(System.String)">
+            <summary>
+            Same as Pascalize except that the first character is lower case
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.InflectorExtensions.Underscore(System.String)">
+            <summary>
+            Separates the input words with underscore
+            </summary>
+            <param name="input">The string to be underscored</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.InflectorExtensions.Dasherize(System.String)">
+            <summary>
+            Replaces underscores with dashes in the string
+            </summary>
+            <param name="underscoredWord"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.InflectorExtensions.Hyphenate(System.String)">
+            <summary>
+            Replaces underscores with hyphens in the string
+            </summary>
+            <param name="underscoredWord"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

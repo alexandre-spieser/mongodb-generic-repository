@@ -3,6 +3,9 @@ using MongoDbGenericRepository.Models;
 
 namespace MongoDbGenericRepository
 {
+    /// <summary>
+    /// This is the interface of the IMongoDbContext which is managed by the <see cref="BaseMongoRepository"/>.
+    /// </summary>
     public interface IMongoDbContext
     {
         /// <summary>

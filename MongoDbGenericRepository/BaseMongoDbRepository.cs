@@ -8,8 +8,20 @@ using System.Linq;
 
 namespace MongoDbGenericRepository
 {
+    /// <summary>
+    /// The IBaseMongoRepository exposes the functionality of the BaseMongoRepository.
+    /// </summary>
     public interface IBaseMongoRepository
     {
+        /// <summary>
+        /// The connection string.
+        /// </summary>
+        string ConnectionString { get; set; }
+        /// <summary>
+        /// The database name.
+        /// </summary>
+        string DatabaseName { get; set; }
+
         #region Create
 
         /// <summary>
@@ -32,7 +44,7 @@ namespace MongoDbGenericRepository
         /// Populates the Id and AddedAtUtc fields if necessary.
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
-        /// <param name="document">The document you want to add.</param>
+        /// <param name="documents">The document you want to add.</param>
         Task AddManyAsync<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument;
 
         /// <summary>
@@ -40,7 +52,7 @@ namespace MongoDbGenericRepository
         /// Populates the Id and AddedAtUtc fields if necessary.
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
-        /// <param name="document">The document you want to add.</param>
+        /// <param name="documents">The document you want to add.</param>
         void AddMany<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument;
 
         #endregion
@@ -161,7 +173,7 @@ namespace MongoDbGenericRepository
         /// Asynchronously deletes a document.
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
-        /// <param name="TDocument">The document you want to delete.</param>
+        /// <param name="document">The document you want to delete.</param>
         /// <returns>The number of documents deleted.</returns>
         Task<long> DeleteOneAsync<TDocument>(TDocument document) where TDocument : IDocument;
 
@@ -178,7 +190,7 @@ namespace MongoDbGenericRepository
         /// Deletes a document.
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
-        /// <param name="TDocument">The document you want to delete.</param>
+        /// <param name="document">The document you want to delete.</param>
         /// <returns>The number of documents deleted.</returns>
         long DeleteOne<TDocument>(TDocument document) where TDocument : IDocument;
 
@@ -287,11 +299,17 @@ namespace MongoDbGenericRepository
     /// </summary>
     public abstract class BaseMongoRepository : IBaseMongoRepository
     {
+        /// <summary>
+        /// The connection string.
+        /// </summary>
         public string ConnectionString { get; set; }
+        /// <summary>
+        /// The database name.
+        /// </summary>
         public string DatabaseName { get; set; }
 
         /// <summary>
-        /// The base constructor
+        /// The constructor taking a connection string and a database name.
         /// </summary>
         /// <param name="connectionString">The connection string of the MongoDb server.</param>
         /// <param name="databaseName">The name of the database against which you want to perform operations.</param>
@@ -300,6 +318,18 @@ namespace MongoDbGenericRepository
             MongoDbContext = new MongoDbContext(connectionString, databaseName);
         }
 
+        /// <summary>
+        /// The contructor taking a <see cref="IMongoDbContext"/>.
+        /// </summary>
+        /// <param name="mongoDbContext">A mongodb context implementing <see cref="IMongoDbContext"/></param>
+        protected BaseMongoRepository(IMongoDbContext mongoDbContext)
+        {
+            MongoDbContext = mongoDbContext;
+        }
+
+        /// <summary>
+        /// The MongoDbContext
+        /// </summary>
         protected IMongoDbContext MongoDbContext = null;
 
         #region Create
@@ -333,7 +363,7 @@ namespace MongoDbGenericRepository
         /// Populates the Id and AddedAtUtc fields if necessary.
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
-        /// <param name="document">The document you want to add.</param>
+        /// <param name="documents">The documents you want to add.</param>
         public async Task AddManyAsync<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument
         {
             if (!documents.Any())
@@ -352,7 +382,7 @@ namespace MongoDbGenericRepository
         /// Populates the Id and AddedAtUtc fields if necessary.
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
-        /// <param name="document">The document you want to add.</param>
+        /// <param name="documents">The documents you want to add.</param>
         public void AddMany<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument
         {
             if (!documents.Any())
@@ -529,7 +559,7 @@ namespace MongoDbGenericRepository
         /// Asynchronously deletes a document.
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
-        /// <param name="TDocument">The document you want to delete.</param>
+        /// <param name="document">The document you want to delete.</param>
         /// <returns>The number of documents deleted.</returns>
         public async Task<long> DeleteOneAsync<TDocument>(TDocument document) where TDocument : IDocument
         {
@@ -540,7 +570,7 @@ namespace MongoDbGenericRepository
         /// Deletes a document.
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
-        /// <param name="TDocument">The document you want to delete.</param>
+        /// <param name="document">The document you want to delete.</param>
         /// <returns>The number of documents deleted.</returns>
         public long DeleteOne<TDocument>(TDocument document) where TDocument : IDocument
         {

@@ -1,7 +1,5 @@
 ﻿using MongoDbGenericRepository.Models;
-using Xunit;
 using System.Collections.Generic;
-using System.Configuration;
 using System;
 
 namespace IntegrationTests.Infrastructure

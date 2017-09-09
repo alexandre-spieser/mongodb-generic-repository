@@ -17,6 +17,11 @@ namespace MongoDbGenericRepository
             MongoDefaults.GuidRepresentation = MongoDB.Bson.GuidRepresentation.Standard;
         }
 
+        /// <summary>
+        /// The constructor of the MongoDbContext, it needs a connection string and a database name. 
+        /// </summary>
+        /// <param name="connectionString"></param>
+        /// <param name="databaseName"></param>
         public MongoDbContext(string connectionString, string databaseName)
         {
             _client = new MongoClient(connectionString);

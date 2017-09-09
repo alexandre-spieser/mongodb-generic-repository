@@ -4,7 +4,8 @@ using System;
 namespace MongoDbGenericRepository.Models
 {
     /// <summary>
-    /// This class represents a basic document that can be stored in MongoDb
+    /// This class represents a basic document that can be stored in MongoDb.
+    /// Your document must implement this class in order for the MongoDbRepository to handle them.
     /// </summary>
     public class Document : IDocument
     {
@@ -32,19 +33,5 @@ namespace MongoDbGenericRepository.Models
         /// The version of the schema of the document
         /// </summary>
         public int Version { get; set; }
-    }
-
-    public class PartitionedDocument : Document, IPartitionedDocument
-    {
-        public PartitionedDocument(string partitionKey)
-        {
-            PartitionKey = partitionKey;
-        }
-        /// <summary>
-        /// The name of the property used for partitioning the collection
-        /// This will not be inserted into the collection.
-        /// This partition key will be prepended to the collection name to create a new collection.
-        /// </summary>
-        public string PartitionKey { get; set; }
     }
 }
