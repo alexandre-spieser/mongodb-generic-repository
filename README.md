@@ -50,7 +50,7 @@ To add a document, its class must inherit from the `Document` class or implement
 ```
     public class MyDocument : Document
     {
-        public ReadTestsDocument()
+        public MyDocument()
         {
             Version = 2; // you can bump the version of the document schema if you change it over time
         }
@@ -97,7 +97,7 @@ _testRepository.AddOne(myDoc);
 
 The above code will generate a collection named `myPartitionKey-myPartitionedDocuments`.
 
-Please refer to the IntegrationTests project for more usage examples.
+Please refer to the IntegrationTests (NET45) and CoreIntegrationTests (netstandard2.0) projects for more usage examples.
 
 ## Author
 **Alexandre Spieser**
