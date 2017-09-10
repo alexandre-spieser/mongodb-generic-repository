@@ -79,7 +79,7 @@ To use partitioned collections, you must define your documents using the Partiti
 ```
     public class MyPartitionedDocument : PartitionedDocument
     {
-        public CreateTestsPartitionedDocument(string myPartitionKey) : base(myPartitionKey)
+        public MyPartitionedDocument(string myPartitionKey) : base(myPartitionKey)
         {
             Version = 1;
         }
