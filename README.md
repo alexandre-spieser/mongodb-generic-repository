@@ -12,7 +12,7 @@ You are responsible for managing its lifetime, it is advised to setup this repos
 
 Here is an example of repository usage, where the TestRepository is implementing 2 custom methods:
 
-```
+```csharp
     public interface ITestRepository : IBaseMongoRepository
     {
         void DropTestCollection<TDocument>();
@@ -40,14 +40,14 @@ Here is an example of repository usage, where the TestRepository is implementing
 
 The repository can be instantiated like so:
 
-```
+```csharp
 ITestRepository testRepository = new TestRepository(connectionString, "MongoDbTests");
 ```
 
 ## Adding documents
 To add a document, its class must inherit from the `Document` class or implement the `IDocument` interface:
 
-```
+```csharp
     public class MyDocument : Document
     {
         public MyDocument()
@@ -60,7 +60,7 @@ To add a document, its class must inherit from the `Document` class or implement
 
 The `IDocument` interface can be seen below:
 
-```
+```csharp
     /// <summary>
     /// This class represents a basic document that can be stored in MongoDb.
     /// Your document must implement this class in order for the MongoDbRepository to handle them.
@@ -76,7 +76,7 @@ The `IDocument` interface can be seen below:
 This repository also allows you to partition your document across multiple collections, this can be useful if you are running a SaaS application and want to keep good performance.
 
 To use partitioned collections, you must define your documents using the PartitionedDocument class, which implements the IPartitionedDocument interface:
-```
+```csharp
     public class MyPartitionedDocument : PartitionedDocument
     {
         public MyPartitionedDocument(string myPartitionKey) : base(myPartitionKey)
@@ -90,7 +90,7 @@ To use partitioned collections, you must define your documents using the Partiti
 This partitioned key will be used as a prefix to your collection name.
 The collection name is derived from the name of the type of your document, is set to camel case, and is pluralized using a class taken from Humanizer (https://github.com/Humanizr/Humanizer).
 
-```
+```csharp
 var myDoc = new MyPartitionedDocument("myPartitionKey");
 _testRepository.AddOne(myDoc);
 ```
