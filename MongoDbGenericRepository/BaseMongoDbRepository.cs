@@ -32,12 +32,34 @@ namespace MongoDbGenericRepository
         Task AddOneAsync<TDocument>(TDocument document) where TDocument : IDocument;
 
         /// <summary>
+        /// Asynchronously adds a document to the collection.
+        /// Populates the Id and AddedAtUtc fields if necessary.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="document">The document you want to add.</param>
+        Task AddOneAsync<TDocument, TKey>(TDocument document)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
+
+        /// <summary>
         /// Adds a document to the collection.
         /// Populates the Id and AddedAtUtc fields if necessary.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="document">The document you want to add.</param>
         void AddOne<TDocument>(TDocument document) where TDocument : IDocument;
+
+        /// <summary>
+        /// Adds a document to the collection.
+        /// Populates the Id and AddedAtUtc fields if necessary.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="document">The document you want to add.</param>
+        void AddOne<TDocument, TKey>(TDocument document)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
 
         /// <summary>
         /// Asynchronously adds a list of documents to the collection.
@@ -419,6 +441,7 @@ namespace MongoDbGenericRepository
         /// The connection string.
         /// </summary>
         public string ConnectionString { get; set; }
+
         /// <summary>
         /// The database name.
         /// </summary>
@@ -463,6 +486,21 @@ namespace MongoDbGenericRepository
         }
 
         /// <summary>
+        /// Asynchronously adds a document to the collection.
+        /// Populates the Id and AddedAtUtc fields if necessary.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="document">The document you want to add.</param>
+        public async Task AddOneAsync<TDocument, TKey>(TDocument document)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            FormatDocument<TDocument, TKey>(document);
+            await HandlePartitioned<TDocument, TKey>(document).InsertOneAsync(document);
+        }
+
+        /// <summary>
         /// Adds a document to the collection.
         /// Populates the Id and AddedAtUtc fields if necessary.
         /// </summary>
@@ -472,6 +510,21 @@ namespace MongoDbGenericRepository
         {
             FormatDocument(document);
             HandlePartitioned(document).InsertOne(document);
+        }
+
+        /// <summary>
+        /// Adds a document to the collection.
+        /// Populates the Id and AddedAtUtc fields if necessary.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="document">The document you want to add.</param>
+        public void AddOne<TDocument, TKey>(TDocument document)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            FormatDocument<TDocument, TKey>(document);
+            HandlePartitioned<TDocument, TKey>(document).InsertOne(document);
         }
 
         /// <summary>
@@ -491,6 +544,28 @@ namespace MongoDbGenericRepository
                 FormatDocument(doc);
             }
             await HandlePartitioned(documents.FirstOrDefault()).InsertManyAsync(documents);
+        }
+
+        /// <summary>
+        /// Asynchronously adds a list of documents to the collection.
+        /// Populates the Id and AddedAtUtc fields if necessary.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="documents">The documents you want to add.</param>
+        public async Task AddManyAsync<TDocument, TKey>(IEnumerable<TDocument> documents)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            if (!documents.Any())
+            {
+                return;
+            }
+            foreach (var doc in documents)
+            {
+                FormatDocument<TDocument, TKey>(doc);
+            }
+            await HandlePartitioned<TDocument, TKey>(documents.FirstOrDefault()).InsertManyAsync(documents);
         }
 
         /// <summary>
@@ -643,6 +718,157 @@ namespace MongoDbGenericRepository
 
         #endregion
 
+        #region Read TKey
+
+        /// <summary>
+        /// Asynchronously returns one document given its id.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="id">The Id of the document you want to get.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        public async Task<TDocument> GetByIdAsync<TDocument, TKey>(Guid id, string partitionKey = null)
+            where TDocument : IDocument<TKey>            where TKey : IEquatable<TKey>
+        {
+            var filter = Builders<TDocument>.Filter.Eq("Id", id);
+            return await HandlePartitioned<TDocument, TKey>(partitionKey).Find(filter).FirstOrDefaultAsync();
+        }
+
+        /// <summary>
+        /// Returns one document given its id.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="id">The Id of the document you want to get.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        public TDocument GetById<TDocument, TKey>(Guid id, string partitionKey = null)
+            where TDocument : IDocument<TKey>            where TKey : IEquatable<TKey>
+        {
+            var filter = Builders<TDocument>.Filter.Eq("Id", id);
+            return HandlePartitioned<TDocument, TKey>(partitionKey).Find(filter).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Asynchronously returns one document given an expression filter.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        public async Task<TDocument> GetOneAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
+            where TDocument : IDocument<TKey>            where TKey : IEquatable<TKey>
+        {
+            return await HandlePartitioned<TDocument, TKey>(partitionKey).Find(filter).FirstOrDefaultAsync();
+        }
+
+        /// <summary>
+        /// Returns one document given an expression filter.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        public TDocument GetOne<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
+            where TDocument : IDocument<TKey>            where TKey : IEquatable<TKey>
+        {
+            return HandlePartitioned<TDocument, TKey>(partitionKey).Find(filter).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Returns a collection cursor.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        public IFindFluent<TDocument, TDocument> GetCursor<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
+            where TDocument : IDocument<TKey>            where TKey : IEquatable<TKey>
+        {
+            return HandlePartitioned<TDocument, TKey>(partitionKey).Find(filter);
+        }
+
+        /// <summary>
+        /// Returns true if any of the document of the collection matches the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        public async Task<bool> AnyAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
+            where TDocument : IDocument<TKey>            where TKey : IEquatable<TKey>
+        {
+            var count = await HandlePartitioned<TDocument, TKey>(partitionKey).CountAsync(filter);
+            return (count > 0);
+        }
+
+        /// <summary>
+        /// Returns true if any of the document of the collection matches the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        public bool Any<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
+            where TDocument : IDocument<TKey>            where TKey : IEquatable<TKey>
+        {
+            var count = HandlePartitioned<TDocument, TKey>(partitionKey).Count(filter);
+            return (count > 0);
+        }
+
+        /// <summary>
+        /// Asynchronously returns a list of the documents matching the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        public async Task<List<TDocument>> GetAllAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
+            where TDocument : IDocument<TKey>            where TKey : IEquatable<TKey>
+        {
+            return await HandlePartitioned<TDocument, TKey>(partitionKey).Find(filter).ToListAsync();
+        }
+
+        /// <summary>
+        /// Returns a list of the documents matching the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        public List<TDocument> GetAll<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
+            where TDocument : IDocument<TKey>            where TKey : IEquatable<TKey>
+        {
+            return HandlePartitioned<TDocument, TKey>(partitionKey).Find(filter).ToList();
+        }
+
+        /// <summary>
+        /// Asynchronously counts how many documents match the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="partitionKey">An optional partitionKey</param>
+        public async Task<long> CountAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
+            where TDocument : IDocument<TKey>            where TKey : IEquatable<TKey>
+        {
+            return await HandlePartitioned<TDocument, TKey>(partitionKey).CountAsync(filter);
+        }
+
+        /// <summary>
+        /// Counts how many documents match the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="partitionKey">An optional partitionKey</param>
+        public long Count<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
+            where TDocument : IDocument<TKey>            where TKey : IEquatable<TKey>
+        {
+            return HandlePartitioned<TDocument, TKey>(partitionKey).Find(filter).Count();
+        }
+
+        #endregion
+
         #region Update
 
         /// <summary>
@@ -664,6 +890,38 @@ namespace MongoDbGenericRepository
         public bool UpdateOne<TDocument>(TDocument modifiedDocument) where TDocument : IDocument
         {
             var updateRes = HandlePartitioned(modifiedDocument).ReplaceOne(x => x.Id == modifiedDocument.Id, modifiedDocument);
+            return updateRes.ModifiedCount == 1;
+        }
+
+        #endregion Update
+
+        #region Update TKey
+
+        /// <summary>
+        /// Asynchronously Updates a document.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="modifiedDocument">The document with the modifications you want to persist.</param>
+        public async Task<bool> UpdateOneAsync<TDocument, TKey>(TDocument modifiedDocument)
+            where TDocument : IDocument<TKey>            where TKey : IEquatable<TKey>
+        {
+            var filter = Builders<TDocument>.Filter.Eq("Id", modifiedDocument.Id);
+            var updateRes = await HandlePartitioned<TDocument, TKey>(modifiedDocument).ReplaceOneAsync(filter, modifiedDocument);
+            return updateRes.ModifiedCount == 1;
+        }
+
+        /// <summary>
+        /// Updates a document.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="modifiedDocument">The document with the modifications you want to persist.</param>
+        public bool UpdateOne<TDocument, TKey>(TDocument modifiedDocument)
+            where TDocument : IDocument<TKey>            where TKey : IEquatable<TKey>
+        {
+            var filter = Builders<TDocument>.Filter.Eq("Id", modifiedDocument.Id);
+            var updateRes = HandlePartitioned<TDocument, TKey>(modifiedDocument).ReplaceOne(filter, modifiedDocument);
             return updateRes.ModifiedCount == 1;
         }
 
