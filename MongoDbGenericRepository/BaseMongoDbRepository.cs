@@ -801,11 +801,6 @@ namespace MongoDbGenericRepository
             {
                 document.Id = Guid.NewGuid();
             }
-
-            if (document.AddedAtUtc == default(DateTime))
-            {
-                document.AddedAtUtc = DateTime.UtcNow;
-            }
         }
 
         #endregion

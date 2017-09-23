@@ -9,7 +9,7 @@ namespace IntegrationTests.Infrastructure
     {
 
         const string connectionString = "mongodb://localhost:27017";
-        private static readonly ITestRepository instance = new TestRepository(connectionString, "MongoDbTests");
+        private static readonly ITestRepository _instance = new TestRepository(connectionString, "MongoDbTests");
 
         // Explicit static constructor to tell C# compiler
         // not to mark type as beforefieldinit
@@ -26,7 +26,7 @@ namespace IntegrationTests.Infrastructure
         {
             get
             {
-                return instance;
+                return _instance;
             }
         }
 

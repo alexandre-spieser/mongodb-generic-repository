@@ -561,6 +561,16 @@
             This is the interface of the IMongoDbContext which is managed by the <see cref="T:MongoDbGenericRepository.BaseMongoRepository"/>.
             </summary>
         </member>
+        <member name="P:MongoDbGenericRepository.IMongoDbContext.Client">
+            <summary>
+            The IMongoClient from the official MongoDb driver
+            </summary>
+        </member>
+        <member name="P:MongoDbGenericRepository.IMongoDbContext.Database">
+            <summary>
+            The IMongoDatabase from the official Mongodb driver
+            </summary>
+        </member>
         <member name="M:MongoDbGenericRepository.IMongoDbContext.GetCollection``1">
             <summary>
             The private GetCollection method
@@ -618,11 +628,6 @@
             Your document must implement this class in order for the MongoDbRepository to handle them.
             </summary>
         </member>
-        <member name="P:MongoDbGenericRepository.Models.IDocument.AddedAtUtc">
-            <summary>
-            The date and UTC time at which the document was added to the collection.
-            </summary>
-        </member>
         <member name="P:MongoDbGenericRepository.Models.IDocument.Id">
             <summary>
             The Guid, which must be decorated with the [BsonId] attribute 
@@ -673,12 +678,28 @@
             The MongoDb context
             </summary>
         </member>
+        <member name="P:MongoDbGenericRepository.MongoDbContext.Client">
+            <summary>
+            The IMongoClient from the official MongoDb driver
+            </summary>
+        </member>
+        <member name="P:MongoDbGenericRepository.MongoDbContext.Database">
+            <summary>
+            The IMongoDatabase from the official Mongodb driver
+            </summary>
+        </member>
+        <member name="M:MongoDbGenericRepository.MongoDbContext.#ctor(MongoDB.Driver.IMongoDatabase)">
+            <summary>
+            The constructor of the MongoDbContext, it needs a an object implementing <see cref="T:MongoDB.Driver.IMongoDatabase"/>.
+            </summary>
+            <param name="mongoDatabase">An object implementing IMongoDatabase</param>
+        </member>
         <member name="M:MongoDbGenericRepository.MongoDbContext.#ctor(System.String,System.String)">
             <summary>
             The constructor of the MongoDbContext, it needs a connection string and a database name. 
             </summary>
-            <param name="connectionString"></param>
-            <param name="databaseName"></param>
+            <param name="connectionString">The connections string.</param>
+            <param name="databaseName">The name of your database.</param>
         </member>
         <member name="M:MongoDbGenericRepository.MongoDbContext.GetCollection``1">
             <summary>

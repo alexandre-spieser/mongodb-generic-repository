@@ -9,6 +9,16 @@ namespace MongoDbGenericRepository
     public interface IMongoDbContext
     {
         /// <summary>
+        /// The IMongoClient from the official MongoDb driver
+        /// </summary>
+        IMongoClient Client { get; }
+
+        /// <summary>
+        /// The IMongoDatabase from the official Mongodb driver
+        /// </summary>
+        IMongoDatabase Database { get; }
+
+        /// <summary>
         /// The private GetCollection method
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>

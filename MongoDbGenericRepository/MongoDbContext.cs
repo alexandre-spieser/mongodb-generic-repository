@@ -8,8 +8,15 @@ namespace MongoDbGenericRepository
     /// </summary>
     public class MongoDbContext : IMongoDbContext
     {
-        private readonly IMongoClient _client;
-        private readonly IMongoDatabase _database;
+        /// <summary>
+        /// The IMongoClient from the official MongoDb driver
+        /// </summary>
+        public IMongoClient Client { get; }
+
+        /// <summary>
+        /// The IMongoDatabase from the official Mongodb driver
+        /// </summary>
+        public IMongoDatabase Database { get; }
 
         static MongoDbContext()
         {
@@ -18,14 +25,24 @@ namespace MongoDbGenericRepository
         }
 
         /// <summary>
+        /// The constructor of the MongoDbContext, it needs a an object implementing <see cref="IMongoDatabase"/>.
+        /// </summary>
+        /// <param name="mongoDatabase">An object implementing IMongoDatabase</param>
+        public MongoDbContext(IMongoDatabase mongoDatabase)
+        {
+            Database = mongoDatabase;
+            Client = Database.Client;
+        }
+
+        /// <summary>
         /// The constructor of the MongoDbContext, it needs a connection string and a database name. 
         /// </summary>
-        /// <param name="connectionString"></param>
-        /// <param name="databaseName"></param>
+        /// <param name="connectionString">The connections string.</param>
+        /// <param name="databaseName">The name of your database.</param>
         public MongoDbContext(string connectionString, string databaseName)
         {
-            _client = new MongoClient(connectionString);
-            _database = _client.GetDatabase(databaseName);
+            Client = new MongoClient(connectionString);
+            Database = Client.GetDatabase(databaseName);
         }
 
         /// <summary>
@@ -35,7 +52,7 @@ namespace MongoDbGenericRepository
         /// <returns></returns>
         public IMongoCollection<TDocument> GetCollection<TDocument>()
         {
-            return _database.GetCollection<TDocument>(Pluralize<TDocument>());
+            return Database.GetCollection<TDocument>(Pluralize<TDocument>());
         }
 
         /// <summary>
@@ -45,7 +62,7 @@ namespace MongoDbGenericRepository
         /// <param name="partitionKey">The value of the partition key.</param>
         public IMongoCollection<TDocument> GetCollection<TDocument>(string partitionKey) where TDocument : IDocument
         {
-            return _database.GetCollection<TDocument>(partitionKey +"-"+ Pluralize<TDocument>());
+            return Database.GetCollection<TDocument>(partitionKey +"-"+ Pluralize<TDocument>());
         }
 
         /// <summary>
@@ -54,7 +71,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument"></typeparam>
         public void DropCollection<TDocument>()
         {
-            _database.DropCollection(Pluralize<TDocument>());
+            Database.DropCollection(Pluralize<TDocument>());
         }
 
         /// <summary>
@@ -63,7 +80,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument"></typeparam>
         public void DropCollection<TDocument>(string partitionKey)
         {
-            _database.DropCollection(partitionKey + "-" + Pluralize<TDocument>());
+            Database.DropCollection(partitionKey + "-" + Pluralize<TDocument>());
         }
 
         /// <summary>

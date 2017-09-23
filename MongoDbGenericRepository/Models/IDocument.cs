@@ -9,10 +9,6 @@ namespace MongoDbGenericRepository.Models
     public interface IDocument
     {
         /// <summary>
-        /// The date and UTC time at which the document was added to the collection.
-        /// </summary>
-        DateTime AddedAtUtc { get; set; }
-        /// <summary>
         /// The Guid, which must be decorated with the [BsonId] attribute 
         /// if you want the MongoDb C# driver to consider it to be the document ID.
         /// </summary>

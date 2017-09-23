@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "Integra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MongoDbGenericRepository", "MongoDbGenericRepository\MongoDbGenericRepository.csproj", "{EFC776C4-2AF3-440C-BE80-3FBE335817A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreIntegrationTests", "CoreIntegrationTests\CoreIntegrationTests.csproj", "{C640C106-7A25-4E49-A0CF-E4F248E5A97F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreIntegrationTests", "CoreIntegrationTests\CoreIntegrationTests.csproj", "{C640C106-7A25-4E49-A0CF-E4F248E5A97F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
