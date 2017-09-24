@@ -67,7 +67,6 @@ The `IDocument` interface can be seen below:
     /// </summary>
     public interface IDocument
     {
-        DateTime AddedAtUtc { get; set; }
         Guid Id { get; set; }
         int Version { get; set; }
     }
