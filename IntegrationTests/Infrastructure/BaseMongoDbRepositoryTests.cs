@@ -5,7 +5,7 @@ using System.Configuration;
 
 namespace IntegrationTests.Infrastructure
 {
-    public class BaseMongoDbRepositoryTests<T> where T : Document, new()
+    public class BaseMongoDbRepositoryTests<T> where T : class, new()
     {
         public T CreateTestDocument()
         {

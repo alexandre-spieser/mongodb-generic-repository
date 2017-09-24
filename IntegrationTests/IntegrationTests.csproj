@@ -52,7 +52,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CreateTKeyPartitionedTests.cs" />
+    <Compile Include="CreateTKeyTests.cs" />
+    <Compile Include="DeletePartitionedTKeyTests.cs" />
     <Compile Include="DeletePartitionedTests.cs" />
+    <Compile Include="DeleteTKeyTests.cs" />
     <Compile Include="DeleteTests.cs" />
     <Compile Include="Infrastructure\BaseMongoDbRepositoryTests.cs" />
     <Compile Include="CreatePartitionedTests.cs" />
@@ -60,6 +64,7 @@
     <Compile Include="Infrastructure\TestRepository.cs" />
     <Compile Include="CreateTests.cs" />
     <Compile Include="ProjectPartitionedTests.cs" />
+    <Compile Include="ProjectTKeyTests.cs" />
     <Compile Include="ProjectTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadPartitionedTests.cs" />

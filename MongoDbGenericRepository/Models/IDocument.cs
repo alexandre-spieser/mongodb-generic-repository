@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System;
 
 namespace MongoDbGenericRepository.Models
 {
@@ -9,9 +10,10 @@ namespace MongoDbGenericRepository.Models
     public interface IDocument<TKey> where TKey : IEquatable<TKey>
     {
         /// <summary>
-        /// The Guid, which must be decorated with the [BsonId] attribute 
+        /// The Primary Key, which must be decorated with the [BsonId] attribute 
         /// if you want the MongoDb C# driver to consider it to be the document ID.
         /// </summary>
+        [BsonId]
         TKey Id { get; set; }
         /// <summary>
         /// A version number, to indicate the version of the schema.
