@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace IntegrationTests
 {
-
     public class CreateTestsPartitionedTKeyDocument : IDocument<Guid>, IPartitionedDocument
     {
         [BsonId]

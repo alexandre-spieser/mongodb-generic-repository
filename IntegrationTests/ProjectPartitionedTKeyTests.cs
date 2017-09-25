@@ -8,39 +8,28 @@ using System.Threading.Tasks;
 
 namespace IntegrationTests
 {
-    public class NestedTKey
-    {
-        public DateTime SomeDate { get; set; }
-    }
 
-    public class MyProjectionTKey
-    {
-        public DateTime SomeDate { get; set; }
-        public string SomeContent { get; set; }
-    }
-
-    public class ProjectTestsTKeyDocument : IDocument<Guid>
+    public class ProjectTestsPartitionedTKeyDocument : IDocument<Guid>, IPartitionedDocument
     {
         [BsonId]
         public Guid Id { get; set; }
         public int Version { get; set; }
-        public ProjectTestsTKeyDocument()
+        public ProjectTestsPartitionedTKeyDocument()
         {
             Id = Guid.NewGuid();
             Version = 2;
-            Nested = new NestedTKey
-            {
-                SomeDate = DateTime.UtcNow
-            };
+            PartitionKey = "TestPartitionKey";
+            Nested = new NestedTKey();
         }
-        public string SomeContent { get; set; }
+        public string PartitionKey { get; set; }
         public NestedTKey Nested { get; set; }
+        public string SomeContent { get; set; }
     }
 
-    public class ProjectTKeyTests : BaseMongoDbRepositoryTests<ProjectTestsTKeyDocument>
+    public class ProjectPartitionedTKeyTests : BaseMongoDbRepositoryTests<ProjectTestsPartitionedTKeyDocument>
     {
         [Test]
-        public async Task ProjectOneAsync()
+        public async Task PartitionedProjectOneAsync()
         {
             // Arrange
             const string someContent = "ProjectOneAsyncContent";
@@ -48,15 +37,16 @@ namespace IntegrationTests
             var document = CreateTestDocument();
             document.SomeContent = someContent;
             document.Nested.SomeDate = someDate;
-            SUT.AddOne<ProjectTestsTKeyDocument, Guid>(document);
+            SUT.AddOne<ProjectTestsPartitionedTKeyDocument, Guid>(document);
             // Act
-            var result = await SUT.ProjectOneAsync<ProjectTestsTKeyDocument, MyProjection, Guid>(
-                x => x.Id == document.Id, 
+            var result = await SUT.ProjectOneAsync<ProjectTestsPartitionedTKeyDocument, MyProjection, Guid>(
+                x => x.Id == document.Id,
                 x => new MyProjection
                 {
                     SomeContent = x.SomeContent,
                     SomeDate = x.Nested.SomeDate
-                });
+                },
+                PartitionKey);
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(someContent, result.SomeContent);
@@ -65,7 +55,7 @@ namespace IntegrationTests
         }
 
         [Test]
-        public void ProjectOne()
+        public void PartitionedProjectOne()
         {
             // Arrange
             const string someContent = "ProjectOneContent";
@@ -73,15 +63,16 @@ namespace IntegrationTests
             var document = CreateTestDocument();
             document.SomeContent = someContent;
             document.Nested.SomeDate = someDate;
-            SUT.AddOne<ProjectTestsTKeyDocument, Guid>(document);
+            SUT.AddOne<ProjectTestsPartitionedTKeyDocument, Guid>(document);
             // Act
-            var result = SUT.ProjectOne<ProjectTestsTKeyDocument, MyProjection, Guid>(
+            var result = SUT.ProjectOne<ProjectTestsPartitionedTKeyDocument, MyProjection, Guid>(
                 x => x.Id == document.Id,
                 x => new MyProjection
                 {
                     SomeContent = x.SomeContent,
                     SomeDate = x.Nested.SomeDate
-                });
+                },
+                PartitionKey);
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(someContent, result.SomeContent);
@@ -90,7 +81,7 @@ namespace IntegrationTests
         }
 
         [Test]
-        public async Task ProjectManyAsync()
+        public async Task PartitionedProjectManyAsync()
         {
             // Arrange
             const string someContent = "ProjectManyAsyncContent";
@@ -102,15 +93,16 @@ namespace IntegrationTests
                 e.Nested.SomeDate = someDate;
             });
 
-            SUT.AddMany<ProjectTestsTKeyDocument, Guid>(document);
+            SUT.AddMany<ProjectTestsPartitionedTKeyDocument, Guid>(document);
             // Act
-            var result = await SUT.ProjectManyAsync<ProjectTestsTKeyDocument, MyProjection, Guid>(
+            var result = await SUT.ProjectManyAsync<ProjectTestsPartitionedTKeyDocument, MyProjection, Guid>(
                 x => x.SomeContent == someContent,
                 x => new MyProjection
                 {
                     SomeContent = x.SomeContent,
                     SomeDate = x.Nested.SomeDate
-                });
+                },
+                PartitionKey);
             // Assert
             Assert.AreEqual(5, result.Count);
             Assert.AreEqual(someContent, result.First().SomeContent);
@@ -119,7 +111,7 @@ namespace IntegrationTests
         }
 
         [Test]
-        public void ProjectMany()
+        public void PartitionedProjectMany()
         {
             // Arrange
             const string someContent = "ProjectManyContent";
@@ -131,15 +123,16 @@ namespace IntegrationTests
                 e.Nested.SomeDate = someDate;
             });
 
-            SUT.AddMany<ProjectTestsTKeyDocument, Guid>(document);
+            SUT.AddMany<ProjectTestsPartitionedTKeyDocument, Guid>(document);
             // Act
-            var result = SUT.ProjectMany<ProjectTestsTKeyDocument, MyProjection, Guid>(
+            var result = SUT.ProjectMany<ProjectTestsPartitionedTKeyDocument, MyProjection, Guid>(
                 x => x.SomeContent == someContent,
                 x => new MyProjection
                 {
                     SomeContent = x.SomeContent,
                     SomeDate = x.Nested.SomeDate
-                });
+                },
+                PartitionKey);
             // Assert
             Assert.AreEqual(5, result.Count);
             Assert.AreEqual(someContent, result.First().SomeContent);

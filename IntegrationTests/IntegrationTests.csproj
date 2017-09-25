@@ -63,13 +63,18 @@
     <Compile Include="Infrastructure\ITestRepository.cs" />
     <Compile Include="Infrastructure\TestRepository.cs" />
     <Compile Include="CreateTests.cs" />
+    <Compile Include="ProjectPartitionedTKeyTests.cs" />
     <Compile Include="ProjectPartitionedTests.cs" />
     <Compile Include="ProjectTKeyTests.cs" />
     <Compile Include="ProjectTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReadPartitionedTKeyTests.cs" />
     <Compile Include="ReadPartitionedTests.cs" />
+    <Compile Include="ReadTKeyTests.cs" />
     <Compile Include="ReadTests.cs" />
+    <Compile Include="UpdatePartitionedTKeyTests.cs" />
     <Compile Include="UpdatePartitionedTests.cs" />
+    <Compile Include="UpdateTKeyTests.cs" />
     <Compile Include="UpdateTests.cs" />
   </ItemGroup>
   <ItemGroup>
