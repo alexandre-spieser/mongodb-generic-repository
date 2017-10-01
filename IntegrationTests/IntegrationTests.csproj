@@ -58,8 +58,10 @@
     <Compile Include="DeletePartitionedTests.cs" />
     <Compile Include="DeleteTKeyTests.cs" />
     <Compile Include="DeleteTests.cs" />
+    <Compile Include="GroupTests\GroupingTests.cs" />
     <Compile Include="Infrastructure\BaseMongoDbRepositoryTests.cs" />
     <Compile Include="CreatePartitionedTests.cs" />
+    <Compile Include="Infrastructure\Child.cs" />
     <Compile Include="Infrastructure\ITestRepository.cs" />
     <Compile Include="Infrastructure\TestRepository.cs" />
     <Compile Include="CreateTests.cs" />

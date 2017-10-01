@@ -206,7 +206,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <param name="id">The Id of the document you want to get.</param>
         /// <param name="partitionKey">An optional partition key.</param>
-        Task<TDocument> GetByIdAsync<TDocument, TKey>(Guid id, string partitionKey = null)
+        Task<TDocument> GetByIdAsync<TDocument, TKey>(TKey id, string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>;
 
@@ -217,7 +217,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <param name="id">The Id of the document you want to get.</param>
         /// <param name="partitionKey">An optional partition key.</param>
-        TDocument GetById<TDocument, TKey>(Guid id, string partitionKey = null)
+        TDocument GetById<TDocument, TKey>(TKey id, string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>;
 
@@ -324,7 +324,6 @@ namespace MongoDbGenericRepository
 
         #endregion
 
-
         #region Update
 
         /// <summary>
@@ -340,6 +339,68 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="modifiedDocument">The document with the modifications you want to persist.</param>
         bool UpdateOne<TDocument>(TDocument modifiedDocument) where TDocument : IDocument;
+
+        /// <summary>
+        /// Updates the property field with the given value update a property field in entities.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        bool UpdateOne<TDocument, TField>(FilterDefinition<TDocument> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
+            where TDocument : IDocument;
+
+        /// <summary>
+        /// Updates the property field with the given value update a property field in entities.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        Task<bool> UpdateOneAsync<TDocument, TField>(FilterDefinition<TDocument> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
+            where TDocument : IDocument;
+
+        /// <summary>
+        /// Updates the property field with the given value update a property field in entities.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="documentToModify">The document you want to modify.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        bool UpdateOne<TDocument, TField>(TDocument documentToModify, Expression<Func<TDocument, TField>> field, TField value)
+            where TDocument : IDocument;
+
+        /// <summary>
+        /// Updates the property field with the given value update a property field in entities.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="documentToModify">The document you want to modify.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        Task<bool> UpdateOneAsync<TDocument, TField>(TDocument documentToModify, Expression<Func<TDocument, TField>> field, TField value)
+            where TDocument : IDocument;
+
+        /// <summary>
+        /// Takes a document you want to modify and applies the update you have defined in MongoDb.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="documentToModify">The document you want to modify.</param>
+        /// <param name="update">The update definition for the document.</param>
+        Task<bool> UpdateOneAsync<TDocument>(TDocument documentToModify, UpdateDefinition<TDocument> update)
+            where TDocument : IDocument;
+
+        /// <summary>
+        /// Takes a document you want to modify and applies the update you have defined in MongoDb.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="documentToModify">The document you want to modify.</param>
+        /// <param name="update">The update definition for the document.</param>
+        bool UpdateOne<TDocument>(TDocument documentToModify, UpdateDefinition<TDocument> update)
+            where TDocument : IDocument;
 
         #endregion
 
@@ -362,6 +423,80 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <param name="modifiedDocument">The document with the modifications you want to persist.</param>
         bool UpdateOne<TDocument, TKey>(TDocument modifiedDocument)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// Takes a document you want to modify and applies the update you have defined in MongoDb.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="documentToModify">The document you want to modify.</param>
+        /// <param name="update">The update definition for the document.</param>
+        Task<bool> UpdateOneAsync<TDocument, TKey>(TDocument documentToModify, UpdateDefinition<TDocument> update)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// Takes a document you want to modify and applies the update you have defined in MongoDb.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="documentToModify">The document you want to modify.</param>
+        /// <param name="update">The update definition for the document.</param>
+        bool UpdateOne<TDocument, TKey>(TDocument documentToModify, UpdateDefinition<TDocument> update)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// Updates the property field with the given value update a property field in entities.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="documentToModify">The document you want to modify.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        Task<bool> UpdateOneAsync<TDocument, TKey, TField>(TDocument documentToModify, Expression<Func<TDocument, TField>> field, TField value)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// Updates the property field with the given value update a property field in entities.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="documentToModify">The document you want to modify.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        bool UpdateOne<TDocument, TKey, TField>(TDocument documentToModify, Expression<Func<TDocument, TField>> field, TField value)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// Updates the property field with the given value update a property field in entities.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        Task<bool> UpdateOneAsync<TDocument, TKey, TField>(FilterDefinition<TDocument> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// Updates the property field with the given value update a property field in entities.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        bool UpdateOne<TDocument, TKey, TField>(FilterDefinition<TDocument> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>;
 
@@ -535,7 +670,6 @@ namespace MongoDbGenericRepository
 
         #endregion
 
-
         #region Project
 
         /// <summary>
@@ -692,6 +826,43 @@ namespace MongoDbGenericRepository
                                         where TDocument : IDocument<TKey>
                                         where TKey : IEquatable<TKey>;
 
+        #region Grouping
+
+        /// <summary>
+        /// Groups a collection of documents given a grouping criteria, 
+        /// and returns a list of projected documents.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TGroupKey">The type of the grouping criteria.</typeparam>
+        /// <typeparam name="TProjection">The type of the projected group.</typeparam>
+        /// <param name="groupingCriteria">The grouping criteria.</param>
+        /// <param name="groupProjection">The projected group result.</param>
+        /// <param name="partitionKey">The partition key of your document, if any.</param>
+        List<TProjection> GroupBy<TDocument, TGroupKey, TProjection>(
+            Expression<Func<TDocument, TGroupKey>> groupingCriteria,
+            Expression<Func<IGrouping<TGroupKey, TDocument>, TProjection>> groupProjection,
+            string partitionKey = null)
+            where TDocument : IDocument
+            where TProjection : class, new();
+
+        /// Groups filtered a collection of documents given a grouping criteria, 
+        /// and returns a dictionary of listed document groups with keys having the different values of the grouping criteria.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TGroupKey">The type of the grouping criteria.</typeparam>
+        /// <typeparam name="TProjection">The type of the projected group.</typeparam>
+        /// <param name="groupingCriteria">The grouping criteria.</param>
+        /// <param name="groupProjection">The projected group result.</param>
+        /// <param name="partitionKey">The partition key of your document, if any.</param>
+        /// <returns></returns>
+        List<TProjection> GroupBy<TDocument, TGroupKey, TProjection>(Expression<Func<TDocument, bool>> filter,
+                                                       Expression<Func<TDocument, TGroupKey>> selector,
+                                                       Expression<Func<IGrouping<TGroupKey, TDocument>, TProjection>> projection,
+                                                       string partitionKey = null)
+                                                       where TDocument : IDocument
+                                                       where TProjection : class, new();
+
+        #endregion
     }
 
     /// <summary>
@@ -1017,7 +1188,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <param name="id">The Id of the document you want to get.</param>
         /// <param name="partitionKey">An optional partition key.</param>
-        public async Task<TDocument> GetByIdAsync<TDocument, TKey>(Guid id, string partitionKey = null)
+        public async Task<TDocument> GetByIdAsync<TDocument, TKey>(TKey id, string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -1032,7 +1203,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <param name="id">The Id of the document you want to get.</param>
         /// <param name="partitionKey">An optional partition key.</param>
-        public TDocument GetById<TDocument, TKey>(Guid id, string partitionKey = null)
+        public TDocument GetById<TDocument, TKey>(TKey id, string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -1194,6 +1365,98 @@ namespace MongoDbGenericRepository
             return updateRes.ModifiedCount == 1;
         }
 
+        /// <summary>
+        /// Takes a document you want to modify and applies the update you have defined in MongoDb.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="documentToModify">The document you want to modify.</param>
+        /// <param name="update">The update definition for the document.</param>
+        public async Task<bool> UpdateOneAsync<TDocument>(TDocument documentToModify, UpdateDefinition<TDocument> update)
+            where TDocument : IDocument
+        {
+            var filter = Builders<TDocument>.Filter.Eq("Id", documentToModify.Id);
+            var updateRes = await HandlePartitioned(documentToModify).UpdateOneAsync(filter, update);
+            return updateRes.ModifiedCount == 1;
+        }
+
+        /// <summary>
+        /// Updates the property field with the given value update a property field in entities.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="documentToModify">The document you want to modify.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        public bool UpdateOne<TDocument, TField>(TDocument documentToModify, Expression<Func<TDocument, TField>> field, TField value)
+            where TDocument : IDocument
+        {
+            var filter = Builders<TDocument>.Filter.Eq("Id", documentToModify.Id);
+            var updateRes = HandlePartitioned(documentToModify).UpdateOne(filter, Builders<TDocument>.Update.Set(field, value));
+            return updateRes.ModifiedCount == 1;
+        }
+
+        /// <summary>
+        /// Updates the property field with the given value update a property field in entities.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="documentToModify">The document you want to modify.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        public async Task<bool> UpdateOneAsync<TDocument, TField>(TDocument documentToModify, Expression<Func<TDocument, TField>> field, TField value)
+            where TDocument : IDocument
+        {
+            var filter = Builders<TDocument>.Filter.Eq("Id", documentToModify.Id);
+            var updateRes = await HandlePartitioned(documentToModify).UpdateOneAsync(filter, Builders<TDocument>.Update.Set(field, value));
+            return updateRes.ModifiedCount == 1;
+        }
+
+        /// <summary>
+        /// Updates the property field with the given value update a property field in entities.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        public bool UpdateOne<TDocument, TField>(FilterDefinition<TDocument> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
+            where TDocument : IDocument
+        {
+            var collection = string.IsNullOrEmpty(partitionKey) ? GetCollection<TDocument>() : GetCollection<TDocument>(partitionKey);
+            var updateRes = collection.UpdateOne(filter, Builders<TDocument>.Update.Set(field, value));
+            return updateRes.ModifiedCount == 1;
+        }
+
+        /// <summary>
+        /// Updates the property field with the given value update a property field in entities.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        public async Task<bool> UpdateOneAsync<TDocument, TField>(FilterDefinition<TDocument> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
+            where TDocument : IDocument
+        {
+            var collection = string.IsNullOrEmpty(partitionKey) ? GetCollection<TDocument>() : GetCollection<TDocument>(partitionKey);
+            var updateRes = await collection.UpdateOneAsync(filter, Builders<TDocument>.Update.Set(field, value));
+            return updateRes.ModifiedCount == 1;
+        }
+
+        /// <summary>
+        /// Takes a document you want to modify and applies the update you have defined in MongoDb.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="documentToModify">The document you want to modify.</param>
+        /// <param name="update">The update definition for the document.</param>
+        public bool UpdateOne<TDocument>(TDocument documentToModify, UpdateDefinition<TDocument> update)
+            where TDocument : IDocument
+        {
+            var filter = Builders<TDocument>.Filter.Eq("Id", documentToModify.Id);
+            var updateRes = HandlePartitioned(documentToModify).UpdateOne(filter, update, new UpdateOptions { IsUpsert = true });
+            return updateRes.ModifiedCount == 1;
+        }
+
         #endregion Update
 
         #region Update TKey
@@ -1225,6 +1488,110 @@ namespace MongoDbGenericRepository
         {
             var filter = Builders<TDocument>.Filter.Eq("Id", modifiedDocument.Id);
             var updateRes = HandlePartitioned<TDocument, TKey>(modifiedDocument).ReplaceOne(filter, modifiedDocument);
+            return updateRes.ModifiedCount == 1;
+        }
+
+        /// <summary>
+        /// Takes a document you want to modify and applies the update you have defined in MongoDb.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="documentToModify">The document you want to modify.</param>
+        /// <param name="update">The update definition for the document.</param>
+        public async Task<bool> UpdateOneAsync<TDocument, TKey>(TDocument documentToModify, UpdateDefinition<TDocument> update)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            var filter = Builders<TDocument>.Filter.Eq("Id", documentToModify.Id);
+            var updateRes = await HandlePartitioned<TDocument, TKey>(documentToModify).UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
+            return updateRes.ModifiedCount == 1;
+        }
+
+        /// <summary>
+        /// Takes a document you want to modify and applies the update you have defined in MongoDb.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="documentToModify">The document you want to modify.</param>
+        /// <param name="update">The update definition for the document.</param>
+        public bool UpdateOne<TDocument, TKey>(TDocument documentToModify, UpdateDefinition<TDocument> update)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            var filter = Builders<TDocument>.Filter.Eq("Id", documentToModify.Id);
+            var updateRes = HandlePartitioned<TDocument, TKey>(documentToModify).UpdateOne(filter, update, new UpdateOptions { IsUpsert = true });
+            return updateRes.ModifiedCount == 1;
+        }
+
+        /// <summary>
+        /// Updates the property field with the given value update a property field in entities.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="documentToModify">The document you want to modify.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        public async Task<bool> UpdateOneAsync<TDocument, TKey, TField>(TDocument documentToModify, Expression<Func<TDocument, TField>> field, TField value)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            var filter = Builders<TDocument>.Filter.Eq("Id", documentToModify.Id);
+            var updateRes = await HandlePartitioned<TDocument, TKey>(documentToModify).UpdateOneAsync(filter, Builders<TDocument>.Update.Set(field, value));
+            return updateRes.ModifiedCount == 1;
+        }
+
+        /// <summary>
+        /// Updates the property field with the given value update a property field in entities.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="documentToModify">The document you want to modify.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        public bool UpdateOne<TDocument, TKey, TField>(TDocument documentToModify, Expression<Func<TDocument, TField>> field, TField value)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            var filter = Builders<TDocument>.Filter.Eq("Id", documentToModify.Id);
+            var updateRes = HandlePartitioned<TDocument, TKey>(documentToModify).UpdateOne(filter, Builders<TDocument>.Update.Set(field, value));
+            return updateRes.ModifiedCount == 1;
+        }
+
+        /// <summary>
+        /// Updates the property field with the given value update a property field in entities.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        public async Task<bool> UpdateOneAsync<TDocument, TKey, TField>(FilterDefinition<TDocument> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            var collection = string.IsNullOrEmpty(partitionKey) ? GetCollection<TDocument, TKey>() : GetCollection<TDocument, TKey>(partitionKey);
+            var updateRes = await collection.UpdateOneAsync(filter, Builders<TDocument>.Update.Set(field, value));
+            return updateRes.ModifiedCount == 1;
+        }
+
+        /// <summary>
+        /// Updates the property field with the given value update a property field in entities.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        public bool UpdateOne<TDocument, TKey, TField>(FilterDefinition<TDocument> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            var collection = string.IsNullOrEmpty(partitionKey) ? GetCollection<TDocument, TKey>() : GetCollection<TDocument, TKey>(partitionKey);
+            var updateRes = collection.UpdateOne(filter, Builders<TDocument>.Update.Set(field, value));
             return updateRes.ModifiedCount == 1;
         }
 
@@ -1601,7 +1968,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
-        /// <param name="filter"></param>
+        /// <param name="filter">The document filter.</param>
         /// <param name="projection">The projection expression.</param>
         /// <param name="partitionKey">An optional partition key.</param>
         public List<TProjection> ProjectMany<TDocument, TProjection, TKey>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey = null)
@@ -1613,6 +1980,60 @@ namespace MongoDbGenericRepository
                                                              .Project(projection)
                                                              .ToList();
         }
+
+        #endregion
+
+        #region Grouping
+
+        /// <summary>
+        /// Groups a collection of documents given a grouping criteria, 
+        /// and returns a dictionary of listed document groups with keys having the different values of the grouping criteria.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TGroupKey">The type of the grouping criteria.</typeparam>
+        /// <typeparam name="TProjection">The type of the projected group.</typeparam>
+        /// <param name="groupingCriteria">The grouping criteria.</param>
+        /// <param name="groupProjection">The projected group result.</param>
+        /// <param name="partitionKey">The partition key of your document, if any.</param>
+        public List<TProjection> GroupBy<TDocument, TGroupKey, TProjection>(
+            Expression<Func<TDocument, TGroupKey>> groupingCriteria,
+            Expression<Func<IGrouping<TGroupKey, TDocument>, TProjection>> groupProjection,
+            string partitionKey = null)
+            where TDocument : IDocument
+            where TProjection : class, new()
+        {
+            var collection = string.IsNullOrEmpty(partitionKey) ? GetCollection<TDocument>() : GetCollection<TDocument>(partitionKey);
+            return collection.Aggregate()
+                             .Group(groupingCriteria, groupProjection)
+                             .ToList();
+
+        }
+
+        /// Groups filtered a collection of documents given a grouping criteria, 
+        /// and returns a dictionary of listed document groups with keys having the different values of the grouping criteria.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TGroupKey">The type of the grouping criteria.</typeparam>
+        /// <typeparam name="TProjection">The type of the projected group.</typeparam>
+        /// <param name="groupingCriteria">The grouping criteria.</param>
+        /// <param name="groupProjection">The projected group result.</param>
+        /// <param name="partitionKey">The partition key of your document, if any.</param>
+        /// <returns></returns>
+        public List<TProjection> GroupBy<TDocument, TGroupKey, TProjection>(Expression<Func<TDocument, bool>> filter,
+                                                       Expression<Func<TDocument, TGroupKey>> selector,
+                                                       Expression<Func<IGrouping<TGroupKey, TDocument>, TProjection>> projection,
+                                                       string partitionKey = null)
+                                                       where TDocument : IDocument
+                                                       where TProjection : class, new()
+        {
+            var collection = string.IsNullOrEmpty(partitionKey) ? GetCollection<TDocument>() : GetCollection<TDocument>(partitionKey);
+
+            return collection.Aggregate()
+                             .Match(Builders<TDocument>.Filter.Where(filter))
+                             .Group(selector, projection)
+                             .ToList();
+        }
+
 
         #endregion
 
@@ -1731,7 +2152,6 @@ namespace MongoDbGenericRepository
                 document.Id = Guid.NewGuid();
             }
         }
-
 
         private IMongoCollection<TDocument> GetCollection<TDocument, TKey>(string partitionKey)
             where TDocument : IDocument<TKey>
