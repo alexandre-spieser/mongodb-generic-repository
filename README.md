@@ -45,7 +45,7 @@ ITestRepository testRepository = new TestRepository(connectionString, "MongoDbTe
 ```
 
 ## Adding documents
-To add a document, its class must inherit from the `Document` class or implement the `IDocument` interface:
+To add a document, its class must inherit from the `Document` class,  implement the `IDocument` or `IDocument<TKey>` interface:
 
 ```csharp
     public class MyDocument : Document
@@ -58,7 +58,7 @@ To add a document, its class must inherit from the `Document` class or implement
     }
 ```
 
-The `IDocument` interface can be seen below:
+The `IDocument` and `IDocument<TKey>` interfaces can be seen below:
 
 ```csharp
     /// <summary>
@@ -70,7 +70,26 @@ The `IDocument` interface can be seen below:
         Guid Id { get; set; }
         int Version { get; set; }
     }
+    
+    /// <summary>
+    /// This class represents a basic document that can be stored in MongoDb.
+    /// Your document must implement this class in order for the MongoDbRepository to handle them.
+    /// </summary>
+    public interface IDocument<TKey> where TKey : IEquatable<TKey>
+    {
+        /// <summary>
+        /// The Primary Key, which must be decorated with the [BsonId] attribute 
+        /// if you want the MongoDb C# driver to consider it to be the document ID.
+        /// </summary>
+        [BsonId]
+        TKey Id { get; set; }
+        /// <summary>
+        /// A version number, to indicate the version of the schema.
+        /// </summary>
+        int Version { get; set; }
+    }
 ```
+
 ## Partitioned collections
 This repository also allows you to partition your document across multiple collections, this can be useful if you are running a SaaS application and want to keep good performance.
 
