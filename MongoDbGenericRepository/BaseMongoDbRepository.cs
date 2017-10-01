@@ -2027,7 +2027,6 @@ namespace MongoDbGenericRepository
                                                        where TProjection : class, new()
         {
             var collection = string.IsNullOrEmpty(partitionKey) ? GetCollection<TDocument>() : GetCollection<TDocument>(partitionKey);
-
             return collection.Aggregate()
                              .Match(Builders<TDocument>.Filter.Where(filter))
                              .Group(selector, projection)

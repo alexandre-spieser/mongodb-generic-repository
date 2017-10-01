@@ -174,7 +174,7 @@
             <param name="filter">A LINQ expression filter.</param>
             <param name="partitionKey">An optional partition key.</param>
         </member>
-        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.GetByIdAsync``2(System.Guid,System.String)">
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.GetByIdAsync``2(``1,System.String)">
             <summary>
             Asynchronously returns one document given its id.
             </summary>
@@ -183,7 +183,7 @@
             <param name="id">The Id of the document you want to get.</param>
             <param name="partitionKey">An optional partition key.</param>
         </member>
-        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.GetById``2(System.Guid,System.String)">
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.GetById``2(``1,System.String)">
             <summary>
             Returns one document given its id.
             </summary>
@@ -287,6 +287,62 @@
             <typeparam name="TDocument">The type representing a Document.</typeparam>
             <param name="modifiedDocument">The document with the modifications you want to persist.</param>
         </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.UpdateOne``2(MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}},``1,System.String)">
+            <summary>
+            Updates the property field with the given value update a property field in entities.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.UpdateOneAsync``2(MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}},``1,System.String)">
+            <summary>
+            Updates the property field with the given value update a property field in entities.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.UpdateOne``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}},``1)">
+            <summary>
+            Updates the property field with the given value update a property field in entities.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="documentToModify">The document you want to modify.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.UpdateOneAsync``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}},``1)">
+            <summary>
+            Updates the property field with the given value update a property field in entities.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="documentToModify">The document you want to modify.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.UpdateOneAsync``1(``0,MongoDB.Driver.UpdateDefinition{``0})">
+            <summary>
+            Takes a document you want to modify and applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <param name="documentToModify">The document you want to modify.</param>
+            <param name="update">The update definition for the document.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.UpdateOne``1(``0,MongoDB.Driver.UpdateDefinition{``0})">
+            <summary>
+            Takes a document you want to modify and applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <param name="documentToModify">The document you want to modify.</param>
+            <param name="update">The update definition for the document.</param>
+        </member>
         <member name="M:MongoDbGenericRepository.IBaseMongoRepository.UpdateOneAsync``2(``0)">
             <summary>
             Asynchronously Updates a document.
@@ -302,6 +358,68 @@
             <typeparam name="TDocument">The type representing a Document.</typeparam>
             <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
             <param name="modifiedDocument">The document with the modifications you want to persist.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.UpdateOneAsync``2(``0,MongoDB.Driver.UpdateDefinition{``0})">
+            <summary>
+            Takes a document you want to modify and applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="documentToModify">The document you want to modify.</param>
+            <param name="update">The update definition for the document.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.UpdateOne``2(``0,MongoDB.Driver.UpdateDefinition{``0})">
+            <summary>
+            Takes a document you want to modify and applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="documentToModify">The document you want to modify.</param>
+            <param name="update">The update definition for the document.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.UpdateOneAsync``3(``0,System.Linq.Expressions.Expression{System.Func{``0,``2}},``2)">
+            <summary>
+            Updates the property field with the given value update a property field in entities.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="documentToModify">The document you want to modify.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.UpdateOne``3(``0,System.Linq.Expressions.Expression{System.Func{``0,``2}},``2)">
+            <summary>
+            Updates the property field with the given value update a property field in entities.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="documentToModify">The document you want to modify.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.UpdateOneAsync``3(MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
+            <summary>
+            Updates the property field with the given value update a property field in entities.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.UpdateOne``3(MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
+            <summary>
+            Updates the property field with the given value update a property field in entities.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
         </member>
         <member name="M:MongoDbGenericRepository.IBaseMongoRepository.DeleteOneAsync``1(``0)">
             <summary>
@@ -573,6 +691,19 @@
             <param name="options"></param>
             <returns></returns>
         </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository.GroupBy``3(System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Linq.Expressions.Expression{System.Func{System.Linq.IGrouping{``1,``0},``2}},System.String)">
+            <summary>
+            Groups a collection of documents given a grouping criteria, 
+            and returns a list of projected documents.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TGroupKey">The type of the grouping criteria.</typeparam>
+            <typeparam name="TProjection">The type of the projected group.</typeparam>
+            <param name="groupingCriteria">The grouping criteria.</param>
+            <param name="groupProjection">The projected group result.</param>
+            <param name="partitionKey">The partition key of your document, if any.</param>
+        </member>
+        <!-- Commentaire XML incorrect pour le membre "M:MongoDbGenericRepository.IBaseMongoRepository.GroupBy``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Linq.Expressions.Expression{System.Func{System.Linq.IGrouping{``1,``0},``2}},System.String)" -->
         <member name="T:MongoDbGenericRepository.BaseMongoRepository">
             <summary>
             The base Repository, it is meant to be inherited from by your custom custom MongoRepository implementation.
@@ -763,7 +894,7 @@
             <param name="filter">A LINQ expression filter.</param>
             <param name="partitionKey">An optional partitionKey</param>
         </member>
-        <member name="M:MongoDbGenericRepository.BaseMongoRepository.GetByIdAsync``2(System.Guid,System.String)">
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.GetByIdAsync``2(``1,System.String)">
             <summary>
             Asynchronously returns one document given its id.
             </summary>
@@ -772,7 +903,7 @@
             <param name="id">The Id of the document you want to get.</param>
             <param name="partitionKey">An optional partition key.</param>
         </member>
-        <member name="M:MongoDbGenericRepository.BaseMongoRepository.GetById``2(System.Guid,System.String)">
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.GetById``2(``1,System.String)">
             <summary>
             Returns one document given its id.
             </summary>
@@ -876,6 +1007,62 @@
             <typeparam name="TDocument">The type representing a Document.</typeparam>
             <param name="modifiedDocument">The document with the modifications you want to persist.</param>
         </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateOneAsync``1(``0,MongoDB.Driver.UpdateDefinition{``0})">
+            <summary>
+            Takes a document you want to modify and applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <param name="documentToModify">The document you want to modify.</param>
+            <param name="update">The update definition for the document.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateOne``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}},``1)">
+            <summary>
+            Updates the property field with the given value update a property field in entities.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="documentToModify">The document you want to modify.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateOneAsync``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}},``1)">
+            <summary>
+            Updates the property field with the given value update a property field in entities.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="documentToModify">The document you want to modify.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateOne``2(MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}},``1,System.String)">
+            <summary>
+            Updates the property field with the given value update a property field in entities.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateOneAsync``2(MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}},``1,System.String)">
+            <summary>
+            Updates the property field with the given value update a property field in entities.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateOne``1(``0,MongoDB.Driver.UpdateDefinition{``0})">
+            <summary>
+            Takes a document you want to modify and applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <param name="documentToModify">The document you want to modify.</param>
+            <param name="update">The update definition for the document.</param>
+        </member>
         <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateOneAsync``2(``0)">
             <summary>
             Asynchronously Updates a document.
@@ -891,6 +1078,68 @@
             <typeparam name="TDocument">The type representing a Document.</typeparam>
             <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
             <param name="modifiedDocument">The document with the modifications you want to persist.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateOneAsync``2(``0,MongoDB.Driver.UpdateDefinition{``0})">
+            <summary>
+            Takes a document you want to modify and applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="documentToModify">The document you want to modify.</param>
+            <param name="update">The update definition for the document.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateOne``2(``0,MongoDB.Driver.UpdateDefinition{``0})">
+            <summary>
+            Takes a document you want to modify and applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="documentToModify">The document you want to modify.</param>
+            <param name="update">The update definition for the document.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateOneAsync``3(``0,System.Linq.Expressions.Expression{System.Func{``0,``2}},``2)">
+            <summary>
+            Updates the property field with the given value update a property field in entities.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="documentToModify">The document you want to modify.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateOne``3(``0,System.Linq.Expressions.Expression{System.Func{``0,``2}},``2)">
+            <summary>
+            Updates the property field with the given value update a property field in entities.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="documentToModify">The document you want to modify.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateOneAsync``3(MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
+            <summary>
+            Updates the property field with the given value update a property field in entities.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateOne``3(MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
+            <summary>
+            Updates the property field with the given value update a property field in entities.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
         </member>
         <member name="M:MongoDbGenericRepository.BaseMongoRepository.DeleteOneAsync``1(``0)">
             <summary>
@@ -1116,10 +1365,23 @@
             <typeparam name="TDocument">The type representing a Document.</typeparam>
             <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
             <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
-            <param name="filter"></param>
+            <param name="filter">The document filter.</param>
             <param name="projection">The projection expression.</param>
             <param name="partitionKey">An optional partition key.</param>
         </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.GroupBy``3(System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Linq.Expressions.Expression{System.Func{System.Linq.IGrouping{``1,``0},``2}},System.String)">
+            <summary>
+            Groups a collection of documents given a grouping criteria, 
+            and returns a dictionary of listed document groups with keys having the different values of the grouping criteria.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TGroupKey">The type of the grouping criteria.</typeparam>
+            <typeparam name="TProjection">The type of the projected group.</typeparam>
+            <param name="groupingCriteria">The grouping criteria.</param>
+            <param name="groupProjection">The projected group result.</param>
+            <param name="partitionKey">The partition key of your document, if any.</param>
+        </member>
+        <!-- Commentaire XML incorrect pour le membre "M:MongoDbGenericRepository.BaseMongoRepository.GroupBy``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Linq.Expressions.Expression{System.Func{System.Linq.IGrouping{``1,``0},``2}},System.String)" -->
         <member name="M:MongoDbGenericRepository.BaseMongoRepository.GetPaginatedAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Int32,System.Int32,System.String)">
             <summary>
             Asynchronously returns a paginated list of the documents matching the filter condition.
