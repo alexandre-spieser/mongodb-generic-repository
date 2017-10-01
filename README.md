@@ -4,6 +4,8 @@ An example of generic repository implementation using the MongoDB C# Sharp 2.0 d
 Now available as a nuget package:
 https://www.nuget.org/packages/MongoDbGenericRepository/
 
+Covered by 200+ integration tests and counting.
+
 # Usage examples
 
 This repository is meant to be inherited from. 
