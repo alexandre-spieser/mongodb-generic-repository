@@ -1,5 +1,6 @@
 ﻿using MongoDB.Driver;
 using MongoDbGenericRepository.Models;
+using System;
 
 namespace MongoDbGenericRepository
 {
@@ -48,7 +49,7 @@ namespace MongoDbGenericRepository
         /// <summary>
         /// The private GetCollection method
         /// </summary>
-        /// <typeparam name="TDocument"></typeparam>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <returns></returns>
         public IMongoCollection<TDocument> GetCollection<TDocument>()
         {
@@ -58,7 +59,7 @@ namespace MongoDbGenericRepository
         /// <summary>
         /// Returns a collection for a document type that has a partition key.
         /// </summary>
-        /// <typeparam name="TDocument"></typeparam>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="partitionKey">The value of the partition key.</param>
         public IMongoCollection<TDocument> GetCollection<TDocument>(string partitionKey) where TDocument : IDocument
         {
@@ -66,9 +67,22 @@ namespace MongoDbGenericRepository
         }
 
         /// <summary>
+        /// Returns a collection for a document type that has a partition key.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="partitionKey">The value of the partition key.</param>
+        public IMongoCollection<TDocument> GetCollection<TDocument, TKey>(string partitionKey) 
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            return Database.GetCollection<TDocument>(partitionKey + "-" + Pluralize<TDocument>());
+        }
+
+        /// <summary>
         /// Drops a collection, use very carefully.
         /// </summary>
-        /// <typeparam name="TDocument"></typeparam>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         public void DropCollection<TDocument>()
         {
             Database.DropCollection(Pluralize<TDocument>());
@@ -77,7 +91,7 @@ namespace MongoDbGenericRepository
         /// <summary>
         /// Drops a collection having a partitionkey, use very carefully.
         /// </summary>
-        /// <typeparam name="TDocument"></typeparam>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         public void DropCollection<TDocument>(string partitionKey)
         {
             Database.DropCollection(partitionKey + "-" + Pluralize<TDocument>());
@@ -86,7 +100,7 @@ namespace MongoDbGenericRepository
         /// <summary>
         /// Very naively pluralizes a TDocument type name.
         /// </summary>
-        /// <typeparam name="TDocument"></typeparam>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <returns></returns>
         private string Pluralize<TDocument>()
         {
