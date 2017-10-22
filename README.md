@@ -125,7 +125,7 @@ Please refer to the IntegrationTests (NET45) and CoreIntegrationTests (netstanda
 ## Donations
 Feeling like my work is worth a coffee? 
 Donations are welcome and will go towards further development of this project as well as other MongoDb related projects. Use the wallet address below to donate.
-BTC Donations: 1Qc5ZpNA7g66KEEMcz7MXxwNyyoRyKJJZ
+BTC Donations: 1FDMWqSK8SHXDGKKp7gyZc4rknynWJ7qbj
 
 *Thank you for your support and generosity!*
 
