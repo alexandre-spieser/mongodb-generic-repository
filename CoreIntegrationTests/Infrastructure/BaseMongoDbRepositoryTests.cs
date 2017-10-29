@@ -5,7 +5,7 @@ using System;
 namespace IntegrationTests.Infrastructure
 {
 
-    public class BaseMongoDbRepositoryTests<T> : IDisposable where T : Document, new() 
+    public class BaseMongoDbRepositoryTests<T> : IDisposable where T : new() 
     {
         public T CreateTestDocument()
         {
@@ -44,6 +44,7 @@ namespace IntegrationTests.Infrastructure
 
         public void Init()
         {
+            MongoDbConfig.EnsureConfigured();
             SUT = TestRepository.Instance;
         }
 

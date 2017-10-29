@@ -5,11 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="2.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0-preview-20170810-02" />
     <PackageReference Include="MongoDB.Driver" Version="2.4.4" />
-    <PackageReference Include="xunit" Version="2.3.0-beta5-build3769" />
-    <PackageReference Include="xunit.runner.console" Version="2.3.0-beta5-build3769" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.0-beta5-build3769" />
+    <PackageReference Include="xunit" Version="2.3.0" />
+    <PackageReference Include="xunit.runner.console" Version="2.3.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.0" />
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.0-beta4-build3742" />
   </ItemGroup>
 
