@@ -1,6 +1,6 @@
 ﻿using MongoDbGenericRepository;
 
-namespace IntegrationTests
+namespace CoreIntegrationTests
 {
     public interface ITestRepository : IBaseMongoRepository
     {

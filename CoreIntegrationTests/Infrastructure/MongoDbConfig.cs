@@ -1,9 +1,9 @@
-﻿using CoreIntegrationTests;
+﻿using CoreCoreIntegrationTests;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using System.Threading;
 
-namespace IntegrationTests.Infrastructure
+namespace CoreIntegrationTests.Infrastructure
 {
     internal static class MongoDbConfig
     {

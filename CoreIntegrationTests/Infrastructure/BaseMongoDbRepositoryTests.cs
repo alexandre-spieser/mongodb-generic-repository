@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System;
 
-namespace IntegrationTests.Infrastructure
+namespace CoreIntegrationTests.Infrastructure
 {
 
     public class BaseMongoDbRepositoryTests<T> : IDisposable where T : new() 

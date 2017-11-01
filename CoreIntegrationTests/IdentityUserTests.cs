@@ -1,14 +1,12 @@
-﻿using IntegrationTests.Infrastructure;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using CoreIntegrationTests.Infrastructure;
 using MongoDbGenericRepository.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Xunit;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
-namespace CoreIntegrationTests
+namespace CoreCoreIntegrationTests
 {
     public class MongoIdentityUser<TKey> : IdentityUser<TKey>, IDocument<TKey>
         where TKey : IEquatable<TKey>

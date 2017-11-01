@@ -1,10 +1,10 @@
-﻿using IntegrationTests.Infrastructure;
+﻿using CoreIntegrationTests.Infrastructure;
 using MongoDbGenericRepository.Models;
 using Xunit;
 using System;
 using System.Threading.Tasks;
 
-namespace IntegrationTests
+namespace CoreIntegrationTests
 {
     public class ReadTestsPartitionedDocument : PartitionedDocument
     {

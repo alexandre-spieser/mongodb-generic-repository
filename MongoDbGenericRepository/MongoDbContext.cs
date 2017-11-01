@@ -26,6 +26,15 @@ namespace MongoDbGenericRepository
         }
 
         /// <summary>
+        /// Sets the Guid representation of the MongoDb Driver.
+        /// </summary>
+        /// <param name="guidRepresentation">The new value of the GuidRepresentation</param>
+        public void SetGuidRepresentation(MongoDB.Bson.GuidRepresentation guidRepresentation)
+        {
+            MongoDefaults.GuidRepresentation = guidRepresentation;
+        }
+
+        /// <summary>
         /// The constructor of the MongoDbContext, it needs a an object implementing <see cref="IMongoDatabase"/>.
         /// </summary>
         /// <param name="mongoDatabase">An object implementing IMongoDatabase</param>

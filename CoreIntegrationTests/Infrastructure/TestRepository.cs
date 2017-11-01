@@ -1,6 +1,6 @@
 ﻿using MongoDbGenericRepository;
 
-namespace IntegrationTests.Infrastructure
+namespace CoreIntegrationTests.Infrastructure
 {
     /// <summary>
     /// A singleton implementation of the TestRepository

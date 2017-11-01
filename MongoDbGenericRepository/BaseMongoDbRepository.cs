@@ -901,6 +901,15 @@ namespace MongoDbGenericRepository
         }
 
         /// <summary>
+        /// The contructor taking a <see cref="IMongoDatabase"/>.
+        /// </summary>
+        /// <param name="mongoDatabase">A mongodb context implementing <see cref="IMongoDatabase"/></param>
+        protected BaseMongoRepository(IMongoDatabase mongoDatabase)
+        {
+            MongoDbContext = new MongoDbContext(mongoDatabase);
+        }
+
+        /// <summary>
         /// The MongoDbContext
         /// </summary>
         protected IMongoDbContext MongoDbContext = null;
@@ -2009,6 +2018,7 @@ namespace MongoDbGenericRepository
 
         }
 
+        /// <summary>
         /// Groups filtered a collection of documents given a grouping criteria, 
         /// and returns a dictionary of listed document groups with keys having the different values of the grouping criteria.
         /// </summary>
