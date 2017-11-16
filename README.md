@@ -46,7 +46,7 @@ The repository can be instantiated like so:
 ITestRepository testRepository = new TestRepository(connectionString, "MongoDbTests");
 ```
 
-If you prefer to reuse the same MongoDb database across you application, you can use the `MongoDatabase` from the MongoDb driver implementing the `IMongoDatabase` interface:
+If you prefer to reuse the same MongoDb database across your application, you can use the `MongoDatabase` from the MongoDb driver implementing the `IMongoDatabase` interface:
 
 ```csharp
 var client = new MongoClient(connectionString);
