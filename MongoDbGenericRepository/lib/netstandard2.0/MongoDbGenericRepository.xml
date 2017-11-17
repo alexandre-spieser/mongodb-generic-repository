@@ -733,6 +733,12 @@
             </summary>
             <param name="mongoDbContext">A mongodb context implementing <see cref="T:MongoDbGenericRepository.IMongoDbContext"/></param>
         </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.#ctor(MongoDB.Driver.IMongoDatabase)">
+            <summary>
+            The contructor taking a <see cref="T:MongoDB.Driver.IMongoDatabase"/>.
+            </summary>
+            <param name="mongoDatabase">A mongodb context implementing <see cref="T:MongoDB.Driver.IMongoDatabase"/></param>
+        </member>
         <member name="F:MongoDbGenericRepository.BaseMongoRepository.MongoDbContext">
             <summary>
             The MongoDbContext
@@ -1381,7 +1387,19 @@
             <param name="groupProjection">The projected group result.</param>
             <param name="partitionKey">The partition key of your document, if any.</param>
         </member>
-        <!-- Commentaire XML incorrect pour le membre "M:MongoDbGenericRepository.BaseMongoRepository.GroupBy``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Linq.Expressions.Expression{System.Func{System.Linq.IGrouping{``1,``0},``2}},System.String)" -->
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.GroupBy``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Linq.Expressions.Expression{System.Func{System.Linq.IGrouping{``1,``0},``2}},System.String)">
+            <summary>
+            Groups filtered a collection of documents given a grouping criteria, 
+            and returns a dictionary of listed document groups with keys having the different values of the grouping criteria.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TGroupKey">The type of the grouping criteria.</typeparam>
+            <typeparam name="TProjection">The type of the projected group.</typeparam>
+            <param name="groupingCriteria">The grouping criteria.</param>
+            <param name="groupProjection">The projected group result.</param>
+            <param name="partitionKey">The partition key of your document, if any.</param>
+            <returns></returns>
+        </member>
         <member name="M:MongoDbGenericRepository.BaseMongoRepository.GetPaginatedAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Int32,System.Int32,System.String)">
             <summary>
             Asynchronously returns a paginated list of the documents matching the filter condition.
@@ -1471,6 +1489,12 @@
             Drops a collection having a partitionkey, use very carefully.
             </summary>
             <typeparam name="TDocument"></typeparam>
+        </member>
+        <member name="M:MongoDbGenericRepository.IMongoDbContext.SetGuidRepresentation(MongoDB.Bson.GuidRepresentation)">
+            <summary>
+            Sets the Guid representation of the MongoDb Driver.
+            </summary>
+            <param name="guidRepresentation">The new value of the GuidRepresentation</param>
         </member>
         <member name="T:MongoDbGenericRepository.Models.Document">
             <summary>
@@ -1569,6 +1593,12 @@
             <summary>
             The IMongoDatabase from the official Mongodb driver
             </summary>
+        </member>
+        <member name="M:MongoDbGenericRepository.MongoDbContext.SetGuidRepresentation(MongoDB.Bson.GuidRepresentation)">
+            <summary>
+            Sets the Guid representation of the MongoDb Driver.
+            </summary>
+            <param name="guidRepresentation">The new value of the GuidRepresentation</param>
         </member>
         <member name="M:MongoDbGenericRepository.MongoDbContext.#ctor(MongoDB.Driver.IMongoDatabase)">
             <summary>
