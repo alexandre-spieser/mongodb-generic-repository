@@ -46,6 +46,14 @@ The repository can be instantiated like so:
 ITestRepository testRepository = new TestRepository(connectionString, "MongoDbTests");
 ```
 
+If you prefer to reuse the same MongoDb database across your application, you can use the `MongoDatabase` from the MongoDb driver implementing the `IMongoDatabase` interface:
+
+```csharp
+var client = new MongoClient(connectionString);
+var mongoDbDatabase = Client.GetDatabase(databaseName);
+ITestRepository testRepository = new TestRepository(mongoDbDatabase);
+```
+
 ## Adding documents
 To add a document, its class must inherit from the `Document` class,  implement the `IDocument` or `IDocument<TKey>` interface:
 
