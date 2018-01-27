@@ -347,7 +347,7 @@ namespace MongoDbGenericRepository
 
         #endregion
 
-        #region Private Methods
+        #region Utility Methods
 
         /// <summary>
         /// Gets a collections for the type TDocument with the matching partition key.
