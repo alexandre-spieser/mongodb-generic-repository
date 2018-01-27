@@ -121,6 +121,7 @@ namespace MongoDbGenericRepository
         /// <param name="filter">The document filter.</param>
         /// <param name="field">The field selector.</param>
         /// <param name="value">The new value of the property field.</param>
+        /// <param name="partitionKey">The value of the partition key.</param>
         bool UpdateOne<TDocument, TField>(FilterDefinition<TDocument> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
             where TDocument : IDocument;
 
@@ -132,6 +133,7 @@ namespace MongoDbGenericRepository
         /// <param name="filter">The document filter.</param>
         /// <param name="field">The field selector.</param>
         /// <param name="value">The new value of the property field.</param>
+        /// <param name="partitionKey">The value of the partition key.</param>
         Task<bool> UpdateOneAsync<TDocument, TField>(FilterDefinition<TDocument> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
             where TDocument : IDocument;
 
@@ -256,6 +258,7 @@ namespace MongoDbGenericRepository
         /// <param name="filter">The document filter.</param>
         /// <param name="field">The field selector.</param>
         /// <param name="value">The new value of the property field.</param>
+        /// <param name="partitionKey">The value of the partition key.</param>
         Task<bool> UpdateOneAsync<TDocument, TKey, TField>(FilterDefinition<TDocument> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>;
@@ -269,6 +272,7 @@ namespace MongoDbGenericRepository
         /// <param name="filter">The document filter.</param>
         /// <param name="field">The field selector.</param>
         /// <param name="value">The new value of the property field.</param>
+        /// <param name="partitionKey">The value of the partition key.</param>
         bool UpdateOne<TDocument, TKey, TField>(FilterDefinition<TDocument> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>;
@@ -618,16 +622,17 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument
             where TProjection : class, new();
 
+        /// <summary>
         /// Groups filtered a collection of documents given a grouping criteria, 
         /// and returns a dictionary of listed document groups with keys having the different values of the grouping criteria.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TGroupKey">The type of the grouping criteria.</typeparam>
         /// <typeparam name="TProjection">The type of the projected group.</typeparam>
-        /// <param name="groupingCriteria">The grouping criteria.</param>
-        /// <param name="groupProjection">The projected group result.</param>
+        /// <param name="filter"></param>
+        /// <param name="selector">The grouping criteria.</param>
+        /// <param name="projection">The projected group result.</param>
         /// <param name="partitionKey">The partition key of your document, if any.</param>
-        /// <returns></returns>
         List<TProjection> GroupBy<TDocument, TGroupKey, TProjection>(Expression<Func<TDocument, bool>> filter,
                                                        Expression<Func<TDocument, TGroupKey>> selector,
                                                        Expression<Func<IGrouping<TGroupKey, TDocument>, TProjection>> projection,

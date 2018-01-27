@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>MongoDbGenericRepository</id>
-    <version>1.3.3</version>
+    <version>1.3.4</version>
     <title>MongoDb Generic Repository</title>
     <authors>Alexandre Spieser</authors>
     <owners>Alexandre Spieser</owners>
@@ -10,11 +10,11 @@
     <projectUrl>https://github.com/alexandre-spieser/mongodb-generic-repository</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A generic repository implementation using the MongoDB C# Sharp 2.0 driver.</description>
-    <releaseNotes>The MongoDbRepository now has a constructor that takes an IMongoDatabase.</releaseNotes>
+    <releaseNotes>Updating MongoDB driver to version 2.5.0 for MongoDB 3.6 support.</releaseNotes>
     <copyright>Copyright 2017 (c) Alexandre Spieser. All rights reserved.</copyright>
     <tags>MongoDb Repository Generic NoSql</tags>
 	<dependencies>
-		<dependency id="MongoDB.Driver" version="2.4.4" />
+		<dependency id="MongoDB.Driver" version="2.5.0" />
 	</dependencies>
   </metadata>
   <files>

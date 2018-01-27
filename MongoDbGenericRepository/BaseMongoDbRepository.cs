@@ -873,7 +873,6 @@ namespace MongoDbGenericRepository
         /// <param name="selector">The grouping criteria.</param>
         /// <param name="projection">The projected group result.</param>
         /// <param name="partitionKey">The partition key of your document, if any.</param>
-        /// <returns></returns>
         public List<TProjection> GroupBy<TDocument, TGroupKey, TProjection>(Expression<Func<TDocument, bool>> filter,
                                                        Expression<Func<TDocument, TGroupKey>> selector,
                                                        Expression<Func<IGrouping<TGroupKey, TDocument>, TProjection>> projection,
