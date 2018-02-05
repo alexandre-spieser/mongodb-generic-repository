@@ -1,7 +1,10 @@
 ﻿using MongoDB.Driver;
+using MongoDbGenericRepository.Attributes;
 using MongoDbGenericRepository.Models;
 using MongoDbGenericRepository.Utils;
 using System;
+using System.Linq;
+using System.Reflection;
 
 namespace MongoDbGenericRepository
 {
@@ -63,17 +66,21 @@ namespace MongoDbGenericRepository
         /// <returns></returns>
         public IMongoCollection<TDocument> GetCollection<TDocument>()
         {
-            return Database.GetCollection<TDocument>(Pluralize<TDocument>());
-        }
+			var collectionNameAttribute = typeof(TDocument).GetTypeInfo().GetCustomAttributes(typeof(CollectionNameAttribute)).FirstOrDefault() as CollectionNameAttribute;
+			var name = collectionNameAttribute?.Name ?? Pluralize<TDocument>();
+			return Database.GetCollection<TDocument>(name);
+		}
 
-        /// <summary>
-        /// Returns a collection for a document type that has a partition key.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <param name="partitionKey">The value of the partition key.</param>
-        public IMongoCollection<TDocument> GetCollection<TDocument>(string partitionKey) where TDocument : IDocument
+		/// <summary>
+		/// Returns a collection for a document type that has a partition key.
+		/// </summary>
+		/// <typeparam name="TDocument">The type representing a Document.</typeparam>
+		/// <param name="partitionKey">The value of the partition key.</param>
+		public IMongoCollection<TDocument> GetCollection<TDocument>(string partitionKey) where TDocument : IDocument
         {
-            return Database.GetCollection<TDocument>(partitionKey +"-"+ Pluralize<TDocument>());
+			var collectionNameAttribute = typeof(TDocument).GetTypeInfo().GetCustomAttributes(typeof(CollectionNameAttribute)).FirstOrDefault() as CollectionNameAttribute;
+			var name = partitionKey + "-" + collectionNameAttribute?.Name ?? Pluralize<TDocument>();
+			return Database.GetCollection<TDocument>(name);
         }
 
         /// <summary>
@@ -86,16 +93,20 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return Database.GetCollection<TDocument>(partitionKey + "-" + Pluralize<TDocument>());
-        }
+			var collectionNameAttribute = typeof(TDocument).GetTypeInfo().GetCustomAttributes(typeof(CollectionNameAttribute)).FirstOrDefault() as CollectionNameAttribute;
+			var name = partitionKey + "-" + collectionNameAttribute?.Name ?? Pluralize<TDocument>();
+			return Database.GetCollection<TDocument>(name);
+		}
 
-        /// <summary>
-        /// Drops a collection, use very carefully.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        public void DropCollection<TDocument>()
+		/// <summary>
+		/// Drops a collection, use very carefully.
+		/// </summary>
+		/// <typeparam name="TDocument">The type representing a Document.</typeparam>
+		public void DropCollection<TDocument>()
         {
-            Database.DropCollection(Pluralize<TDocument>());
+			var collectionNameAttribute = typeof(TDocument).GetTypeInfo().GetCustomAttributes(typeof(CollectionNameAttribute)).FirstOrDefault() as CollectionNameAttribute;
+			var name = collectionNameAttribute?.Name ?? Pluralize<TDocument>();
+			Database.DropCollection(name);
         }
 
         /// <summary>
@@ -104,7 +115,9 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         public void DropCollection<TDocument>(string partitionKey)
         {
-            Database.DropCollection(partitionKey + "-" + Pluralize<TDocument>());
+			var collectionNameAttribute = typeof(TDocument).GetTypeInfo().GetCustomAttributes(typeof(CollectionNameAttribute)).FirstOrDefault() as CollectionNameAttribute;
+			var name = partitionKey + "-" + collectionNameAttribute?.Name ?? Pluralize<TDocument>();
+			Database.DropCollection(name);
         }
 
         /// <summary>
