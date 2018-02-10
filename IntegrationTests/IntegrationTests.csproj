@@ -54,14 +54,13 @@
     <Compile Include="CRUDPartitionedCollectionNameAttributeTests.cs" />
     <Compile Include="CRUDTKeyPartitionedTests.cs" />
     <Compile Include="CRUDTKeyTests.cs" />
-    <Compile Include="GroupTests\GroupingTests.cs" />
     <Compile Include="Infrastructure\BaseMongoDbRepositoryTests.cs" />
-    <Compile Include="Infrastructure\Child.cs" />
     <Compile Include="Infrastructure\GlobalVariables.cs" />
     <Compile Include="Infrastructure\ITestRepository.cs" />
     <Compile Include="Infrastructure\MongoDbDocumentTestBase.cs" />
     <Compile Include="Infrastructure\MongoDbTKeyDocumentTestBase.cs" />
     <Compile Include="Infrastructure\RandomExtensions.cs" />
+    <Compile Include="Infrastructure\TestClasses.cs" />
     <Compile Include="Infrastructure\TestRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
