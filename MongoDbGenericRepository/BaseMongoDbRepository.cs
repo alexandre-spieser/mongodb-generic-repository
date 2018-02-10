@@ -281,7 +281,6 @@ namespace MongoDbGenericRepository
         /// For the entity selected by the filter, updates the property field with the given value.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <typeparam name="TField">The type of the field.</typeparam>
         /// <param name="filter">The document filter.</param>
         /// <param name="field">The field selector.</param>

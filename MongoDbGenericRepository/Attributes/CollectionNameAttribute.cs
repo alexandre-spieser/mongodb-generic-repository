@@ -12,6 +12,9 @@ namespace MongoDbGenericRepository.Attributes
 	[AttributeUsage(AttributeTargets.Class)]
 	public class CollectionNameAttribute : Attribute
 	{
+        /// <summary>
+        /// The name of the collection in which your documents are stored.
+        /// </summary>
 		public string Name { get; set; }
 
 		public CollectionNameAttribute(string name)
