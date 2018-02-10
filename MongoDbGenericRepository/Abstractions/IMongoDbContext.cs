@@ -20,17 +20,11 @@ namespace MongoDbGenericRepository
         IMongoDatabase Database { get; }
 
         /// <summary>
-        /// The private GetCollection method
-        /// </summary>
-        /// <typeparam name="TDocument"></typeparam>
-        IMongoCollection<TDocument> GetCollection<TDocument>();
-
-        /// <summary>
         /// Returns a collection for a document type that has a partition key.
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
         /// <param name="partitionKey">The value of the partition key.</param>
-        IMongoCollection<TDocument> GetCollection<TDocument>(string partitionKey) where TDocument : IDocument;
+        IMongoCollection<TDocument> GetCollection<TDocument>(string partitionKey = null) where TDocument : IDocument;
 
         /// <summary>
         /// Returns a collection for a document type that has a partition key.
@@ -38,7 +32,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <param name="partitionKey">The value of the partition key.</param>
-        IMongoCollection<TDocument> GetCollection<TDocument, TKey>(string partitionKey)
+        IMongoCollection<TDocument> GetCollection<TDocument, TKey>(string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>;
 

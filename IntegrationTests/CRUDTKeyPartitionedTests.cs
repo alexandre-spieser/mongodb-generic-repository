@@ -16,7 +16,7 @@ namespace IntegrationTests
     }
 
     [TestFixture]
-    public class CRUDTKeyPartitionedTests : MongoDBTestBase<PartitionedTKeyTestDocument, Guid>
+    public class CRUDTKeyPartitionedTests : MongoDbTKeyDocumentTestBase<PartitionedTKeyTestDocument, Guid>
     {
         public override string GetClassName()
         {

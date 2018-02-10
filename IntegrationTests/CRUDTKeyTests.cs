@@ -11,7 +11,7 @@ namespace IntegrationTests
     }
 
     [TestFixture]
-    public class CRUDTKeyTests : MongoDBTestBase<TKeyTestDocument, Guid>
+    public class CRUDTKeyTests : MongoDbTKeyDocumentTestBase<TKeyTestDocument, Guid>
     {
         public override string GetClassName()
         {

@@ -425,24 +425,11 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TKey">The type of the primary key.</typeparam>
         /// <param name="partitionKey">The collection partition key.</param>
         /// <returns></returns>
-        protected IMongoCollection<TDocument> GetCollection<TDocument, TKey>(string partitionKey)
+        protected IMongoCollection<TDocument> GetCollection<TDocument, TKey>(string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
             return MongoDbContext.GetCollection<TDocument, TKey>(partitionKey);
-        }
-
-        /// <summary>
-        /// Gets a collections for the type TDocument
-        /// </summary>
-        /// <typeparam name="TDocument">The document type.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key.</typeparam>
-        /// <returns></returns>
-        protected IMongoCollection<TDocument> GetCollection<TDocument, TKey>()
-            where TDocument : IDocument<TKey>
-            where TKey : IEquatable<TKey>
-        {
-            return MongoDbContext.GetCollection<TDocument>();
         }
 
         /// <summary>

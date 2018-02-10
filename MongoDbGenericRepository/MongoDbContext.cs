@@ -60,27 +60,29 @@ namespace MongoDbGenericRepository
         }
 
         /// <summary>
-        /// The private GetCollection method
+        /// Extracts the CollectionName attribute from the entity type, if any.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <returns></returns>
-        public IMongoCollection<TDocument> GetCollection<TDocument>()
+        /// <returns>The name of the collection in which the TDocument is stored.</returns>
+        private string GetAttributeCollectionName<TDocument>()
         {
-			var collectionNameAttribute = typeof(TDocument).GetTypeInfo().GetCustomAttributes(typeof(CollectionNameAttribute)).FirstOrDefault() as CollectionNameAttribute;
-			var name = collectionNameAttribute?.Name ?? Pluralize<TDocument>();
-			return Database.GetCollection<TDocument>(name);
-		}
+            return (typeof(TDocument).GetTypeInfo()
+                                     .GetCustomAttributes(typeof(CollectionNameAttribute))
+                                     .FirstOrDefault() as CollectionNameAttribute)?.Name;
+        }
 
 		/// <summary>
 		/// Returns a collection for a document type that has a partition key.
 		/// </summary>
 		/// <typeparam name="TDocument">The type representing a Document.</typeparam>
 		/// <param name="partitionKey">The value of the partition key.</param>
-		public IMongoCollection<TDocument> GetCollection<TDocument>(string partitionKey) where TDocument : IDocument
+		public IMongoCollection<TDocument> GetCollection<TDocument>(string partitionKey = null) where TDocument : IDocument
         {
-			var collectionNameAttribute = typeof(TDocument).GetTypeInfo().GetCustomAttributes(typeof(CollectionNameAttribute)).FirstOrDefault() as CollectionNameAttribute;
-			var name = partitionKey + "-" + collectionNameAttribute?.Name ?? Pluralize<TDocument>();
-			return Database.GetCollection<TDocument>(name);
+            if (string.IsNullOrEmpty(partitionKey))
+            {
+                return Database.GetCollection<TDocument>(GetAttributeCollectionName<TDocument>() ?? Pluralize<TDocument>());
+            }
+			return Database.GetCollection<TDocument>(partitionKey + "-" + GetAttributeCollectionName<TDocument>() ?? Pluralize<TDocument>());
         }
 
         /// <summary>
@@ -93,10 +95,12 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-			var collectionNameAttribute = typeof(TDocument).GetTypeInfo().GetCustomAttributes(typeof(CollectionNameAttribute)).FirstOrDefault() as CollectionNameAttribute;
-			var name = partitionKey + "-" + collectionNameAttribute?.Name ?? Pluralize<TDocument>();
-			return Database.GetCollection<TDocument>(name);
-		}
+            if (string.IsNullOrEmpty(partitionKey))
+            {
+                return Database.GetCollection<TDocument>(GetAttributeCollectionName<TDocument>() ?? Pluralize<TDocument>());
+            }
+            return Database.GetCollection<TDocument>(partitionKey + "-" + GetAttributeCollectionName<TDocument>() ?? Pluralize<TDocument>());
+        }
 
 		/// <summary>
 		/// Drops a collection, use very carefully.
@@ -104,9 +108,7 @@ namespace MongoDbGenericRepository
 		/// <typeparam name="TDocument">The type representing a Document.</typeparam>
 		public void DropCollection<TDocument>()
         {
-			var collectionNameAttribute = typeof(TDocument).GetTypeInfo().GetCustomAttributes(typeof(CollectionNameAttribute)).FirstOrDefault() as CollectionNameAttribute;
-			var name = collectionNameAttribute?.Name ?? Pluralize<TDocument>();
-			Database.DropCollection(name);
+			Database.DropCollection(GetAttributeCollectionName<TDocument>() ?? Pluralize<TDocument>());
         }
 
         /// <summary>
@@ -115,9 +117,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         public void DropCollection<TDocument>(string partitionKey)
         {
-			var collectionNameAttribute = typeof(TDocument).GetTypeInfo().GetCustomAttributes(typeof(CollectionNameAttribute)).FirstOrDefault() as CollectionNameAttribute;
-			var name = partitionKey + "-" + collectionNameAttribute?.Name ?? Pluralize<TDocument>();
-			Database.DropCollection(name);
+			Database.DropCollection(partitionKey + "-" + GetAttributeCollectionName<TDocument>() ?? Pluralize<TDocument>());
         }
 
         /// <summary>

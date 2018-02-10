@@ -26,11 +26,14 @@ namespace IntegrationTests.Infrastructure
             {
                 SomeDate = DateTime.UtcNow
             };
+            Children = new List<Child>();
         }
 
         public string SomeContent { get; set; }
 
         public Nested Nested { get; set; }
+
+        public List<Child> Children { get; set; }
 
         public TId Init<TId>()
         {
@@ -60,7 +63,7 @@ namespace IntegrationTests.Infrastructure
 
 
     [TestFixture]
-    public abstract class MongoDBTestBase<T, TKey> 
+    public abstract class MongoDbTKeyDocumentTestBase<T, TKey> 
         where T: TestDoc<TKey>, new()
         where TKey : IEquatable<TKey>
     {
@@ -101,7 +104,7 @@ namespace IntegrationTests.Infrastructure
         /// </summary>
         protected static ITestRepository SUT { get; set; }
 
-        public MongoDBTestBase()
+        public MongoDbTKeyDocumentTestBase()
         {
             var type = CreateTestDocument();
             DocumentTypeName = type.GetType().FullName;
@@ -220,9 +223,8 @@ namespace IntegrationTests.Infrastructure
             Assert.IsNotNull(result, GetTestName());
         }
 
-
         [Test]
-        public async Task PartitionedGetOneAsync()
+        public async Task GetOneAsync()
         {
             // Arrange
             var document = CreateTestDocument();
@@ -359,10 +361,164 @@ namespace IntegrationTests.Infrastructure
             // Act
             var result = SUT.Count<T, TKey>(x => x.SomeContent == content, PartitionKey);
             // Assert
-            Assert.AreEqual(5, result);
+            Assert.AreEqual(5, result, GetTestName());
         }
 
         #endregion Read
+
+        #region Update
+
+        [Test]
+        public void UpdateOne()
+        {
+            // Arrange
+            var document = CreateTestDocument();
+            SUT.AddOne<T, TKey>(document);
+            var content = GetContent();
+            document.SomeContent = content;
+            // Act
+            var result = SUT.UpdateOne<T, TKey>(document);
+            // Assert
+            Assert.IsTrue(result);
+            var updatedDocument = SUT.GetById<T, TKey>(document.Id, PartitionKey);
+            Assert.IsNotNull(updatedDocument, GetTestName());
+            Assert.AreEqual(content, updatedDocument.SomeContent, GetTestName());
+        }
+
+        [Test]
+        public async Task UpdateOneAsync()
+        {
+            // Arrange
+            var document = CreateTestDocument();
+            SUT.AddOne<T, TKey>(document);
+            var content = GetContent();
+            document.SomeContent = content;
+            // Act
+            var result = await SUT.UpdateOneAsync<T, TKey>(document);
+            // Assert
+            Assert.IsTrue(result);
+            var updatedDocument = SUT.GetById<T, TKey>(document.Id, PartitionKey);
+            Assert.IsNotNull(updatedDocument, GetTestName());
+            Assert.AreEqual(content, updatedDocument.SomeContent, GetTestName());
+        }
+
+        [Test]
+        public void UpdateOneField()
+        {
+            // Arrange
+            var document = CreateTestDocument();
+            SUT.AddOne<T, TKey>(document);
+            var content = GetContent();
+            // Act
+            var result = SUT.UpdateOne<T, TKey, string>(document, x => x.SomeContent, content);
+            // Assert
+            Assert.IsTrue(result, GetTestName());
+            var updatedDocument = SUT.GetById<T, TKey>(document.Id, PartitionKey);
+            Assert.IsNotNull(updatedDocument, GetTestName());
+            Assert.AreEqual(content, updatedDocument.SomeContent, GetTestName());
+        }
+
+        [Test]
+        public async Task UpdateOneFieldAsync()
+        {
+            // Arrange
+            var document = CreateTestDocument();
+            SUT.AddOne<T, TKey>(document);
+            var content = GetContent();
+            // Act
+            var result = await SUT.UpdateOneAsync<T, TKey, string>(document, x => x.SomeContent, content);
+            // Assert
+            Assert.IsTrue(result, GetTestName());
+            var updatedDocument = SUT.GetById<T, TKey>(document.Id, PartitionKey);
+            Assert.IsNotNull(updatedDocument, GetTestName());
+            Assert.AreEqual(content, updatedDocument.SomeContent, GetTestName());
+        }
+
+        [Test]
+        public void UpdateOneFieldWithFilter()
+        {
+            // Arrange
+            var document = CreateTestDocument();
+            SUT.AddOne<T, TKey>(document);
+            var content = GetContent();
+            // Act
+            var result = SUT.UpdateOne<T, TKey, string>(x => x.Id.Equals(document.Id), x => x.SomeContent, content, PartitionKey);
+            // Assert
+            Assert.IsTrue(result, GetTestName());
+            var updatedDocument = SUT.GetById<T, TKey>(document.Id, PartitionKey);
+            Assert.IsNotNull(updatedDocument, GetTestName());
+            Assert.AreEqual(content, updatedDocument.SomeContent, GetTestName());
+        }
+
+        [Test]
+        public async Task UpdateOneFieldWithFilterAsync()
+        {
+            // Arrange
+            var document = CreateTestDocument();
+            SUT.AddOne<T, TKey>(document);
+            var content = GetContent();
+            // Act
+            var result = await SUT.UpdateOneAsync<T, TKey, string>(x => x.Id.Equals(document.Id), x => x.SomeContent, content, PartitionKey);
+            // Assert
+            Assert.IsTrue(result, GetTestName());
+            var updatedDocument = SUT.GetById<T, TKey>(document.Id, PartitionKey);
+            Assert.IsNotNull(updatedDocument, GetTestName());
+            Assert.AreEqual(content, updatedDocument.SomeContent, GetTestName());
+        }
+
+        [Test]
+        public async Task UpdateOneAsyncWithUpdateDefinition()
+        {
+            // Arrange
+            var document = CreateTestDocument();
+            SUT.AddOne<T, TKey>(document);
+            var childrenToAdd = new List<Child>
+            {
+                new Child("testType1", "testValue1"),
+                new Child("testType2", "testValue2")
+            };
+
+            var updateDef = MongoDB.Driver.Builders<T>.Update.AddToSetEach(p => p.Children, childrenToAdd);
+
+            // Act
+            var result = await SUT.UpdateOneAsync<T, TKey>(document, updateDef);
+            // Assert
+            Assert.IsTrue(result);
+            var updatedDocument = SUT.GetById<T, TKey>(document.Id, PartitionKey);
+            Assert.IsNotNull(updatedDocument);
+            Assert.AreEqual(childrenToAdd[0].Type, updatedDocument.Children[0].Type, GetTestName());
+            Assert.AreEqual(childrenToAdd[0].Value, updatedDocument.Children[0].Value, GetTestName());
+            Assert.AreEqual(childrenToAdd[1].Type, updatedDocument.Children[1].Type, GetTestName());
+            Assert.AreEqual(childrenToAdd[1].Value, updatedDocument.Children[1].Value, GetTestName());
+        }
+
+        [Test]
+        public void UpdateOneWithUpdateDefinition()
+        {
+            // Arrange
+            var document = CreateTestDocument();
+            SUT.AddOne<T, TKey>(document);
+            var childrenToAdd = new List<Child>
+            {
+                new Child("testType1", "testValue1"),
+                new Child("testType2", "testValue2")
+            };
+
+            var updateDef = MongoDB.Driver.Builders<T>.Update.AddToSetEach(p => p.Children, childrenToAdd);
+
+            // Act
+            var result = SUT.UpdateOne<T, TKey>(document, updateDef);
+            // Assert
+            Assert.IsTrue(result);
+            var updatedDocument = SUT.GetById<T, TKey>(document.Id, PartitionKey);
+            Assert.IsNotNull(updatedDocument);
+            Assert.AreEqual(childrenToAdd[0].Type, updatedDocument.Children[0].Type, GetTestName());
+            Assert.AreEqual(childrenToAdd[0].Value, updatedDocument.Children[0].Value, GetTestName());
+            Assert.AreEqual(childrenToAdd[1].Type, updatedDocument.Children[1].Type, GetTestName());
+            Assert.AreEqual(childrenToAdd[1].Value, updatedDocument.Children[1].Value, GetTestName());
+        }
+
+        #endregion Update
 
         #region Delete
 
