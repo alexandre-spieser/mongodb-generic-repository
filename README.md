@@ -6,6 +6,8 @@ https://www.nuget.org/packages/MongoDbGenericRepository/
 
 Covered by 200+ integration tests and counting.
 
+The MongoDbGenericRepository is also used in [AspNetCore.Identity.MongoDbCore](https://github.com/alexandre-spieser/AspNetCore.Identity.MongoDbCore).
+
 # Usage examples
 
 This repository is meant to be inherited from. 
