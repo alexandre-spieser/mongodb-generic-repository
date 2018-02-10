@@ -36,9 +36,9 @@ namespace IntegrationTests
             document.Nested.SomeDate = someDate;
             SUT.AddOne(document);
             // Act
-            var result = await SUT.ProjectOneAsync<ProjectTestsPartitionedDocument, MyProjection>(
+            var result = await SUT.ProjectOneAsync<ProjectTestsPartitionedDocument, MyTestProjection>(
                 x => x.Id == document.Id,
-                x => new MyProjection
+                x => new MyTestProjection
                 {
                     SomeContent = x.SomeContent,
                     SomeDate = x.Nested.SomeDate
@@ -62,9 +62,9 @@ namespace IntegrationTests
             document.Nested.SomeDate = someDate;
             SUT.AddOne(document);
             // Act
-            var result = SUT.ProjectOne<ProjectTestsPartitionedDocument, MyProjection>(
+            var result = SUT.ProjectOne<ProjectTestsPartitionedDocument, MyTestProjection>(
                 x => x.Id == document.Id,
-                x => new MyProjection
+                x => new MyTestProjection
                 {
                     SomeContent = x.SomeContent,
                     SomeDate = x.Nested.SomeDate
@@ -92,9 +92,9 @@ namespace IntegrationTests
 
             SUT.AddMany(document);
             // Act
-            var result = await SUT.ProjectManyAsync<ProjectTestsPartitionedDocument, MyProjection>(
+            var result = await SUT.ProjectManyAsync<ProjectTestsPartitionedDocument, MyTestProjection>(
                 x => x.SomeContent == someContent,
-                x => new MyProjection
+                x => new MyTestProjection
                 {
                     SomeContent = x.SomeContent,
                     SomeDate = x.Nested.SomeDate
@@ -122,9 +122,9 @@ namespace IntegrationTests
 
             SUT.AddMany(document);
             // Act
-            var result = SUT.ProjectMany<ProjectTestsPartitionedDocument, MyProjection>(
+            var result = SUT.ProjectMany<ProjectTestsPartitionedDocument, MyTestProjection>(
                 x => x.SomeContent == someContent,
-                x => new MyProjection
+                x => new MyTestProjection
                 {
                     SomeContent = x.SomeContent,
                     SomeDate = x.Nested.SomeDate

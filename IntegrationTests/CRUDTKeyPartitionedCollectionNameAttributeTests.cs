@@ -17,7 +17,7 @@ namespace IntegrationTests
         public string PartitionKey { get; set; }
     }
 
-    public class TKeyPartitionedCollectionNameAttributeTests : MongoDBTestBase<TKeyPartitionedCollectionNameDoc, Guid>
+    public class CRUDTKeyPartitionedCollectionNameAttributeTests : MongoDBTestBase<TKeyPartitionedCollectionNameDoc, Guid>
     {
         public override string GetClassName()
         {

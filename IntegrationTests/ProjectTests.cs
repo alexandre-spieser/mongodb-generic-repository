@@ -12,7 +12,7 @@ namespace IntegrationTests
         public DateTime SomeDate { get; set; }
     }
 
-    public class MyProjection
+    public class MyTestProjection
     {
         public DateTime SomeDate { get; set; }
         public string SomeContent { get; set; }
@@ -49,9 +49,9 @@ namespace IntegrationTests
             document.Nested.SomeDate = someDate;
             SUT.AddOne(document);
             // Act
-            var result = await SUT.ProjectOneAsync<ProjectTestsDocument, MyProjection>(
+            var result = await SUT.ProjectOneAsync<ProjectTestsDocument, MyTestProjection>(
                 x => x.Id == document.Id, 
-                x => new MyProjection
+                x => new MyTestProjection
                 {
                     SomeContent = x.SomeContent,
                     SomeDate = x.Nested.SomeDate
@@ -74,9 +74,9 @@ namespace IntegrationTests
             document.Nested.SomeDate = someDate;
             SUT.AddOne(document);
             // Act
-            var result = SUT.ProjectOne<ProjectTestsDocument, MyProjection>(
+            var result = SUT.ProjectOne<ProjectTestsDocument, MyTestProjection>(
                 x => x.Id == document.Id,
-                x => new MyProjection
+                x => new MyTestProjection
                 {
                     SomeContent = x.SomeContent,
                     SomeDate = x.Nested.SomeDate
@@ -103,9 +103,9 @@ namespace IntegrationTests
 
             SUT.AddMany(document);
             // Act
-            var result = await SUT.ProjectManyAsync<ProjectTestsDocument, MyProjection>(
+            var result = await SUT.ProjectManyAsync<ProjectTestsDocument, MyTestProjection>(
                 x => x.SomeContent == someContent,
-                x => new MyProjection
+                x => new MyTestProjection
                 {
                     SomeContent = x.SomeContent,
                     SomeDate = x.Nested.SomeDate
@@ -132,9 +132,9 @@ namespace IntegrationTests
 
             SUT.AddMany(document);
             // Act
-            var result = SUT.ProjectMany<ProjectTestsDocument, MyProjection>(
+            var result = SUT.ProjectMany<ProjectTestsDocument, MyTestProjection>(
                 x => x.SomeContent == someContent,
-                x => new MyProjection
+                x => new MyTestProjection
                 {
                     SomeContent = x.SomeContent,
                     SomeDate = x.Nested.SomeDate
