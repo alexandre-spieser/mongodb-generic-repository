@@ -1,5 +1,4 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-using MongoDbGenericRepository.Models;
+﻿using MongoDbGenericRepository.Models;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -11,6 +10,12 @@ using System.Threading.Tasks;
 
 namespace IntegrationTests.Infrastructure
 {
+    public class MyTestProjection
+    {
+        public string SomeContent { get; set; }
+        public DateTime SomeDate { get; set; }
+    }
+
     public class TestDoc : Document
     {
         public TestDoc()
@@ -31,6 +36,10 @@ namespace IntegrationTests.Infrastructure
 
     }
 
+    public class Nested
+    {
+        public DateTime SomeDate { get; set; }
+    }
 
     [TestFixture]
     public abstract class MongoDbDocumentTestBase<T> 
@@ -722,6 +731,7 @@ namespace IntegrationTests.Infrastructure
         #endregion Project
 
         #region Test Utils
+
         [MethodImpl(MethodImplOptions.NoInlining)]
         private string GetCurrentMethod()
         {
@@ -752,4 +762,6 @@ namespace IntegrationTests.Infrastructure
 
         #endregion Test Utils
     }
+
+
 }
