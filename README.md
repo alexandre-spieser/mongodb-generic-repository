@@ -127,6 +127,8 @@ _testRepository.AddOne(myDoc);
 ```
 
 The above code will generate a collection named `myPartitionKey-myPartitionedDocuments`.
+
+## CollectionName Attribute
 It is now possible to change the collection name by using the `CollectionName` attribute:
 
 ```csharp
