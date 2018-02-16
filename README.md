@@ -40,6 +40,7 @@ Here is an example of repository usage, where the TestRepository is implementing
         }
     }
 ```
+
 ## Instantiation
 
 The repository can be instantiated like so:
@@ -126,6 +127,20 @@ _testRepository.AddOne(myDoc);
 ```
 
 The above code will generate a collection named `myPartitionKey-myPartitionedDocuments`.
+It is now possible to change the collection name by using the `CollectionName` attribute:
+
+```csharp
+    [CollectionName("MyCollectionName")]
+    public class MyDocument : Document
+    {
+        public MyDocument()
+        {
+            Version = 2;
+        }
+        public string SomeContent { get; set; }
+    }
+```
+Documents of this type will be inserted into a collection named "MyCollectionName".
 
 Please refer to the IntegrationTests (NET45) and CoreIntegrationTests (netstandard2.0) projects for more usage examples.
 
