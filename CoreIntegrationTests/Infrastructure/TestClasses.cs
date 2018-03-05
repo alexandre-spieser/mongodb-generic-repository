@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDbGenericRepository.Models;
+using MongoDbGenericRepository.Utils;
 using System;
 using System.Collections.Generic;
 
@@ -82,22 +83,7 @@ namespace CoreIntegrationTests.Infrastructure
 
         public TId Init<TId>()
         {
-            var idTypeName = typeof(TKey).Name;
-            switch (idTypeName)
-            {
-                case "Guid":
-                    return (TId)(object)Guid.NewGuid();
-                case "Int16":
-                    return (TId)(object)GlobalVariables.Random.Next(1, short.MaxValue);
-                case "Int32":
-                    return (TId)(object)GlobalVariables.Random.Next(1, int.MaxValue);
-                case "Int64":
-                    return (TId)(object)(GlobalVariables.Random.NextLong(1, long.MaxValue));
-                case "String":
-                    return (TId)(object)Guid.NewGuid().ToString();
-                default:
-                    throw new NotSupportedException($"{idTypeName} is not supported.");
-            }
+            return IdGenerator.GetId<TId>();
         }
 
         private void InitializeFields()

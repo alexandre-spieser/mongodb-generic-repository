@@ -15,7 +15,6 @@ namespace MongoDbGenericRepository
     /// </summary>
     public abstract class BaseMongoRepository : ReadOnlyMongoRepository, IBaseMongoRepository
     {
-        private static readonly Random Random = new Random();
 
         /// <summary>
         /// The constructor taking a connection string and a database name.
@@ -1022,26 +1021,6 @@ namespace MongoDbGenericRepository
 
         #endregion Find And Update
 
-
-        private TKey SetIdField<TKey>()
-        {
-            var idTypeName = typeof(TKey).Name;
-            switch (idTypeName)
-            {
-                case "Guid":
-                    return (TKey)(object)Guid.NewGuid();
-                case "Int16":
-                    return (TKey)(object)Random.Next(1, short.MaxValue);
-                case "Int32":
-                    return (TKey)(object)Random.Next(1, int.MaxValue);
-                case "Int64":
-                    return (TKey)(object)(Random.NextLong(1, long.MaxValue));
-                case "String":
-                    return (TKey)(object)Guid.NewGuid().ToString();
-            }
-            throw new ArgumentException($"{idTypeName} is not a supported Id type, the Id of the document cannot be set.");
-        }
-
         /// <summary>
         /// Sets the value of the document Id if it is not set already.
         /// </summary>
@@ -1061,7 +1040,7 @@ namespace MongoDbGenericRepository
                 || (defaultTKey != null
                     && defaultTKey.Equals(document.Id)))
             {
-                document.Id = SetIdField<TKey>();
+                document.Id = IdGenerator.GetId<TKey>();
             }
         }
 
