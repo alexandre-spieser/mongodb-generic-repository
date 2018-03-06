@@ -284,6 +284,7 @@ namespace MongoDbGenericRepository
         /// <param name="filter">The document filter.</param>
         /// <param name="field">The field selector.</param>
         /// <param name="value">The new value of the property field.</param>
+        /// <param name="partitionKey">The partition key for the document.</param>
         public virtual bool UpdateOne<TDocument, TField>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
             where TDocument : IDocument
         {
@@ -313,11 +314,11 @@ namespace MongoDbGenericRepository
         /// For the entity selected by the filter, updates the property field with the given value.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <typeparam name="TField">The type of the field.</typeparam>
         /// <param name="filter">The document filter.</param>
         /// <param name="field">The field selector.</param>
         /// <param name="value">The new value of the property field.</param>
+        /// <param name="partitionKey">The partition key for the document.</param>
         public virtual async Task<bool> UpdateOneAsync<TDocument, TField>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
             where TDocument : IDocument
         {
@@ -470,6 +471,7 @@ namespace MongoDbGenericRepository
         /// <param name="filter">The document filter.</param>
         /// <param name="field">The field selector.</param>
         /// <param name="value">The new value of the property field.</param>
+        /// <param name="partitionKey">The partition key for the document.</param>
         public virtual async Task<bool> UpdateOneAsync<TDocument, TKey, TField>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
@@ -507,6 +509,7 @@ namespace MongoDbGenericRepository
         /// <param name="filter">The document filter.</param>
         /// <param name="field">The field selector.</param>
         /// <param name="value">The new value of the property field.</param>
+        /// <param name="partitionKey">The partition key for the document.</param>
         public virtual bool UpdateOne<TDocument, TKey, TField>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>

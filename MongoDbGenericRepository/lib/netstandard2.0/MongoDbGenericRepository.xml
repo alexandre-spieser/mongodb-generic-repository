@@ -141,6 +141,7 @@
             <param name="filter">The document filter.</param>
             <param name="field">The field selector.</param>
             <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The partition key for the document.</param>
         </member>
         <member name="M:MongoDbGenericRepository.IBaseMongoRepository.UpdateOneAsync``1(``0,MongoDB.Driver.UpdateDefinition{``0})">
             <summary>
@@ -155,11 +156,11 @@
             For the entity selected by the filter, updates the property field with the given value.
             </summary>
             <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
             <typeparam name="TField">The type of the field.</typeparam>
             <param name="filter">The document filter.</param>
             <param name="field">The field selector.</param>
             <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The partition key for the document.</param>
         </member>
         <member name="M:MongoDbGenericRepository.IBaseMongoRepository.UpdateOne``1(``0,MongoDB.Driver.UpdateDefinition{``0})">
             <summary>
@@ -213,6 +214,7 @@
             <param name="filter">The document filter.</param>
             <param name="field">The field selector.</param>
             <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The partition key for the document.</param>
         </member>
         <member name="M:MongoDbGenericRepository.IBaseMongoRepository.UpdateOneAsync``3(``0,System.Linq.Expressions.Expression{System.Func{``0,``2}},``2)">
             <summary>
@@ -235,6 +237,7 @@
             <param name="filter">The document filter.</param>
             <param name="field">The field selector.</param>
             <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The partition key for the document.</param>
         </member>
         <member name="M:MongoDbGenericRepository.IBaseMongoRepository.UpdateOne``3(``0,System.Linq.Expressions.Expression{System.Func{``0,``2}},``2)">
             <summary>
@@ -830,6 +833,12 @@
             The name of the collection in which your documents are stored.
             </summary>
         </member>
+        <member name="M:MongoDbGenericRepository.Attributes.CollectionNameAttribute.#ctor(System.String)">
+            <summary>
+            The constructor.
+            </summary>
+            <param name="name">The name of the collection.</param>
+        </member>
         <member name="T:MongoDbGenericRepository.BaseMongoRepository">
             <summary>
             The base Repository, it is meant to be inherited from by your custom custom MongoRepository implementation.
@@ -985,6 +994,7 @@
             <param name="filter">The document filter.</param>
             <param name="field">The field selector.</param>
             <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The partition key for the document.</param>
         </member>
         <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateOneAsync``2(MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}},``1,System.String)">
             <summary>
@@ -1002,11 +1012,11 @@
             For the entity selected by the filter, updates the property field with the given value.
             </summary>
             <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
             <typeparam name="TField">The type of the field.</typeparam>
             <param name="filter">The document filter.</param>
             <param name="field">The field selector.</param>
             <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The partition key for the document.</param>
         </member>
         <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateOne``1(``0,MongoDB.Driver.UpdateDefinition{``0})">
             <summary>
@@ -1094,6 +1104,7 @@
             <param name="filter">The document filter.</param>
             <param name="field">The field selector.</param>
             <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The partition key for the document.</param>
         </member>
         <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateOne``3(MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
             <summary>
@@ -1117,6 +1128,7 @@
             <param name="filter">The document filter.</param>
             <param name="field">The field selector.</param>
             <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The partition key for the document.</param>
         </member>
         <member name="M:MongoDbGenericRepository.BaseMongoRepository.DeleteOneAsync``1(``0)">
             <summary>
@@ -1869,6 +1881,18 @@
             <typeparam name="TKey">The type of the primary key.</typeparam>
             <param name="partitionKey">The collection partition key.</param>
             <returns></returns>
+        </member>
+        <member name="T:MongoDbGenericRepository.Utils.IdGenerator">
+            <summary>
+            The IdGenerator instance, used to generate Ids of different types.
+            </summary>
+        </member>
+        <member name="M:MongoDbGenericRepository.Utils.IdGenerator.GetId``1">
+            <summary>
+            Generates a random value of a given type.
+            </summary>
+            <typeparam name="TKey">The type of the value to generate.</typeparam>
+            <returns>A value of type TKey.</returns>
         </member>
         <member name="T:MongoDbGenericRepository.Utils.Vocabularies">
             <summary>
