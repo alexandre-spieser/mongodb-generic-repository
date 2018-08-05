@@ -18,7 +18,6 @@ namespace CoreIntegrationTests
     {
         public CRUDPartitionedTests(MongoDbTestFixture<CorePartitionedDoc, Guid> fixture) : base(fixture)
         {
-
         }
 
         public override string GetClassName()

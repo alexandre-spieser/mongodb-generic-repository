@@ -1,4 +1,4 @@
-﻿using CoreCoreIntegrationTests;
+﻿using CoreIntegrationTests;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using System.Threading;

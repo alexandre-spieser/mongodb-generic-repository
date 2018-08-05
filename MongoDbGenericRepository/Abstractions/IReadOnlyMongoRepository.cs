@@ -111,6 +111,47 @@ namespace MongoDbGenericRepository
         /// <param name="partitionKey">An optional partition key.</param>
         long Count<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument;
 
+        /// <summary>
+        /// Gets the document with the maximum value of a specified property in a MongoDB collections that is satisfying the filter.
+        /// </summary>
+        /// <typeparam name="TDocument">The document type.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="orderByDescending">A property selector to order by descending.</param>
+        /// <param name="partitionKey">An optional partitionKey.</param>
+        Task<TDocument> GetByMaxAsync<TDocument>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> orderByDescending, string partitionKey = null)
+            where TDocument : IDocument;
+
+        /// <summary>
+        /// Gets the document with the maximum value of a specified property in a MongoDB collections that is satisfying the filter.
+        /// </summary>
+        /// <typeparam name="TDocument">The document type.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="orderByDescending">A property selector to order by descending.</param>
+        /// <param name="partitionKey">An optional partitionKey.</param>
+        /// <returns></returns>
+        TDocument GetByMax<TDocument>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> orderByDescending, string partitionKey = null)
+            where TDocument : IDocument;
+
+        /// <summary>
+        /// Gets the document with the maximum value of a specified property in a MongoDB collections that is satisfying the filter.
+        /// </summary>
+        /// <typeparam name="TDocument">The document type.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="orderByAscending">A property selector to order by ascending.</param>
+        /// <param name="partitionKey">An optional partitionKey.</param>
+        Task<TDocument> GetByMinAsync<TDocument>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> orderByAscending, string partitionKey = null)
+            where TDocument : IDocument;
+
+        /// <summary>
+        /// Gets the document with the maximum value of a specified property in a MongoDB collections that is satisfying the filter.
+        /// </summary>
+        /// <typeparam name="TDocument">The document type.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="orderByAscending">A property selector to order by ascending.</param>
+        /// <param name="partitionKey">An optional partitionKey.</param>
+        TDocument GetByMin<TDocument>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> orderByAscending, string partitionKey = null)
+            where TDocument : IDocument;
+
         #endregion
 
         #region Read TKey
@@ -158,7 +199,6 @@ namespace MongoDbGenericRepository
         TDocument GetOne<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>;
-
 
         /// <summary>
         /// Returns a collection cursor.
@@ -235,6 +275,78 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="partitionKey">An optional partitionKey</param>
         long Count<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// Gets the document with the maximum value of a specified property in a MongoDB collections that is satisfying the filter.
+        /// </summary>
+        /// <typeparam name="TDocument">The document type.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="orderByAscending">A property selector to order by descending.</param>
+        /// <param name="partitionKey">An optional partitionKey.</param>
+        Task<TDocument> GetByMaxAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> orderByDescending, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// Gets the document with the maximum value of a specified property in a MongoDB collections that is satisfying the filter.
+        /// </summary>
+        /// <typeparam name="TDocument">The document type.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="orderByAscending">A property selector to order by descending.</param>
+        /// <param name="partitionKey">An optional partitionKey.</param>
+        TDocument GetByMax<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> orderByDescending, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// Gets the document with the minimum value of a specified property in a MongoDB collections that is satisfying the filter.
+        /// </summary>
+        /// <typeparam name="TDocument">The document type.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="orderByAscending">A property selector to order by ascending.</param>
+        /// <param name="partitionKey">An optional partitionKey.</param>
+        Task<TDocument> GetByMinAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> orderByAscending, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// Gets the document with the minimum value of a specified property in a MongoDB collections that is satisfying the filter.
+        /// </summary>
+        /// <typeparam name="TDocument">The document type.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="orderByAscending">A property selector to order by ascending.</param>
+        /// <param name="partitionKey">An optional partitionKey.</param>
+        TDocument GetByMin<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> orderByAscending, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// Gets the maximum value of a property in a mongodb collections that is satisfying the filter.
+        /// </summary>
+        /// <typeparam name="TDocument">The document type.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="orderByAscending">A property selector to order by ascending.</param>
+        /// <param name="partitionKey">An optional partitionKey.</param>
+        Task<TValue> GetMaxValueAsync<TDocument, TKey, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> maxValueSelector, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// Gets the maximum value of a property in a mongodb collections that is satisfying the filter.
+        /// </summary>
+        /// <typeparam name="TDocument">The document type.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="orderByAscending">A property selector to order by ascending.</param>
+        /// <param name="partitionKey">An optional partitionKey.</param>
+        TValue GetMaxValue<TDocument, TKey, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> orderByDescending, string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>;
 

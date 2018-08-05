@@ -6,7 +6,7 @@ using Xunit;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
-namespace CoreCoreIntegrationTests
+namespace CoreIntegrationTests
 {
     public class MongoIdentityUser<TKey> : IdentityUser<TKey>, IDocument<TKey>
         where TKey : IEquatable<TKey>

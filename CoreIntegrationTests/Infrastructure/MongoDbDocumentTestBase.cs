@@ -679,7 +679,100 @@ namespace CoreIntegrationTests.Infrastructure
 
         #endregion Project
 
+        #region Max / Min Queries
+
+        [Fact]
+        public async Task GetByMaxAsync()
+        {
+            // Arrange
+            var criteria = $"{GetTestName()}.{DocumentTypeName}.{Guid.NewGuid()}";
+            var documents = CreateTestDocuments(5);
+            var i = 1;
+            documents.ForEach(e => {
+                e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
+                e.SomeContent = criteria;
+            });
+            SUT.AddMany<T>(documents);
+            var expectedMax = documents.OrderByDescending(e => e.Nested.SomeDate).First();
+
+            // Act
+            var result = await SUT.GetByMaxAsync<T>(e => e.SomeContent == criteria, e => e.Nested.SomeDate, PartitionKey);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(expectedMax.Id, result.Id);
+        }
+
+        [Fact]
+        public void GetByMax()
+        {
+            // Arrange
+            var criteria = $"{GetTestName()}.{DocumentTypeName}.{Guid.NewGuid()}";
+            var documents = CreateTestDocuments(5);
+            var i = 1;
+            documents.ForEach(e => {
+                e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
+                e.SomeContent = criteria;
+            });
+            SUT.AddMany<T>(documents);
+            var expectedMax = documents.OrderByDescending(e => e.Nested.SomeDate).First();
+
+            // Act
+            var result = SUT.GetByMax<T>(e => e.SomeContent == criteria, e => e.Nested.SomeDate, PartitionKey);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(expectedMax.Id, result.Id);
+        }
+
+        [Fact]
+        public async Task GetByMinAsync()
+        {
+            // Arrange
+            var criteria = $"{GetTestName()}.{DocumentTypeName}.{Guid.NewGuid()}";
+            var documents = CreateTestDocuments(5);
+            var i = 1;
+            documents.ForEach(e => {
+                e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
+                e.SomeContent = criteria;
+            });
+            SUT.AddMany<T>(documents);
+            var expectedMin = documents.OrderBy(e => e.Nested.SomeDate).First();
+
+            // Act
+            var result = await SUT.GetByMinAsync<T>(e => e.SomeContent == criteria, e => e.Nested.SomeDate, PartitionKey);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(expectedMin.Id, result.Id);
+        }
+
+        [Fact]
+        public void GetByMin()
+        {
+            // Arrange
+            var criteria = $"{GetTestName()}.{DocumentTypeName}.{Guid.NewGuid()}";
+            var documents = CreateTestDocuments(5);
+            var i = 1;
+            documents.ForEach(e => {
+                e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
+                e.SomeContent = criteria;
+            });
+            SUT.AddMany<T>(documents);
+            var expectedMin = documents.OrderBy(e => e.Nested.SomeDate).First();
+
+            // Act
+            var result = SUT.GetByMin<T>(e => e.SomeContent == criteria, e => e.Nested.SomeDate, PartitionKey);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(expectedMin.Id, result.Id);
+        }
+
+        #endregion Max / Min Queries
+
         #region Test Utils
+
         [MethodImpl(MethodImplOptions.NoInlining)]
         private string GetCurrentMethod()
         {
