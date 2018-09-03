@@ -183,7 +183,18 @@ namespace MongoDbGenericRepository
             {
                 FormatDocument<TDocument, TKey>(document);
             }
-            HandlePartitioned<TDocument, TKey>(documents.FirstOrDefault()).InsertMany(documents.ToList());
+            // cannot use typeof(IPartitionedDocument).IsAssignableFrom(typeof(TDocument)), not available in netstandard 1.5
+            if (documents.Any(e => e is IPartitionedDocument))
+            {
+                foreach (var group in documents.GroupBy(e => ((IPartitionedDocument)e).PartitionKey))
+                {
+                    HandlePartitioned<TDocument, TKey>(group.FirstOrDefault()).InsertMany(group.ToList());
+                }
+            }
+            else
+            {
+                GetCollection<TDocument, TKey>().InsertMany(documents.ToList());
+            }
         }
 
 
