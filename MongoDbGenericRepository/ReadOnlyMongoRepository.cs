@@ -595,7 +595,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return MongoDbContext.GetCollection<TDocument, TKey>(partitionKey);
+            return MongoDbContext.GetCollection<TDocument>(partitionKey);
         }
 
         /// <summary>

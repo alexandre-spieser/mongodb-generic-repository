@@ -23,19 +23,23 @@ namespace MongoDbGenericRepository
         /// </summary>
         public IMongoDatabase Database { get; }
 
-        static MongoDbContext()
-        {
-            // Avoid legacy UUID representation: use Binary 0x04 subtype.
-            MongoDefaults.GuidRepresentation = MongoDB.Bson.GuidRepresentation.Standard;
-        }
-
         /// <summary>
         /// Sets the Guid representation of the MongoDb Driver.
         /// </summary>
         /// <param name="guidRepresentation">The new value of the GuidRepresentation</param>
-        public void SetGuidRepresentation(MongoDB.Bson.GuidRepresentation guidRepresentation)
+        public virtual void SetGuidRepresentation(MongoDB.Bson.GuidRepresentation guidRepresentation)
         {
             MongoDefaults.GuidRepresentation = guidRepresentation;
+        }
+
+        /// <summary>
+        /// Initialize the Guid representation of the MongoDb Driver.
+        /// Override this method to change the default GuidRepresentation.
+        /// </summary>
+        protected virtual void InitializeGuidRepresentation()
+        {
+            // by default, avoid lefacy UUID representation: use Binary 0x04 subtype.
+            MongoDefaults.GuidRepresentation = MongoDB.Bson.GuidRepresentation.Standard;
         }
 
         /// <summary>
@@ -44,6 +48,8 @@ namespace MongoDbGenericRepository
         /// <param name="mongoDatabase">An object implementing IMongoDatabase</param>
         public MongoDbContext(IMongoDatabase mongoDatabase)
         {
+            // Avoid legacy UUID representation: use Binary 0x04 subtype.
+            InitializeGuidRepresentation();
             Database = mongoDatabase;
             Client = Database.Client;
         }
@@ -55,6 +61,7 @@ namespace MongoDbGenericRepository
         /// <param name="databaseName">The name of your database.</param>
         public MongoDbContext(string connectionString, string databaseName)
         {
+            InitializeGuidRepresentation();
             Client = new MongoClient(connectionString);
             Database = Client.GetDatabase(databaseName);
         }
@@ -72,52 +79,32 @@ namespace MongoDbGenericRepository
         }
 
 		/// <summary>
-		/// Returns a collection for a document type that has a partition key.
+		/// Returns a collection for a document type. Also handles document types with a partition key.
 		/// </summary>
 		/// <typeparam name="TDocument">The type representing a Document.</typeparam>
 		/// <param name="partitionKey">The value of the partition key.</param>
-		public IMongoCollection<TDocument> GetCollection<TDocument>(string partitionKey = null) where TDocument : IDocument
+		public IMongoCollection<TDocument> GetCollection<TDocument>(string partitionKey = null)
         {
-            if (string.IsNullOrEmpty(partitionKey))
-            {
-                return Database.GetCollection<TDocument>(GetAttributeCollectionName<TDocument>() ?? Pluralize<TDocument>());
-            }
-			return Database.GetCollection<TDocument>(partitionKey + "-" + GetAttributeCollectionName<TDocument>() ?? Pluralize<TDocument>());
-        }
-
-        /// <summary>
-        /// Returns a collection for a document type that has a partition key.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <param name="partitionKey">The value of the partition key.</param>
-        public IMongoCollection<TDocument> GetCollection<TDocument, TKey>(string partitionKey) 
-            where TDocument : IDocument<TKey>
-            where TKey : IEquatable<TKey>
-        {
-            if (string.IsNullOrEmpty(partitionKey))
-            {
-                return Database.GetCollection<TDocument>(GetAttributeCollectionName<TDocument>() ?? Pluralize<TDocument>());
-            }
-            return Database.GetCollection<TDocument>(partitionKey + "-" + GetAttributeCollectionName<TDocument>() ?? Pluralize<TDocument>());
+            return Database.GetCollection<TDocument>(GetCollectionName<TDocument>(partitionKey));
         }
 
 		/// <summary>
 		/// Drops a collection, use very carefully.
 		/// </summary>
 		/// <typeparam name="TDocument">The type representing a Document.</typeparam>
-		public void DropCollection<TDocument>()
+		public void DropCollection<TDocument>(string partitionKey = null)
         {
-			Database.DropCollection(GetAttributeCollectionName<TDocument>() ?? Pluralize<TDocument>());
+			Database.DropCollection(GetCollectionName<TDocument>(partitionKey));
         }
 
-        /// <summary>
-        /// Drops a collection having a partitionkey, use very carefully.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        public void DropCollection<TDocument>(string partitionKey)
+        private string GetCollectionName<TDocument>(string partitionKey)
         {
-			Database.DropCollection(partitionKey + "-" + GetAttributeCollectionName<TDocument>() ?? Pluralize<TDocument>());
+            if (string.IsNullOrEmpty(partitionKey))
+            {
+                return GetAttributeCollectionName<TDocument>() ?? Pluralize<TDocument>();
+            }
+            var collectionName = $"{partitionKey}-{(GetAttributeCollectionName<TDocument>() ?? Pluralize<TDocument>())}";
+            return collectionName;
         }
 
         /// <summary>

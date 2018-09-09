@@ -24,29 +24,13 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
         /// <param name="partitionKey">The value of the partition key.</param>
-        IMongoCollection<TDocument> GetCollection<TDocument>(string partitionKey = null) where TDocument : IDocument;
-
-        /// <summary>
-        /// Returns a collection for a document type that has a partition key.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <param name="partitionKey">The value of the partition key.</param>
-        IMongoCollection<TDocument> GetCollection<TDocument, TKey>(string partitionKey = null)
-            where TDocument : IDocument<TKey>
-            where TKey : IEquatable<TKey>;
-
-        /// <summary>
-        /// Drops a collection, use very carefully.
-        /// </summary>
-        /// <typeparam name="TDocument"></typeparam>
-        void DropCollection<TDocument>();
+        IMongoCollection<TDocument> GetCollection<TDocument>(string partitionKey = null);
 
         /// <summary>
         /// Drops a collection having a partitionkey, use very carefully.
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
-        void DropCollection<TDocument>(string partitionKey);
+        void DropCollection<TDocument>(string partitionKey = null);
 
         /// <summary>
         /// Sets the Guid representation of the MongoDb Driver.
