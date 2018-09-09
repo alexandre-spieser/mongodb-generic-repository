@@ -80,7 +80,7 @@ namespace MongoDbGenericRepository
 		/// Returns a collection for a document type. Also handles document types with a partition key.
 		/// </summary>
 		/// <typeparam name="TDocument">The type representing a Document.</typeparam>
-		/// <param name="partitionKey">The value of the partition key.</param>
+		/// <param name="partitionKey">The optional value of the partition key.</param>
 		public IMongoCollection<TDocument> GetCollection<TDocument>(string partitionKey = null)
         {
             return Database.GetCollection<TDocument>(GetCollectionName<TDocument>(partitionKey));
@@ -95,21 +95,27 @@ namespace MongoDbGenericRepository
 			Database.DropCollection(GetCollectionName<TDocument>(partitionKey));
         }
 
+        /// <summary>
+        /// Given the docmuent type and the partition key, returns the name of the collection it belongs to.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+		/// <param name="partitionKey">The value of the partition key.</param>
+        /// <returns>The name of the collection.</returns>
         private string GetCollectionName<TDocument>(string partitionKey)
         {
+            var collectionName = GetAttributeCollectionName<TDocument>() ?? Pluralize<TDocument>();
             if (string.IsNullOrEmpty(partitionKey))
             {
-                return GetAttributeCollectionName<TDocument>() ?? Pluralize<TDocument>();
+                return collectionName;
             }
-            var collectionName = $"{partitionKey}-{(GetAttributeCollectionName<TDocument>() ?? Pluralize<TDocument>())}";
-            return collectionName;
+            return $"{partitionKey}-{collectionName}";
         }
 
         /// <summary>
         /// Very naively pluralizes a TDocument type name.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <returns></returns>
+        /// <returns>The pluralized document name.</returns>
         private string Pluralize<TDocument>()
         {
             return (typeof(TDocument).Name.Pluralize()).Camelize();

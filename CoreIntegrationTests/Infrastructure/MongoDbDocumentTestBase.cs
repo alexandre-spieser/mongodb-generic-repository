@@ -846,6 +846,94 @@ namespace CoreIntegrationTests.Infrastructure
             Assert.Equal(expectedMin.Id, result.Id);
         }
 
+        [Fact]
+        public void GetMinValue()
+        {
+            // Arrange
+            var criteria = $"{GetTestName()}.{DocumentTypeName}.{Guid.NewGuid()}";
+            var documents = CreateTestDocuments(5);
+            var i = 1;
+            documents.ForEach(e => {
+                e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
+                e.SomeContent = criteria;
+            });
+            SUT.AddMany<T>(documents);
+            var expectedMin = documents.OrderBy(e => e.Nested.SomeDate).First();
+
+            // Act
+            var result = SUT.GetMinValue<T, DateTime>(e => e.SomeContent == criteria, e => e.Nested.SomeDate, PartitionKey);
+
+            // Assert
+            Assert.True(result != default(DateTime));
+            Assert.Equal(expectedMin.Nested.SomeDate.Date, result.Date);
+        }
+
+        [Fact]
+        public async Task GetMinValueAsync()
+        {
+            // Arrange
+            var criteria = $"{GetTestName()}.{DocumentTypeName}.{Guid.NewGuid()}";
+            var documents = CreateTestDocuments(5);
+            var i = 1;
+            documents.ForEach(e => {
+                e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
+                e.SomeContent = criteria;
+            });
+            SUT.AddMany<T>(documents);
+            var expectedMin = documents.OrderBy(e => e.Nested.SomeDate).First();
+
+            // Act
+            var result = await SUT.GetMinValueAsync<T, DateTime>(e => e.SomeContent == criteria, e => e.Nested.SomeDate, PartitionKey);
+
+            // Assert
+            Assert.True(result != default(DateTime));
+            Assert.Equal(expectedMin.Nested.SomeDate.Date, result.Date);
+        }
+
+        [Fact]
+        public void GetMaxValue()
+        {
+            // Arrange
+            var criteria = $"{GetTestName()}.{DocumentTypeName}.{Guid.NewGuid()}";
+            var documents = CreateTestDocuments(5);
+            var i = 1;
+            documents.ForEach(e => {
+                e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
+                e.SomeContent = criteria;
+            });
+            SUT.AddMany<T>(documents);
+            var expectedMax = documents.OrderByDescending(e => e.Nested.SomeDate).First();
+
+            // Act
+            var result = SUT.GetMaxValue<T, DateTime>(e => e.SomeContent == criteria, e => e.Nested.SomeDate, PartitionKey);
+
+            // Assert
+            Assert.True(result != default(DateTime));
+            Assert.Equal(expectedMax.Nested.SomeDate.Date, result.Date);
+        }
+
+        [Fact]
+        public async Task GetMaxValueAsync()
+        {
+            // Arrange
+            var criteria = $"{GetTestName()}.{DocumentTypeName}.{Guid.NewGuid()}";
+            var documents = CreateTestDocuments(5);
+            var i = 1;
+            documents.ForEach(e => {
+                e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
+                e.SomeContent = criteria;
+            });
+            SUT.AddMany<T>(documents);
+            var expectedMin = documents.OrderByDescending(e => e.Nested.SomeDate).First();
+
+            // Act
+            var result = await SUT.GetMaxValueAsync<T, DateTime>(e => e.SomeContent == criteria, e => e.Nested.SomeDate, PartitionKey);
+
+            // Assert
+            Assert.True(result != default(DateTime));
+            Assert.Equal(expectedMin.Nested.SomeDate.Date, result.Date);
+        }
+
         #endregion Max / Min Queries
 
         #region Test Utils
