@@ -107,6 +107,32 @@ namespace CoreIntegrationTests.Infrastructure
         }
 
         [Fact]
+        public void AddManyWithDifferentPartitionKey()
+        {
+            // only run this test for tests on documents with partition key
+            if (!string.IsNullOrEmpty(PartitionKey))
+            {
+                // Arrange
+                var documents = new List<T> { new T(), new T(), new T(), new T() };
+                if(documents.Any(e => e is IPartitionedDocument))
+                {
+                    var secondPartitionKey = $"{PartitionKey}-2";
+                    ((IPartitionedDocument)documents[2]).PartitionKey = secondPartitionKey;
+                    ((IPartitionedDocument)documents[3]).PartitionKey = secondPartitionKey;
+                    // Act
+                    SUT.AddMany<T>(documents);
+                    // Assert
+                    long count = SUT.Count<T>(e => e.Id.Equals(documents[0].Id) || e.Id.Equals(documents[1].Id), PartitionKey);
+                    long secondPartitionCount = SUT.Count<T>(e => e.Id.Equals(documents[2].Id) || e.Id.Equals(documents[3].Id), secondPartitionKey);
+                    // Cleanup second partition
+                    SUT.DeleteMany<T>(e => e.Id.Equals(documents[2].Id) || e.Id.Equals(documents[3].Id), secondPartitionKey);
+                    Assert.True(2 == count, GetTestName());
+                    Assert.True(2 == secondPartitionCount, GetTestName());
+                }
+            }
+        }
+
+        [Fact]
         public async Task AddManyAsync()
         {
             // Arrange
@@ -121,6 +147,31 @@ namespace CoreIntegrationTests.Infrastructure
             Assert.True (2 == count, GetTestName());
         }
 
+        [Fact]
+        public async Task AddManyAsyncWithDifferentPartitionKey()
+        {
+            // only run this test for tests on documents with partition key
+            if (!string.IsNullOrEmpty(PartitionKey))
+            {
+                // Arrange
+                var documents = new List<T> { new T(), new T(), new T(), new T() };
+                if (documents.Any(e => e is IPartitionedDocument))
+                {
+                    var secondPartitionKey = $"{PartitionKey}-2";
+                    ((IPartitionedDocument)documents[2]).PartitionKey = secondPartitionKey;
+                    ((IPartitionedDocument)documents[3]).PartitionKey = secondPartitionKey;
+                    // Act
+                    await SUT.AddManyAsync<T>(documents);
+                    // Assert
+                    long count = SUT.Count<T>(e => e.Id.Equals(documents[0].Id) || e.Id.Equals(documents[1].Id), PartitionKey);
+                    long secondPartitionCount = SUT.Count<T>(e => e.Id.Equals(documents[2].Id) || e.Id.Equals(documents[3].Id), secondPartitionKey);
+                    // Cleanup second partition
+                    SUT.DeleteMany<T>(e => e.Id.Equals(documents[2].Id) || e.Id.Equals(documents[3].Id), secondPartitionKey);
+                    Assert.True(2 == count, GetTestName());
+                    Assert.True(2 == secondPartitionCount, GetTestName());
+                }
+            }
+        }
 
         #endregion Add
 
@@ -523,12 +574,25 @@ namespace CoreIntegrationTests.Infrastructure
             var criteria = $"{GetTestName()}.{DocumentTypeName}";
             var documents = CreateTestDocuments(5);
             documents.ForEach(e => e.SomeContent = criteria);
+            var canPartition = !string.IsNullOrEmpty(PartitionKey) && documents.Any(e => e is IPartitionedDocument);
+            string secondKey = null;
+            if (canPartition)
+            {
+                secondKey = $"{PartitionKey}-2";
+                ((IPartitionedDocument)documents[3]).PartitionKey = secondKey;
+                ((IPartitionedDocument)documents[4]).PartitionKey = secondKey;
+            }
+
             SUT.AddMany<T>(documents);
             // Act
             var result = await SUT.DeleteManyAsync<T>(documents);
             // Assert
             Assert.True(5 == result);
             Assert.False(SUT.Any<T>(e => e.SomeContent == criteria, PartitionKey), GetTestName());
+            if (canPartition)
+            {
+                Assert.False(SUT.Any<T>(e => e.SomeContent == criteria, secondKey), GetTestName());
+            }
         }
 
         [Fact]
@@ -553,12 +617,25 @@ namespace CoreIntegrationTests.Infrastructure
             var criteria = $"{GetTestName()}.{DocumentTypeName}";
             var documents = CreateTestDocuments(5);
             documents.ForEach(e => e.SomeContent = criteria);
+            var canPartition = !string.IsNullOrEmpty(PartitionKey) && documents.Any(e => e is IPartitionedDocument);
+            string secondKey = null;
+            if (canPartition)
+            {
+                secondKey = $"{PartitionKey}-2";
+                ((IPartitionedDocument)documents[3]).PartitionKey = secondKey;
+                ((IPartitionedDocument)documents[4]).PartitionKey = secondKey;
+            }
+
             SUT.AddMany<T>(documents);
             // Act
             var result = SUT.DeleteMany<T>(documents);
             // Assert
             Assert.True(5 == result);
             Assert.False(SUT.Any<T>(e => e.SomeContent == criteria, PartitionKey), GetTestName());
+            if (canPartition)
+            {
+                Assert.False(SUT.Any<T>(e => e.SomeContent == criteria, secondKey), GetTestName());
+            }
         }
 
         #endregion Delete

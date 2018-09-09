@@ -82,11 +82,22 @@ namespace MongoDbGenericRepository
             {
                 return;
             }
-            foreach (var doc in documents)
+            foreach (var document in documents)
             {
-                FormatDocument(doc);
+                FormatDocument(document);
             }
-            await HandlePartitioned(documents.FirstOrDefault()).InsertManyAsync(documents);
+            // cannot use typeof(IPartitionedDocument).IsAssignableFrom(typeof(TDocument)), not available in netstandard 1.5
+            if (documents.Any(e => e is IPartitionedDocument))
+            {
+                foreach (var group in documents.GroupBy(e => ((IPartitionedDocument)e).PartitionKey))
+                {
+                    await HandlePartitioned(group.FirstOrDefault()).InsertManyAsync(group.ToList());
+                }
+            }
+            else
+            {
+                await GetCollection<TDocument>().InsertManyAsync(documents.ToList());
+            }
         }
 
         /// <summary>
@@ -105,7 +116,18 @@ namespace MongoDbGenericRepository
             {
                 FormatDocument(document);
             }
-            HandlePartitioned(documents.FirstOrDefault()).InsertMany(documents.ToList());
+            // cannot use typeof(IPartitionedDocument).IsAssignableFrom(typeof(TDocument)), not available in netstandard 1.5
+            if (documents.Any(e => e is IPartitionedDocument))
+            {
+                foreach (var group in documents.GroupBy(e => ((IPartitionedDocument)e).PartitionKey))
+                {
+                    HandlePartitioned(group.FirstOrDefault()).InsertMany(group.ToList());
+                }
+            }
+            else
+            {
+                GetCollection<TDocument>().InsertMany(documents.ToList());
+            }
         }
 
         #endregion Create
@@ -157,11 +179,22 @@ namespace MongoDbGenericRepository
             {
                 return;
             }
-            foreach (var doc in documents)
+            foreach (var document in documents)
             {
-                FormatDocument<TDocument, TKey>(doc);
+                FormatDocument<TDocument, TKey>(document);
             }
-            await HandlePartitioned<TDocument, TKey>(documents.FirstOrDefault()).InsertManyAsync(documents);
+            // cannot use typeof(IPartitionedDocument).IsAssignableFrom(typeof(TDocument)), not available in netstandard 1.5
+            if (documents.Any(e => e is IPartitionedDocument))
+            {
+                foreach (var group in documents.GroupBy(e => ((IPartitionedDocument)e).PartitionKey))
+                {
+                    await HandlePartitioned<TDocument, TKey>(group.FirstOrDefault()).InsertManyAsync(group.ToList());
+                }
+            }
+            else
+            {
+                await GetCollection<TDocument, TKey>().InsertManyAsync(documents.ToList());
+            }
         }
 
         /// <summary>
@@ -487,9 +520,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            var collection = string.IsNullOrEmpty(partitionKey) ? GetCollection<TDocument, TKey>() : GetCollection<TDocument, TKey>(partitionKey);
-            var updateRes = await collection.UpdateOneAsync(Builders<TDocument>.Filter.Where(filter), Builders<TDocument>.Update.Set(field, value));
-            return updateRes.ModifiedCount == 1;
+            return await UpdateOneAsync<TDocument, TKey, TField>(Builders<TDocument>.Filter.Where(filter), field, value, partitionKey);
         }
 
         /// <summary>
@@ -525,9 +556,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            var collection = string.IsNullOrEmpty(partitionKey) ? GetCollection<TDocument, TKey>() : GetCollection<TDocument, TKey>(partitionKey);
-            var updateRes = collection.UpdateOne(Builders<TDocument>.Filter.Where(filter), Builders<TDocument>.Update.Set(field, value));
-            return updateRes.ModifiedCount == 1;
+            return UpdateOne<TDocument, TKey, TField>(Builders<TDocument>.Filter.Where(filter), field, value, partitionKey);
         }
 
         #endregion Update
@@ -542,7 +571,7 @@ namespace MongoDbGenericRepository
         /// <returns>The number of documents deleted.</returns>
         public virtual async Task<long> DeleteOneAsync<TDocument>(TDocument document) where TDocument : IDocument
         {
-            return (await HandlePartitioned(document).DeleteOneAsync(x => x.Id == document.Id)).DeletedCount;
+            return await DeleteOneAsync<TDocument, Guid>(document);
         }
 
         /// <summary>
@@ -553,7 +582,7 @@ namespace MongoDbGenericRepository
         /// <returns>The number of documents deleted.</returns>
         public virtual long DeleteOne<TDocument>(TDocument document) where TDocument : IDocument
         {
-            return HandlePartitioned(document).DeleteOne(x => x.Id == document.Id).DeletedCount;
+            return DeleteOne<TDocument, Guid>(document);
         }
 
         /// <summary>
@@ -565,7 +594,7 @@ namespace MongoDbGenericRepository
         /// <returns>The number of documents deleted.</returns>
         public virtual long DeleteOne<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
         {
-            return HandlePartitioned<TDocument>(partitionKey).DeleteOne(filter).DeletedCount;
+            return DeleteOne<TDocument, Guid>(filter, partitionKey);
         }
 
         /// <summary>
@@ -577,7 +606,7 @@ namespace MongoDbGenericRepository
         /// <returns>The number of documents deleted.</returns>
         public virtual async Task<long> DeleteOneAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument
         {
-            return (await HandlePartitioned<TDocument>(partitionKey).DeleteOneAsync(filter)).DeletedCount;
+            return await DeleteOneAsync<TDocument, Guid>(filter, partitionKey);
         }
 
         /// <summary>
@@ -600,12 +629,7 @@ namespace MongoDbGenericRepository
         /// <returns>The number of documents deleted.</returns>
         public virtual async Task<long> DeleteManyAsync<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument
         {
-            if (!documents.Any())
-            {
-                return 0;
-            }
-            var idsTodelete = documents.Select(e => e.Id).ToArray();
-            return (await HandlePartitioned(documents.FirstOrDefault()).DeleteManyAsync(x => idsTodelete.Contains(x.Id))).DeletedCount;
+            return await DeleteManyAsync<TDocument, Guid>(documents);
         }
 
         /// <summary>
@@ -616,12 +640,7 @@ namespace MongoDbGenericRepository
         /// <returns>The number of documents deleted.</returns>
         public virtual long DeleteMany<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument
         {
-            if (!documents.Any())
-            {
-                return 0;
-            }
-            var idsTodelete = documents.Select(e => e.Id).ToArray();
-            return HandlePartitioned(documents.FirstOrDefault()).DeleteMany(x => idsTodelete.Contains(x.Id)).DeletedCount;
+            return DeleteMany<TDocument, Guid>(documents);
         }
 
         /// <summary>
@@ -730,8 +749,22 @@ namespace MongoDbGenericRepository
             {
                 return 0;
             }
-            var idsTodelete = documents.Select(e => e.Id).ToArray();
-            return (await HandlePartitioned<TDocument, TKey>(documents.FirstOrDefault()).DeleteManyAsync(x => idsTodelete.Contains(x.Id))).DeletedCount;
+            // cannot use typeof(IPartitionedDocument).IsAssignableFrom(typeof(TDocument)), not available in netstandard 1.5
+            if (documents.Any(e => e is IPartitionedDocument))
+            {
+                long deleteCount = 0;
+                foreach (var group in documents.GroupBy(e => ((IPartitionedDocument)e).PartitionKey))
+                {
+                    var groupIdsTodelete = group.Select(e => e.Id).ToArray();
+                    deleteCount += (await HandlePartitioned<TDocument, TKey>(group.FirstOrDefault()).DeleteManyAsync(x => groupIdsTodelete.Contains(x.Id))).DeletedCount;
+                }
+                return deleteCount;
+            }
+            else
+            {
+                var idsTodelete = documents.Select(e => e.Id).ToArray();
+                return (await HandlePartitioned<TDocument, TKey>(documents.FirstOrDefault()).DeleteManyAsync(x => idsTodelete.Contains(x.Id))).DeletedCount;
+            }
         }
 
         /// <summary>
@@ -749,8 +782,22 @@ namespace MongoDbGenericRepository
             {
                 return 0;
             }
-            var idsTodelete = documents.Select(e => e.Id).ToArray();
-            return HandlePartitioned<TDocument, TKey>(documents.FirstOrDefault()).DeleteMany(x => idsTodelete.Contains(x.Id)).DeletedCount;
+            // cannot use typeof(IPartitionedDocument).IsAssignableFrom(typeof(TDocument)), not available in netstandard 1.5
+            if (documents.Any(e => e is IPartitionedDocument))
+            {
+                long deleteCount = 0;
+                foreach (var group in documents.GroupBy(e => ((IPartitionedDocument)e).PartitionKey))
+                {
+                    var groupIdsTodelete = group.Select(e => e.Id).ToArray();
+                    deleteCount += (HandlePartitioned<TDocument, TKey>(group.FirstOrDefault()).DeleteMany(x => groupIdsTodelete.Contains(x.Id))).DeletedCount;
+                }
+                return deleteCount;
+            }
+            else
+            {
+                var idsTodelete = documents.Select(e => e.Id).ToArray();
+                return (HandlePartitioned<TDocument, TKey>(documents.FirstOrDefault()).DeleteMany(x => idsTodelete.Contains(x.Id))).DeletedCount;
+            }
         }
 
         /// <summary>
