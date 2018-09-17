@@ -230,7 +230,6 @@ namespace MongoDbGenericRepository
             }
         }
 
-
         #endregion 
 
         #region Update
@@ -1081,6 +1080,177 @@ namespace MongoDbGenericRepository
         }
 
         #endregion Find And Update
+
+        #region Index Management
+
+        /// <summary>
+        /// Create an Index given a field and an optional ascending / descending parameter
+        /// we want to create them in the background as we want the db to still be available during this process
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="field">The field we want to index</param>
+        /// <param name="indexCreationOptions">Options for creating an index..</param>
+        /// <param name="partitionKey">An optional partition key</param>
+        /// <returns>The result of the create index operation.</returns>
+        public async Task<string> CreateTextIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions = null, string partitionKey = null)
+            where TDocument : IDocument
+        {
+            return await HandlePartitioned<TDocument>(partitionKey).Indexes
+                                                                   .CreateOneAsync(
+                                                                     new CreateIndexModel<TDocument>(
+                                                                     Builders<TDocument>.IndexKeys.Text(field),
+                                                                     indexCreationOptions == null ? null : MapIndexOptions(indexCreationOptions)
+                                                                   ));
+        }
+
+        private CreateIndexOptions MapIndexOptions(IndexCreationOptions indexCreationOptions)
+        {
+            return new CreateIndexOptions
+            {
+                Unique = indexCreationOptions.Unique,
+                TextIndexVersion = indexCreationOptions.TextIndexVersion,
+                SphereIndexVersion = indexCreationOptions.SphereIndexVersion,
+                Sparse = indexCreationOptions.Sparse,
+                Name = indexCreationOptions.Name,
+                Min = indexCreationOptions.Min,
+                Max = indexCreationOptions.Max,
+                LanguageOverride = indexCreationOptions.LanguageOverride,
+                ExpireAfter = indexCreationOptions.ExpireAfter,
+                DefaultLanguage = indexCreationOptions.DefaultLanguage,
+                BucketSize = indexCreationOptions.BucketSize,
+                Bits = indexCreationOptions.Bits,
+                Background = indexCreationOptions.Background,
+                Version = indexCreationOptions.Version
+            };
+        }
+
+        /// <summary>
+        /// Creates an index on the given field in ascending order
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="field">The field we want to index</param>
+        /// <param name="indexCreationOptions">Options for creating an index..</param>
+        /// <param name="partitionKey">An optional partition key</param>
+        /// <returns></returns>
+        public async Task<string> CreateAscendingIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions = null, string partitionKey = null) where TDocument : IDocument
+        {
+            var collection = HandlePartitioned<TDocument, Guid>(partitionKey);
+            var createOptions = indexCreationOptions == null ? null : MapIndexOptions(indexCreationOptions);
+            var indexKey = Builders<TDocument>.IndexKeys;
+            return await collection.Indexes
+                                   .CreateOneAsync(
+                new CreateIndexModel<TDocument>(indexKey.Ascending(field), createOptions));
+        }
+
+        /// <summary>
+        /// Creates an index on the given field in ascending order
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="field">The field we want to index</param>
+        /// <param name="indexCreationOptions">Options for creating an index..</param>
+        /// <param name="partitionKey">An optional partition key</param>
+        /// <returns></returns>
+        public async Task<string> CreateDescendingIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions = null, string partitionKey = null) where TDocument : IDocument
+        {
+            var collection = HandlePartitioned<TDocument, Guid>(partitionKey);
+            var createOptions = indexCreationOptions == null ? null : MapIndexOptions(indexCreationOptions);
+            var indexKey = Builders<TDocument>.IndexKeys;
+            return await collection.Indexes
+                                   .CreateOneAsync(
+                new CreateIndexModel<TDocument>(indexKey.Descending(field), createOptions));
+        }
+
+        /// <summary>
+        /// Create an Index given a field and an optional ascending / descending parameter
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <param name="mongoCollectionIndexType"></param>
+        /// <param name="fields"></param>
+        /// <returns></returns>
+        public async Task<string> CreateHshedIndexAsync<TDocument>(Expression<Func<TDocument, object>> field)
+            where TDocument : IDocument
+        {
+            var collection = HandlePartitioned<TDocument, Guid>(partitionKey);
+            var createOptions = new CreateIndexOptions
+            {
+                Background = createInBackGround
+            };
+            var indexKey = Builders<TDocument>.IndexKeys;
+            if (ascending)
+            {
+                return await collection.Indexes
+                                       .CreateOneAsync(
+                    new CreateIndexModel<TDocument>(indexKey.Ascending(field), createOptions));
+            }
+            else
+            {
+                return await collection.Indexes
+                                       .CreateOneAsync(
+                    new CreateIndexModel<TDocument>(indexKey.Descending(field), createOptions));
+            }
+            // we want to create them in the background as we want the db to still be available during this process
+            var collection = GetCollection<TDocument>();
+            var indexKey = Builders<TDocument>.IndexKeys;
+            switch (mongoCollectionIndexType)
+            {
+                case MongoCollectionIndexType.Text:
+                    return await collection.Indexes.CreateOneAsync(indexKey.Text(field), new CreateIndexOptions { Background = true });
+                case MongoCollectionIndexType.Hashed:
+                    return await collection.Indexes.CreateOneAsync(indexKey.Hashed(field), new CreateIndexOptions { Background = true });
+                default:
+                    return await collection.Indexes.CreateOneAsync(indexKey.Hashed(field), new CreateIndexOptions { Background = true });
+            }
+        }
+
+
+        /// <summary>
+        /// We are only allowed one Text index per MongoCollection, this method will combine Text indexes across multiple string fields
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="fields"></param>
+        /// <returns></returns>
+        public async Task<string> CreateCombinedTextIndexAsync<T>(params Expression<Func<T, object>>[] fields) where T : BaseMongoEntity
+        {
+            var collection = GetCollection<T>();
+            var listOfDefs = new List<IndexKeysDefinition<T>>();
+            foreach (var field in fields)
+            {
+                listOfDefs.Add(Builders<T>.IndexKeys.Text(field));
+            }
+            return await collection.Indexes.CreateOneAsync(Builders<T>.IndexKeys.Combine(listOfDefs), new CreateIndexOptions
+            {
+                Background = true // we want to create them in the background as we want the db to still be available
+            });
+        }
+
+        /// <summary>
+        /// Drops the index given a field name
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="fieldName"></param>
+        /// <returns></returns>
+        public async Task DropIndexAsync<T>(string fieldName) where T : BaseMongoEntity
+        {
+            var collection = GetCollection<T>();
+            await collection.Indexes.DropOneAsync(fieldName);
+        }
+
+        /// <summary>
+        /// Drops the index given a field name
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public async Task<List<string>> GetIndexesNamesAsync<T>() where T : BaseMongoEntity
+        {
+            var collection = GetCollection<T>();
+            var indexCursor = await collection.Indexes.ListAsync();
+            var indexes = await indexCursor.ToListAsync();
+            var values = indexes.Select(e => e["name"].ToString()).ToList();
+            return values;
+        }
+
+
+        #endregion Index Management
 
         /// <summary>
         /// Sets the value of the document Id if it is not set already.
