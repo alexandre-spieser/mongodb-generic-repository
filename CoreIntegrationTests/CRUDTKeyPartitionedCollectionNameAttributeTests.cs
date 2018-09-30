@@ -5,7 +5,7 @@ using System;
 
 namespace CoreIntegrationTests
 {
-    [CollectionName("TestingCollectionNameAttributePartitionedTKey")]
+    [CollectionName("TestingCNameAttrPartTKey")]
     public class CoreTKeyPartitionedCollectionNameDoc : TestDoc<Guid>, IPartitionedDocument
     {
         public CoreTKeyPartitionedCollectionNameDoc()

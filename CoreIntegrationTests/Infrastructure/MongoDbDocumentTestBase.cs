@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -946,6 +947,10 @@ namespace CoreIntegrationTests.Infrastructure
 
         #region Index Management
 
+
+        //Instantiate a Singleton of the Semaphore with a value of 1. This means that only 1 thread can be granted access at a time.
+        static SemaphoreSlim textIndexSemaphore = new SemaphoreSlim(1, 1);
+
         [Fact]
         public async Task CreateTextIndexNoOptionAsync()
         {
@@ -953,34 +958,50 @@ namespace CoreIntegrationTests.Infrastructure
             const string expectedIndexName = "SomeContent_text";
 
             // Act
-            var result = await SUT.CreateTextIndexAsync<T>(x => x.SomeContent, null, PartitionKey);
+            await textIndexSemaphore.WaitAsync();
+            try
+            {
+                var result = await SUT.CreateTextIndexAsync<T>(x => x.SomeContent, null, PartitionKey);
 
-            // Assert
-            var listOfIndexNames = await SUT.GetIndexesNamesAsync<T>(PartitionKey);
-            Assert.Contains(expectedIndexName, listOfIndexNames);
+                // Assert
+                var listOfIndexNames = await SUT.GetIndexesNamesAsync<T>(PartitionKey);
+                Assert.Contains(expectedIndexName, listOfIndexNames);
 
-            // Cleanup 
-            await SUT.DropIndexAsync<T>(expectedIndexName, PartitionKey);
+                // Cleanup 
+                await SUT.DropIndexAsync<T>(expectedIndexName, PartitionKey);
+            }
+            finally
+            {
+                textIndexSemaphore.Release();
+            }
         }
 
         [Fact]
         public async Task CreateTextIndexWithOptionAsync()
         {
             // Arrange
-            string expectedIndexName = $"SomeContent_text_{Guid.NewGuid()}";
+            string expectedIndexName = $"{Guid.NewGuid()}";
             var option = new IndexCreationOptions
             {
                 Name = expectedIndexName
             };
-            // Act
-            var result = await SUT.CreateTextIndexAsync<T>(x => x.SomeContent, option, PartitionKey);
+            await textIndexSemaphore.WaitAsync();
+            try
+            {
+                // Act
+                var result = await SUT.CreateTextIndexAsync<T>(x => x.AddedAtUtc, option, PartitionKey);
 
-            // Assert
-            var listOfIndexNames = await SUT.GetIndexesNamesAsync<T>(PartitionKey);
-            Assert.Contains(expectedIndexName, listOfIndexNames);
+                // Assert
+                var listOfIndexNames = await SUT.GetIndexesNamesAsync<T>(PartitionKey);
+                Assert.Contains(expectedIndexName, listOfIndexNames);
 
-            // Cleanup
-            await SUT.DropIndexAsync<T>(expectedIndexName, PartitionKey);
+                // Cleanup
+                await SUT.DropIndexAsync<T>(expectedIndexName, PartitionKey);
+            }
+            finally
+            {
+                textIndexSemaphore.Release();
+            }
         }
 
         #endregion Index Management
