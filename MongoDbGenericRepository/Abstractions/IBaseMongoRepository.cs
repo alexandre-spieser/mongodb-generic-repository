@@ -12,7 +12,7 @@ namespace MongoDbGenericRepository
     /// <summary>
     /// The IBaseMongoRepository exposes the CRUD functionality of the BaseMongoRepository.
     /// </summary>
-    public interface IBaseMongoRepository : IReadOnlyMongoRepository
+    public interface IBaseMongoRepository : IReadOnlyMongoRepository, IMongoDbCollectionIndexRepository
     {
         #region Create
 

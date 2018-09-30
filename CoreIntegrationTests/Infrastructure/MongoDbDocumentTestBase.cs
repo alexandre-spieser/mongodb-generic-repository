@@ -11,7 +11,7 @@ namespace CoreIntegrationTests.Infrastructure
 {
     public abstract class MongoDbDocumentTestBase<T> :
         IClassFixture<MongoDbTestFixture<T, Guid>>
-        where T: TestDoc, new()
+        where T : TestDoc, new()
     {
 
         private readonly MongoDbTestFixture<T, Guid> _fixture;
@@ -73,7 +73,7 @@ namespace CoreIntegrationTests.Infrastructure
             // Act
             SUT.AddOne<T>(document);
             // Assert
-            long count = string.IsNullOrEmpty(PartitionKey) ? SUT.Count<T>(e => e.Id.Equals(document.Id)) 
+            long count = string.IsNullOrEmpty(PartitionKey) ? SUT.Count<T>(e => e.Id.Equals(document.Id))
                                                             : SUT.Count<T>(e => e.Id.Equals(document.Id), PartitionKey);
             Assert.True(1 == count, GetTestName());
         }
@@ -88,7 +88,7 @@ namespace CoreIntegrationTests.Infrastructure
             // Assert
             long count = string.IsNullOrEmpty(PartitionKey) ? SUT.Count<T>(e => e.Id.Equals(document.Id))
                                                             : SUT.Count<T>(e => e.Id.Equals(document.Id), PartitionKey);
-            Assert.True (1 == count, GetTestName());
+            Assert.True(1 == count, GetTestName());
         }
 
         [Fact]
@@ -103,7 +103,7 @@ namespace CoreIntegrationTests.Infrastructure
                                                                                    || e.Id.Equals(documents[1].Id))
                                                             : SUT.Count<T>(e => e.Id.Equals(documents[0].Id)
                                                                                   || e.Id.Equals(documents[1].Id), PartitionKey);
-            Assert.True (2 == count, GetTestName());
+            Assert.True(2 == count, GetTestName());
         }
 
         [Fact]
@@ -114,7 +114,7 @@ namespace CoreIntegrationTests.Infrastructure
             {
                 // Arrange
                 var documents = new List<T> { new T(), new T(), new T(), new T() };
-                if(documents.Any(e => e is IPartitionedDocument))
+                if (documents.Any(e => e is IPartitionedDocument))
                 {
                     var secondPartitionKey = $"{PartitionKey}-2";
                     ((IPartitionedDocument)documents[2]).PartitionKey = secondPartitionKey;
@@ -144,7 +144,7 @@ namespace CoreIntegrationTests.Infrastructure
                                                                                    || e.Id.Equals(documents[1].Id))
                                                             : SUT.Count<T>(e => e.Id.Equals(documents[0].Id)
                                                                                   || e.Id.Equals(documents[1].Id), PartitionKey);
-            Assert.True (2 == count, GetTestName());
+            Assert.True(2 == count, GetTestName());
         }
 
         [Fact]
@@ -235,7 +235,7 @@ namespace CoreIntegrationTests.Infrastructure
             var cursor = SUT.GetCursor<T>(x => x.Id.Equals(document.Id), PartitionKey);
             var count = cursor.Count();
             // Assert
-            Assert.True (1 == count, GetTestName());
+            Assert.True(1 == count, GetTestName());
         }
 
         [Fact]
@@ -490,10 +490,10 @@ namespace CoreIntegrationTests.Infrastructure
             Assert.True(result);
             var updatedDocument = SUT.GetById<T>(document.Id, PartitionKey);
             Assert.True(null != updatedDocument);
-            Assert.True(childrenToAdd[0].Type== updatedDocument.Children[0].Type, GetTestName());
-            Assert.True(childrenToAdd[0].Value== updatedDocument.Children[0].Value, GetTestName());
-            Assert.True(childrenToAdd[1].Type== updatedDocument.Children[1].Type, GetTestName());
-            Assert.True(childrenToAdd[1].Value== updatedDocument.Children[1].Value, GetTestName());
+            Assert.True(childrenToAdd[0].Type == updatedDocument.Children[0].Type, GetTestName());
+            Assert.True(childrenToAdd[0].Value == updatedDocument.Children[0].Value, GetTestName());
+            Assert.True(childrenToAdd[1].Type == updatedDocument.Children[1].Type, GetTestName());
+            Assert.True(childrenToAdd[1].Value == updatedDocument.Children[1].Value, GetTestName());
         }
 
         #endregion Update
@@ -509,7 +509,7 @@ namespace CoreIntegrationTests.Infrastructure
             // Act
             var result = SUT.DeleteOne<T>(document);
             // Assert
-            Assert.True (1 == result);
+            Assert.True(1 == result);
             Assert.False(SUT.Any<T>(e => e.Id.Equals(document.Id), PartitionKey), GetTestName());
         }
 
@@ -522,7 +522,7 @@ namespace CoreIntegrationTests.Infrastructure
             // Act
             var result = SUT.DeleteOne<T>(e => e.Id.Equals(document.Id), PartitionKey);
             // Assert
-            Assert.True (1 == result);
+            Assert.True(1 == result);
             Assert.False(SUT.Any<T>(e => e.Id.Equals(document.Id), PartitionKey), GetTestName());
         }
 
@@ -535,7 +535,7 @@ namespace CoreIntegrationTests.Infrastructure
             // Act
             var result = await SUT.DeleteOneAsync<T>(document);
             // Assert
-            Assert.True (1 == result);
+            Assert.True(1 == result);
             Assert.False(SUT.Any<T>(e => e.Id.Equals(document.Id), PartitionKey), GetTestName());
         }
 
@@ -548,7 +548,7 @@ namespace CoreIntegrationTests.Infrastructure
             // Act
             var result = await SUT.DeleteOneAsync<T>(e => e.Id.Equals(document.Id), PartitionKey);
             // Assert
-            Assert.True (1 == result);
+            Assert.True(1 == result);
             Assert.False(SUT.Any<T>(e => e.Id.Equals(document.Id), PartitionKey), GetTestName());
         }
 
@@ -765,7 +765,8 @@ namespace CoreIntegrationTests.Infrastructure
             var criteria = $"{GetTestName()}.{DocumentTypeName}.{Guid.NewGuid()}";
             var documents = CreateTestDocuments(5);
             var i = 1;
-            documents.ForEach(e => {
+            documents.ForEach(e =>
+            {
                 e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
                 e.SomeContent = criteria;
             });
@@ -787,7 +788,8 @@ namespace CoreIntegrationTests.Infrastructure
             var criteria = $"{GetTestName()}.{DocumentTypeName}.{Guid.NewGuid()}";
             var documents = CreateTestDocuments(5);
             var i = 1;
-            documents.ForEach(e => {
+            documents.ForEach(e =>
+            {
                 e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
                 e.SomeContent = criteria;
             });
@@ -809,7 +811,8 @@ namespace CoreIntegrationTests.Infrastructure
             var criteria = $"{GetTestName()}.{DocumentTypeName}.{Guid.NewGuid()}";
             var documents = CreateTestDocuments(5);
             var i = 1;
-            documents.ForEach(e => {
+            documents.ForEach(e =>
+            {
                 e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
                 e.SomeContent = criteria;
             });
@@ -831,7 +834,8 @@ namespace CoreIntegrationTests.Infrastructure
             var criteria = $"{GetTestName()}.{DocumentTypeName}.{Guid.NewGuid()}";
             var documents = CreateTestDocuments(5);
             var i = 1;
-            documents.ForEach(e => {
+            documents.ForEach(e =>
+            {
                 e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
                 e.SomeContent = criteria;
             });
@@ -853,7 +857,8 @@ namespace CoreIntegrationTests.Infrastructure
             var criteria = $"{GetTestName()}.{DocumentTypeName}.{Guid.NewGuid()}";
             var documents = CreateTestDocuments(5);
             var i = 1;
-            documents.ForEach(e => {
+            documents.ForEach(e =>
+            {
                 e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
                 e.SomeContent = criteria;
             });
@@ -875,7 +880,8 @@ namespace CoreIntegrationTests.Infrastructure
             var criteria = $"{GetTestName()}.{DocumentTypeName}.{Guid.NewGuid()}";
             var documents = CreateTestDocuments(5);
             var i = 1;
-            documents.ForEach(e => {
+            documents.ForEach(e =>
+            {
                 e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
                 e.SomeContent = criteria;
             });
@@ -897,7 +903,8 @@ namespace CoreIntegrationTests.Infrastructure
             var criteria = $"{GetTestName()}.{DocumentTypeName}.{Guid.NewGuid()}";
             var documents = CreateTestDocuments(5);
             var i = 1;
-            documents.ForEach(e => {
+            documents.ForEach(e =>
+            {
                 e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
                 e.SomeContent = criteria;
             });
@@ -919,7 +926,8 @@ namespace CoreIntegrationTests.Infrastructure
             var criteria = $"{GetTestName()}.{DocumentTypeName}.{Guid.NewGuid()}";
             var documents = CreateTestDocuments(5);
             var i = 1;
-            documents.ForEach(e => {
+            documents.ForEach(e =>
+            {
                 e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
                 e.SomeContent = criteria;
             });
@@ -935,6 +943,47 @@ namespace CoreIntegrationTests.Infrastructure
         }
 
         #endregion Max / Min Queries
+
+        #region Index Management
+
+        [Fact]
+        public async Task CreateTextIndexNoOptionAsync()
+        {
+            // Arrange 
+            const string expectedIndexName = "SomeContent_text";
+
+            // Act
+            var result = await SUT.CreateTextIndexAsync<T>(x => x.SomeContent, null, PartitionKey);
+
+            // Assert
+            var listOfIndexNames = await SUT.GetIndexesNamesAsync<T>(PartitionKey);
+            Assert.Contains(expectedIndexName, listOfIndexNames);
+
+            // Cleanup 
+            await SUT.DropIndexAsync<T>(expectedIndexName, PartitionKey);
+        }
+
+        [Fact]
+        public async Task CreateTextIndexWithOptionAsync()
+        {
+            // Arrange
+            string expectedIndexName = $"SomeContent_text_{Guid.NewGuid()}";
+            var option = new IndexCreationOptions
+            {
+                Name = expectedIndexName
+            };
+            // Act
+            var result = await SUT.CreateTextIndexAsync<T>(x => x.SomeContent, option, PartitionKey);
+
+            // Assert
+            var listOfIndexNames = await SUT.GetIndexesNamesAsync<T>(PartitionKey);
+            Assert.Contains(expectedIndexName, listOfIndexNames);
+
+            // Cleanup
+            await SUT.DropIndexAsync<T>(expectedIndexName, PartitionKey);
+        }
+
+        #endregion Index Management
 
         #region Test Utils
 

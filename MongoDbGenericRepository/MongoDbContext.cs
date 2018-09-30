@@ -76,23 +76,23 @@ namespace MongoDbGenericRepository
                                      .FirstOrDefault() as CollectionNameAttribute)?.Name;
         }
 
-		/// <summary>
-		/// Returns a collection for a document type. Also handles document types with a partition key.
-		/// </summary>
-		/// <typeparam name="TDocument">The type representing a Document.</typeparam>
-		/// <param name="partitionKey">The optional value of the partition key.</param>
-		public IMongoCollection<TDocument> GetCollection<TDocument>(string partitionKey = null)
+        /// <summary>
+        /// Returns a collection for a document type. Also handles document types with a partition key.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="partitionKey">The optional value of the partition key.</param>
+        public IMongoCollection<TDocument> GetCollection<TDocument>(string partitionKey = null)
         {
             return Database.GetCollection<TDocument>(GetCollectionName<TDocument>(partitionKey));
         }
 
-		/// <summary>
-		/// Drops a collection, use very carefully.
-		/// </summary>
-		/// <typeparam name="TDocument">The type representing a Document.</typeparam>
-		public void DropCollection<TDocument>(string partitionKey = null)
+        /// <summary>
+        /// Drops a collection, use very carefully.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        public void DropCollection<TDocument>(string partitionKey = null)
         {
-			Database.DropCollection(GetCollectionName<TDocument>(partitionKey));
+            Database.DropCollection(GetCollectionName<TDocument>(partitionKey));
         }
 
         /// <summary>
