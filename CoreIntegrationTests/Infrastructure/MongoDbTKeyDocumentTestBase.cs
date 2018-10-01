@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -936,6 +937,116 @@ namespace CoreIntegrationTests.Infrastructure
         }
 
         #endregion Max / Min Queries
+
+        #region Index Management
+
+        static SemaphoreSlim textIndexSemaphore = new SemaphoreSlim(1, 1);
+
+        [Fact]
+        public async Task CreateTextIndexNoOptionAsync()
+        {
+            // Arrange 
+            const string expectedIndexName = "SomeContent_text";
+
+            // Act
+            await textIndexSemaphore.WaitAsync();
+            try
+            {
+                var result = await SUT.CreateTextIndexAsync<T, TKey>(x => x.SomeContent, null, PartitionKey);
+
+                // Assert
+                var listOfIndexNames = await SUT.GetIndexesNamesAsync<T, TKey>(PartitionKey);
+                Assert.Contains(expectedIndexName, listOfIndexNames);
+
+                // Cleanup 
+                await SUT.DropIndexAsync<T, TKey>(expectedIndexName, PartitionKey);
+            }
+            finally
+            {
+                textIndexSemaphore.Release();
+            }
+        }
+
+        [Fact]
+        public async Task CreateTextIndexWithOptionAsync()
+        {
+            // Arrange
+            string expectedIndexName = $"{Guid.NewGuid()}";
+            var option = new IndexCreationOptions
+            {
+                Name = expectedIndexName
+            };
+            await textIndexSemaphore.WaitAsync();
+            try
+            {
+                // Act
+                var result = await SUT.CreateTextIndexAsync<T, TKey>(x => x.Version, option, PartitionKey);
+
+                // Assert
+                var listOfIndexNames = await SUT.GetIndexesNamesAsync<T, TKey>(PartitionKey);
+                Assert.Contains(expectedIndexName, listOfIndexNames);
+
+                // Cleanup
+                await SUT.DropIndexAsync<T, TKey>(expectedIndexName, PartitionKey);
+            }
+            finally
+            {
+                textIndexSemaphore.Release();
+            }
+        }
+
+        [Fact]
+        public async Task CreateAscendingIndexAsync()
+        {
+            // Arrange 
+            const string expectedIndexName = "SomeContent_1";
+
+            // Act
+            var result = await SUT.CreateAscendingIndexAsync<T, TKey>(x => x.SomeContent, null, PartitionKey);
+
+            // Assert
+            var listOfIndexNames = await SUT.GetIndexesNamesAsync<T, TKey>(PartitionKey);
+            Assert.Contains(expectedIndexName, listOfIndexNames);
+
+            // Cleanup 
+            await SUT.DropIndexAsync<T, TKey>(expectedIndexName, PartitionKey);
+        }
+
+        [Fact]
+        public async Task CreateDescendingIndexAsync()
+        {
+            // Arrange 
+            const string expectedIndexName = "SomeContent_-1";
+
+            // Act
+            var result = await SUT.CreateDescendingIndexAsync<T, TKey>(x => x.SomeContent, null, PartitionKey);
+
+            // Assert
+            var listOfIndexNames = await SUT.GetIndexesNamesAsync<T, TKey>(PartitionKey);
+            Assert.Contains(expectedIndexName, listOfIndexNames);
+
+            // Cleanup 
+            await SUT.DropIndexAsync<T, TKey>(expectedIndexName, PartitionKey);
+        }
+
+        [Fact]
+        public async Task CreateHashedIndexAsync()
+        {
+            // Arrange 
+            const string expectedIndexName = "SomeContent_hashed";
+
+            // Act
+            var result = await SUT.CreateHashedIndexAsync<T, TKey>(x => x.SomeContent, null, PartitionKey);
+
+            // Assert
+            var listOfIndexNames = await SUT.GetIndexesNamesAsync<T, TKey>(PartitionKey);
+            Assert.Contains(expectedIndexName, listOfIndexNames);
+
+            // Cleanup 
+            await SUT.DropIndexAsync<T, TKey>(expectedIndexName, PartitionKey);
+        }
+
+        #endregion Index Management
 
         #region Test Utils
         [MethodImpl(MethodImplOptions.NoInlining)]

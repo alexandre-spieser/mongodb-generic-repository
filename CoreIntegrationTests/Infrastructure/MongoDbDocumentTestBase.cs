@@ -947,8 +947,6 @@ namespace CoreIntegrationTests.Infrastructure
 
         #region Index Management
 
-
-        //Instantiate a Singleton of the Semaphore with a value of 1. This means that only 1 thread can be granted access at a time.
         static SemaphoreSlim textIndexSemaphore = new SemaphoreSlim(1, 1);
 
         [Fact]
@@ -1002,6 +1000,57 @@ namespace CoreIntegrationTests.Infrastructure
             {
                 textIndexSemaphore.Release();
             }
+        }
+
+        [Fact]
+        public async Task CreateAscendingIndexAsync()
+        {
+            // Arrange 
+            const string expectedIndexName = "SomeContent_1";
+
+            // Act
+            var result = await SUT.CreateAscendingIndexAsync<T>(x => x.SomeContent, null, PartitionKey);
+
+            // Assert
+            var listOfIndexNames = await SUT.GetIndexesNamesAsync<T>(PartitionKey);
+            Assert.Contains(expectedIndexName, listOfIndexNames);
+
+            // Cleanup 
+            await SUT.DropIndexAsync<T>(expectedIndexName, PartitionKey);
+        }
+
+        [Fact]
+        public async Task CreateDescendingIndexAsync()
+        {
+            // Arrange 
+            const string expectedIndexName = "SomeContent_-1";
+
+            // Act
+            var result = await SUT.CreateDescendingIndexAsync<T>(x => x.SomeContent, null, PartitionKey);
+
+            // Assert
+            var listOfIndexNames = await SUT.GetIndexesNamesAsync<T>(PartitionKey);
+            Assert.Contains(expectedIndexName, listOfIndexNames);
+
+            // Cleanup 
+            await SUT.DropIndexAsync<T>(expectedIndexName, PartitionKey);
+        }
+
+        [Fact]
+        public async Task CreateHashedIndexAsync()
+        {
+            // Arrange 
+            const string expectedIndexName = "SomeContent_hashed";
+
+            // Act
+            var result = await SUT.CreateHashedIndexAsync<T>(x => x.SomeContent, null, PartitionKey);
+
+            // Assert
+            var listOfIndexNames = await SUT.GetIndexesNamesAsync<T>(PartitionKey);
+            Assert.Contains(expectedIndexName, listOfIndexNames);
+
+            // Cleanup 
+            await SUT.DropIndexAsync<T>(expectedIndexName, PartitionKey);
         }
 
         #endregion Index Management
