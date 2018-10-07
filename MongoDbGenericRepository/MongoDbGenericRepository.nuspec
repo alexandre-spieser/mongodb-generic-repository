@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>MongoDbGenericRepository</id>
-    <version>1.3.7</version>
+    <version>1.3.8</version>
     <title>MongoDb Generic Repository</title>
     <authors>Alexandre Spieser</authors>
     <owners>Alexandre Spieser</owners>
@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/alexandre-spieser/mongodb-generic-repository</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A generic repository implementation using the MongoDB C# Sharp 2.0 driver.</description>
-    <releaseNotes>Upgraded dependencies. Full support for bulk insertion and deletion of documents of the same type but with different partitionkey values. Added methods for Min and Max queries.</releaseNotes>
+    <releaseNotes>Release notes are at https://github.com/alexandre-spieser/mongodb-generic-repository/releases</releaseNotes>
     <copyright>Copyright 2018 (c) Alexandre Spieser. All rights reserved.</copyright>
     <tags>MongoDb Repository Generic NoSql</tags>
 	<dependencies>

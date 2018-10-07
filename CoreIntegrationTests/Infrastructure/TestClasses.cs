@@ -50,6 +50,8 @@ namespace CoreIntegrationTests.Infrastructure
         public int SomeValue { get; set; }
 
         public string SomeContent { get; set; }
+        public string SomeContent2 { get; set; }
+        public string SomeContent3 { get; set; }
 
         public int GroupingKey { get; set; }
 
@@ -78,6 +80,8 @@ namespace CoreIntegrationTests.Infrastructure
         }
 
         public string SomeContent { get; set; }
+        public string SomeContent4 { get; set; }
+        public string SomeContent5 { get; set; }
 
         public Nested Nested { get; set; }
 

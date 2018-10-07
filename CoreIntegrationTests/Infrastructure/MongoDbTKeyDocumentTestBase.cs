@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -1037,6 +1038,25 @@ namespace CoreIntegrationTests.Infrastructure
 
             // Act
             var result = await SUT.CreateHashedIndexAsync<T, TKey>(x => x.SomeContent, null, PartitionKey);
+
+            // Assert
+            var listOfIndexNames = await SUT.GetIndexesNamesAsync<T, TKey>(PartitionKey);
+            Assert.Contains(expectedIndexName, listOfIndexNames);
+
+            // Cleanup 
+            await SUT.DropIndexAsync<T, TKey>(expectedIndexName, PartitionKey);
+        }
+
+        [Fact]
+        public async Task CreateCombinedTextIndexAsync()
+        {
+            // Arrange 
+            const string expectedIndexName = "SomeContent4_text_SomeContent5_text";
+
+            // Act
+            Expression<Func<T, object>> ex = x => x.SomeContent4;
+            Expression<Func<T, object>> ex2 = x => x.SomeContent5;
+            var result = await SUT.CreateCombinedTextIndexAsync<T, TKey>(new[] { ex, ex2 }, null, PartitionKey);
 
             // Assert
             var listOfIndexNames = await SUT.GetIndexesNamesAsync<T, TKey>(PartitionKey);

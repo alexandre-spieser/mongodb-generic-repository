@@ -569,6 +569,170 @@
             <param name="projection">The projected group result.</param>
             <param name="partitionKey">The partition key of your document, if any.</param>
         </member>
+        <member name="T:MongoDbGenericRepository.IMongoDbCollectionIndexRepository">
+            <summary>
+            The repository interface for managing indexes
+            </summary>
+        </member>
+        <member name="M:MongoDbGenericRepository.IMongoDbCollectionIndexRepository.CreateTextIndexAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},MongoDbGenericRepository.Models.IndexCreationOptions,System.String)">
+            <summary>
+            Create a text index on the given field.
+            IndexCreationOptions can be supplied to further specify 
+            how the creation should be done.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <param name="field">The field we want to index.</param>
+            <param name="indexCreationOptions">Options for creating an index.</param>
+            <param name="partitionKey">An optional partition key.</param>
+            <returns>The result of the create index operation.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.IMongoDbCollectionIndexRepository.CreateTextIndexAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},MongoDbGenericRepository.Models.IndexCreationOptions,System.String)">
+            <summary>
+            Create a text index on the given field.
+            IndexCreationOptions can be supplied to further specify 
+            how the creation should be done.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="field">The field we want to index.</param>
+            <param name="indexCreationOptions">Options for creating an index.</param>
+            <param name="partitionKey">An optional partition key.</param>
+            <returns>The result of the create index operation.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.IMongoDbCollectionIndexRepository.CreateAscendingIndexAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},MongoDbGenericRepository.Models.IndexCreationOptions,System.String)">
+            <summary>
+            Creates an index on the given field in ascending order.
+            IndexCreationOptions can be supplied to further specify 
+            how the creation should be done.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <param name="field">The field we want to index.</param>
+            <param name="indexCreationOptions">Options for creating an index.</param>
+            <param name="partitionKey">An optional partition key.</param>
+            <returns>The result of the create index operation.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.IMongoDbCollectionIndexRepository.CreateAscendingIndexAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},MongoDbGenericRepository.Models.IndexCreationOptions,System.String)">
+            <summary>
+            Creates an index on the given field in ascending order.
+            IndexCreationOptions can be supplied to further specify 
+            how the creation should be done.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="field">The field we want to index.</param>
+            <param name="indexCreationOptions">Options for creating an index.</param>
+            <param name="partitionKey">An optional partition key.</param>
+            <returns>The result of the create index operation.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.IMongoDbCollectionIndexRepository.CreateDescendingIndexAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},MongoDbGenericRepository.Models.IndexCreationOptions,System.String)">
+            <summary>
+            Creates an index on the given field in descending order.
+            IndexCreationOptions can be supplied to further specify 
+            how the creation should be done.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <param name="field">The field we want to index.</param>
+            <param name="indexCreationOptions">Options for creating an index.</param>
+            <param name="partitionKey">An optional partition key.</param>
+            <returns>A string containing the result of the operation.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.IMongoDbCollectionIndexRepository.CreateDescendingIndexAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},MongoDbGenericRepository.Models.IndexCreationOptions,System.String)">
+            <summary>
+            Creates an index on the given field in descending order.
+            IndexCreationOptions can be supplied to further specify 
+            how the creation should be done.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="field">The field we want to index.</param>
+            <param name="indexCreationOptions">Options for creating an index.</param>
+            <param name="partitionKey">An optional partition key.</param>
+            <returns>The result of the create index operation.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.IMongoDbCollectionIndexRepository.CreateHashedIndexAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},MongoDbGenericRepository.Models.IndexCreationOptions,System.String)">
+            <summary>
+            Creates a hashed index on the given field.
+            IndexCreationOptions can be supplied to further specify 
+            how the creation should be done.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <param name="field">The field we want to index.</param>
+            <param name="indexCreationOptions">Options for creating an index.</param>
+            <param name="partitionKey">An optional partition key.</param>
+            <returns>A string containing the result of the operation.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.IMongoDbCollectionIndexRepository.CreateHashedIndexAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},MongoDbGenericRepository.Models.IndexCreationOptions,System.String)">
+            <summary>
+            Creates a hashed index on the given field.
+            IndexCreationOptions can be supplied to further specify 
+            how the creation should be done.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="field">The field we want to index.</param>
+            <param name="indexCreationOptions">Options for creating an index.</param>
+            <param name="partitionKey">An optional partition key.</param>
+            <returns>The result of the create index operation.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.IMongoDbCollectionIndexRepository.CreateCombinedTextIndexAsync``1(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,System.Object}}},MongoDbGenericRepository.Models.IndexCreationOptions,System.String)">
+            <summary>
+            Creates a combined text index.
+            IndexCreationOptions can be supplied to further specify 
+            how the creation should be done.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <param name="fields">The fields we want to index.</param>
+            <param name="indexCreationOptions">Options for creating an index.</param>
+            <param name="partitionKey">An optional partition key.</param>
+            <returns>The result of the create index operation.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.IMongoDbCollectionIndexRepository.CreateCombinedTextIndexAsync``2(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,System.Object}}},MongoDbGenericRepository.Models.IndexCreationOptions,System.String)">
+            <summary>
+            Creates a combined text index.
+            IndexCreationOptions can be supplied to further specify 
+            how the creation should be done.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="fields">The fields we want to index.</param>
+            <param name="indexCreationOptions">Options for creating an index.</param>
+            <param name="partitionKey">An optional partition key.</param>
+            <returns>The result of the create index operation.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.IMongoDbCollectionIndexRepository.DropIndexAsync``1(System.String,System.String)">
+            <summary>
+            Drops the index given a field name
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <param name="indexName">The name of the index</param>
+            <param name="partitionKey">An optional partition key</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IMongoDbCollectionIndexRepository.DropIndexAsync``2(System.String,System.String)">
+            <summary>
+            Drops the index given a field name
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="indexName">The name of the index</param>
+            <param name="partitionKey">An optional partition key</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IMongoDbCollectionIndexRepository.GetIndexesNamesAsync``1(System.String)">
+            <summary>
+            Returns the names of the indexes present on a collection.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <param name="partitionKey">An optional partition key</param>
+            <returns>A list containing the names of the indexes on on the concerned collection.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.IMongoDbCollectionIndexRepository.GetIndexesNamesAsync``2(System.String)">
+            <summary>
+            Returns the names of the indexes present on a collection.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="partitionKey">An optional partition key</param>
+            <returns>A list containing the names of the indexes on on the concerned collection.</returns>
+        </member>
         <member name="T:MongoDbGenericRepository.IMongoDbContext">
             <summary>
             This is the interface of the IMongoDbContext which is managed by the <see cref="T:MongoDbGenericRepository.BaseMongoRepository"/>.
@@ -985,6 +1149,10 @@
             <param name="name">The name of the collection.</param>
         </member>
         <member name="T:MongoDbGenericRepository.BaseMongoRepository">
+            <summary>
+            The base Repository, it is meant to be inherited from by your custom custom MongoRepository implementation.
+            Its constructor must be given a connection string and a database name.
+            </summary>
             <summary>
             The base Repository, it is meant to be inherited from by your custom custom MongoRepository implementation.
             Its constructor must be given a connection string and a database name.
@@ -1585,6 +1753,48 @@
             <typeparam name="TDocument">The document type.</typeparam>
             <param name="document">The document.</param>
         </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.CreateTextIndexAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},MongoDbGenericRepository.Models.IndexCreationOptions,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.CreateTextIndexAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},MongoDbGenericRepository.Models.IndexCreationOptions,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.CreateAscendingIndexAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},MongoDbGenericRepository.Models.IndexCreationOptions,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.CreateAscendingIndexAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},MongoDbGenericRepository.Models.IndexCreationOptions,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.CreateDescendingIndexAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},MongoDbGenericRepository.Models.IndexCreationOptions,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.CreateDescendingIndexAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},MongoDbGenericRepository.Models.IndexCreationOptions,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.CreateHashedIndexAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},MongoDbGenericRepository.Models.IndexCreationOptions,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.CreateHashedIndexAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},MongoDbGenericRepository.Models.IndexCreationOptions,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.CreateCombinedTextIndexAsync``1(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,System.Object}}},MongoDbGenericRepository.Models.IndexCreationOptions,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.CreateCombinedTextIndexAsync``2(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,System.Object}}},MongoDbGenericRepository.Models.IndexCreationOptions,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.DropIndexAsync``1(System.String,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.DropIndexAsync``2(System.String,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.GetIndexesNamesAsync``1(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.GetIndexesNamesAsync``2(System.String)">
+            <inheritdoc />
+        </member>
         <member name="T:MongoDbGenericRepository.Models.Document">
             <summary>
             This class represents a basic document that can be stored in MongoDb.
@@ -1633,6 +1843,81 @@
             This class represents a basic document that can be stored in MongoDb.
             Your document must implement this class in order for the MongoDbRepository to handle them.
             </summary>
+        </member>
+        <member name="T:MongoDbGenericRepository.Models.IndexCreationOptions">
+            <summary>
+            Options for creating an index.
+            </summary>
+        </member>
+        <member name="P:MongoDbGenericRepository.Models.IndexCreationOptions.Unique">
+            <summary>
+            Gets or sets a value indicating whether the index is a unique index.
+            </summary> 
+        </member>
+        <member name="P:MongoDbGenericRepository.Models.IndexCreationOptions.TextIndexVersion">
+            <summary>
+            Gets or sets the index version for text indexes.
+            </summary>  
+        </member>
+        <member name="P:MongoDbGenericRepository.Models.IndexCreationOptions.SphereIndexVersion">
+            <summary>
+            Gets or sets the index version for 2dsphere indexes.
+            </summary>
+        </member>
+        <member name="P:MongoDbGenericRepository.Models.IndexCreationOptions.Sparse">
+            <summary>
+            Gets or sets a value indicating whether the index is a sparse index.
+            </summary>   
+        </member>
+        <member name="P:MongoDbGenericRepository.Models.IndexCreationOptions.Name">
+            <summary>
+            Gets or sets the index name.
+            </summary>  
+        </member>
+        <member name="P:MongoDbGenericRepository.Models.IndexCreationOptions.Min">
+            <summary>
+            Gets or sets the min value for 2d indexes.
+            </summary>   
+        </member>
+        <member name="P:MongoDbGenericRepository.Models.IndexCreationOptions.Max">
+            <summary>
+            Gets or sets the max value for 2d indexes.
+            </summary>
+        </member>
+        <member name="P:MongoDbGenericRepository.Models.IndexCreationOptions.LanguageOverride">
+            <summary>
+            Gets or sets the language override.
+            </summary>   
+        </member>
+        <member name="P:MongoDbGenericRepository.Models.IndexCreationOptions.ExpireAfter">
+            <summary>
+            Gets or sets when documents expire (used with TTL indexes).
+            </summary> 
+        </member>
+        <member name="P:MongoDbGenericRepository.Models.IndexCreationOptions.DefaultLanguage">
+            <summary>
+            Gets or sets the default language.
+            </summary>  
+        </member>
+        <member name="P:MongoDbGenericRepository.Models.IndexCreationOptions.BucketSize">
+            <summary>
+            Gets or sets the size of a geohash bucket.
+            </summary>   
+        </member>
+        <member name="P:MongoDbGenericRepository.Models.IndexCreationOptions.Bits">
+            <summary>
+            Gets or sets the precision, in bits, used with geohash indexes.
+            </summary>   
+        </member>
+        <member name="P:MongoDbGenericRepository.Models.IndexCreationOptions.Background">
+            <summary>
+            Gets or sets a value indicating whether to create the index in the background.
+            </summary> 
+        </member>
+        <member name="P:MongoDbGenericRepository.Models.IndexCreationOptions.Version">
+            <summary>
+            Gets or sets the version of the index.
+            </summary>   
         </member>
         <member name="T:MongoDbGenericRepository.Models.IPartitionedDocument">
             <summary>
