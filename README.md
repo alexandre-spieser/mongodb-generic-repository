@@ -144,7 +144,40 @@ It is now possible to change the collection name by using the `CollectionName` a
 ```
 Documents of this type will be inserted into a collection named "MyCollectionName".
 
+## Index Management
+From version 1.3.8 the `MongoDbGenericRepository` implements the `IMongoDbCollectionIndexRepository` interface. 
+This exposes the functionality to programmatically manage indexes against your collections in a generic fashion.
+
+The following methods are exposed and fully integration tested:
++ CreateAscendingIndexAsync
++ CreateDescendingIndexAsync
++ CreateCombinedTextIndexAsync
++ CreateHashedIndexAsync
++ CreateTextIndexAsync
++ DropIndexAsync
++ GetIndexesNamesAsync
+
+Usage examples:  
+```csharp
+	string expectedIndexName = $"myCustomIndexName";
+	var option = new IndexCreationOptions
+	{
+		Name = expectedIndexName
+	};
+	// Act
+	// create a text index against the Version property of the document.
+	var result = await SUT.CreateTextIndexAsync<T, TKey>(x => x.Version, option, PartitionKey);
+
+	// Assert
+	var listOfIndexNames = await SUT.GetIndexesNamesAsync<T, TKey>(PartitionKey);
+	Assert.Contains(expectedIndexName, listOfIndexNames);
+
+	// Cleanup
+	await SUT.DropIndexAsync<T, TKey>(expectedIndexName, PartitionKey);
+```
+
 Please refer to the IntegrationTests (NET45) and CoreIntegrationTests (netstandard2.0) projects for more usage examples.
+The `CoreIntegrationTests.Infrastructure.MongoDbTKeyDocumentTestBase<T, TKey>` test class is a good start.
 
 ## Author
 **Alexandre Spieser**
