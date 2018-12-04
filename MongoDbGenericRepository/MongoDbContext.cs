@@ -12,17 +12,17 @@ namespace MongoDbGenericRepository
     public class MongoDbContext : IMongoDbContext
     {
         /// <summary>
-        /// The IMongoClient from the official MongoDb driver
+        /// The IMongoClient from the official MongoDB driver
         /// </summary>
         public IMongoClient Client { get; }
 
         /// <summary>
-        /// The IMongoDatabase from the official Mongodb driver
+        /// The IMongoDatabase from the official MongoDB driver
         /// </summary>
         public IMongoDatabase Database { get; }
 
         /// <summary>
-        /// Sets the Guid representation of the MongoDb Driver.
+        /// Sets the Guid representation of the MongoDB Driver.
         /// </summary>
         /// <param name="guidRepresentation">The new value of the GuidRepresentation</param>
         public virtual void SetGuidRepresentation(MongoDB.Bson.GuidRepresentation guidRepresentation)
@@ -31,17 +31,17 @@ namespace MongoDbGenericRepository
         }
 
         /// <summary>
-        /// Initialize the Guid representation of the MongoDb Driver.
+        /// Initialize the Guid representation of the MongoDB Driver.
         /// Override this method to change the default GuidRepresentation.
         /// </summary>
         protected virtual void InitializeGuidRepresentation()
         {
-            // by default, avoid lefacy UUID representation: use Binary 0x04 subtype.
+            // by default, avoid legacy UUID representation: use Binary 0x04 subtype.
             MongoDefaults.GuidRepresentation = MongoDB.Bson.GuidRepresentation.Standard;
         }
 
         /// <summary>
-        /// The constructor of the MongoDbContext, it needs a an object implementing <see cref="IMongoDatabase"/>.
+        /// The constructor of the MongoDbContext, it needs an object implementing <see cref="IMongoDatabase"/>.
         /// </summary>
         /// <param name="mongoDatabase">An object implementing IMongoDatabase</param>
         public MongoDbContext(IMongoDatabase mongoDatabase)
@@ -62,6 +62,18 @@ namespace MongoDbGenericRepository
             InitializeGuidRepresentation();
             Client = new MongoClient(connectionString);
             Database = Client.GetDatabase(databaseName);
+        }
+	
+	/// <summary>
+        /// The constructor of the MongoDbContext, it needs a connection string and a database name. 
+        /// </summary>
+        /// <param name="client">The MongoClient.</param>
+        /// <param name="databaseName">The name of your database.</param>
+        public MongoDbContext(MongoClient client, string databaseName)
+        {
+            InitializeGuidRepresentation();
+            Client = client;
+            Database = client.GetDatabase(databaseName);
         }
 
         /// <summary>
@@ -96,10 +108,10 @@ namespace MongoDbGenericRepository
         }
 
         /// <summary>
-        /// Given the docmuent type and the partition key, returns the name of the collection it belongs to.
+        /// Given the document type and the partition key, returns the name of the collection it belongs to.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-		/// <param name="partitionKey">The value of the partition key.</param>
+	/// <param name="partitionKey">The value of the partition key.</param>
         /// <returns>The name of the collection.</returns>
         private string GetCollectionName<TDocument>(string partitionKey)
         {
