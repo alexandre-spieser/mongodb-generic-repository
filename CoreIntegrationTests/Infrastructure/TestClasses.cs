@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using MongoDbGenericRepository.Models;
 using MongoDbGenericRepository.Utils;
 using System;
@@ -21,6 +22,8 @@ namespace CoreIntegrationTests.Infrastructure
     public class Nested
     {
         public DateTime SomeDate { get; set; }
+        [BsonRepresentation(BsonType.Decimal128)]
+        public decimal SomeAmount { get; set; }
     }
 
     public class Child

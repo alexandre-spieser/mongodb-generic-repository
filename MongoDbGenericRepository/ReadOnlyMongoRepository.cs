@@ -11,7 +11,7 @@ namespace MongoDbGenericRepository
     /// <summary>
     /// The ReadOnlyMongoRepository implements the readonly functionality of the IReadOnlyMongoRepository.
     /// </summary>
-    public class ReadOnlyMongoRepository : IReadOnlyMongoRepository
+    public abstract partial class ReadOnlyMongoRepository : IReadOnlyMongoRepository
     {
         /// <summary>
         /// The connection string.
@@ -578,7 +578,7 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="minValueSelector">A property selector to order by ascending.</param>
         /// <param name="partitionKey">An optional partition key.</param>
-        public async Task<TValue> GetMinValueAsync<TDocument, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> minValueSelector, string partitionKey = null)
+        public virtual async Task<TValue> GetMinValueAsync<TDocument, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> minValueSelector, string partitionKey = null)
             where TDocument : IDocument
         {
             return await GetMinValueAsync<TDocument, Guid, TValue>(filter, minValueSelector, partitionKey);
@@ -593,7 +593,7 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="minValueSelector">A property selector to order by ascending.</param>
         /// <param name="partitionKey">An optional partition key.</param>
-        public async Task<TValue> GetMinValueAsync<TDocument, TKey, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> minValueSelector, string partitionKey = null)
+        public virtual async Task<TValue> GetMinValueAsync<TDocument, TKey, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> minValueSelector, string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -608,7 +608,7 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="minValueSelector">A property selector to order by ascending.</param>
         /// <param name="partitionKey">An optional partition key.</param>
-        public TValue GetMinValue<TDocument, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> minValueSelector, string partitionKey = null)
+        public virtual TValue GetMinValue<TDocument, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> minValueSelector, string partitionKey = null)
             where TDocument : IDocument
         {
             return GetMinValue<TDocument, Guid, TValue>(filter, minValueSelector, partitionKey);
@@ -623,7 +623,7 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="minValueSelector">A property selector to order by ascending.</param>
         /// <param name="partitionKey">An optional partition key.</param>
-        public TValue GetMinValue<TDocument, TKey, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> minValueSelector, string partitionKey = null)
+        public virtual TValue GetMinValue<TDocument, TKey, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> minValueSelector, string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -640,7 +640,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The document type.</typeparam>
         /// <param name="partitionKey">An optional partition key.</param>
         /// <returns>An <see cref="IMongoCollection{TDocument}"/></returns>
-        protected IMongoCollection<TDocument> GetCollection<TDocument>(string partitionKey = null) where TDocument : IDocument
+        protected virtual IMongoCollection<TDocument> GetCollection<TDocument>(string partitionKey = null) where TDocument : IDocument
         {
             return MongoDbContext.GetCollection<TDocument>(partitionKey);
         }
@@ -651,7 +651,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The document type.</typeparam>
         /// <param name="document">The document.</param>
         /// <returns></returns>
-        protected IMongoCollection<TDocument> HandlePartitioned<TDocument>(TDocument document) where TDocument : IDocument
+        protected virtual IMongoCollection<TDocument> HandlePartitioned<TDocument>(TDocument document) where TDocument : IDocument
         {
             if (document is IPartitionedDocument)
             {
@@ -667,7 +667,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TKey">The type of the primary key.</typeparam>
         /// <param name="document">The document.</param>
         /// <returns></returns>
-        protected IMongoCollection<TDocument> HandlePartitioned<TDocument, TKey>(TDocument document)
+        protected virtual IMongoCollection<TDocument> HandlePartitioned<TDocument, TKey>(TDocument document)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -684,7 +684,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The document type.</typeparam>
         /// <param name="partitionKey">The collection partition key.</param>
         /// <returns></returns>
-        protected IMongoCollection<TDocument> HandlePartitioned<TDocument>(string partitionKey) where TDocument : IDocument
+        protected virtual IMongoCollection<TDocument> HandlePartitioned<TDocument>(string partitionKey) where TDocument : IDocument
         {
             if (!string.IsNullOrEmpty(partitionKey))
             {
@@ -700,7 +700,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TKey">The type of the primary key.</typeparam>
         /// <param name="partitionKey">The collection partition key.</param>
         /// <returns></returns>
-        protected IMongoCollection<TDocument> GetCollection<TDocument, TKey>(string partitionKey = null)
+        protected virtual IMongoCollection<TDocument> GetCollection<TDocument, TKey>(string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -714,7 +714,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TKey">The type of the primary key.</typeparam>
         /// <param name="partitionKey">The collection partition key.</param>
         /// <returns></returns>
-        protected IMongoCollection<TDocument> HandlePartitioned<TDocument, TKey>(string partitionKey)
+        protected virtual IMongoCollection<TDocument> HandlePartitioned<TDocument, TKey>(string partitionKey)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
