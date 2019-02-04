@@ -425,6 +425,34 @@ namespace MongoDbGenericRepository
             where TKey : IEquatable<TKey>;
 
         #endregion
+
+        #region Sum
+
+        /// <summary>
+        /// Sums the values of a selected field for a given filtered collection of documents.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="selector">The field you want to sum.</param>
+        /// <param name="partitionKey">The partition key of your document, if any.</param>
+        Task<decimal> SumByAsync<TDocument>(Expression<Func<TDocument, bool>> filter, 
+            Expression<Func<TDocument, decimal>> selector,
+            string partitionKey = null)
+            where TDocument : IDocument;
+
+        /// <summary>
+        /// Sums the values of a selected field for a given filtered collection of documents.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="selector">The field you want to sum.</param>
+        /// <param name="partitionKey">The partition key of your document, if any.</param>
+        Task<decimal> SumByAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter,
+                                                       Expression<Func<TDocument, decimal>> selector,
+                                                       string partitionKey = null)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
+        #endregion Sum
     }
 
 }

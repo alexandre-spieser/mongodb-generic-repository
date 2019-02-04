@@ -822,7 +822,7 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
-        /// <param name="filter"></param>
+        /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="projection">The projection expression.</param>
         /// <param name="partitionKey">An optional partition key.</param>
         public virtual async Task<TProjection> ProjectOneAsync<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey = null)
@@ -840,7 +840,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
-        /// <param name="filter"></param>
+        /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="projection">The projection expression.</param>
         /// <param name="partitionKey">An optional partition key.</param>
         public virtual async Task<TProjection> ProjectOneAsync<TDocument, TProjection, TKey>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey = null)
@@ -849,8 +849,8 @@ namespace MongoDbGenericRepository
             where TProjection : class
         {
             return await HandlePartitioned<TDocument, TKey>(partitionKey).Find(filter)
-                                                                   .Project(projection)
-                                                                   .FirstOrDefaultAsync();
+                                                                         .Project(projection)
+                                                                         .FirstOrDefaultAsync();
         }
 
         /// <summary>
@@ -858,7 +858,7 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
-        /// <param name="filter"></param>
+        /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="projection">The projection expression.</param>
         /// <param name="partitionKey">An optional partition key.</param>
         public virtual TProjection ProjectOne<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey = null)
@@ -876,7 +876,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
-        /// <param name="filter"></param>
+        /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="projection">The projection expression.</param>
         /// <param name="partitionKey">An optional partition key.</param>
         public virtual TProjection ProjectOne<TDocument, TProjection, TKey>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey = null)
@@ -885,8 +885,8 @@ namespace MongoDbGenericRepository
             where TProjection : class
         {
             return HandlePartitioned<TDocument, TKey>(partitionKey).Find(filter)
-                                                             .Project(projection)
-                                                             .FirstOrDefault();
+                                                                   .Project(projection)
+                                                                   .FirstOrDefault();
         }
 
         /// <summary>
@@ -894,7 +894,7 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
-        /// <param name="filter"></param>
+        /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="projection">The projection expression.</param>
         /// <param name="partitionKey">An optional partition key.</param>
         public virtual async Task<List<TProjection>> ProjectManyAsync<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey = null)
@@ -912,7 +912,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
-        /// <param name="filter"></param>
+        /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="projection">The projection expression.</param>
         /// <param name="partitionKey">An optional partition key.</param>
         public virtual async Task<List<TProjection>> ProjectManyAsync<TDocument, TProjection, TKey>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey = null)
@@ -930,7 +930,7 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
-        /// <param name="filter"></param>
+        /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="projection">The projection expression.</param>
         /// <param name="partitionKey">An optional partition key.</param>
         public virtual List<TProjection> ProjectMany<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey = null)
@@ -996,7 +996,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TGroupKey">The type of the grouping criteria.</typeparam>
         /// <typeparam name="TProjection">The type of the projected group.</typeparam>
-        /// <param name="filter"></param>
+        /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="selector">The grouping criteria.</param>
         /// <param name="projection">The projected group result.</param>
         /// <param name="partitionKey">The partition key of your document, if any.</param>
@@ -1021,11 +1021,47 @@ namespace MongoDbGenericRepository
         /// Asynchronously returns a paginated list of the documents matching the filter condition.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <param name="filter"></param>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="sortSelector">The property selector.</param>
+        /// <param name="ascending">Order of the sorting.</param>
         /// <param name="skipNumber">The number of documents you want to skip. Default value is 0.</param>
         /// <param name="takeNumber">The number of documents you want to take. Default value is 50.</param>
         /// <param name="partitionKey">An optional partition key.</param>
-        public virtual async Task<List<TDocument>> GetPaginatedAsync<TDocument>(Expression<Func<TDocument, bool>> filter, int skipNumber = 0, int takeNumber = 50, string partitionKey = null)
+        public virtual async Task<List<TDocument>> GetSortedPaginatedAsync<TDocument>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, object>> sortSelector,
+            bool ascending = true,
+            int skipNumber = 0,
+            int takeNumber = 50,
+            string partitionKey = null)
+            where TDocument : IDocument
+        {
+            var sorting = ascending
+                ? Builders<TDocument>.Sort.Ascending(sortSelector)
+                : Builders<TDocument>.Sort.Descending(sortSelector);
+
+            return await HandlePartitioned<TDocument>(partitionKey)
+                    .Find(filter)
+                    .Sort(sorting)
+                    .Skip(skipNumber)
+                    .Limit(takeNumber)
+                    .ToListAsync();
+        }
+
+
+        /// <summary>
+        /// Asynchronously returns a paginated list of the documents matching the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="skipNumber">The number of documents you want to skip. Default value is 0.</param>
+        /// <param name="takeNumber">The number of documents you want to take. Default value is 50.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        public virtual async Task<List<TDocument>> GetPaginatedAsync<TDocument>(
+            Expression<Func<TDocument, bool>> filter, 
+            int skipNumber = 0, 
+            int takeNumber = 50, 
+            string partitionKey = null)
             where TDocument : IDocument
         {
             return await HandlePartitioned<TDocument>(partitionKey).Find(filter).Skip(skipNumber).Limit(takeNumber).ToListAsync();
@@ -1036,7 +1072,7 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <param name="filter"></param>
+        /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="skipNumber">The number of documents you want to skip. Default value is 0.</param>
         /// <param name="takeNumber">The number of documents you want to take. Default value is 50.</param>
         /// <param name="partitionKey">An optional partition key.</param>
@@ -1053,7 +1089,7 @@ namespace MongoDbGenericRepository
         /// GetAndUpdateOne with filter
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <param name="filter"></param>
+        /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="update"></param>
         /// <param name="options"></param>
         /// <returns></returns>
@@ -1067,7 +1103,7 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <param name="filter"></param>
+        /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="update"></param>
         /// <param name="options"></param>
         /// <returns></returns>
