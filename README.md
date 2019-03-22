@@ -187,7 +187,7 @@ mongodb-generic-repository is under MIT license - http://www.opensource.org/lice
 
 The MIT License (MIT)
 
-Copyright (c) 2016-2018 Alexandre Spieser
+Copyright (c) 2016-2019 Alexandre Spieser
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -222,4 +222,4 @@ Copyright (c) 2012-2014 Mehdi Khalili (http://omar.io)
 ==============================================================================
 
 ## Copyright
-Copyright © 2018
+Copyright © 2019
