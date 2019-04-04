@@ -16,46 +16,28 @@ namespace MongoDbGenericRepository
     public abstract partial class ReadOnlyMongoRepository
     {
         /// <summary>
-        /// The connection string.
-        /// </summary>
-        public string ConnectionString { get; set; }
-
-        /// <summary>
-        /// The database name.
-        /// </summary>
-        public string DatabaseName { get; set; }
-
-        /// <summary>
-        /// The MongoDbContext
-        /// </summary>
-        protected IMongoDbContext MongoDbContext = null;
-
-        /// <summary>
         /// The constructor taking a connection string and a database name.
         /// </summary>
         /// <param name="connectionString">The connection string of the MongoDb server.</param>
         /// <param name="databaseName">The name of the database against which you want to perform operations.</param>
-        protected ReadOnlyMongoRepository(string connectionString, string databaseName)
+        protected ReadOnlyMongoRepository(string connectionString, string databaseName) : base(connectionString, databaseName)
         {
-            MongoDbContext = new MongoDbContext(connectionString, databaseName);
         }
 
         /// <summary>
         /// The contructor taking a <see cref="IMongoDbContext"/>.
         /// </summary>
         /// <param name="mongoDbContext">A mongodb context implementing <see cref="IMongoDbContext"/></param>
-        protected ReadOnlyMongoRepository(IMongoDbContext mongoDbContext)
+        protected ReadOnlyMongoRepository(IMongoDbContext mongoDbContext) : base(mongoDbContext)
         {
-            MongoDbContext = mongoDbContext;
         }
 
         /// <summary>
         /// The contructor taking a <see cref="IMongoDatabase"/>.
         /// </summary>
         /// <param name="mongoDatabase">A mongodb context implementing <see cref="IMongoDatabase"/></param>
-        protected ReadOnlyMongoRepository(IMongoDatabase mongoDatabase)
+        protected ReadOnlyMongoRepository(IMongoDatabase mongoDatabase) : base(mongoDatabase)
         {
-            MongoDbContext = new MongoDbContext(mongoDatabase);
         }
 
         #region Read TKey
@@ -366,20 +348,6 @@ namespace MongoDbGenericRepository
         /// Gets the minimum value of a property in a mongodb collections that is satisfying the filter.
         /// </summary>
         /// <typeparam name="TDocument">The document type.</typeparam>
-        /// <typeparam name="TValue">The type of the value used to order the query.</typeparam>
-        /// <param name="filter">A LINQ expression filter.</param>
-        /// <param name="minValueSelector">A property selector to order by ascending.</param>
-        /// <param name="partitionKey">An optional partition key.</param>
-        public virtual async Task<TValue> GetMinValueAsync<TDocument, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> minValueSelector, string partitionKey = null)
-            where TDocument : IDocument
-        {
-            return await GetMinValueAsync<TDocument, Guid, TValue>(filter, minValueSelector, partitionKey);
-        }
-
-        /// <summary>
-        /// Gets the minimum value of a property in a mongodb collections that is satisfying the filter.
-        /// </summary>
-        /// <typeparam name="TDocument">The document type.</typeparam>
         /// <typeparam name="TKey">The type of the primary key.</typeparam>
         /// <typeparam name="TValue">The type of the value used to order the query.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
@@ -413,32 +381,6 @@ namespace MongoDbGenericRepository
         #region Utility Methods
 
         /// <summary>
-        /// Gets a collections for the type TDocument with the matching partition key (if any).
-        /// </summary>
-        /// <typeparam name="TDocument">The document type.</typeparam>
-        /// <param name="partitionKey">An optional partition key.</param>
-        /// <returns>An <see cref="IMongoCollection{TDocument}"/></returns>
-        protected virtual IMongoCollection<TDocument> GetCollection<TDocument>(string partitionKey = null) where TDocument : IDocument
-        {
-            return MongoDbContext.GetCollection<TDocument>(partitionKey);
-        }
-
-        /// <summary>
-        /// Gets a collections for the type TDocument
-        /// </summary>
-        /// <typeparam name="TDocument">The document type.</typeparam>
-        /// <param name="document">The document.</param>
-        /// <returns></returns>
-        protected virtual IMongoCollection<TDocument> HandlePartitioned<TDocument>(TDocument document) where TDocument : IDocument
-        {
-            if (document is IPartitionedDocument)
-            {
-                return GetCollection<TDocument>(((IPartitionedDocument)document).PartitionKey);
-            }
-            return GetCollection<TDocument>();
-        }
-
-        /// <summary>
         /// Gets a collections for a potentially partitioned document type.
         /// </summary>
         /// <typeparam name="TDocument">The document type.</typeparam>
@@ -454,21 +396,6 @@ namespace MongoDbGenericRepository
                 return GetCollection<TDocument, TKey>(((IPartitionedDocument)document).PartitionKey);
             }
             return GetCollection<TDocument, TKey>();
-        }
-
-        /// <summary>
-        /// Gets a collections for a potentially partitioned document type.
-        /// </summary>
-        /// <typeparam name="TDocument">The document type.</typeparam>
-        /// <param name="partitionKey">The collection partition key.</param>
-        /// <returns></returns>
-        protected virtual IMongoCollection<TDocument> HandlePartitioned<TDocument>(string partitionKey) where TDocument : IDocument
-        {
-            if (!string.IsNullOrEmpty(partitionKey))
-            {
-                return GetCollection<TDocument>(partitionKey);
-            }
-            return GetCollection<TDocument>();
         }
 
         /// <summary>
@@ -501,20 +428,6 @@ namespace MongoDbGenericRepository
                 return GetCollection<TDocument, TKey>(partitionKey);
             }
             return GetCollection<TDocument, TKey>();
-        }
-
-        /// <summary>
-        /// Converts a LINQ expression of TDocument, TValue to a LINQ expression of TDocument, object
-        /// </summary>
-        /// <typeparam name="TDocument">The document type.</typeparam>
-        /// <typeparam name="TValue">The type of the value.</typeparam>
-        /// <param name="expression">The expression to convert</param>
-        protected static Expression<Func<TDocument, object>> ConvertExpression<TDocument, TValue>(Expression<Func<TDocument, TValue>> expression)
-        {
-            var param = expression.Parameters[0];
-            Expression body = expression.Body;
-            var convert = Expression.Convert(body, typeof(object));
-            return Expression.Lambda<Func<TDocument, object>>(convert, param);
         }
 
         #endregion

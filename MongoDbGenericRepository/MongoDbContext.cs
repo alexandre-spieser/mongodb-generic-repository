@@ -63,8 +63,8 @@ namespace MongoDbGenericRepository
             Client = new MongoClient(connectionString);
             Database = Client.GetDatabase(databaseName);
         }
-	
-	/// <summary>
+
+        /// <summary>
         /// The constructor of the MongoDbContext, it needs a connection string and a database name. 
         /// </summary>
         /// <param name="client">The MongoClient.</param>
@@ -111,7 +111,7 @@ namespace MongoDbGenericRepository
         /// Given the document type and the partition key, returns the name of the collection it belongs to.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-	/// <param name="partitionKey">The value of the partition key.</param>
+	    /// <param name="partitionKey">The value of the partition key.</param>
         /// <returns>The name of the collection.</returns>
         private string GetCollectionName<TDocument>(string partitionKey)
         {
