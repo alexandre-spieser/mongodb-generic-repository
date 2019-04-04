@@ -263,7 +263,7 @@ namespace MongoDbGenericRepository
         public async Task<TValue> GetMaxValueAsync<TDocument, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> maxValueSelector, string partitionKey = null)
             where TDocument : IDocument<TKey>
         {
-            return await GetMaxMongoQuery<TDocument, TValue>(filter, maxValueSelector, partitionKey).Project(maxValueSelector).FirstOrDefaultAsync();
+            return await GetMaxMongoQuery(filter, maxValueSelector, partitionKey).Project(maxValueSelector).FirstOrDefaultAsync();
         }
 
         /// <summary>
@@ -277,7 +277,7 @@ namespace MongoDbGenericRepository
         public TValue GetMaxValue<TDocument, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> maxValueSelector, string partitionKey = null)
             where TDocument : IDocument<TKey>
         {
-            return GetMaxMongoQuery<TDocument, TValue>(filter, maxValueSelector, partitionKey).Project(maxValueSelector).FirstOrDefault();
+            return GetMaxMongoQuery(filter, maxValueSelector, partitionKey).Project(maxValueSelector).FirstOrDefault();
         }
 
         /// <summary>
@@ -291,7 +291,7 @@ namespace MongoDbGenericRepository
         public virtual async Task<TValue> GetMinValueAsync<TDocument, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> minValueSelector, string partitionKey = null)
             where TDocument : IDocument<TKey>
         {
-            return await GetMinMongoQuery<TDocument, TValue>(filter, minValueSelector, partitionKey).Project(minValueSelector).FirstOrDefaultAsync();
+            return await GetMinMongoQuery(filter, minValueSelector, partitionKey).Project(minValueSelector).FirstOrDefaultAsync();
         }
 
         /// <summary>
@@ -305,7 +305,7 @@ namespace MongoDbGenericRepository
         public virtual TValue GetMinValue<TDocument, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> minValueSelector, string partitionKey = null)
             where TDocument : IDocument<TKey>
         {
-            return GetMinMongoQuery<TDocument, TValue>(filter, minValueSelector, partitionKey).Project(minValueSelector).FirstOrDefault();
+            return GetMinMongoQuery(filter, minValueSelector, partitionKey).Project(minValueSelector).FirstOrDefault();
         }
 
         #endregion

@@ -13,7 +13,7 @@ namespace MongoDbGenericRepository
     /// The base Repository, it is meant to be inherited from by your custom custom MongoRepository implementation.
     /// Its constructor must be given a connection string and a database name.
     /// </summary>
-    public abstract partial class ReadOnlyMongoRepository
+    public abstract partial class ReadOnlyMongoRepository : KeyTypedReadOnlyMongoRepository<Guid>, IReadOnlyMongoRepository
     {
         /// <summary>
         /// The constructor taking a connection string and a database name.
@@ -249,9 +249,9 @@ namespace MongoDbGenericRepository
             where TKey : IEquatable<TKey>
         {
             return await GetCollection<TDocument, TKey>(partitionKey).Find(Builders<TDocument>.Filter.Where(filter))
-                                                   .SortBy(minValueSelector)
-                                                   .Limit(1)
-                                                   .FirstOrDefaultAsync();
+                                                                     .SortBy(minValueSelector)
+                                                                     .Limit(1)
+                                                                     .FirstOrDefaultAsync();
         }
 
         /// <summary>
@@ -321,8 +321,8 @@ namespace MongoDbGenericRepository
             where TKey : IEquatable<TKey>
         {
             return await GetMaxMongoQuery<TDocument, TKey, TValue>(filter, maxValueSelector, partitionKey)
-                .Project(maxValueSelector)
-                .FirstOrDefaultAsync();
+                                .Project(maxValueSelector)
+                                .FirstOrDefaultAsync();
         }
 
         /// <summary>

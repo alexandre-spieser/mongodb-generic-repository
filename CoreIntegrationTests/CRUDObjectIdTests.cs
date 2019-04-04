@@ -1,6 +1,6 @@
 ﻿using CoreIntegrationTests.Infrastructure;
 using MongoDB.Bson;
-using System;
+
 namespace CoreIntegrationTests
 {
     public class CoreObjectIdTestDocument : TestDoc<ObjectId>
