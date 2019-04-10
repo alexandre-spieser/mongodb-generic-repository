@@ -235,7 +235,7 @@ namespace CoreIntegrationTests.Infrastructure
             SUT.AddOne<T>(document);
             // Act
             var cursor = SUT.GetCursor<T>(x => x.Id.Equals(document.Id), PartitionKey);
-            var count = cursor.Count();
+            var count = cursor.CountDocuments();
             // Assert
             Assert.True(1 == count, GetTestName());
         }
