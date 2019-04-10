@@ -20,9 +20,8 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <param name="connectionString">The connection string of the MongoDb server.</param>
         /// <param name="databaseName">The name of the database against which you want to perform operations.</param>
-        protected BaseMongoRepository(string connectionString, string databaseName) : base(connectionString, databaseName)
+        protected BaseMongoRepository(string connectionString, string databaseName = null) : base(connectionString, databaseName)
         {
-            MongoDbContext = new MongoDbContext(connectionString, databaseName);
         }
 
         /// <summary>
@@ -31,7 +30,6 @@ namespace MongoDbGenericRepository
         /// <param name="mongoDbContext">A mongodb context implementing <see cref="IMongoDbContext"/></param>
         protected BaseMongoRepository(IMongoDbContext mongoDbContext) : base(mongoDbContext)
         {
-            MongoDbContext = mongoDbContext;
         }
 
         /// <summary>
@@ -40,7 +38,6 @@ namespace MongoDbGenericRepository
         /// <param name="mongoDatabase">A mongodb context implementing <see cref="IMongoDatabase"/></param>
         protected BaseMongoRepository(IMongoDatabase mongoDatabase) : base(mongoDatabase)
         {
-            MongoDbContext = new MongoDbContext(mongoDatabase);
         }
 
         #region Create
