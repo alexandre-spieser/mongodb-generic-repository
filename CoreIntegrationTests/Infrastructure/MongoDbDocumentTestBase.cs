@@ -1078,7 +1078,7 @@ namespace CoreIntegrationTests.Infrastructure
         #region Math
 
         [Fact]
-        public async Task SumByAsync()
+        public async Task SumByDecimalAsync()
         {
             // Arrange
             var criteria = $"{GetTestName()}.{DocumentTypeName}.{Guid.NewGuid()}";
@@ -1095,6 +1095,29 @@ namespace CoreIntegrationTests.Infrastructure
 
             // Act
             var result = await SUT.SumByAsync<T>(e => e.SomeContent == criteria, e => e.Nested.SomeAmount, PartitionKey);
+
+            // Assert
+            Assert.Equal(expectedSum, result);
+        }
+
+        [Fact]
+        public void SumByDecimal()
+        {
+            // Arrange
+            var criteria = $"{GetTestName()}.{DocumentTypeName}.{Guid.NewGuid()}";
+            var documents = CreateTestDocuments(5);
+            var i = 1;
+            documents.ForEach(e =>
+            {
+                e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
+                e.Nested.SomeAmount = 5m;
+                e.SomeContent = criteria;
+            });
+            SUT.AddMany<T>(documents);
+            var expectedSum = documents.Sum(e => e.Nested.SomeAmount);
+
+            // Act
+            var result = SUT.SumBy<T>(e => e.SomeContent == criteria, e => e.Nested.SomeAmount, PartitionKey);
 
             // Assert
             Assert.Equal(expectedSum, result);
