@@ -20,7 +20,7 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <param name="connectionString">The connection string of the MongoDb server.</param>
         /// <param name="databaseName">The name of the database against which you want to perform operations.</param>
-        protected KeyTypedBaseMongoDbRepository(string connectionString, string databaseName) : base(connectionString, databaseName)
+        protected KeyTypedBaseMongoDbRepository(string connectionString, string databaseName = null) : base(connectionString, databaseName)
         {
         }
 
@@ -39,7 +39,6 @@ namespace MongoDbGenericRepository
         protected KeyTypedBaseMongoDbRepository(IMongoDatabase mongoDatabase) : base(mongoDatabase)
         {
         }
-
 
         #region Create
 
@@ -129,7 +128,6 @@ namespace MongoDbGenericRepository
 
         #endregion Create
 
-
         /// <summary>
         /// Sets the value of the document Id if it is not set already.
         /// </summary>
@@ -149,6 +147,5 @@ namespace MongoDbGenericRepository
                 document.Id = IdGenerator.GetId<TKey>();
             }
         }
-
     }
 }

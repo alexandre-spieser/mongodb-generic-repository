@@ -7,17 +7,9 @@ using MongoDbGenericRepository.Models;
 
 namespace MongoDbGenericRepository
 {
-    public interface IKeyTypedReadOnlyMongoRepository<TKey> where TKey : IEquatable<TKey>
+    public interface IKeyTypedReadOnlyMongoRepository<TKey> : IBaseReadOnlyRepository 
+        where TKey : IEquatable<TKey>
     {
-        /// <summary>
-        /// The connection string.
-        /// </summary>
-        string ConnectionString { get; set; }
-        /// <summary>
-        /// The database name.
-        /// </summary>
-        string DatabaseName { get; set; }
-
         #region Read
 
         /// <summary>
@@ -199,5 +191,56 @@ namespace MongoDbGenericRepository
 
         #endregion
 
+        #region Maths
+
+        /// <summary>
+        /// Sums the values of a selected field for a given filtered collection of documents.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="selector">The field you want to sum.</param>
+        /// <param name="partitionKey">The partition key of your document, if any.</param>
+        Task<int> SumByAsync<TDocument>(Expression<Func<TDocument, bool>> filter,
+                                                       Expression<Func<TDocument, int>> selector,
+                                                       string partitionKey = null)
+            where TDocument : IDocument<TKey>;
+
+        /// <summary>
+        /// Sums the values of a selected field for a given filtered collection of documents.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="selector">The field you want to sum.</param>
+        /// <param name="partitionKey">The partition key of your document, if any.</param>
+        Task<decimal> SumByAsync<TDocument>(Expression<Func<TDocument, bool>> filter,
+                                                       Expression<Func<TDocument, decimal>> selector,
+                                                       string partitionKey = null)
+            where TDocument : IDocument<TKey>;
+
+        /// <summary>
+        /// Sums the values of a selected field for a given filtered collection of documents.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="selector">The field you want to sum.</param>
+        /// <param name="partitionKey">The partition key of your document, if any.</param>
+        int SumBy<TDocument>(Expression<Func<TDocument, bool>> filter,
+                                                       Expression<Func<TDocument, int>> selector,
+                                                       string partitionKey = null)
+            where TDocument : IDocument<TKey>;
+
+        /// <summary>
+        /// Sums the values of a selected field for a given filtered collection of documents.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="selector">The field you want to sum.</param>
+        /// <param name="partitionKey">The partition key of your document, if any.</param>
+        decimal SumBy<TDocument>(Expression<Func<TDocument, bool>> filter,
+                                                       Expression<Func<TDocument, decimal>> selector,
+                                                       string partitionKey = null)
+            where TDocument : IDocument<TKey>;
+
+        #endregion Maths
     }
 }
