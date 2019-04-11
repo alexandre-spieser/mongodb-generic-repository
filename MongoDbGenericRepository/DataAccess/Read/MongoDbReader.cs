@@ -1,44 +1,20 @@
 ﻿using MongoDB.Driver;
-using MongoDbGenericRepository.DataAccess.Read;
+using MongoDB.Driver.Linq;
+using MongoDbGenericRepository.DataAccess.Base;
 using MongoDbGenericRepository.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace MongoDbGenericRepository
+namespace MongoDbGenericRepository.DataAccess.Read
 {
-    /// <summary>
-    /// The base Repository, it is meant to be inherited from by your custom custom MongoRepository implementation.
-    /// Its constructor must be given a connection string and a database name.
-    /// </summary>
-    public abstract class ReadOnlyMongoRepository : KeyTypedReadOnlyMongoRepository<Guid>, IReadOnlyMongoRepository
+    public class MongoDbReader : DataAccessBase
     {
-        /// <summary>
-        /// The constructor taking a connection string and a database name.
-        /// </summary>
-        /// <param name="connectionString">The connection string of the MongoDb server.</param>
-        /// <param name="databaseName">The name of the database against which you want to perform operations.</param>
-        protected ReadOnlyMongoRepository(string connectionString, string databaseName = null) : base(connectionString, databaseName)
+        public MongoDbReader(IMongoDbContext mongoDbContext) : base(mongoDbContext)
         {
         }
-
-        /// <summary>
-        /// The contructor taking a <see cref="IMongoDbContext"/>.
-        /// </summary>
-        /// <param name="mongoDbContext">A mongodb context implementing <see cref="IMongoDbContext"/></param>
-        protected ReadOnlyMongoRepository(IMongoDbContext mongoDbContext) : base(mongoDbContext)
-        {
-        }
-
-        /// <summary>
-        /// The contructor taking a <see cref="IMongoDatabase"/>.
-        /// </summary>
-        /// <param name="mongoDatabase">A mongodb context implementing <see cref="IMongoDatabase"/></param>
-        protected ReadOnlyMongoRepository(IMongoDatabase mongoDatabase) : base(mongoDatabase)
-        {
-        }
-
 
         #region Read TKey
 
@@ -53,7 +29,8 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return await MongoDbReader.GetByIdAsync<TDocument, TKey>(id, partitionKey);
+            var filter = Builders<TDocument>.Filter.Eq("Id", id);
+            return await HandlePartitioned<TDocument, TKey>(partitionKey).Find(filter).FirstOrDefaultAsync();
         }
 
         /// <summary>
@@ -67,7 +44,8 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return MongoDbReader.GetById<TDocument, TKey>(id, partitionKey);
+            var filter = Builders<TDocument>.Filter.Eq("Id", id);
+            return HandlePartitioned<TDocument, TKey>(partitionKey).Find(filter).FirstOrDefault();
         }
 
         /// <summary>
@@ -81,7 +59,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return await MongoDbReader.GetOneAsync<TDocument, TKey>(filter, partitionKey);
+            return await HandlePartitioned<TDocument, TKey>(partitionKey).Find(filter).FirstOrDefaultAsync();
         }
 
         /// <summary>
@@ -95,7 +73,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return MongoDbReader.GetOne<TDocument, TKey>(filter, partitionKey);
+            return HandlePartitioned<TDocument, TKey>(partitionKey).Find(filter).FirstOrDefault();
         }
 
         /// <summary>
@@ -109,7 +87,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return MongoDbReader.GetCursor<TDocument, TKey>(filter, partitionKey);
+            return HandlePartitioned<TDocument, TKey>(partitionKey).Find(filter);
         }
 
         /// <summary>
@@ -123,7 +101,8 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return await MongoDbReader.AnyAsync<TDocument, TKey>(filter, partitionKey);
+            var count = await HandlePartitioned<TDocument, TKey>(partitionKey).CountDocumentsAsync(filter);
+            return (count > 0);
         }
 
         /// <summary>
@@ -137,7 +116,8 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return MongoDbReader.Any<TDocument, TKey>(filter, partitionKey);
+            var count = HandlePartitioned<TDocument, TKey>(partitionKey).CountDocuments(filter);
+            return (count > 0);
         }
 
         /// <summary>
@@ -151,7 +131,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return await MongoDbReader.GetAllAsync<TDocument, TKey>(filter, partitionKey);
+            return await HandlePartitioned<TDocument, TKey>(partitionKey).Find(filter).ToListAsync();
         }
 
         /// <summary>
@@ -165,7 +145,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return MongoDbReader.GetAll<TDocument, TKey>(filter, partitionKey);
+            return HandlePartitioned<TDocument, TKey>(partitionKey).Find(filter).ToList();
         }
 
         /// <summary>
@@ -179,7 +159,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return await MongoDbReader.CountAsync<TDocument, TKey>(filter, partitionKey);
+            return await HandlePartitioned<TDocument, TKey>(partitionKey).CountDocumentsAsync(filter);
         }
 
         /// <summary>
@@ -193,8 +173,12 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return MongoDbReader.Count<TDocument, TKey>(filter, partitionKey);
+            return HandlePartitioned<TDocument, TKey>(partitionKey).Find(filter).CountDocuments();
         }
+
+        #endregion
+
+        #region Min / Max
 
         /// <summary>
         /// Gets the document with the maximum value of a specified property in a MongoDB collections that is satisfying the filter.
@@ -208,7 +192,10 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return await MongoDbReader.GetByMaxAsync<TDocument, TKey>(filter, maxValueSelector, partitionKey);
+            return await GetCollection<TDocument, TKey>(partitionKey).Find(Builders<TDocument>.Filter.Where(filter))
+                                                                     .SortByDescending(maxValueSelector)
+                                                                     .Limit(1)
+                                                                     .FirstOrDefaultAsync();
         }
 
         /// <summary>
@@ -223,7 +210,10 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return MongoDbReader.GetByMax<TDocument, TKey>(filter, maxValueSelector, partitionKey);
+            return GetCollection<TDocument, TKey>(partitionKey).Find(Builders<TDocument>.Filter.Where(filter))
+                                                               .SortByDescending(maxValueSelector)
+                                                               .Limit(1)
+                                                               .FirstOrDefault();
         }
 
         /// <summary>
@@ -238,7 +228,10 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return await MongoDbReader.GetByMinAsync<TDocument, TKey>(filter, minValueSelector, partitionKey);
+            return await GetCollection<TDocument, TKey>(partitionKey).Find(Builders<TDocument>.Filter.Where(filter))
+                                                                     .SortBy(minValueSelector)
+                                                                     .Limit(1)
+                                                                     .FirstOrDefaultAsync();
         }
 
         /// <summary>
@@ -253,7 +246,10 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return MongoDbReader.GetByMin<TDocument, TKey>(filter, minValueSelector, partitionKey);
+            return GetCollection<TDocument, TKey>(partitionKey).Find(Builders<TDocument>.Filter.Where(filter))
+                                                               .SortBy(minValueSelector)
+                                                               .Limit(1)
+                                                               .FirstOrDefault();
         }
 
         /// <summary>
@@ -268,7 +264,9 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return await MongoDbReader.GetMaxValueAsync<TDocument, TKey, TValue>(filter, maxValueSelector, partitionKey);
+            return await GetMaxMongoQuery<TDocument, TKey, TValue>(filter, maxValueSelector, partitionKey)
+                                .Project(maxValueSelector)
+                                .FirstOrDefaultAsync();
         }
 
         /// <summary>
@@ -284,7 +282,9 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return MongoDbReader.GetMaxValue<TDocument, TKey, TValue>(filter, maxValueSelector, partitionKey);
+            return GetMaxMongoQuery<TDocument, TKey, TValue>(filter, maxValueSelector, partitionKey)
+                      .Project(maxValueSelector)
+                      .FirstOrDefault();
         }
 
         /// <summary>
@@ -300,7 +300,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return await MongoDbReader.GetMinValueAsync<TDocument, TKey, TValue>(filter, minValueSelector, partitionKey);
+            return await GetMinMongoQuery<TDocument, TKey, TValue>(filter, minValueSelector, partitionKey).Project(minValueSelector).FirstOrDefaultAsync();
         }
 
         /// <summary>
@@ -316,10 +316,11 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return MongoDbReader.GetMinValue<TDocument, TKey, TValue>(filter, minValueSelector, partitionKey);
+            return GetMinMongoQuery<TDocument, TKey, TValue>(filter, minValueSelector, partitionKey).Project(minValueSelector).FirstOrDefault();
         }
 
-        #endregion
+
+        #endregion Min / Max
 
         #region Sum TKey
 
@@ -336,7 +337,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return await MongoDbReader.SumByAsync<TDocument, TKey>(filter, selector, partitionKey);
+            return await GetQuery<TDocument, TKey>(filter, partitionKey).SumAsync(selector);
         }
 
         /// <summary>
@@ -352,7 +353,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return MongoDbReader.SumBy<TDocument, TKey>(filter, selector, partitionKey);
+            return GetQuery<TDocument, TKey>(filter, partitionKey).Sum(selector);
         }
 
         /// <summary>
@@ -368,7 +369,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return await MongoDbReader.SumByAsync<TDocument, TKey>(filter, selector, partitionKey);
+            return await GetQuery<TDocument, TKey>(filter, partitionKey).SumAsync(selector);
         }
 
         /// <summary>
@@ -384,10 +385,9 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return MongoDbReader.SumBy<TDocument, TKey>(filter, selector, partitionKey);
+            return GetQuery<TDocument, TKey>(filter, partitionKey).Sum(selector);
         }
 
         #endregion Sum TKey
-
     }
 }

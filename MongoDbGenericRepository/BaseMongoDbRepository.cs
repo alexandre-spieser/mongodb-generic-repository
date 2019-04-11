@@ -1,11 +1,13 @@
 ﻿using MongoDB.Driver;
+using MongoDbGenericRepository.DataAccess.Create;
+using MongoDbGenericRepository.DataAccess.Update;
+using MongoDbGenericRepository.Models;
+using MongoDbGenericRepository.Utils;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Linq.Expressions;
-using MongoDbGenericRepository.Models;
 using System.Linq;
-using MongoDbGenericRepository.Utils;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace MongoDbGenericRepository
 {
@@ -15,6 +17,45 @@ namespace MongoDbGenericRepository
     /// </summary>
     public abstract partial class BaseMongoRepository : ReadOnlyMongoRepository, IBaseMongoRepository
     {
+        private object _initLock;
+        private MongoDbCreator _mongoDbCreator;
+        protected MongoDbCreator MongoDbCreator
+        {
+            get
+            {
+                if (_mongoDbCreator != null) { return _mongoDbCreator; }
+
+                lock (_initLock)
+                {
+                    if (_mongoDbCreator == null)
+                    {
+                        _mongoDbCreator = new MongoDbCreator(MongoDbContext);
+                    }
+                }
+
+                return _mongoDbCreator;
+            }
+        }
+
+        private MongoDbUpdater _mongoDbUpdater;
+        protected MongoDbUpdater MongoDbUpdater
+        {
+            get
+            {
+                if (_mongoDbUpdater != null) { return _mongoDbUpdater; }
+
+                lock (_initLock)
+                {
+                    if (_mongoDbUpdater == null)
+                    {
+                        _mongoDbUpdater = new MongoDbUpdater(MongoDbContext);
+                    }
+                }
+
+                return _mongoDbUpdater;
+            }
+        }
+
         /// <summary>
         /// The constructor taking a connection string and a database name.
         /// </summary>
@@ -40,94 +81,6 @@ namespace MongoDbGenericRepository
         {
         }
 
-        #region Create
-
-        /// <summary>
-        /// Asynchronously adds a document to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <param name="document">The document you want to add.</param>
-        public virtual async Task AddOneAsync<TDocument>(TDocument document) where TDocument : IDocument
-        {
-            FormatDocument(document);
-            await HandlePartitioned(document).InsertOneAsync(document);
-        }
-
-        /// <summary>
-        /// Adds a document to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <param name="document">The document you want to add.</param>
-        public virtual void AddOne<TDocument>(TDocument document) where TDocument : IDocument
-        {
-            FormatDocument(document);
-            HandlePartitioned(document).InsertOne(document);
-        }
-
-        /// <summary>
-        /// Asynchronously adds a list of documents to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <param name="documents">The documents you want to add.</param>
-        public virtual async Task AddManyAsync<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument
-        {
-            if (!documents.Any())
-            {
-                return;
-            }
-            foreach (var document in documents)
-            {
-                FormatDocument(document);
-            }
-            // cannot use typeof(IPartitionedDocument).IsAssignableFrom(typeof(TDocument)), not available in netstandard 1.5
-            if (documents.Any(e => e is IPartitionedDocument))
-            {
-                foreach (var group in documents.GroupBy(e => ((IPartitionedDocument)e).PartitionKey))
-                {
-                    await HandlePartitioned(group.FirstOrDefault()).InsertManyAsync(group.ToList());
-                }
-            }
-            else
-            {
-                await GetCollection<TDocument>().InsertManyAsync(documents.ToList());
-            }
-        }
-
-        /// <summary>
-        /// Adds a list of documents to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <param name="documents">The documents you want to add.</param>
-        public virtual void AddMany<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument
-        {
-            if (!documents.Any())
-            {
-                return;
-            }
-            foreach (var document in documents)
-            {
-                FormatDocument(document);
-            }
-            // cannot use typeof(IPartitionedDocument).IsAssignableFrom(typeof(TDocument)), not available in netstandard 1.5
-            if (documents.Any(e => e is IPartitionedDocument))
-            {
-                foreach (var group in documents.GroupBy(e => ((IPartitionedDocument)e).PartitionKey))
-                {
-                    HandlePartitioned(group.FirstOrDefault()).InsertMany(group.ToList());
-                }
-            }
-            else
-            {
-                GetCollection<TDocument>().InsertMany(documents.ToList());
-            }
-        }
-
-        #endregion Create
-
         #region Create TKey
 
         /// <summary>
@@ -141,8 +94,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            FormatDocument<TDocument, TKey>(document);
-            await HandlePartitioned<TDocument, TKey>(document).InsertOneAsync(document);
+            await MongoDbCreator.AddOneAsync<TDocument, TKey>(document);
         }
 
         /// <summary>
@@ -156,8 +108,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            FormatDocument<TDocument, TKey>(document);
-            HandlePartitioned<TDocument, TKey>(document).InsertOne(document);
+            MongoDbCreator.AddOne<TDocument, TKey>(document);
         }
 
         /// <summary>
@@ -171,26 +122,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            if (!documents.Any())
-            {
-                return;
-            }
-            foreach (var document in documents)
-            {
-                FormatDocument<TDocument, TKey>(document);
-            }
-            // cannot use typeof(IPartitionedDocument).IsAssignableFrom(typeof(TDocument)), not available in netstandard 1.5
-            if (documents.Any(e => e is IPartitionedDocument))
-            {
-                foreach (var group in documents.GroupBy(e => ((IPartitionedDocument)e).PartitionKey))
-                {
-                    await HandlePartitioned<TDocument, TKey>(group.FirstOrDefault()).InsertManyAsync(group.ToList());
-                }
-            }
-            else
-            {
-                await GetCollection<TDocument, TKey>().InsertManyAsync(documents.ToList());
-            }
+            await MongoDbCreator.AddManyAsync<TDocument, TKey>(documents);
         }
 
         /// <summary>
@@ -204,26 +136,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            if (!documents.Any())
-            {
-                return;
-            }
-            foreach (var document in documents)
-            {
-                FormatDocument<TDocument, TKey>(document);
-            }
-            // cannot use typeof(IPartitionedDocument).IsAssignableFrom(typeof(TDocument)), not available in netstandard 1.5
-            if (documents.Any(e => e is IPartitionedDocument))
-            {
-                foreach (var group in documents.GroupBy(e => ((IPartitionedDocument)e).PartitionKey))
-                {
-                    HandlePartitioned<TDocument, TKey>(group.FirstOrDefault()).InsertMany(group.ToList());
-                }
-            }
-            else
-            {
-                GetCollection<TDocument, TKey>().InsertMany(documents.ToList());
-            }
+            MongoDbCreator.AddMany<TDocument, TKey>(documents);
         }
 
         #endregion 
@@ -237,8 +150,7 @@ namespace MongoDbGenericRepository
         /// <param name="modifiedDocument">The document with the modifications you want to persist.</param>
         public virtual async Task<bool> UpdateOneAsync<TDocument>(TDocument modifiedDocument) where TDocument : IDocument
         {
-            var updateRes = await HandlePartitioned(modifiedDocument).ReplaceOneAsync(x => x.Id == modifiedDocument.Id, modifiedDocument);
-            return updateRes.ModifiedCount == 1;
+            return await MongoDbUpdater.UpdateOneAsync<TDocument, Guid>(modifiedDocument);
         }
 
         /// <summary>
@@ -248,8 +160,7 @@ namespace MongoDbGenericRepository
         /// <param name="modifiedDocument">The document with the modifications you want to persist.</param>
         public virtual bool UpdateOne<TDocument>(TDocument modifiedDocument) where TDocument : IDocument
         {
-            var updateRes = HandlePartitioned(modifiedDocument).ReplaceOne(x => x.Id == modifiedDocument.Id, modifiedDocument);
-            return updateRes.ModifiedCount == 1;
+            return MongoDbUpdater.UpdateOne<TDocument, Guid>(modifiedDocument);
         }
 
         /// <summary>
@@ -261,9 +172,20 @@ namespace MongoDbGenericRepository
         public virtual async Task<bool> UpdateOneAsync<TDocument>(TDocument documentToModify, UpdateDefinition<TDocument> update)
             where TDocument : IDocument
         {
-            var filter = Builders<TDocument>.Filter.Eq("Id", documentToModify.Id);
-            var updateRes = await HandlePartitioned(documentToModify).UpdateOneAsync(filter, update);
-            return updateRes.ModifiedCount == 1;
+            return await MongoDbUpdater.UpdateOneAsync<TDocument, Guid>(documentToModify, update);
+
+        }
+
+        /// <summary>
+        /// Takes a document you want to modify and applies the update you have defined in MongoDb.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="documentToModify">The document you want to modify.</param>
+        /// <param name="update">The update definition for the document.</param>
+        public virtual bool UpdateOne<TDocument>(TDocument documentToModify, UpdateDefinition<TDocument> update)
+            where TDocument : IDocument
+        {
+            return MongoDbUpdater.UpdateOne<TDocument, Guid>(documentToModify, update);
         }
 
         /// <summary>
@@ -277,9 +199,7 @@ namespace MongoDbGenericRepository
         public virtual bool UpdateOne<TDocument, TField>(TDocument documentToModify, Expression<Func<TDocument, TField>> field, TField value)
             where TDocument : IDocument
         {
-            var filter = Builders<TDocument>.Filter.Eq("Id", documentToModify.Id);
-            var updateRes = HandlePartitioned(documentToModify).UpdateOne(filter, Builders<TDocument>.Update.Set(field, value));
-            return updateRes.ModifiedCount == 1;
+            return MongoDbUpdater.UpdateOne<TDocument, Guid, TField>(documentToModify, field, value);
         }
 
         /// <summary>
@@ -293,9 +213,7 @@ namespace MongoDbGenericRepository
         public virtual async Task<bool> UpdateOneAsync<TDocument, TField>(TDocument documentToModify, Expression<Func<TDocument, TField>> field, TField value)
             where TDocument : IDocument
         {
-            var filter = Builders<TDocument>.Filter.Eq("Id", documentToModify.Id);
-            var updateRes = await HandlePartitioned(documentToModify).UpdateOneAsync(filter, Builders<TDocument>.Update.Set(field, value));
-            return updateRes.ModifiedCount == 1;
+            return await MongoDbUpdater.UpdateOneAsync<TDocument, Guid, TField>(documentToModify, field, value);
         }
 
         /// <summary>
@@ -310,9 +228,7 @@ namespace MongoDbGenericRepository
         public virtual bool UpdateOne<TDocument, TField>(FilterDefinition<TDocument> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
             where TDocument : IDocument
         {
-            var collection = string.IsNullOrEmpty(partitionKey) ? GetCollection<TDocument>() : GetCollection<TDocument>(partitionKey);
-            var updateRes = collection.UpdateOne(filter, Builders<TDocument>.Update.Set(field, value));
-            return updateRes.ModifiedCount == 1;
+            return MongoDbUpdater.UpdateOne<TDocument, Guid, TField>(filter, field, value, partitionKey);
         }
 
         /// <summary>
@@ -327,9 +243,7 @@ namespace MongoDbGenericRepository
         public virtual bool UpdateOne<TDocument, TField>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
             where TDocument : IDocument
         {
-            var collection = string.IsNullOrEmpty(partitionKey) ? GetCollection<TDocument>() : GetCollection<TDocument>(partitionKey);
-            var updateRes = collection.UpdateOne(Builders<TDocument>.Filter.Where(filter), Builders<TDocument>.Update.Set(field, value));
-            return updateRes.ModifiedCount == 1;
+            return MongoDbUpdater.UpdateOne<TDocument, Guid, TField>(filter, field, value, partitionKey);
         }
 
         /// <summary>
@@ -344,9 +258,7 @@ namespace MongoDbGenericRepository
         public virtual async Task<bool> UpdateOneAsync<TDocument, TField>(FilterDefinition<TDocument> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
             where TDocument : IDocument
         {
-            var collection = string.IsNullOrEmpty(partitionKey) ? GetCollection<TDocument>() : GetCollection<TDocument>(partitionKey);
-            var updateRes = await collection.UpdateOneAsync(filter, Builders<TDocument>.Update.Set(field, value));
-            return updateRes.ModifiedCount == 1;
+            return await MongoDbUpdater.UpdateOneAsync<TDocument, Guid, TField>(filter, field, value, partitionKey);
         }
 
         /// <summary>
@@ -361,24 +273,9 @@ namespace MongoDbGenericRepository
         public virtual async Task<bool> UpdateOneAsync<TDocument, TField>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
             where TDocument : IDocument
         {
-            var collection = string.IsNullOrEmpty(partitionKey) ? GetCollection<TDocument>() : GetCollection<TDocument>(partitionKey);
-            var updateRes = await collection.UpdateOneAsync(Builders<TDocument>.Filter.Where(filter), Builders<TDocument>.Update.Set(field, value));
-            return updateRes.ModifiedCount == 1;
+            return await MongoDbUpdater.UpdateOneAsync<TDocument, Guid, TField>(filter, field, value, partitionKey);
         }
 
-        /// <summary>
-        /// Takes a document you want to modify and applies the update you have defined in MongoDb.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <param name="documentToModify">The document you want to modify.</param>
-        /// <param name="update">The update definition for the document.</param>
-        public virtual bool UpdateOne<TDocument>(TDocument documentToModify, UpdateDefinition<TDocument> update)
-            where TDocument : IDocument
-        {
-            var filter = Builders<TDocument>.Filter.Eq("Id", documentToModify.Id);
-            var updateRes = HandlePartitioned(documentToModify).UpdateOne(filter, update, new UpdateOptions { IsUpsert = true });
-            return updateRes.ModifiedCount == 1;
-        }
 
         #endregion Update
 
@@ -394,9 +291,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            var filter = Builders<TDocument>.Filter.Eq("Id", modifiedDocument.Id);
-            var updateRes = await HandlePartitioned<TDocument, TKey>(modifiedDocument).ReplaceOneAsync(filter, modifiedDocument);
-            return updateRes.ModifiedCount == 1;
+            return await MongoDbUpdater.UpdateOneAsync<TDocument, TKey>(modifiedDocument);
         }
 
         /// <summary>
@@ -409,9 +304,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            var filter = Builders<TDocument>.Filter.Eq("Id", modifiedDocument.Id);
-            var updateRes = HandlePartitioned<TDocument, TKey>(modifiedDocument).ReplaceOne(filter, modifiedDocument);
-            return updateRes.ModifiedCount == 1;
+            return MongoDbUpdater.UpdateOne<TDocument, TKey>(modifiedDocument);
         }
 
         /// <summary>
@@ -425,9 +318,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            var filter = Builders<TDocument>.Filter.Eq("Id", documentToModify.Id);
-            var updateRes = await HandlePartitioned<TDocument, TKey>(documentToModify).UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
-            return updateRes.ModifiedCount == 1;
+            return await MongoDbUpdater.UpdateOneAsync<TDocument, TKey>(documentToModify, update);
         }
 
         /// <summary>
@@ -441,27 +332,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            var filter = Builders<TDocument>.Filter.Eq("Id", documentToModify.Id);
-            var updateRes = HandlePartitioned<TDocument, TKey>(documentToModify).UpdateOne(filter, update, new UpdateOptions { IsUpsert = true });
-            return updateRes.ModifiedCount == 1;
-        }
-
-        /// <summary>
-        /// Updates the property field with the given value update a property field in entities.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <typeparam name="TField">The type of the field.</typeparam>
-        /// <param name="documentToModify">The document you want to modify.</param>
-        /// <param name="field">The field selector.</param>
-        /// <param name="value">The new value of the property field.</param>
-        public virtual async Task<bool> UpdateOneAsync<TDocument, TKey, TField>(TDocument documentToModify, Expression<Func<TDocument, TField>> field, TField value)
-            where TDocument : IDocument<TKey>
-            where TKey : IEquatable<TKey>
-        {
-            var filter = Builders<TDocument>.Filter.Eq("Id", documentToModify.Id);
-            var updateRes = await HandlePartitioned<TDocument, TKey>(documentToModify).UpdateOneAsync(filter, Builders<TDocument>.Update.Set(field, value));
-            return updateRes.ModifiedCount == 1;
+            return MongoDbUpdater.UpdateOne<TDocument, TKey>(documentToModify, update);
         }
 
         /// <summary>
@@ -477,9 +348,57 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            var filter = Builders<TDocument>.Filter.Eq("Id", documentToModify.Id);
-            var updateRes = HandlePartitioned<TDocument, TKey>(documentToModify).UpdateOne(filter, Builders<TDocument>.Update.Set(field, value));
-            return updateRes.ModifiedCount == 1;
+            return MongoDbUpdater.UpdateOne<TDocument, TKey, TField>(documentToModify, field, value);
+        }
+
+        /// <summary>
+        /// Updates the property field with the given value update a property field in entities.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="documentToModify">The document you want to modify.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        public virtual async Task<bool> UpdateOneAsync<TDocument, TKey, TField>(TDocument documentToModify, Expression<Func<TDocument, TField>> field, TField value)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            return await MongoDbUpdater.UpdateOneAsync<TDocument, TKey, TField>(documentToModify, field, value);
+        }
+
+        /// <summary>
+        /// Updates the property field with the given value.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        /// <param name="partitionKey">The value of the partition key.</param>
+        public virtual bool UpdateOne<TDocument, TKey, TField>(FilterDefinition<TDocument> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            return MongoDbUpdater.UpdateOne<TDocument, TKey, TField>(filter, field, value, partitionKey);
+        }
+
+        /// <summary>
+        /// For the entity selected by the filter, updates the property field with the given value.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        /// <param name="partitionKey">The partition key for the document.</param>
+        public virtual bool UpdateOne<TDocument, TKey, TField>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            return MongoDbUpdater.UpdateOne<TDocument, TKey, TField>(filter, field, value, partitionKey);
         }
 
         /// <summary>
@@ -496,9 +415,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            var collection = string.IsNullOrEmpty(partitionKey) ? GetCollection<TDocument, TKey>() : GetCollection<TDocument, TKey>(partitionKey);
-            var updateRes = await collection.UpdateOneAsync(filter, Builders<TDocument>.Update.Set(field, value));
-            return updateRes.ModifiedCount == 1;
+            return await MongoDbUpdater.UpdateOneAsync<TDocument, TKey, TField>(filter, field, value, partitionKey);
         }
 
         /// <summary>
@@ -516,42 +433,6 @@ namespace MongoDbGenericRepository
             where TKey : IEquatable<TKey>
         {
             return await UpdateOneAsync<TDocument, TKey, TField>(Builders<TDocument>.Filter.Where(filter), field, value, partitionKey);
-        }
-
-        /// <summary>
-        /// Updates the property field with the given value.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <typeparam name="TField">The type of the field.</typeparam>
-        /// <param name="filter">The document filter.</param>
-        /// <param name="field">The field selector.</param>
-        /// <param name="value">The new value of the property field.</param>
-        /// <param name="partitionKey">The value of the partition key.</param>
-        public virtual bool UpdateOne<TDocument, TKey, TField>(FilterDefinition<TDocument> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
-            where TDocument : IDocument<TKey>
-            where TKey : IEquatable<TKey>
-        {
-            var collection = string.IsNullOrEmpty(partitionKey) ? GetCollection<TDocument, TKey>() : GetCollection<TDocument, TKey>(partitionKey);
-            var updateRes = collection.UpdateOne(filter, Builders<TDocument>.Update.Set(field, value));
-            return updateRes.ModifiedCount == 1;
-        }
-
-        /// <summary>
-        /// For the entity selected by the filter, updates the property field with the given value.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <typeparam name="TField">The type of the field.</typeparam>
-        /// <param name="filter">The document filter.</param>
-        /// <param name="field">The field selector.</param>
-        /// <param name="value">The new value of the property field.</param>
-        /// <param name="partitionKey">The partition key for the document.</param>
-        public virtual bool UpdateOne<TDocument, TKey, TField>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
-            where TDocument : IDocument<TKey>
-            where TKey : IEquatable<TKey>
-        {
-            return UpdateOne<TDocument, TKey, TField>(Builders<TDocument>.Filter.Where(filter), field, value, partitionKey);
         }
 
         #endregion Update
@@ -1055,9 +936,9 @@ namespace MongoDbGenericRepository
         /// <param name="takeNumber">The number of documents you want to take. Default value is 50.</param>
         /// <param name="partitionKey">An optional partition key.</param>
         public virtual async Task<List<TDocument>> GetPaginatedAsync<TDocument>(
-            Expression<Func<TDocument, bool>> filter, 
-            int skipNumber = 0, 
-            int takeNumber = 50, 
+            Expression<Func<TDocument, bool>> filter,
+            int skipNumber = 0,
+            int takeNumber = 50,
             string partitionKey = null)
             where TDocument : IDocument
         {

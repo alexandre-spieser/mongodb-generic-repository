@@ -7,8 +7,7 @@ using MongoDbGenericRepository.Models;
 
 namespace MongoDbGenericRepository
 {
-    public interface IKeyTypedReadOnlyMongoRepository<TKey> : IBaseReadOnlyRepository 
-        where TKey : IEquatable<TKey>
+    public interface IKeyTypedReadOnlyMongoRepository<TKey> where TKey : IEquatable<TKey>
     {
         #region Read
 

@@ -1119,6 +1119,7 @@ namespace CoreIntegrationTests.Infrastructure
         #endregion Math
 
         #region Test Utils
+
         [MethodImpl(MethodImplOptions.NoInlining)]
         private string GetCurrentMethod()
         {
