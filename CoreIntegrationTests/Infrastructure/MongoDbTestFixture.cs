@@ -16,15 +16,15 @@ namespace CoreIntegrationTests.Infrastructure
 
         public MongoDbTestFixture()
         {
-            DocsToDelete = new ConcurrentBag<T>();
         }
 
         public string PartitionKey { get; set; }
 
-        public ConcurrentBag<T> DocsToDelete { get; set; }
+        public static ConcurrentBag<T> DocsToDelete { get; set; } = new ConcurrentBag<T>();
 
         public virtual void Dispose()
         {
+
             if (DocsToDelete.Any())
             {
                 TestRepository.Instance.DeleteMany<T, TKey>(DocsToDelete.ToList());

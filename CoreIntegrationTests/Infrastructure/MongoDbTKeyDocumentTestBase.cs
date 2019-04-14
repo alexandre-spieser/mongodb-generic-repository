@@ -1,4 +1,5 @@
-﻿using MongoDbGenericRepository.Models;
+﻿using MongoDB.Driver;
+using MongoDbGenericRepository.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -72,7 +73,7 @@ namespace CoreIntegrationTests.Infrastructure
         public void AddOne()
         {
             // Arrange
-            var document = new T();
+            var document = CreateTestDocument();
             // Act
             SUT.AddOne<T, TKey>(document);
             // Assert
@@ -85,7 +86,7 @@ namespace CoreIntegrationTests.Infrastructure
         public async Task AddOneAsync()
         {
             // Arrange
-            var document = new T();
+            var document = CreateTestDocument();
             // Act
             await SUT.AddOneAsync<T, TKey>(document);
             // Assert
@@ -98,7 +99,7 @@ namespace CoreIntegrationTests.Infrastructure
         public void AddMany()
         {
             // Arrange
-            var documents = new List<T> { new T(), new T() };
+            var documents = CreateTestDocuments(2);
             // Act
             SUT.AddMany<T, TKey>(documents);
             // Assert
@@ -116,7 +117,7 @@ namespace CoreIntegrationTests.Infrastructure
             if (!string.IsNullOrEmpty(PartitionKey))
             {
                 // Arrange
-                var documents = new List<T> { new T(), new T(), new T(), new T() };
+                var documents = CreateTestDocuments(4);
                 if (documents.Any(e => e is IPartitionedDocument))
                 {
                     var secondPartitionKey = $"{PartitionKey}-2";
@@ -139,7 +140,7 @@ namespace CoreIntegrationTests.Infrastructure
         public async Task AddManyAsync()
         {
             // Arrange
-            var documents = new List<T> { new T(), new T() };
+            var documents = CreateTestDocuments(2);
             // Act
             await SUT.AddManyAsync<T, TKey>(documents);
             // Assert
@@ -157,7 +158,7 @@ namespace CoreIntegrationTests.Infrastructure
             if (!string.IsNullOrEmpty(PartitionKey))
             {
                 // Arrange
-                var documents = new List<T> { new T(), new T(), new T(), new T() };
+                var documents = CreateTestDocuments(4);
                 if (documents.Any(e => e is IPartitionedDocument))
                 {
                     var secondPartitionKey = $"{PartitionKey}-2";
@@ -1149,7 +1150,8 @@ namespace CoreIntegrationTests.Infrastructure
 
             // Act
             var result = SUT.GroupBy<T, int, ProjectedGroup, TKey>(
-                            e => e.GroupingKey, g => new ProjectedGroup
+                            e => e.GroupingKey, 
+                            g => new ProjectedGroup
                             {
                                 Key = g.Key,
                                 Content = g.Select(doc => doc.SomeContent).ToList()
@@ -1195,11 +1197,13 @@ namespace CoreIntegrationTests.Infrastructure
             // Act
             var result = SUT.GroupBy<T, int, ProjectedGroup, TKey>(
                             e => e.Children.Any(c => c.Type == guid1),
-                            e => e.GroupingKey, g => new ProjectedGroup
+                            e => e.GroupingKey, 
+                            g => new ProjectedGroup
                             {
                                 Key = g.Key,
                                 Content = g.Select(doc => doc.SomeContent).ToList()
-                            }, PartitionKey);
+                            }, 
+                            PartitionKey);
 
             // Assert
             var key1Group = result.First(e => e.Key == 4);
@@ -1211,6 +1215,86 @@ namespace CoreIntegrationTests.Infrastructure
         }
 
         #endregion Group By
+
+        #region Pagination
+
+        public static Random Random = new Random();
+
+        [Fact]
+        public async Task GetSortedPaginatedAsync()
+        {
+            // Arrange
+            var content = $"{Guid.NewGuid()}";
+            var documents = CreateTestDocuments(10);
+            for (var i = 0; i < 5; i++)
+            {
+                documents[i].GroupingKey = 8;
+                documents[i].Nested.SomeAmount = Random.Next(1, 500000);
+                documents[i].SomeContent = content;
+            }
+            for (var i = 5; i < documents.Count; i++)
+            {
+                documents[i].GroupingKey = 9;
+                documents[i].SomeContent = content;
+            }
+            SUT.AddMany<T, TKey>(documents);
+
+            documents = documents.OrderByDescending(e => e.Nested.SomeAmount).ToList();
+            var notExpected = documents.First();
+            var expectedFirstResult = documents[1];
+
+            // Act
+            var result = await SUT.GetSortedPaginatedAsync<T, TKey>(
+                            e => e.GroupingKey == 8 && e.SomeContent == content,
+                            e => e.Nested.SomeAmount,
+                            false,
+                            1,5,
+                            PartitionKey);
+
+            // Assert
+            Assert.Equal(4, result.Count);
+            Assert.True(!result.Contains(notExpected));
+            Assert.Equal(expectedFirstResult.Id, result[0].Id);
+        }
+
+        [Fact]
+        public async Task GetSortedPaginatedAsyncWithSortOptions()
+        {
+            // Arrange
+            var content = $"{Guid.NewGuid()}";
+            var documents = CreateTestDocuments(10);
+            for (var i = 0; i < 5; i++)
+            {
+                documents[i].GroupingKey = 8;
+                documents[i].Nested.SomeAmount = Random.Next(1, 500000);
+                documents[i].SomeContent = content;
+            }
+            for (var i = 5; i < documents.Count; i++)
+            {
+                documents[i].GroupingKey = 9;
+                documents[i].SomeContent = content;
+            }
+            SUT.AddMany<T, TKey>(documents);
+
+            documents = documents.OrderByDescending(e => e.Nested.SomeAmount).ToList();
+            var notExpected = documents.First();
+            var expectedFirstResult = documents[1];
+            var sorting = Builders<T>.Sort.Descending(e => e.Nested.SomeAmount);
+
+            // Act
+            var result = await SUT.GetSortedPaginatedAsync<T, TKey>(
+                            e => e.GroupingKey == 8 && e.SomeContent == content,
+                            sorting,
+                            1, 5,
+                            PartitionKey);
+
+            // Assert
+            Assert.Equal(4, result.Count);
+            Assert.True(!result.Contains(notExpected));
+            Assert.Equal(expectedFirstResult.Id, result[0].Id);
+        }
+
+        #endregion Pagination
 
         #region Test Utils
 
