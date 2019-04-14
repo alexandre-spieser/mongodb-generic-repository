@@ -5,32 +5,29 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
-
 namespace CoreIntegrationTests.Infrastructure
 {
-
     public class MongoDbTestFixture<T, TKey> : IDisposable
-    where T : IDocument<TKey>, new()
-    where TKey : IEquatable<TKey>
+        where T : IDocument<TKey>, new()
+        where TKey : IEquatable<TKey>
     {
 
         public IMongoDbContext Context;
 
         public MongoDbTestFixture()
         {
-            DocsToDelete = new ConcurrentBag<T>();
         }
 
         public string PartitionKey { get; set; }
 
-        public ConcurrentBag<T> DocsToDelete { get; set; }
+        public static ConcurrentBag<T> DocsToDelete { get; set; } = new ConcurrentBag<T>();
 
         public virtual void Dispose()
         {
-            var docIds = DocsToDelete.ToList().Select(e => e.Id);
-            if (docIds.Any())
+
+            if (DocsToDelete.Any())
             {
-                TestRepository.Instance.DeleteMany<T, TKey>(e => docIds.Contains(e.Id));
+                TestRepository.Instance.DeleteMany<T, TKey>(DocsToDelete.ToList());
             }
         }
 
@@ -46,8 +43,9 @@ namespace CoreIntegrationTests.Infrastructure
             var docs = new List<T>();
             for (var i = 0; i < numberOfDocumentsToCreate; i++)
             {
-                docs.Add(new T());
-                DocsToDelete.Add(docs.Last());
+                var doc = new T();
+                docs.Add(doc);
+                DocsToDelete.Add(doc);
             }
             return docs;
         }

@@ -82,6 +82,7 @@ namespace CoreIntegrationTests.Infrastructure
             Children = new List<Child>();
         }
 
+        public int GroupingKey { get; set; }
         public string SomeContent { get; set; }
         public string SomeContent4 { get; set; }
         public string SomeContent5 { get; set; }

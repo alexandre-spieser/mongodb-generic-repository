@@ -3,7 +3,6 @@ using MongoDbGenericRepository.Models;
 using MongoDbGenericRepository.Utils;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -39,39 +38,6 @@ namespace MongoDbGenericRepository
         protected BaseMongoRepository(IMongoDatabase mongoDatabase) : base(mongoDatabase)
         {
         }
-
-
-        /// <summary>
-        /// Asynchronously returns a paginated list of the documents matching the filter condition.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <param name="filter">A LINQ expression filter.</param>
-        /// <param name="sortSelector">The property selector.</param>
-        /// <param name="ascending">Order of the sorting.</param>
-        /// <param name="skipNumber">The number of documents you want to skip. Default value is 0.</param>
-        /// <param name="takeNumber">The number of documents you want to take. Default value is 50.</param>
-        /// <param name="partitionKey">An optional partition key.</param>
-        public virtual async Task<List<TDocument>> GetSortedPaginatedAsync<TDocument>(
-            Expression<Func<TDocument, bool>> filter,
-            Expression<Func<TDocument, object>> sortSelector,
-            bool ascending = true,
-            int skipNumber = 0,
-            int takeNumber = 50,
-            string partitionKey = null)
-            where TDocument : IDocument
-        {
-            var sorting = ascending
-                ? Builders<TDocument>.Sort.Ascending(sortSelector)
-                : Builders<TDocument>.Sort.Descending(sortSelector);
-
-            return await HandlePartitioned<TDocument>(partitionKey)
-                    .Find(filter)
-                    .Sort(sorting)
-                    .Skip(skipNumber)
-                    .Limit(takeNumber)
-                    .ToListAsync();
-        }
-
 
         /// <summary>
         /// Asynchronously returns a paginated list of the documents matching the filter condition.

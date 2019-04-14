@@ -71,7 +71,7 @@ namespace CoreIntegrationTests.Infrastructure
         public void AddOne()
         {
             // Arrange
-            var document = new T();
+            var document = CreateTestDocument();
             // Act
             SUT.AddOne<T>(document);
             // Assert
@@ -84,7 +84,7 @@ namespace CoreIntegrationTests.Infrastructure
         public async Task AddOneAsync()
         {
             // Arrange
-            var document = new T();
+            var document = CreateTestDocument();
             // Act
             await SUT.AddOneAsync<T>(document);
             // Assert
@@ -97,7 +97,7 @@ namespace CoreIntegrationTests.Infrastructure
         public void AddMany()
         {
             // Arrange
-            var documents = new List<T> { new T(), new T() };
+            var documents = CreateTestDocuments(2);
             // Act
             SUT.AddMany<T>(documents);
             // Assert
@@ -115,7 +115,7 @@ namespace CoreIntegrationTests.Infrastructure
             if (!string.IsNullOrEmpty(PartitionKey))
             {
                 // Arrange
-                var documents = new List<T> { new T(), new T(), new T(), new T() };
+                var documents = CreateTestDocuments(4);
                 if (documents.Any(e => e is IPartitionedDocument))
                 {
                     var secondPartitionKey = $"{PartitionKey}-2";
@@ -138,7 +138,7 @@ namespace CoreIntegrationTests.Infrastructure
         public async Task AddManyAsync()
         {
             // Arrange
-            var documents = new List<T> { new T(), new T() };
+            var documents = CreateTestDocuments(2);
             // Act
             await SUT.AddManyAsync<T>(documents);
             // Assert
@@ -156,7 +156,7 @@ namespace CoreIntegrationTests.Infrastructure
             if (!string.IsNullOrEmpty(PartitionKey))
             {
                 // Arrange
-                var documents = new List<T> { new T(), new T(), new T(), new T() };
+                var documents = CreateTestDocuments(4);
                 if (documents.Any(e => e is IPartitionedDocument))
                 {
                     var secondPartitionKey = $"{PartitionKey}-2";
