@@ -1,15 +1,14 @@
 ﻿using MongoDB.Driver;
+using MongoDbGenericRepository.Models;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Linq.Expressions;
-using MongoDbGenericRepository.Models;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace MongoDbGenericRepository
 {
     /// <summary>
-    /// The IBaseMongoRepository exposes the CRUD functionality of the BaseMongoRepository.
+    /// The IBaseMongoRepository interface exposes the CRUD functionality of the BaseMongoRepository.
     /// </summary>
     public interface IBaseMongoRepository : 
         IReadOnlyMongoRepository, 
