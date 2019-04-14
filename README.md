@@ -40,8 +40,8 @@ Here is an example of repository usage, where the TestRepository is implementing
         }
     }
 ```
-If all your documents have the same type of key, you can use the more specific `BaseMongoRepository<TKey>` where `TKey` is the type of the `Id` of your documents.
-```
+If all your documents have the same type of `Id`, you can use the more specific `BaseMongoRepository<TKey>` where `TKey` is the type of the `Id` of your documents.
+```csharp
     public class TestTKeyRepository<TKey> : BaseMongoRepository<TKey>, ITestRepository<TKey> where TKey : IEquatable<TKey>
     {
         const string connectionString = "mongodb://localhost:27017/MongoDbTests";
