@@ -40,6 +40,18 @@ Here is an example of repository usage, where the TestRepository is implementing
         }
     }
 ```
+If all your documents have the same type of key, you can use the more specific `BaseMongoRepository<TKey>` where `TKey` is the type of the `Id` of your documents.
+```
+    public class TestTKeyRepository<TKey> : BaseMongoRepository<TKey>, ITestRepository<TKey> where TKey : IEquatable<TKey>
+    {
+        const string connectionString = "mongodb://localhost:27017/MongoDbTests";
+        private static readonly ITestRepository<TKey> _instance = new TestTKeyRepository<TKey>(connectionString);
+        /// <inheritdoc />
+        private TestTKeyRepository(string connectionString) : base(connectionString)
+        {
+        }
+    }
+```
 
 ## Instantiation
 
@@ -47,6 +59,7 @@ The repository can be instantiated like so:
 
 ```csharp
 ITestRepository testRepository = new TestRepository(connectionString, "MongoDbTests");
+ITestRepository<TKey> testTKeyRepository = new TestTKeyRepository<TKey>(connectionString);
 ```
 
 If you prefer to reuse the same MongoDb database across your application, you can use the `MongoDatabase` from the MongoDb driver implementing the `IMongoDatabase` interface:
