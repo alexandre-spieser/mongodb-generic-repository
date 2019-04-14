@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace MongoDbGenericRepository
 {
+    /// <summary>
+    /// The IBaseReadOnlyRepository exposes the generic Read Only functionality of the BaseMongoRepository.
+    /// </summary>
     public interface IBaseReadOnlyRepository
     {
         /// <summary>
@@ -154,7 +157,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The document type.</typeparam>
         /// <typeparam name="TKey">The type of the primary key.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
-        /// <param name="orderByAscending">A property selector to order by descending.</param>
+        /// <param name="orderByDescending">A property selector to order by descending.</param>
         /// <param name="partitionKey">An optional partitionKey.</param>
         Task<TDocument> GetByMaxAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> orderByDescending, string partitionKey = null)
             where TDocument : IDocument<TKey>
@@ -166,7 +169,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The document type.</typeparam>
         /// <typeparam name="TKey">The type of the primary key.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
-        /// <param name="orderByAscending">A property selector to order by descending.</param>
+        /// <param name="orderByDescending">A property selector to order by descending.</param>
         /// <param name="partitionKey">An optional partitionKey.</param>
         TDocument GetByMax<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> orderByDescending, string partitionKey = null)
             where TDocument : IDocument<TKey>
@@ -201,10 +204,11 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument">The document type.</typeparam>
         /// <typeparam name="TKey">The type of the primary key.</typeparam>
+        /// <typeparam name="TValue">The type of the value used to order the query.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="orderByAscending">A property selector to order by ascending.</param>
         /// <param name="partitionKey">An optional partitionKey.</param>
-        Task<TValue> GetMaxValueAsync<TDocument, TKey, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> maxValueSelector, string partitionKey = null)
+        Task<TValue> GetMaxValueAsync<TDocument, TKey, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> orderByAscending, string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>;
 
@@ -213,8 +217,9 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument">The document type.</typeparam>
         /// <typeparam name="TKey">The type of the primary key.</typeparam>
+        /// <typeparam name="TValue">The type of the value used to order the query.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
-        /// <param name="orderByAscending">A property selector to order by ascending.</param>
+        /// <param name="orderByDescending">A property selector to order by ascending.</param>
         /// <param name="partitionKey">An optional partitionKey.</param>
         TValue GetMaxValue<TDocument, TKey, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> orderByDescending, string partitionKey = null)
             where TDocument : IDocument<TKey>
@@ -254,6 +259,7 @@ namespace MongoDbGenericRepository
         /// Sums the values of a selected field for a given filtered collection of documents.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="selector">The field you want to sum.</param>
         /// <param name="partitionKey">The partition key of your document, if any.</param>
@@ -267,6 +273,7 @@ namespace MongoDbGenericRepository
         /// Sums the values of a selected field for a given filtered collection of documents.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="selector">The field you want to sum.</param>
         /// <param name="partitionKey">The partition key of your document, if any.</param>
@@ -280,6 +287,7 @@ namespace MongoDbGenericRepository
         /// Sums the values of a selected field for a given filtered collection of documents.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="selector">The field you want to sum.</param>
         /// <param name="partitionKey">The partition key of your document, if any.</param>
@@ -293,6 +301,7 @@ namespace MongoDbGenericRepository
         /// Sums the values of a selected field for a given filtered collection of documents.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="selector">The field you want to sum.</param>
         /// <param name="partitionKey">The partition key of your document, if any.</param>
@@ -373,9 +382,9 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TGroupKey">The type of the grouping criteria.</typeparam>
         /// <typeparam name="TProjection">The type of the projected group.</typeparam>
-        /// <param name="filter">A LINQ expression filter.</param>
-        /// <param name="selector">The grouping criteria.</param>
-        /// <param name="projection">The projected group result.</param>
+        /// <typeparam name="TKey">The type of the primary key.</typeparam>
+        /// <param name="groupingCriteria">The grouping criteria.</param>
+        /// <param name="groupProjection">The projected group result.</param>
         /// <param name="partitionKey">The partition key of your document, if any.</param>
         List<TProjection> GroupBy<TDocument, TGroupKey, TProjection, TKey>(
             Expression<Func<TDocument, TGroupKey>> groupingCriteria,
@@ -392,6 +401,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TGroupKey">The type of the grouping criteria.</typeparam>
         /// <typeparam name="TProjection">The type of the projected group.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="groupingCriteria">The grouping criteria.</param>
         /// <param name="groupProjection">The projected group result.</param>

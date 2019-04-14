@@ -261,8 +261,9 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument">The document type.</typeparam>
         /// <typeparam name="TKey">The type of the primary key.</typeparam>
+        /// <typeparam name="TValue">The type of the value used to order the query.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
-        /// <param name="orderByAscending">A property selector to order by ascending.</param>
+        /// <param name="maxValueSelector">A property selector to select the max value.</param>
         /// <param name="partitionKey">An optional partitionKey.</param>
         public async virtual Task<TValue> GetMaxValueAsync<TDocument, TKey, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> maxValueSelector, string partitionKey = null)
             where TDocument : IDocument<TKey>
@@ -327,6 +328,7 @@ namespace MongoDbGenericRepository
         /// Sums the values of a selected field for a given filtered collection of documents.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="selector">The field you want to sum.</param>
         /// <param name="partitionKey">The partition key of your document, if any.</param>
@@ -343,6 +345,7 @@ namespace MongoDbGenericRepository
         /// Sums the values of a selected field for a given filtered collection of documents.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="selector">The field you want to sum.</param>
         /// <param name="partitionKey">The partition key of your document, if any.</param>
@@ -359,6 +362,7 @@ namespace MongoDbGenericRepository
         /// Sums the values of a selected field for a given filtered collection of documents.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="selector">The field you want to sum.</param>
         /// <param name="partitionKey">The partition key of your document, if any.</param>
@@ -375,6 +379,7 @@ namespace MongoDbGenericRepository
         /// Sums the values of a selected field for a given filtered collection of documents.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="selector">The field you want to sum.</param>
         /// <param name="partitionKey">The partition key of your document, if any.</param>
@@ -468,11 +473,11 @@ namespace MongoDbGenericRepository
         /// and returns a dictionary of listed document groups with keys having the different values of the grouping criteria.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <typeparam name="TGroupKey">The type of the grouping criteria.</typeparam>
         /// <typeparam name="TProjection">The type of the projected group.</typeparam>
-        /// <param name="filter">A LINQ expression filter.</param>
-        /// <param name="selector">The grouping criteria.</param>
-        /// <param name="projection">The projected group result.</param>
+        /// <param name="groupingCriteria">The grouping criteria.</param>
+        /// <param name="groupProjection">The projected group result.</param>
         /// <param name="partitionKey">The partition key of your document, if any.</param>
         public virtual List<TProjection> GroupBy<TDocument, TGroupKey, TProjection, TKey>(
             Expression<Func<TDocument, TGroupKey>> groupingCriteria,
@@ -490,6 +495,7 @@ namespace MongoDbGenericRepository
         /// and returns a dictionary of listed document groups with keys having the different values of the grouping criteria.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <typeparam name="TGroupKey">The type of the grouping criteria.</typeparam>
         /// <typeparam name="TProjection">The type of the projected group.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
@@ -613,7 +619,6 @@ namespace MongoDbGenericRepository
         /// Gets a collections for a potentially partitioned document type.
         /// </summary>
         /// <typeparam name="TDocument">The document type.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key.</typeparam>
         /// <param name="document">The document.</param>
         /// <returns></returns>
         public virtual IMongoCollection<TDocument> HandlePartitioned<TDocument>(TDocument document)

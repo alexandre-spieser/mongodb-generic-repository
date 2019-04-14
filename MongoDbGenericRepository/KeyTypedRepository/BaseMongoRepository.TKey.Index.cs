@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace MongoDbGenericRepository
 {
+    /// <summary>
+    /// The interface exposing index management functionality for Key typed repositories.
+    /// </summary>
+    /// <typeparam name="TKey"></typeparam>
     public interface IBaseMongoRepository_Index<TKey> where TKey : IEquatable<TKey>
     {
         /// <summary>
@@ -97,11 +101,14 @@ namespace MongoDbGenericRepository
     /// The base Repository, it is meant to be inherited from by your custom custom MongoRepository implementation.
     /// Its constructor must be given a connection string and a database name.
     /// </summary>
-    /// <typeparam name="TKey"></typeparam>
     public abstract partial class BaseMongoRepository<TKey> : IBaseMongoRepository_Index<TKey>
         where TKey : IEquatable<TKey>
     {
         private MongoDbIndexHandler _mongoDbIndexHandler;
+
+        /// <summary>
+        /// The MongoDb accessor to manage indexes.
+        /// </summary>
         protected MongoDbIndexHandler MongoDbIndexHandler
         {
             get

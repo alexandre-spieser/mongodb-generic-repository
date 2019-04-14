@@ -1,4 +1,5 @@
-﻿using MongoDbGenericRepository.Models;
+﻿using MongoDbGenericRepository;
+using MongoDbGenericRepository.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -30,7 +31,7 @@ namespace CoreIntegrationTests.Infrastructure
             _fixture.PartitionKey = PartitionKey;
             TestClassName = GetClassName();
             MongoDbConfig.EnsureConfigured();
-            SUT = TestRepository.Instance;
+            SUT = TestTKeyRepository<Guid>.Instance;
         }
 
         protected T CreateTestDocument()
@@ -63,7 +64,7 @@ namespace CoreIntegrationTests.Infrastructure
         /// <summary>
         /// SUT: System Under Test
         /// </summary>
-        protected static ITestRepository SUT { get; set; }
+        protected static ITestRepository<Guid> SUT { get; set; }
 
         #region Add
 

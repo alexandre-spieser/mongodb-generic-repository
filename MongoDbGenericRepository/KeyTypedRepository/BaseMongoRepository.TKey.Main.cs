@@ -4,7 +4,11 @@ using System;
 
 namespace MongoDbGenericRepository
 {
-    public interface IBaseMongoDbRepository<TKey> :
+    /// <summary>
+    /// The interface exposing all the CRUD and Index functionalities for Key typed repositories.
+    /// </summary>
+    /// <typeparam name="TKey">The type of the document Id.</typeparam>
+    public interface IBaseMongoRepository<TKey> :
         IReadOnlyMongoRepository<TKey>,
         IBaseMongoRepository_Create<TKey>,
         IBaseMongoRepository_Delete<TKey>,
@@ -18,13 +22,14 @@ namespace MongoDbGenericRepository
     /// The base Repository, it is meant to be inherited from by your custom custom MongoRepository implementation.
     /// Its constructor must be given a connection string and a database name.
     /// </summary>
-    /// <typeparam name="TKey"></typeparam>
+    /// <typeparam name="TKey">The type of the document Id.</typeparam>
     public abstract partial class BaseMongoRepository<TKey> : 
         ReadOnlyMongoRepository<TKey>, 
-        IBaseMongoDbRepository<TKey>
+        IBaseMongoRepository<TKey>
         where TKey : IEquatable<TKey>
     {
-        protected readonly object _initLock = new object();
+
+        private readonly object _initLock = new object();
 
         /// <summary>
         /// The constructor taking a connection string and a database name.
