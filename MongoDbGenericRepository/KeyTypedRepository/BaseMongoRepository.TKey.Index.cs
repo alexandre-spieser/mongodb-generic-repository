@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MongoDbGenericRepository
 {
-    public interface IKeyTypedBaseMongoDbRepository_Index<TKey> where TKey : IEquatable<TKey>
+    public interface IBaseMongoRepository_Index<TKey> where TKey : IEquatable<TKey>
     {
         /// <summary>
         /// Returns the names of the indexes present on a collection.
@@ -98,7 +98,7 @@ namespace MongoDbGenericRepository
     /// Its constructor must be given a connection string and a database name.
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
-    public abstract partial class KeyTypedBaseMongoDbRepository<TKey> : IKeyTypedBaseMongoDbRepository_Index<TKey>
+    public abstract partial class BaseMongoRepository<TKey> : IBaseMongoRepository_Index<TKey>
         where TKey : IEquatable<TKey>
     {
         private MongoDbIndexHandler _mongoDbIndexHandler;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MongoDbGenericRepository
 {
-    public interface IKeyTypedBaseMongoDbRepository_Update<TKey> where TKey : IEquatable<TKey>
+    public interface IBaseMongoRepository_Update<TKey> where TKey : IEquatable<TKey>
     {
         /// <summary>
         /// Asynchronously Updates a document.
@@ -112,7 +112,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>;
     }
 
-    public abstract partial class KeyTypedBaseMongoDbRepository<TKey> : IKeyTypedBaseMongoDbRepository_Update<TKey>
+    public abstract partial class BaseMongoRepository<TKey> : IBaseMongoRepository_Update<TKey>
         where TKey : IEquatable<TKey>
     {
         private MongoDbUpdater _mongoDbUpdater;

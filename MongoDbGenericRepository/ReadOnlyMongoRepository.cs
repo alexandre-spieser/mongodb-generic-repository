@@ -13,7 +13,7 @@ namespace MongoDbGenericRepository
     /// The base Repository, it is meant to be inherited from by your custom custom MongoRepository implementation.
     /// Its constructor must be given a connection string and a database name.
     /// </summary>
-    public abstract class ReadOnlyMongoRepository : KeyTypedReadOnlyMongoRepository<Guid>, IReadOnlyMongoRepository
+    public abstract class ReadOnlyMongoRepository : ReadOnlyMongoRepository<Guid>, IReadOnlyMongoRepository
     {
         /// <summary>
         /// The constructor taking a connection string and a database name.

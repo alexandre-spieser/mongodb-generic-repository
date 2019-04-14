@@ -11,10 +11,13 @@ namespace MongoDbGenericRepository
     /// <summary>
     /// The IBaseMongoRepository exposes the CRUD functionality of the BaseMongoRepository.
     /// </summary>
-    public interface IBaseMongoRepository : IReadOnlyMongoRepository, IBaseMongoRepository_Create, IBaseMongoRepository_Update, IBaseMongoRepository_Delete, IBaseMongoRepository_Index
+    public interface IBaseMongoRepository : 
+        IReadOnlyMongoRepository, 
+        IBaseMongoRepository_Create, 
+        IBaseMongoRepository_Update, 
+        IBaseMongoRepository_Delete, 
+        IBaseMongoRepository_Index
     {
-
-
         /// <summary>
         /// Asynchronously returns a paginated list of the documents matching the filter condition.
         /// </summary>

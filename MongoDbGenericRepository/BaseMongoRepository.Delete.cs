@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MongoDbGenericRepository
 {
-    public interface IBaseMongoRepository_Delete : IKeyTypedBaseMongoDbRepository_Delete<Guid>
+    public interface IBaseMongoRepository_Delete : IBaseMongoRepository_Delete<Guid>
     {
         /// <summary>
         /// Deletes a document.

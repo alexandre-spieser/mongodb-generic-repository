@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MongoDbGenericRepository
 {
-    public interface IBaseMongoRepository_Update : IKeyTypedBaseMongoDbRepository_Update<Guid>
+    public interface IBaseMongoRepository_Update : IBaseMongoRepository_Update<Guid>
     {
         /// <summary>
         /// Asynchronously Updates a document.

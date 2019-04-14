@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MongoDbGenericRepository
 {
-    public interface IKeyTypedBaseMongoDbRepository_Create<TKey> where TKey : IEquatable<TKey>
+    public interface IBaseMongoRepository_Create<TKey> where TKey : IEquatable<TKey>
     {
         /// <summary>
         /// Asynchronously adds a document to the collection.
@@ -46,7 +46,7 @@ namespace MongoDbGenericRepository
     /// Its constructor must be given a connection string and a database name.
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
-    public abstract partial class KeyTypedBaseMongoDbRepository<TKey> : IKeyTypedBaseMongoDbRepository_Create<TKey> where TKey : IEquatable<TKey>
+    public abstract partial class BaseMongoRepository<TKey> : IBaseMongoRepository_Create<TKey> where TKey : IEquatable<TKey>
     {
         protected MongoDbCreator _mongoDbCreator;
         protected MongoDbCreator MongoDbCreator

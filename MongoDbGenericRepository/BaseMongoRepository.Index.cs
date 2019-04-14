@@ -7,7 +7,7 @@ using MongoDbGenericRepository.Models;
 
 namespace MongoDbGenericRepository
 {
-    public interface IBaseMongoRepository_Index : IKeyTypedBaseMongoDbRepository_Index<Guid>
+    public interface IBaseMongoRepository_Index : IBaseMongoRepository_Index<Guid>
     {
         /// <summary>
         /// Returns the names of the indexes present on a collection.

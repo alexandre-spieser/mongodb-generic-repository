@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MongoDbGenericRepository
 {
-    public interface IBaseMongoRepository_Create : IKeyTypedBaseMongoDbRepository_Create<Guid>
+    public interface IBaseMongoRepository_Create : IBaseMongoRepository_Create<Guid>
     {
         /// <summary>
         /// Asynchronously adds a document to the collection.

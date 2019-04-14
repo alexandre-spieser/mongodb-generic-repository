@@ -4,12 +4,12 @@ using System;
 
 namespace MongoDbGenericRepository
 {
-    public interface IKeyTypedBaseMongoDbRepository<TKey> :
-        IKeyTypedReadOnlyMongoRepository<TKey>,
-        IKeyTypedBaseMongoDbRepository_Create<TKey>,
-        IKeyTypedBaseMongoDbRepository_Delete<TKey>,
-        IKeyTypedBaseMongoDbRepository_Index<TKey>,
-        IKeyTypedBaseMongoDbRepository_Update<TKey>
+    public interface IBaseMongoDbRepository<TKey> :
+        IReadOnlyMongoRepository<TKey>,
+        IBaseMongoRepository_Create<TKey>,
+        IBaseMongoRepository_Delete<TKey>,
+        IBaseMongoRepository_Index<TKey>,
+        IBaseMongoRepository_Update<TKey>
         where TKey : IEquatable<TKey>
     {
     }
@@ -19,9 +19,9 @@ namespace MongoDbGenericRepository
     /// Its constructor must be given a connection string and a database name.
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
-    public abstract partial class KeyTypedBaseMongoDbRepository<TKey> : 
-        KeyTypedReadOnlyMongoRepository<TKey>, 
-        IKeyTypedBaseMongoDbRepository<TKey>
+    public abstract partial class BaseMongoRepository<TKey> : 
+        ReadOnlyMongoRepository<TKey>, 
+        IBaseMongoDbRepository<TKey>
         where TKey : IEquatable<TKey>
     {
         protected readonly object _initLock = new object();
@@ -31,7 +31,7 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <param name="connectionString">The connection string of the MongoDb server.</param>
         /// <param name="databaseName">The name of the database against which you want to perform operations.</param>
-        protected KeyTypedBaseMongoDbRepository(string connectionString, string databaseName = null) : base(connectionString, databaseName)
+        protected BaseMongoRepository(string connectionString, string databaseName = null) : base(connectionString, databaseName)
         {
         }
 
@@ -39,7 +39,7 @@ namespace MongoDbGenericRepository
         /// The contructor taking a <see cref="IMongoDbContext"/>.
         /// </summary>
         /// <param name="mongoDbContext">A mongodb context implementing <see cref="IMongoDbContext"/></param>
-        protected KeyTypedBaseMongoDbRepository(IMongoDbContext mongoDbContext) : base(mongoDbContext)
+        protected BaseMongoRepository(IMongoDbContext mongoDbContext) : base(mongoDbContext)
         {
         }
 
@@ -47,7 +47,7 @@ namespace MongoDbGenericRepository
         /// The contructor taking a <see cref="IMongoDatabase"/>.
         /// </summary>
         /// <param name="mongoDatabase">A mongodb context implementing <see cref="IMongoDatabase"/></param>
-        protected KeyTypedBaseMongoDbRepository(IMongoDatabase mongoDatabase) : base(mongoDatabase)
+        protected BaseMongoRepository(IMongoDatabase mongoDatabase) : base(mongoDatabase)
         {
         }
 

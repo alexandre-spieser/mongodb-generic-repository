@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MongoDbGenericRepository
 {
-    public interface IKeyTypedBaseMongoDbRepository_Delete<TKey> where TKey : IEquatable<TKey>
+    public interface IBaseMongoRepository_Delete<TKey> where TKey : IEquatable<TKey>
     {
         /// <summary>
         /// Deletes a document.
@@ -94,7 +94,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>;
     }
 
-    public abstract partial class KeyTypedBaseMongoDbRepository<TKey>: IKeyTypedBaseMongoDbRepository_Delete<TKey> 
+    public abstract partial class BaseMongoRepository<TKey>: IBaseMongoRepository_Delete<TKey> 
         where TKey : IEquatable<TKey>
     {
         private MongoDbEraser _mongoDbEraser;
