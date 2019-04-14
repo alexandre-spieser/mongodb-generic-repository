@@ -305,7 +305,7 @@ namespace MongoDbGenericRepository
         public async Task DropIndexAsync<TDocument>(string indexName, string partitionKey = null)
             where TDocument : IDocument<Guid>
         {
-            await MongoDbIndexHandler.DropIndexAsync<TDocument, Guid>(partitionKey);
+            await MongoDbIndexHandler.DropIndexAsync<TDocument, Guid>(indexName, partitionKey);
         }
 
         /// <inheritdoc />
@@ -313,7 +313,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            await MongoDbIndexHandler.DropIndexAsync<TDocument, TKey>(partitionKey);
+            await MongoDbIndexHandler.DropIndexAsync<TDocument, TKey>(indexName, partitionKey);
         }
     }
 }
