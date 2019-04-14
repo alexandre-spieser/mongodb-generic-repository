@@ -27,10 +27,9 @@ namespace CoreIntegrationTests.Infrastructure
 
         public virtual void Dispose()
         {
-            var docIds = DocsToDelete.ToList().Select(e => e.Id);
-            if (docIds.Any())
+            if (DocsToDelete.Any())
             {
-                TestRepository.Instance.DeleteMany<T, TKey>(e => docIds.Contains(e.Id));
+                TestRepository.Instance.DeleteMany<T, TKey>(DocsToDelete.ToList());
             }
         }
 
@@ -46,8 +45,9 @@ namespace CoreIntegrationTests.Infrastructure
             var docs = new List<T>();
             for (var i = 0; i < numberOfDocumentsToCreate; i++)
             {
-                docs.Add(new T());
-                DocsToDelete.Add(docs.Last());
+                var doc = new T();
+                docs.Add(doc);
+                DocsToDelete.Add(doc);
             }
             return docs;
         }

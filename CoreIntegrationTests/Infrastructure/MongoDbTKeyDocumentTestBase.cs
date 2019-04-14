@@ -1127,6 +1127,91 @@ namespace CoreIntegrationTests.Infrastructure
 
         #endregion Math
 
+        #region Group By
+
+        [Fact]
+        public void GroupByTProjection()
+        {
+            // Arrange
+            var documents = CreateTestDocuments(5);
+            var content = GetContent();
+            for (var i = 0; i < documents.Count - 2; i++)
+            {
+                documents[i].GroupingKey = 1;
+                documents[i].SomeContent = $"{content}-{i}";
+            }
+            for (var i = 3; i < documents.Count; i++)
+            {
+                documents[i].GroupingKey = 2;
+                documents[i].SomeContent = $"{content}-{i}";
+            }
+            SUT.AddMany<T, TKey>(documents);
+
+            // Act
+            var result = SUT.GroupBy<T, int, ProjectedGroup, TKey>(
+                            e => e.GroupingKey, g => new ProjectedGroup
+                            {
+                                Key = g.Key,
+                                Content = g.Select(doc => doc.SomeContent).ToList()
+                            },
+                            PartitionKey);
+
+            // Assert
+            var key1Group = result.First(e => e.Key == 1);
+            Assert.NotNull(key1Group);
+            Assert.Equal(3, key1Group.Content.Count);
+            var key2Group = result.First(e => e.Key == 2);
+            Assert.NotNull(key2Group);
+            Assert.Equal(2, key2Group.Content.Count);
+        }
+
+        [Fact]
+        public void FilteredGroupByTProjection()
+        {
+            // Arrange
+            var documents = CreateTestDocuments(5);
+            var content = GetContent();
+            for (var i = 0; i < documents.Count - 2; i++)
+            {
+                documents[i].GroupingKey = 4;
+                documents[i].SomeContent = $"{content}-{i}";
+            }
+            for (var i = 3; i < documents.Count; i++)
+            {
+                documents[i].GroupingKey = 5;
+                documents[i].SomeContent = $"{content}-{i}";
+            }
+            var guid1 = Guid.NewGuid().ToString("n");
+            var guid2 = Guid.NewGuid().ToString("n");
+            for (var i = 0; i < documents.Count - 1; i++)
+            {
+                documents[i].Children = new List<Child> {
+                    new Child(guid1, guid2)
+                };
+            }
+
+            SUT.AddMany<T, TKey>(documents);
+
+            // Act
+            var result = SUT.GroupBy<T, int, ProjectedGroup, TKey>(
+                            e => e.Children.Any(c => c.Type == guid1),
+                            e => e.GroupingKey, g => new ProjectedGroup
+                            {
+                                Key = g.Key,
+                                Content = g.Select(doc => doc.SomeContent).ToList()
+                            }, PartitionKey);
+
+            // Assert
+            var key1Group = result.First(e => e.Key == 4);
+            Assert.NotNull(key1Group);
+            Assert.Equal(3, key1Group.Content.Count);
+            var key2Group = result.First(e => e.Key == 5);
+            Assert.NotNull(key2Group);
+            Assert.Single(key2Group.Content);
+        }
+
+        #endregion Group By
+
         #region Test Utils
 
         [MethodImpl(MethodImplOptions.NoInlining)]
