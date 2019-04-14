@@ -1,4 +1,6 @@
 ﻿using MongoDB.Driver;
+using MongoDB.Driver.Linq;
+using MongoDbGenericRepository.DataAccess.Base;
 using MongoDbGenericRepository.Models;
 using MongoDbGenericRepository.Utils;
 using System;
@@ -6,52 +8,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MongoDbGenericRepository
+namespace MongoDbGenericRepository.DataAccess.Create
 {
-    /// <summary>
-    /// The base Repository, it is meant to be inherited from by your custom custom MongoRepository implementation.
-    /// Its constructor must be given a connection string and a database name.
-    /// </summary>
-    /// <typeparam name="TKey"></typeparam>
-    public abstract class KeyTypedBaseMongoDbRepository<TKey> : KeyTypedReadOnlyMongoRepository<TKey>, IKeyTypedReadOnlyMongoRepository<TKey> where TKey : IEquatable<TKey>
+    public class MongoDbCreator : DataAccessBase
     {
-        /// <summary>
-        /// The constructor taking a connection string and a database name.
-        /// </summary>
-        /// <param name="connectionString">The connection string of the MongoDb server.</param>
-        /// <param name="databaseName">The name of the database against which you want to perform operations.</param>
-        protected KeyTypedBaseMongoDbRepository(string connectionString, string databaseName = null) : base(connectionString, databaseName)
+        public MongoDbCreator(IMongoDbContext mongoDbContext) : base(mongoDbContext)
         {
         }
 
-        /// <summary>
-        /// The contructor taking a <see cref="IMongoDbContext"/>.
-        /// </summary>
-        /// <param name="mongoDbContext">A mongodb context implementing <see cref="IMongoDbContext"/></param>
-        protected KeyTypedBaseMongoDbRepository(IMongoDbContext mongoDbContext) : base(mongoDbContext)
-        {
-        }
-
-        /// <summary>
-        /// The contructor taking a <see cref="IMongoDatabase"/>.
-        /// </summary>
-        /// <param name="mongoDatabase">A mongodb context implementing <see cref="IMongoDatabase"/></param>
-        protected KeyTypedBaseMongoDbRepository(IMongoDatabase mongoDatabase) : base(mongoDatabase)
-        {
-        }
-
-        #region Create
+        #region Create TKey
 
         /// <summary>
         /// Asynchronously adds a document to the collection.
         /// Populates the Id and AddedAtUtc fields if necessary.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <param name="document">The document you want to add.</param>
-        public virtual async Task AddOneAsync<TDocument>(TDocument document) where TDocument : IDocument<TKey>
+        public virtual async Task AddOneAsync<TDocument, TKey>(TDocument document)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
         {
-            FormatDocument(document);
-            await HandlePartitioned(document).InsertOneAsync(document);
+            FormatDocument<TDocument, TKey>(document);
+            await HandlePartitioned<TDocument, TKey>(document).InsertOneAsync(document);
         }
 
         /// <summary>
@@ -59,11 +38,14 @@ namespace MongoDbGenericRepository
         /// Populates the Id and AddedAtUtc fields if necessary.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <param name="document">The document you want to add.</param>
-        public virtual void AddOne<TDocument>(TDocument document) where TDocument : IDocument<TKey>
+        public virtual void AddOne<TDocument, TKey>(TDocument document)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
         {
-            FormatDocument(document);
-            HandlePartitioned(document).InsertOne(document);
+            FormatDocument<TDocument, TKey>(document);
+            HandlePartitioned<TDocument, TKey>(document).InsertOne(document);
         }
 
         /// <summary>
@@ -71,8 +53,11 @@ namespace MongoDbGenericRepository
         /// Populates the Id and AddedAtUtc fields if necessary.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <param name="documents">The documents you want to add.</param>
-        public virtual async Task AddManyAsync<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument<TKey>
+        public virtual async Task AddManyAsync<TDocument, TKey>(IEnumerable<TDocument> documents)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
         {
             if (!documents.Any())
             {
@@ -80,19 +65,19 @@ namespace MongoDbGenericRepository
             }
             foreach (var document in documents)
             {
-                FormatDocument(document);
+                FormatDocument<TDocument, TKey>(document);
             }
             // cannot use typeof(IPartitionedDocument).IsAssignableFrom(typeof(TDocument)), not available in netstandard 1.5
             if (documents.Any(e => e is IPartitionedDocument))
             {
                 foreach (var group in documents.GroupBy(e => ((IPartitionedDocument)e).PartitionKey))
                 {
-                    await HandlePartitioned(group.FirstOrDefault()).InsertManyAsync(group.ToList());
+                    await HandlePartitioned<TDocument, TKey>(group.FirstOrDefault()).InsertManyAsync(group.ToList());
                 }
             }
             else
             {
-                await GetCollection<TDocument>().InsertManyAsync(documents.ToList());
+                await GetCollection<TDocument, TKey>().InsertManyAsync(documents.ToList());
             }
         }
 
@@ -101,8 +86,11 @@ namespace MongoDbGenericRepository
         /// Populates the Id and AddedAtUtc fields if necessary.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <param name="documents">The documents you want to add.</param>
-        public virtual void AddMany<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument<TKey>
+        public virtual void AddMany<TDocument, TKey>(IEnumerable<TDocument> documents)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
         {
             if (!documents.Any())
             {
@@ -110,30 +98,33 @@ namespace MongoDbGenericRepository
             }
             foreach (var document in documents)
             {
-                FormatDocument(document);
+                FormatDocument<TDocument, TKey>(document);
             }
             // cannot use typeof(IPartitionedDocument).IsAssignableFrom(typeof(TDocument)), not available in netstandard 1.5
             if (documents.Any(e => e is IPartitionedDocument))
             {
                 foreach (var group in documents.GroupBy(e => ((IPartitionedDocument)e).PartitionKey))
                 {
-                    HandlePartitioned(group.FirstOrDefault()).InsertMany(group.ToList());
+                    HandlePartitioned<TDocument, TKey>(group.FirstOrDefault()).InsertMany(group.ToList());
                 }
             }
             else
             {
-                GetCollection<TDocument>().InsertMany(documents.ToList());
+                GetCollection<TDocument, TKey>().InsertMany(documents.ToList());
             }
         }
 
-        #endregion Create
+        #endregion
 
         /// <summary>
         /// Sets the value of the document Id if it is not set already.
         /// </summary>
         /// <typeparam name="TDocument">The document type.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key.</typeparam>
         /// <param name="document">The document.</param>
-        protected void FormatDocument<TDocument>(TDocument document) where TDocument : IDocument<TKey>
+        protected void FormatDocument<TDocument, TKey>(TDocument document)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
         {
             if (document == null)
             {

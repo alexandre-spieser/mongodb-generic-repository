@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using MongoDB.Driver;
@@ -7,8 +8,7 @@ using MongoDbGenericRepository.Models;
 
 namespace MongoDbGenericRepository
 {
-    public interface IKeyTypedReadOnlyMongoRepository<TKey> : IBaseReadOnlyRepository 
-        where TKey : IEquatable<TKey>
+    public interface IReadOnlyMongoRepository<TKey> where TKey : IEquatable<TKey>
     {
         #region Read
 
@@ -242,5 +242,98 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>;
 
         #endregion Maths
+
+        #region Project
+
+        /// <summary>
+        /// Asynchronously returns a projected document matching the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="projection">The projection expression.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        Task<TProjection> ProjectOneAsync<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+            where TProjection : class;
+
+        /// <summary>
+        /// Returns a projected document matching the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="projection">The projection expression.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        TProjection ProjectOne<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+            where TProjection : class;
+
+        /// <summary>
+        /// Asynchronously returns a list of projected documents matching the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="projection">The projection expression.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        Task<List<TProjection>> ProjectManyAsync<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+            where TProjection : class;
+
+        /// <summary>
+        /// Asynchronously returns a list of projected documents matching the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="projection">The projection expression.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        List<TProjection> ProjectMany<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+            where TProjection : class;
+
+        #endregion Project
+
+        #region Group By
+
+        /// <summary>
+        /// Groups a collection of documents given a grouping criteria, 
+        /// and returns a dictionary of listed document groups with keys having the different values of the grouping criteria.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TGroupKey">The type of the grouping criteria.</typeparam>
+        /// <typeparam name="TProjection">The type of the projected group.</typeparam>
+        /// <param name="groupingCriteria">The grouping criteria.</param>
+        /// <param name="groupProjection">The projected group result.</param>
+        /// <param name="partitionKey">The partition key of your document, if any.</param>
+        List<TProjection> GroupBy<TDocument, TGroupKey, TProjection>(
+            Expression<Func<TDocument, TGroupKey>> groupingCriteria,
+            Expression<Func<IGrouping<TGroupKey, TDocument>, TProjection>> groupProjection,
+            string partitionKey = null)
+            where TDocument : IDocument<TKey>
+            where TProjection : class, new();
+
+        /// <summary>
+        /// Groups filtered a collection of documents given a grouping criteria, 
+        /// and returns a dictionary of listed document groups with keys having the different values of the grouping criteria.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TGroupKey">The type of the grouping criteria.</typeparam>
+        /// <typeparam name="TProjection">The type of the projected group.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="groupingCriteria">The grouping criteria.</param>
+        /// <param name="groupProjection">The projected group result.</param>
+        /// <param name="partitionKey">The partition key of your document, if any.</param>
+        List<TProjection> GroupBy<TDocument, TGroupKey, TProjection>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TGroupKey>> groupingCriteria,
+            Expression<Func<IGrouping<TGroupKey, TDocument>, TProjection>> groupProjection,
+            string partitionKey = null)
+                where TDocument : IDocument<TKey>
+                where TProjection : class, new();
+
+        #endregion Group By
     }
 }
