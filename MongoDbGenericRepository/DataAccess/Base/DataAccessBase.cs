@@ -18,7 +18,7 @@ namespace MongoDbGenericRepository.DataAccess.Base
 
         #region Utility Methods
 
-        protected virtual IMongoQueryable<TDocument> GetQuery<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
+        public virtual IMongoQueryable<TDocument> GetQuery<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -32,7 +32,7 @@ namespace MongoDbGenericRepository.DataAccess.Base
         /// <typeparam name="TKey">The type of the primary key.</typeparam>
         /// <param name="document">The document.</param>
         /// <returns></returns>
-        protected virtual IMongoCollection<TDocument> HandlePartitioned<TDocument, TKey>(TDocument document)
+        public virtual IMongoCollection<TDocument> HandlePartitioned<TDocument, TKey>(TDocument document)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -50,7 +50,7 @@ namespace MongoDbGenericRepository.DataAccess.Base
         /// <typeparam name="TKey">The type of the primary key.</typeparam>
         /// <param name="partitionKey">The collection partition key.</param>
         /// <returns></returns>
-        protected virtual IMongoCollection<TDocument> GetCollection<TDocument, TKey>(string partitionKey = null)
+        public virtual IMongoCollection<TDocument> GetCollection<TDocument, TKey>(string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -64,7 +64,7 @@ namespace MongoDbGenericRepository.DataAccess.Base
         /// <typeparam name="TKey">The type of the primary key.</typeparam>
         /// <param name="partitionKey">The collection partition key.</param>
         /// <returns></returns>
-        protected virtual IMongoCollection<TDocument> HandlePartitioned<TDocument, TKey>(string partitionKey)
+        public virtual IMongoCollection<TDocument> HandlePartitioned<TDocument, TKey>(string partitionKey)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {

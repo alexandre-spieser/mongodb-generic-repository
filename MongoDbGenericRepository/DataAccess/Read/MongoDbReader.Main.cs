@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MongoDbGenericRepository.DataAccess.Read
 {
-    public class MongoDbReader : DataAccessBase
+    public partial class MongoDbReader : DataAccessBase
     {
         public MongoDbReader(IMongoDbContext mongoDbContext) : base(mongoDbContext)
         {
@@ -389,5 +389,60 @@ namespace MongoDbGenericRepository.DataAccess.Read
         }
 
         #endregion Sum TKey
+    }
+
+    public partial class MongoDbReader
+    {
+        /// <summary>
+        /// Groups a collection of documents given a grouping criteria, 
+        /// and returns a dictionary of listed document groups with keys having the different values of the grouping criteria.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TGroupKey">The type of the grouping criteria.</typeparam>
+        /// <typeparam name="TProjection">The type of the projected group.</typeparam>
+        /// <param name="groupingCriteria">The grouping criteria.</param>
+        /// <param name="groupProjection">The projected group result.</param>
+        /// <param name="partitionKey">The partition key of your document, if any.</param>
+        public virtual List<TProjection> GroupBy<TDocument, TGroupKey, TProjection, TKey>(
+            Expression<Func<TDocument, TGroupKey>> groupingCriteria,
+            Expression<Func<IGrouping<TGroupKey, TDocument>, TProjection>> groupProjection,
+            string partitionKey = null)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+            where TProjection : class, new()
+        {
+            return HandlePartitioned<TDocument, TKey>(partitionKey)
+                             .Aggregate()
+                             .Group(groupingCriteria, groupProjection)
+                             .ToList();
+
+        }
+
+        /// <summary>
+        /// Groups filtered a collection of documents given a grouping criteria, 
+        /// and returns a dictionary of listed document groups with keys having the different values of the grouping criteria.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TGroupKey">The type of the grouping criteria.</typeparam>
+        /// <typeparam name="TProjection">The type of the projected group.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="selector">The grouping criteria.</param>
+        /// <param name="projection">The projected group result.</param>
+        /// <param name="partitionKey">The partition key of your document, if any.</param>
+        public virtual List<TProjection> GroupBy<TDocument, TGroupKey, TProjection, TKey>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TGroupKey>> selector,
+            Expression<Func<IGrouping<TGroupKey, TDocument>, TProjection>> projection,
+            string partitionKey = null)
+                where TDocument : IDocument<TKey>
+                where TKey : IEquatable<TKey>
+                where TProjection : class, new()
+        {
+            var collection = HandlePartitioned<TDocument, TKey>(partitionKey);
+            return collection.Aggregate()
+                             .Match(Builders<TDocument>.Filter.Where(filter))
+                             .Group(selector, projection)
+                             .ToList();
+        }
     }
 }
