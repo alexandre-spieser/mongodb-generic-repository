@@ -39,7 +39,6 @@ namespace MongoDbGenericRepository
         {
         }
 
-
         /// <summary>
         /// Asynchronously returns a paginated list of the documents matching the filter condition.
         /// </summary>
@@ -70,7 +69,6 @@ namespace MongoDbGenericRepository
                     .Limit(takeNumber)
                     .ToListAsync();
         }
-
 
         /// <summary>
         /// Asynchronously returns a paginated list of the documents matching the filter condition.

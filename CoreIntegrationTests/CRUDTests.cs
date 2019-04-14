@@ -11,7 +11,6 @@ namespace CoreIntegrationTests
     {
         public CRUDTests(MongoDbTestFixture<CoreTestDocument, Guid> fixture) : base(fixture)
         {
-
         }
 
         public override string GetClassName()
