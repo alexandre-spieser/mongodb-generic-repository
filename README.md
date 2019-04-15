@@ -158,7 +158,7 @@ It is now possible to change the collection name by using the `CollectionName` a
 Documents of this type will be inserted into a collection named "MyCollectionName".
 
 ## Index Management
-From version 1.3.8 the `MongoDbGenericRepository` implements the `IMongoDbCollectionIndexRepository` interface. 
+From version 1.3.8 the `MongoDbGenericRepository` implements the `IBaseMongoRepository_Index` and  `IBaseMongoRepository_Index<TKey>` interfaces. 
 This exposes the functionality to programmatically manage indexes against your collections in a generic fashion.
 
 The following methods are exposed and fully integration tested:
