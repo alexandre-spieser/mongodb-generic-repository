@@ -105,7 +105,7 @@ namespace MongoDbGenericRepository
     public abstract partial class BaseMongoRepository : IBaseMongoRepository_Delete
     {
         private MongoDbEraser _mongoDbEraser;
-        protected MongoDbEraser MongoDbEraser
+        protected virtual MongoDbEraser MongoDbEraser
         {
             get
             {
@@ -121,6 +121,7 @@ namespace MongoDbGenericRepository
 
                 return _mongoDbEraser;
             }
+            set { _mongoDbEraser = value; }
         }
 
         #region Delete
