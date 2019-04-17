@@ -116,7 +116,7 @@ namespace MongoDbGenericRepository
         where TKey : IEquatable<TKey>
     {
         private MongoDbUpdater _mongoDbUpdater;
-        protected MongoDbUpdater MongoDbUpdater
+        protected virtual MongoDbUpdater MongoDbUpdater
         {
             get
             {
@@ -132,6 +132,7 @@ namespace MongoDbGenericRepository
 
                 return _mongoDbUpdater;
             }
+            set { _mongoDbUpdater = value; }
         }
 
         /// <summary>
