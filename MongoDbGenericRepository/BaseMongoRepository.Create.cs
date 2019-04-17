@@ -61,7 +61,7 @@ namespace MongoDbGenericRepository
     {
         private readonly object _initLock = new object();
         private MongoDbCreator _mongoDbCreator;
-        protected MongoDbCreator MongoDbCreator
+        protected virtual MongoDbCreator MongoDbCreator
         {
             get
             {
@@ -77,6 +77,7 @@ namespace MongoDbGenericRepository
 
                 return _mongoDbCreator;
             }
+            set { _mongoDbCreator = value; }
         }
 
         /// <summary>
