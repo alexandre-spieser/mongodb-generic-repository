@@ -140,7 +140,7 @@ namespace MongoDbGenericRepository
     public abstract partial class BaseMongoRepository : IBaseMongoRepository_Update
     {
         private MongoDbUpdater _mongoDbUpdater;
-        protected MongoDbUpdater MongoDbUpdater
+        protected virtual MongoDbUpdater MongoDbUpdater
         {
             get
             {
@@ -156,6 +156,7 @@ namespace MongoDbGenericRepository
 
                 return _mongoDbUpdater;
             }
+            set { _mongoDbUpdater = value; }
         }
 
         #region Update
