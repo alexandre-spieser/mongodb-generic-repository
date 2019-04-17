@@ -56,7 +56,7 @@ namespace MongoDbGenericRepository
         /// <summary>
         /// The MongoDb accessor to insert data.
         /// </summary>
-        protected MongoDbCreator MongoDbCreator
+        protected virtual MongoDbCreator MongoDbCreator
         {
             get
             {
@@ -72,6 +72,7 @@ namespace MongoDbGenericRepository
                 }
                 return _mongoDbCreator;
             }
+            set { _mongoDbCreator = value; }
         }
 
         /// <summary>
