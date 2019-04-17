@@ -98,7 +98,7 @@ namespace MongoDbGenericRepository
         /// <summary>
         /// The MongoDb accessor to delete data.
         /// </summary>
-        protected MongoDbEraser MongoDbEraser
+        protected virtual MongoDbEraser MongoDbEraser
         {
             get
             {
@@ -113,6 +113,7 @@ namespace MongoDbGenericRepository
                 }
                 return _mongoDbEraser;
             }
+            set { _mongoDbEraser = value; }
         }
 
         /// <summary>
