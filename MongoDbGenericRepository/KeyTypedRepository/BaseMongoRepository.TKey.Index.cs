@@ -109,7 +109,7 @@ namespace MongoDbGenericRepository
         /// <summary>
         /// The MongoDb accessor to manage indexes.
         /// </summary>
-        protected MongoDbIndexHandler MongoDbIndexHandler
+        protected virtual MongoDbIndexHandler MongoDbIndexHandler
         {
             get
             {
@@ -124,6 +124,7 @@ namespace MongoDbGenericRepository
                 }
                 return _mongoDbIndexHandler;
             }
+            set { _mongoDbIndexHandler = value; }
         }
 
         /// <summary>
