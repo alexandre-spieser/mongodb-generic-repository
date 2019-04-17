@@ -113,7 +113,7 @@ namespace MongoDbGenericRepository
     public abstract partial class BaseMongoRepository : IBaseMongoRepository_Index
     {
         private MongoDbIndexHandler _mongoDbIndexHandler;
-        protected MongoDbIndexHandler MongoDbIndexHandler
+        protected virtual MongoDbIndexHandler MongoDbIndexHandler
         {
             get
             {
@@ -128,6 +128,7 @@ namespace MongoDbGenericRepository
                 }
                 return _mongoDbIndexHandler;
             }
+            set { _mongoDbIndexHandler = value; }
         }
 
         /// <summary>
