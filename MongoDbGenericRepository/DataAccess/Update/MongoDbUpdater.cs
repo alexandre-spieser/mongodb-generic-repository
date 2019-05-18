@@ -1,17 +1,14 @@
 ﻿using MongoDB.Driver;
-using MongoDB.Driver.Linq;
 using MongoDbGenericRepository.DataAccess.Base;
 using MongoDbGenericRepository.Models;
-using MongoDbGenericRepository.Utils;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MongoDbGenericRepository.DataAccess.Update
 {
-    public class MongoDbUpdater : DataAccessBase
+    public partial class MongoDbUpdater : DataAccessBase
     {
         public MongoDbUpdater(IMongoDbContext mongoDbContext) : base(mongoDbContext)
         {
