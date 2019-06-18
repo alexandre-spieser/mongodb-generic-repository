@@ -47,6 +47,15 @@ namespace MongoDbGenericRepository
         }
 
         /// <summary>
+        /// Initialise an instance of a <see cref="IMongoDbContext"/> using a connection string
+        /// </summary>
+        /// <param name="connectionString"></param>
+        public MongoDbContext(string connectionString)
+            : this(connectionString, new MongoUrl(connectionString).DatabaseName)
+        {
+        }
+
+        /// <summary>
         /// The constructor of the MongoDbContext, it needs a connection string and a database name. 
         /// </summary>
         /// <param name="client">The MongoClient.</param>
