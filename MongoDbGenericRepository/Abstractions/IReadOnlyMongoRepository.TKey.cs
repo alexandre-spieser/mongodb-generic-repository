@@ -10,6 +10,7 @@ namespace MongoDbGenericRepository
 {
     public interface IReadOnlyMongoRepository<TKey> where TKey : IEquatable<TKey>
     {
+        string GetDefaultCollectionName<TDocument>();
         #region Read
 
         /// <summary>

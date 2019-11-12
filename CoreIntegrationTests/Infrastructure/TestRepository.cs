@@ -1,9 +1,18 @@
 ﻿using MongoDB.Bson;
 using MongoDbGenericRepository;
 using System;
+using MongoDbGenericRepository.Models;
+using Mongodb.Driver.Extensions;
 
 namespace CoreIntegrationTests.Infrastructure
 {
+    internal static class Consts
+    {
+        public const string DbConnectString = "mongodb://lycpsopen:avgqhp5b@mongodb1.tcy365.org:60001,mongodb2.tcy365.org:60001/lycpsopendb?replicaSet=mongoSet";
+        //public const string DbConnectString = "mongodb://localhost:27017/MongoDbTests";
+
+    }
+
     public interface ITestRepository<TKey> : IBaseMongoRepository<TKey> where TKey : IEquatable<TKey>
     {
         void DropTestCollection<TDocument>();
@@ -12,7 +21,7 @@ namespace CoreIntegrationTests.Infrastructure
 
     public class TestTKeyRepository<TKey> : BaseMongoRepository<TKey>, ITestRepository<TKey> where TKey : IEquatable<TKey>
     {
-        const string connectionString = "mongodb://localhost:27017/MongoDbTests";
+        const string connectionString = Consts.DbConnectString;
         private static readonly ITestRepository<TKey> _instance = new TestTKeyRepository<TKey>(connectionString);
         /// <inheritdoc />
         private TestTKeyRepository(string connectionString) : base(connectionString)
@@ -44,8 +53,8 @@ namespace CoreIntegrationTests.Infrastructure
     public sealed class TestRepository : BaseMongoRepository, ITestRepository
     {
 
-        const string connectionString = "mongodb://localhost:27017";
-        private static readonly ITestRepository _instance = new TestRepository(connectionString, "MongoDbTests");
+        const string connectionString = Consts.DbConnectString;
+        private static readonly ITestRepository _instance = new TestRepository(connectionString);
 
         // Explicit static constructor to tell C# compiler
         // not to mark type as beforefieldinit
@@ -54,7 +63,7 @@ namespace CoreIntegrationTests.Infrastructure
         }
 
         /// <inheritdoc />
-        private TestRepository(string connectionString, string databaseName) : base(connectionString, databaseName)
+        private TestRepository(string connectionString) : base(connectionString)
         {
         }
 
@@ -76,4 +85,27 @@ namespace CoreIntegrationTests.Infrastructure
             MongoDbContext.DropCollection<TDocument>(partitionKey);
         }
     }
+
+    public class TestDefaultBaseMongodbRepository<TDocument> : DefaultBaseMongodbRepository<TDocument>
+        where TDocument : IDocument, new()
+    {
+        protected override string MongodbConnectionString => Consts.DbConnectString;
+
+        public static TestDefaultBaseMongodbRepository<TDocument> Instance =>
+            new TestDefaultBaseMongodbRepository<TDocument>();
+    }
+
+    public class
+        TestDefaultBaseTKeyMongodbRepository<TDocument, TKey> : DefaultBaseTKeyMongodbRepository<TDocument, TKey>
+        where TDocument : IDocument<TKey>, new()
+        where TKey : IEquatable<TKey>
+    {
+        protected override string MongodbConnectionString => Consts.DbConnectString;
+
+        public static TestDefaultBaseTKeyMongodbRepository<TDocument, TKey> Instance =>
+            new TestDefaultBaseTKeyMongodbRepository<TDocument, TKey>();
+    }
+
+
+
 }

@@ -133,7 +133,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="partitionKey">An optional partition key</param>
         /// <returns>A list containing the names of the indexes on on the concerned collection.</returns>
-        public async virtual Task<List<string>> GetIndexesNamesAsync<TDocument>(string partitionKey = null)
+        public virtual async Task<List<string>> GetIndexesNamesAsync<TDocument>(string partitionKey = null)
             where TDocument : IDocument<TKey>
         {
             return await MongoDbIndexHandler.GetIndexesNamesAsync<TDocument, TKey>(partitionKey);
@@ -149,7 +149,7 @@ namespace MongoDbGenericRepository
         /// <param name="indexCreationOptions">Options for creating an index.</param>
         /// <param name="partitionKey">An optional partition key.</param>
         /// <returns>The result of the create index operation.</returns>
-        public async virtual Task<string> CreateTextIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions = null, string partitionKey = null)
+        public virtual async Task<string> CreateTextIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions = null, string partitionKey = null)
             where TDocument : IDocument<TKey>
         {
             return await MongoDbIndexHandler.CreateTextIndexAsync<TDocument, TKey>(field, indexCreationOptions, partitionKey);
@@ -165,7 +165,7 @@ namespace MongoDbGenericRepository
         /// <param name="indexCreationOptions">Options for creating an index.</param>
         /// <param name="partitionKey">An optional partition key.</param>
         /// <returns>The result of the create index operation.</returns>
-        public async virtual Task<string> CreateAscendingIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions = null, string partitionKey = null)
+        public virtual async Task<string> CreateAscendingIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions = null, string partitionKey = null)
             where TDocument : IDocument<TKey>
         {
             return await MongoDbIndexHandler.CreateAscendingIndexAsync<TDocument, TKey>(field, indexCreationOptions, partitionKey);
@@ -181,7 +181,7 @@ namespace MongoDbGenericRepository
         /// <param name="indexCreationOptions">Options for creating an index.</param>
         /// <param name="partitionKey">An optional partition key.</param>
         /// <returns>The result of the create index operation.</returns>
-        public async virtual Task<string> CreateDescendingIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions = null, string partitionKey = null)
+        public virtual async Task<string> CreateDescendingIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions = null, string partitionKey = null)
             where TDocument : IDocument<TKey>
         {
             return await MongoDbIndexHandler.CreateDescendingIndexAsync<TDocument, TKey>(field, indexCreationOptions, partitionKey);
@@ -197,7 +197,7 @@ namespace MongoDbGenericRepository
         /// <param name="indexCreationOptions">Options for creating an index.</param>
         /// <param name="partitionKey">An optional partition key.</param>
         /// <returns>The result of the create index operation.</returns>
-        public async virtual Task<string> CreateHashedIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions = null, string partitionKey = null)
+        public virtual async Task<string> CreateHashedIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions = null, string partitionKey = null)
             where TDocument : IDocument<TKey>
         {
             return await MongoDbIndexHandler.CreateHashedIndexAsync<TDocument, TKey>(field, indexCreationOptions, partitionKey);
@@ -213,7 +213,7 @@ namespace MongoDbGenericRepository
         /// <param name="indexCreationOptions">Options for creating an index.</param>
         /// <param name="partitionKey">An optional partition key.</param>
         /// <returns>The result of the create index operation.</returns>
-        public async virtual Task<string> CreateCombinedTextIndexAsync<TDocument>(IEnumerable<Expression<Func<TDocument, object>>> fields, IndexCreationOptions indexCreationOptions = null, string partitionKey = null)
+        public virtual async Task<string> CreateCombinedTextIndexAsync<TDocument>(IEnumerable<Expression<Func<TDocument, object>>> fields, IndexCreationOptions indexCreationOptions = null, string partitionKey = null)
             where TDocument : IDocument<TKey>
         {
             return await MongoDbIndexHandler.CreateCombinedTextIndexAsync<TDocument, TKey>(fields, indexCreationOptions, partitionKey);
@@ -225,7 +225,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="indexName">The name of the index</param>
         /// <param name="partitionKey">An optional partition key</param>
-        public async virtual Task DropIndexAsync<TDocument>(string indexName, string partitionKey = null)
+        public virtual async Task DropIndexAsync<TDocument>(string indexName, string partitionKey = null)
             where TDocument : IDocument<TKey>
         {
             await MongoDbIndexHandler.DropIndexAsync<TDocument, TKey>(indexName, partitionKey);

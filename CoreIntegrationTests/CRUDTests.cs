@@ -18,4 +18,15 @@ namespace CoreIntegrationTests
             return "CRUDTests";
         }
     }
+    public class CRUDTestDefaultRepositorys : DefaultBaseMongodbRepositoryTestBase<CoreTestDocument>
+    {
+        public CRUDTestDefaultRepositorys(MongoDbTestFixture<CoreTestDocument, Guid> fixture) : base(fixture)
+        {
+        }
+
+        public override string GetClassName()
+        {
+            return nameof(CRUDTestDefaultRepositorys);
+        }
+    }
 }

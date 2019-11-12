@@ -15,6 +15,13 @@ namespace MongoDbGenericRepository
     public abstract partial class BaseMongoRepository : ReadOnlyMongoRepository, IBaseMongoRepository
     {
         /// <summary>
+        ///  The constructor  
+        /// </summary>
+        public BaseMongoRepository()
+        {
+        }
+
+        /// <summary>
         /// The constructor taking a connection string and a database name.
         /// </summary>
         /// <param name="connectionString">The connection string of the MongoDb server.</param>
@@ -112,7 +119,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The document type.</typeparam>
         /// <typeparam name="TKey">The type of the primary key.</typeparam>
         /// <param name="document">The document.</param>
-        protected void FormatDocument<TDocument, TKey>(TDocument document)
+        protected virtual void FormatDocument<TDocument, TKey>(TDocument document)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -134,7 +141,7 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument">The document type.</typeparam>
         /// <param name="document">The document.</param>
-        protected void FormatDocument<TDocument>(TDocument document) where TDocument : IDocument
+        protected virtual void FormatDocument<TDocument>(TDocument document) where TDocument : IDocument
         {
             if (document == null)
             {

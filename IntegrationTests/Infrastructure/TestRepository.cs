@@ -9,8 +9,9 @@ namespace IntegrationTests.Infrastructure
 {
     public class TestRepository : BaseMongoRepository, ITestRepository
     {
+      
         /// <inheritdoc />
-        public TestRepository(string connectionString, string databaseName) : base(connectionString, databaseName)
+        public TestRepository(string connectionString, string databaseName = null) : base(connectionString, databaseName)
         {
         }
 

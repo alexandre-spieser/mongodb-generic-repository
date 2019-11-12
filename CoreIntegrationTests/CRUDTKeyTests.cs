@@ -19,4 +19,15 @@ namespace CoreIntegrationTests
             return "CreateTKeyTests";
         }
     }
+    public class CRUDTKeyTestDefaultRepositorys : DefaultBaseTKeyMongodbRepositoryTestBase<CoreTKeyTestDocument, Guid>
+    {
+        public CRUDTKeyTestDefaultRepositorys(MongoDbTestFixture<CoreTKeyTestDocument, Guid> fixture) : base(fixture)
+        {
+        }
+
+        public override string GetClassName()
+        {
+            return nameof(CRUDTKeyTestDefaultRepositorys);
+        }
+    }
 }

@@ -31,7 +31,20 @@ namespace CoreIntegrationTests
             return "CoreCRUDTKeyPartitionedCollectionNameAttributeTests";
         }
     }
+    public class
+        CRUDTKeyPartitionedCollectionNameAttributeTestDefaultRepositorys : DefaultBaseTKeyMongodbRepositoryTestBase<
+            CoreTKeyPartitionedCollectionNameDoc, Guid>
+    {
+        public CRUDTKeyPartitionedCollectionNameAttributeTestDefaultRepositorys(
+            MongoDbTestFixture<CoreTKeyPartitionedCollectionNameDoc, Guid> fixture) : base(fixture)
+        {
+        }
 
+        public override string GetClassName()
+        {
+            return nameof(CRUDTKeyPartitionedCollectionNameAttributeTestDefaultRepositorys);
+        }
+    }
     #endregion Guid Type
 
 
@@ -58,6 +71,19 @@ namespace CoreIntegrationTests
         public override string GetClassName()
         {
             return "CoreCRUDTKeyPartitionedCollectionNameAttributeTests";
+        }
+    }
+    public class CRUDObjectIdPartitionedCollectionNameAttributeTestDefaultRepositorys :
+        DefaultBaseTKeyMongodbRepositoryTestBase<CoreObjectIdPartitionedCollectionNameDoc, ObjectId>
+    {
+        public CRUDObjectIdPartitionedCollectionNameAttributeTestDefaultRepositorys(
+            MongoDbTestFixture<CoreObjectIdPartitionedCollectionNameDoc, ObjectId> fixture) : base(fixture)
+        {
+        }
+
+        public override string GetClassName()
+        {
+            return nameof(CRUDObjectIdPartitionedCollectionNameAttributeTestDefaultRepositorys);
         }
     }
 

@@ -32,6 +32,13 @@ namespace MongoDbGenericRepository
         private readonly object _initLock = new object();
 
         /// <summary>
+        /// The constructor  
+        /// </summary> 
+        public BaseMongoRepository()
+        {
+        }
+
+        /// <summary>
         /// The constructor taking a connection string and a database name.
         /// </summary>
         /// <param name="connectionString">The connection string of the MongoDb server.</param>

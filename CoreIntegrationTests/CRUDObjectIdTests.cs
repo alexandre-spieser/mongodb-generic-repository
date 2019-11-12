@@ -19,4 +19,16 @@ namespace CoreIntegrationTests
             return "CRUDObjectIdTests";
         }
     }
+    public class CRUDObjectIdTestDefaultRepositorys : DefaultBaseTKeyMongodbRepositoryTestBase<CoreObjectIdTestDocument, ObjectId>
+    {
+        public CRUDObjectIdTestDefaultRepositorys(MongoDbTestFixture<CoreObjectIdTestDocument, ObjectId> fixture) :
+            base(fixture)
+        {
+        }
+
+        public override string GetClassName()
+        {
+            return nameof(CRUDObjectIdTestDefaultRepositorys);
+        }
+    }
 }

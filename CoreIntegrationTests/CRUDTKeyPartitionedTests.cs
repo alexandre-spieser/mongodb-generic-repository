@@ -25,4 +25,17 @@ namespace CoreIntegrationTests
             return "CoreCRUDTKeyPartitionedTests";
         }
     }
+    public class CRUDTKeyPartitionedTestDefaultRepositorys : DefaultBaseTKeyMongodbRepositoryTestBase<
+            CorePartitionedTKeyTestDocument, Guid>
+    {
+        public CRUDTKeyPartitionedTestDefaultRepositorys(
+            MongoDbTestFixture<CorePartitionedTKeyTestDocument, Guid> fixture) : base(fixture)
+        {
+        }
+
+        public override string GetClassName()
+        {
+            return nameof(CRUDTKeyPartitionedTestDefaultRepositorys);
+        }
+    }
 }

@@ -25,12 +25,14 @@ namespace MongoDbGenericRepository.DataAccess.Create
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <param name="document">The document you want to add.</param>
-        public virtual async Task AddOneAsync<TDocument, TKey>(TDocument document)
+        /// <param name="partitionKey">The collection partition key.</param>
+        /// <remarks>suggest name to be InsertOneAsync </remarks>
+        public virtual async Task AddOneAsync<TDocument, TKey>(TDocument document, string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
             FormatDocument<TDocument, TKey>(document);
-            await HandlePartitioned<TDocument, TKey>(document).InsertOneAsync(document);
+            await HandlePartitioned<TDocument, TKey>(document, partitionKey).InsertOneAsync(document);
         }
 
         /// <summary>
@@ -40,12 +42,14 @@ namespace MongoDbGenericRepository.DataAccess.Create
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <param name="document">The document you want to add.</param>
-        public virtual void AddOne<TDocument, TKey>(TDocument document)
+        /// <param name="partitionKey">The collection partition key.</param>
+        /// <remarks>suggest name to be InsertOne </remarks>
+        public virtual void AddOne<TDocument, TKey>(TDocument document, string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
             FormatDocument<TDocument, TKey>(document);
-            HandlePartitioned<TDocument, TKey>(document).InsertOne(document);
+            HandlePartitioned<TDocument, TKey>(document, partitionKey).InsertOne(document);
         }
 
         /// <summary>
@@ -55,7 +59,9 @@ namespace MongoDbGenericRepository.DataAccess.Create
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <param name="documents">The documents you want to add.</param>
-        public virtual async Task AddManyAsync<TDocument, TKey>(IEnumerable<TDocument> documents)
+        /// <param name="partitionKey">The collection partition key.</param>
+        /// <remarks>suggest name to be InsertManyAsync </remarks>
+        public virtual async Task AddManyAsync<TDocument, TKey>(IEnumerable<TDocument> documents, string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -72,12 +78,12 @@ namespace MongoDbGenericRepository.DataAccess.Create
             {
                 foreach (var group in documents.GroupBy(e => ((IPartitionedDocument)e).PartitionKey))
                 {
-                    await HandlePartitioned<TDocument, TKey>(group.FirstOrDefault()).InsertManyAsync(group.ToList());
+                    await HandlePartitioned<TDocument, TKey>(group.FirstOrDefault(), partitionKey).InsertManyAsync(group.ToList());
                 }
             }
             else
             {
-                await GetCollection<TDocument, TKey>().InsertManyAsync(documents.ToList());
+                await GetCollection<TDocument, TKey>(partitionKey).InsertManyAsync(documents.ToList());
             }
         }
 
@@ -88,7 +94,9 @@ namespace MongoDbGenericRepository.DataAccess.Create
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <param name="documents">The documents you want to add.</param>
-        public virtual void AddMany<TDocument, TKey>(IEnumerable<TDocument> documents)
+        /// <param name="partitionKey">The collection partition key.</param>
+        /// <remarks>suggest name to be InsertMany </remarks>
+        public virtual void AddMany<TDocument, TKey>(IEnumerable<TDocument> documents, string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -105,12 +113,12 @@ namespace MongoDbGenericRepository.DataAccess.Create
             {
                 foreach (var group in documents.GroupBy(e => ((IPartitionedDocument)e).PartitionKey))
                 {
-                    HandlePartitioned<TDocument, TKey>(group.FirstOrDefault()).InsertMany(group.ToList());
+                    HandlePartitioned<TDocument, TKey>(group.FirstOrDefault(), partitionKey).InsertMany(group.ToList());
                 }
             }
             else
             {
-                GetCollection<TDocument, TKey>().InsertMany(documents.ToList());
+                GetCollection<TDocument, TKey>(partitionKey).InsertMany(documents.ToList());
             }
         }
 

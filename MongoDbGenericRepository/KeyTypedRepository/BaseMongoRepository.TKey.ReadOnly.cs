@@ -36,6 +36,18 @@ namespace MongoDbGenericRepository
         protected MongoDbReader MongoDbReader = null;
 
         /// <summary>
+        /// Get Default DocumentName of the specialscs Collection 
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <returns></returns>
+        public virtual string GetDefaultCollectionName<TDocument>() =>
+            MongoDbContext.GetDefaultCollectionName<TDocument>();
+
+        protected ReadOnlyMongoRepository()
+        {
+        }
+
+        /// <summary>
         /// The constructor taking a connection string and a database name.
         /// </summary>
         /// <param name="connectionString">The connection string of the MongoDb server.</param>
@@ -88,7 +100,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="id">The Id of the document you want to get.</param>
         /// <param name="partitionKey">An optional partition key.</param>
-        public async Task<TDocument> GetByIdAsync<TDocument>(TKey id, string partitionKey = null) where TDocument : IDocument<TKey>
+        public virtual async Task<TDocument> GetByIdAsync<TDocument>(TKey id, string partitionKey = null) where TDocument : IDocument<TKey>
         {
             return await MongoDbReader.GetByIdAsync<TDocument, TKey>(id, partitionKey);
         }
@@ -110,7 +122,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="partitionKey">An optional partition key.</param>
-        public async Task<TDocument> GetOneAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument<TKey>
+        public virtual async Task<TDocument> GetOneAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument<TKey>
         {
             return await MongoDbReader.GetOneAsync<TDocument, TKey>(filter, partitionKey);
         }
@@ -121,7 +133,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="partitionKey">An optional partition key.</param>
-        public TDocument GetOne<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument<TKey>
+        public virtual TDocument GetOne<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument<TKey>
         {
             return MongoDbReader.GetOne<TDocument, TKey>(filter, partitionKey);
         }
@@ -132,7 +144,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="partitionKey">An optional partition key.</param>
-        public IFindFluent<TDocument, TDocument> GetCursor<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument<TKey>
+        public virtual IFindFluent<TDocument, TDocument> GetCursor<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument<TKey>
         {
             return MongoDbReader.GetCursor<TDocument, TKey>(filter, partitionKey);
         }
@@ -143,7 +155,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="partitionKey">An optional partition key.</param>
-        public async Task<bool> AnyAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument<TKey>
+        public virtual async Task<bool> AnyAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument<TKey>
         {
             return await MongoDbReader.AnyAsync<TDocument, TKey>(filter, partitionKey);
         }
@@ -154,7 +166,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="partitionKey">An optional partition key.</param>
-        public bool Any<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument<TKey>
+        public virtual bool Any<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument<TKey>
         {
             return MongoDbReader.Any<TDocument, TKey>(filter, partitionKey);
         }
@@ -165,7 +177,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="partitionKey">An optional partition key.</param>
-        public async Task<List<TDocument>> GetAllAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument<TKey>
+        public virtual async Task<List<TDocument>> GetAllAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument<TKey>
         {
             return await MongoDbReader.GetAllAsync<TDocument, TKey>(filter, partitionKey);
         }
@@ -176,7 +188,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="partitionKey">An optional partition key.</param>
-        public List<TDocument> GetAll<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument<TKey>
+        public virtual List<TDocument> GetAll<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument<TKey>
         {
             return MongoDbReader.GetAll<TDocument, TKey>(filter, partitionKey);
         }
@@ -187,7 +199,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="partitionKey">An optional partitionKey</param>
-        public async Task<long> CountAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument<TKey>
+        public virtual async Task<long> CountAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument<TKey>
         {
             return await MongoDbReader.CountAsync<TDocument, TKey>(filter, partitionKey);
         }
@@ -198,7 +210,7 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="partitionKey">An optional partitionKey</param>
-        public long Count<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument<TKey>
+        public virtual long Count<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument<TKey>
         {
             return MongoDbReader.Count<TDocument, TKey>(filter, partitionKey);
         }
@@ -210,7 +222,7 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="maxValueSelector">A property selector to order by descending.</param>
         /// <param name="partitionKey">An optional partitionKey.</param>
-        public async Task<TDocument> GetByMaxAsync<TDocument>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> maxValueSelector, string partitionKey = null)
+        public virtual async Task<TDocument> GetByMaxAsync<TDocument>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> maxValueSelector, string partitionKey = null)
             where TDocument : IDocument<TKey>
         {
             return await MongoDbReader.GetByMaxAsync<TDocument, TKey>(filter, maxValueSelector, partitionKey);
@@ -224,7 +236,7 @@ namespace MongoDbGenericRepository
         /// <param name="maxValueSelector">A property selector to order by descending.</param>
         /// <param name="partitionKey">An optional partitionKey.</param>
         /// <returns></returns>
-        public TDocument GetByMax<TDocument>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> maxValueSelector, string partitionKey = null)
+        public virtual TDocument GetByMax<TDocument>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> maxValueSelector, string partitionKey = null)
             where TDocument : IDocument<TKey>
         {
             return MongoDbReader.GetByMax<TDocument, TKey>(filter, maxValueSelector, partitionKey);
@@ -237,7 +249,7 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="minValueSelector">A property selector to order by ascending.</param>
         /// <param name="partitionKey">An optional partitionKey.</param>
-        public async Task<TDocument> GetByMinAsync<TDocument>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> minValueSelector, string partitionKey = null)
+        public virtual async Task<TDocument> GetByMinAsync<TDocument>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> minValueSelector, string partitionKey = null)
             where TDocument : IDocument<TKey>
         {
             return await MongoDbReader.GetByMinAsync<TDocument, TKey>(filter, minValueSelector, partitionKey);
@@ -250,7 +262,7 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="minValueSelector">A property selector to order by ascending.</param>
         /// <param name="partitionKey">An optional partitionKey.</param>
-        public TDocument GetByMin<TDocument>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> minValueSelector, string partitionKey = null)
+        public virtual TDocument GetByMin<TDocument>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> minValueSelector, string partitionKey = null)
             where TDocument : IDocument<TKey>
         {
             return MongoDbReader.GetByMin<TDocument, TKey>(filter, minValueSelector, partitionKey);
@@ -264,7 +276,7 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="maxValueSelector">A property selector to order by ascending.</param>
         /// <param name="partitionKey">An optional partitionKey.</param>
-        public async Task<TValue> GetMaxValueAsync<TDocument, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> maxValueSelector, string partitionKey = null)
+        public virtual async Task<TValue> GetMaxValueAsync<TDocument, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> maxValueSelector, string partitionKey = null)
             where TDocument : IDocument<TKey>
         {
             return await MongoDbReader.GetMaxValueAsync<TDocument, TKey, TValue>(filter, maxValueSelector, partitionKey);
@@ -278,7 +290,7 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="maxValueSelector">A property selector to order by ascending.</param>
         /// <param name="partitionKey">An optional partitionKey.</param>
-        public TValue GetMaxValue<TDocument, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> maxValueSelector, string partitionKey = null)
+        public virtual TValue GetMaxValue<TDocument, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> maxValueSelector, string partitionKey = null)
             where TDocument : IDocument<TKey>
         {
             return MongoDbReader.GetMaxValue<TDocument, TKey, TValue>(filter, maxValueSelector, partitionKey);

@@ -26,21 +26,23 @@ namespace MongoDbGenericRepository.DataAccess.Base
         }
 
         /// <summary>
-        /// Gets a collections for a potentially partitioned document type.
+        ///     Gets a collections for a potentially partitioned document type.
         /// </summary>
         /// <typeparam name="TDocument">The document type.</typeparam>
         /// <typeparam name="TKey">The type of the primary key.</typeparam>
         /// <param name="document">The document.</param>
+        /// <param name="partitionKey">The collection partition key.</param>
         /// <returns></returns>
-        public virtual IMongoCollection<TDocument> HandlePartitioned<TDocument, TKey>(TDocument document)
+        public virtual IMongoCollection<TDocument> HandlePartitioned<TDocument, TKey>(TDocument document,
+            string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            if (document is IPartitionedDocument)
-            {
-                return GetCollection<TDocument, TKey>(((IPartitionedDocument)document).PartitionKey);
-            }
-            return GetCollection<TDocument, TKey>();
+            if (string.IsNullOrEmpty(partitionKey))
+                if (document is IPartitionedDocument partitionedDocument)
+                    partitionKey = partitionedDocument.PartitionKey;
+
+            return GetCollection<TDocument, TKey>(partitionKey);
         }
 
         /// <summary>

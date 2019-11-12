@@ -18,7 +18,7 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="document">The document you want to add.</param>
-        Task AddOneAsync<TDocument>(TDocument document) where TDocument : IDocument<TKey>;
+        Task AddOneAsync<TDocument>(TDocument document, string partitionKey = null) where TDocument : IDocument<TKey>;
 
         /// <summary>
         /// Adds a document to the collection.
@@ -26,7 +26,7 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="document">The document you want to add.</param>
-        void AddOne<TDocument>(TDocument document) where TDocument : IDocument<TKey>;
+        void AddOne<TDocument>(TDocument document, string partitionKey = null) where TDocument : IDocument<TKey>;
 
         /// <summary>
         /// Asynchronously adds a list of documents to the collection.
@@ -34,7 +34,7 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="documents">The documents you want to add.</param>
-        Task AddManyAsync<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument<TKey>;
+        Task AddManyAsync<TDocument>(IEnumerable<TDocument> documents, string partitionKey = null) where TDocument : IDocument<TKey>;
 
         /// <summary>
         /// Adds a list of documents to the collection.
@@ -42,7 +42,7 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="documents">The documents you want to add.</param>
-        void AddMany<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument<TKey>;
+        void AddMany<TDocument>(IEnumerable<TDocument> documents, string partitionKey = null) where TDocument : IDocument<TKey>;
     }
 
     /// <summary>
@@ -60,11 +60,11 @@ namespace MongoDbGenericRepository
         {
             get
             {
-                if(_mongoDbCreator == null)
+                if (_mongoDbCreator == null)
                 {
                     lock (_initLock)
                     {
-                        if(_mongoDbCreator == null)
+                        if (_mongoDbCreator == null)
                         {
                             _mongoDbCreator = new MongoDbCreator(MongoDbContext);
                         }
@@ -81,9 +81,9 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="document">The document you want to add.</param>
-        public virtual async Task AddOneAsync<TDocument>(TDocument document) where TDocument : IDocument<TKey>
+        public virtual async Task AddOneAsync<TDocument>(TDocument document, string partitionKey = null) where TDocument : IDocument<TKey>
         {
-            await MongoDbCreator.AddOneAsync<TDocument, TKey>(document);
+            await MongoDbCreator.AddOneAsync<TDocument, TKey>(document, partitionKey);
         }
 
         /// <summary>
@@ -92,9 +92,9 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="document">The document you want to add.</param>
-        public virtual void AddOne<TDocument>(TDocument document) where TDocument : IDocument<TKey>
+        public virtual void AddOne<TDocument>(TDocument document, string partitionKey = null) where TDocument : IDocument<TKey>
         {
-            MongoDbCreator.AddOne<TDocument, TKey>(document);
+            MongoDbCreator.AddOne<TDocument, TKey>(document, partitionKey);
         }
 
         /// <summary>
@@ -103,9 +103,9 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="documents">The documents you want to add.</param>
-        public virtual async Task AddManyAsync<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument<TKey>
+        public virtual async Task AddManyAsync<TDocument>(IEnumerable<TDocument> documents, string partitionKey = null) where TDocument : IDocument<TKey>
         {
-            await MongoDbCreator.AddManyAsync<TDocument, TKey>(documents);
+            await MongoDbCreator.AddManyAsync<TDocument, TKey>(documents, partitionKey);
         }
 
         /// <summary>
@@ -114,9 +114,9 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="documents">The documents you want to add.</param>
-        public virtual void AddMany<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument<TKey>
+        public virtual void AddMany<TDocument>(IEnumerable<TDocument> documents, string partitionKey = null) where TDocument : IDocument<TKey>
         {
-            MongoDbCreator.AddMany<TDocument, TKey>(documents);
+            MongoDbCreator.AddMany<TDocument, TKey>(documents, partitionKey);
         }
     }
 }

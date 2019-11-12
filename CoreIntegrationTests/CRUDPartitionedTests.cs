@@ -25,4 +25,16 @@ namespace CoreIntegrationTests
             return "CoreCRUDPartitionedTests";
         }
     }
+    public class CRUDPartitionedTestDefaultRepositorys : DefaultBaseMongodbRepositoryTestBase<CorePartitionedDoc>
+    {
+        public CRUDPartitionedTestDefaultRepositorys(MongoDbTestFixture<CorePartitionedDoc, Guid> fixture) :
+            base(fixture)
+        {
+        }
+
+        public override string GetClassName()
+        {
+            return nameof(CRUDPartitionedTestDefaultRepositorys);
+        }
+    }
 }

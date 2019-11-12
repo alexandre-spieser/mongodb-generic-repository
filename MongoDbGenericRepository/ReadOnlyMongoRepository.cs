@@ -15,6 +15,10 @@ namespace MongoDbGenericRepository
     /// </summary>
     public abstract class ReadOnlyMongoRepository : ReadOnlyMongoRepository<Guid>, IReadOnlyMongoRepository
     {
+        public ReadOnlyMongoRepository()
+        {
+        }
+
         /// <summary>
         /// The constructor taking a connection string and a database name.
         /// </summary>

@@ -20,6 +20,13 @@ namespace MongoDbGenericRepository
         IMongoDatabase Database { get; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TDocument"></typeparam>
+        /// <returns></returns>
+        string GetDefaultCollectionName<TDocument>();
+
+        /// <summary>
         /// Returns a collection for a document type that has a partition key.
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>

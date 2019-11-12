@@ -42,7 +42,7 @@ namespace IntegrationTests.Infrastructure
         public void Init()
         {
             var connectionString = ConfigurationManager.ConnectionStrings["MongoDbTests"].ConnectionString;
-            SUT = new TestRepository(connectionString, "MongoDbTests");
+            SUT = new TestRepository(connectionString );
         }
 
         [OneTimeTearDown]

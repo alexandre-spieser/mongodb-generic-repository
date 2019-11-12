@@ -28,4 +28,18 @@ namespace CoreIntegrationTests
             return "CoreCRUDPartitionedCollectionNameAttributeTests";
         }
     }
+    public class CRUDPartitionedCollectionNameAttributeTestDefaultRepositorys : DefaultBaseMongodbRepositoryTestBase<
+            CorePartitionedCollectionNameDoc>
+    {
+        public CRUDPartitionedCollectionNameAttributeTestDefaultRepositorys(
+            MongoDbTestFixture<CorePartitionedCollectionNameDoc, Guid> fixture) : base(fixture)
+        {
+        }
+
+        public override string GetClassName()
+        {
+            return nameof(CRUDPartitionedCollectionNameAttributeTestDefaultRepositorys);
+        }
+    }
+
 }

@@ -22,8 +22,10 @@ namespace CoreIntegrationTests.Infrastructure
     public class Nested
     {
         public DateTime SomeDate { get; set; }
-        [BsonRepresentation(BsonType.Decimal128)]
+        // Mongodb version need >=3.4 to use decimal
+        // [BsonRepresentation(BsonType.Decimal128)]
         public decimal SomeAmount { get; set; }
+        public int Index { get; set; }
     }
 
     public class Child

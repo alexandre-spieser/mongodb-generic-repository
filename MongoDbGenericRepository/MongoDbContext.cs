@@ -21,7 +21,6 @@ namespace MongoDbGenericRepository
         /// </summary>
         public IMongoDatabase Database { get; }
 
-
         /// <summary>
         /// The constructor of the MongoDbContext, it needs an object implementing <see cref="IMongoDatabase"/>.
         /// </summary>
@@ -67,6 +66,17 @@ namespace MongoDbGenericRepository
             Database = client.GetDatabase(databaseName);
         }
 
+        /// <summary>
+        ///     Very naively pluralizes a TDocument type name.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <returns>The pluralized document name.</returns>
+        public virtual string GetDefaultCollectionName<TDocument>()
+        {
+            var collectionName = GetAttributeCollectionName<TDocument>() ?? Pluralize<TDocument>();
+            return collectionName;
+        }
+		
         /// <summary>
         /// Returns a collection for a document type. Also handles document types with a partition key.
         /// </summary>
@@ -118,20 +128,17 @@ namespace MongoDbGenericRepository
         }
 
         /// <summary>
-        /// Given the document type and the partition key, returns the name of the collection it belongs to.
+        ///     Given the document type and the partition key, returns the name of the collection it belongs to.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-	    /// <param name="partitionKey">The value of the partition key.</param>
+        /// <param name="partitionKey">The value of the partition key.</param>
         /// <returns>The name of the collection.</returns>
         protected virtual string GetCollectionName<TDocument>(string partitionKey)
         {
-            var collectionName = GetAttributeCollectionName<TDocument>() ?? Pluralize<TDocument>();
-            if (string.IsNullOrEmpty(partitionKey))
-            {
-                return collectionName;
-            }
-            return $"{partitionKey}-{collectionName}";
+            var collectionName = GetDefaultCollectionName<TDocument>();
+            return string.IsNullOrEmpty(partitionKey) ? collectionName : $"{collectionName}_{partitionKey}";
         }
+
 
         /// <summary>
         /// Very naively pluralizes a TDocument type name.
