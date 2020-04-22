@@ -1,4 +1,5 @@
 # MongoDbGenericRepository
+
 An example of generic repository implementation using the MongoDB C# Sharp 2.0 driver (async)
 
 Now available as a nuget package:
@@ -7,6 +8,12 @@ https://www.nuget.org/packages/MongoDbGenericRepository/
 Covered by 400+ integration tests and counting.
 
 The MongoDbGenericRepository is also used in [AspNetCore.Identity.MongoDbCore](https://github.com/alexandre-spieser/AspNetCore.Identity.MongoDbCore).
+
+This package sets the MongoDefaults.GuidRepresentation to `MongoDB.Bson.GuidRepresentation.Standard` by default, instead of the default driver setting of `MongoDB.Bson.GuidRepresentation.CSharpLegacy`.
+
+You can override this behaviour to enforce legacy behaviour in your app Startup routing like so :
+
+`MongoDbContext.SetGuidRepresentation(MongoDB.Bson.GuidRepresentation.CSharpLegacy)`. More info [here](https://github.com/alexandre-spieser/mongodb-generic-repository/issues/7).
 
 # Usage examples
 
