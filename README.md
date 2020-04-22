@@ -9,7 +9,7 @@ Covered by 400+ integration tests and counting.
 
 The MongoDbGenericRepository is also used in [AspNetCore.Identity.MongoDbCore](https://github.com/alexandre-spieser/AspNetCore.Identity.MongoDbCore).
 
-This package sets the MongoDefaults.GuidRepresentation to `MongoDB.Bson.GuidRepresentation.Standard` by default, instead of the default driver setting of `MongoDB.Bson.GuidRepresentation.CSharpLegacy`.
+This package sets the `MongoDefaults.GuidRepresentation` to `MongoDB.Bson.GuidRepresentation.Standard` by default, instead of the default driver setting of `MongoDB.Bson.GuidRepresentation.CSharpLegacy`. This can cause issues if you have been using the driver on an existing application previously or if you are using CosmosDB.
 
 You can override this behaviour to enforce legacy behaviour in your app Startup routing like so :
 
