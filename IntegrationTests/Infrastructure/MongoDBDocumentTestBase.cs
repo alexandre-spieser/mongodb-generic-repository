@@ -11,8 +11,8 @@ using System.Threading.Tasks;
 namespace IntegrationTests.Infrastructure
 {
     [TestFixture]
-    public abstract class MongoDbDocumentTestBase<T>
-        where T : TestDoc, new()
+    public abstract class MongoDbDocumentTestBase<T> 
+        where T: TestDoc, new()
     {
         public T CreateTestDocument()
         {
@@ -66,7 +66,7 @@ namespace IntegrationTests.Infrastructure
         public void Init()
         {
             var connectionString = ConfigurationManager.ConnectionStrings["MongoDbTests"].ConnectionString;
-            SUT = new TestRepository(connectionString);
+            SUT = new TestRepository(connectionString, "MongoDbTests");
         }
 
         [OneTimeTearDown]
@@ -93,7 +93,7 @@ namespace IntegrationTests.Infrastructure
             // Act
             SUT.AddOne<T>(document);
             // Assert
-            long count = string.IsNullOrEmpty(PartitionKey) ? SUT.Count<T>(e => e.Id.Equals(document.Id))
+            long count = string.IsNullOrEmpty(PartitionKey) ? SUT.Count<T>(e => e.Id.Equals(document.Id)) 
                                                             : SUT.Count<T>(e => e.Id.Equals(document.Id), PartitionKey);
             Assert.AreEqual(1, count, GetTestName());
         }

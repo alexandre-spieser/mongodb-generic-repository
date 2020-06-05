@@ -23,7 +23,7 @@ namespace CoreIntegrationTests.Infrastructure
     {
         public DateTime SomeDate { get; set; }
         // Mongodb version need >=3.4 to use decimal
-        // [BsonRepresentation(BsonType.Decimal128)]
+        [BsonRepresentation(BsonType.Decimal128)]
         public decimal SomeAmount { get; set; }
         public int Index { get; set; }
     }

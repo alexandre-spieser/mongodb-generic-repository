@@ -1080,7 +1080,8 @@ namespace CoreIntegrationTests.Infrastructure
 
         #region Math
 
-        [Fact]
+        // [Fact]
+        [Fact(DisplayName = "Skip_When_Version_3_2", Skip = "Skip_When_Version_3_2")]
         public async Task SumByDecimalAsync()
         {
             // Arrange
@@ -1100,10 +1101,11 @@ namespace CoreIntegrationTests.Infrastructure
             var result = await SUT.SumByAsync<T, TKey>(e => e.SomeContent == criteria, e => e.Nested.SomeAmount, PartitionKey);
 
             // Assert
-            //Assert.Equal(expectedSum, result);
+            Assert.Equal(expectedSum, result);
         }
 
-        [Fact]
+        //[Fact]
+        [Fact(DisplayName = "Skip_When_Version_3_2", Skip = "Skip_When_Version_3_2")]
         public void SumByDecimal()
         {
             // Arrange
@@ -1123,7 +1125,7 @@ namespace CoreIntegrationTests.Infrastructure
             var result = SUT.SumBy<T, TKey>(e => e.SomeContent == criteria, e => e.Nested.SomeAmount, PartitionKey);
 
             // Assert
-            //Assert.Equal(expectedSum, result);
+            Assert.Equal(expectedSum, result);
         }
 
         #endregion Math
@@ -1239,16 +1241,14 @@ namespace CoreIntegrationTests.Infrastructure
             }
             SUT.AddMany<T, TKey>(documents);
 
-            documents = documents.OrderByDescending(e => e.Nested.Index).ToList();
-
-            var notExpected = documents.Where(m => m.GroupingKey == 9).Last();
-            var expecteds = documents.Where(m => m.GroupingKey == 8).OrderByDescending(m => m.Nested.Index).ToList();
-            var expectedFirstResult = expecteds.OrderByDescending(m => m.Nested.Index).FirstOrDefault();
+            documents = documents.OrderByDescending(e => e.Nested.SomeAmount).ToList();
+            var notExpected = documents.First();
+            var expectedFirstResult = documents[1];
 
             // Act
             var result = await SUT.GetSortedPaginatedAsync<T, TKey>(
                             e => e.GroupingKey == 8 && e.SomeContent == content,
-                            e => e.Nested.Index,
+                            e => e.Nested.SomeAmount,
                             false,
                             1, 5,
                             PartitionKey);
@@ -1256,7 +1256,7 @@ namespace CoreIntegrationTests.Infrastructure
             // Assert
             Assert.Equal(4, result.Count);
             Assert.True(!result.Contains(notExpected));
-            Assert.Equal(expecteds[1].Id, result[0].Id);
+            Assert.Equal(expectedFirstResult.Id, result[0].Id);
         }
 
         [Fact]
@@ -1278,13 +1278,10 @@ namespace CoreIntegrationTests.Infrastructure
             }
             SUT.AddMany<T, TKey>(documents);
 
-            documents = documents.OrderByDescending(e => e.Nested.Index).ToList();
-
-            var notExpected = documents.Where(m => m.GroupingKey == 9).Last();
-            var expecteds = documents.Where(m => m.GroupingKey == 8).OrderByDescending(m => m.Nested.Index).ToList();
-            var expectedFirstResult = expecteds.OrderByDescending(m => m.Nested.Index).FirstOrDefault();
-
-            var sorting = Builders<T>.Sort.Descending(e => e.Nested.Index);
+            documents = documents.OrderByDescending(e => e.Nested.SomeAmount).ToList();
+            var notExpected = documents.First();
+            var expectedFirstResult = documents[1];
+            var sorting = Builders<T>.Sort.Descending(e => e.Nested.SomeAmount);
 
             // Act
             var result = await SUT.GetSortedPaginatedAsync<T, TKey>(
@@ -1296,7 +1293,7 @@ namespace CoreIntegrationTests.Infrastructure
             // Assert
             Assert.Equal(4, result.Count);
             Assert.True(!result.Contains(notExpected));
-            Assert.Equal(expecteds[1].Id, result[0].Id);
+            Assert.Equal(expectedFirstResult.Id, result[0].Id);
         }
 
         #endregion Pagination

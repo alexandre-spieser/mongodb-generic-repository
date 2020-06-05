@@ -8,8 +8,8 @@ namespace CoreIntegrationTests.Infrastructure
 {
     internal static class Consts
     {
-        public const string DbConnectString = "mongodb://lycpsopen:avgqhp5b@mongodb1.tcy365.org:60001,mongodb2.tcy365.org:60001/lycpsopendb?replicaSet=mongoSet";
-        //public const string DbConnectString = "mongodb://localhost:27017/MongoDbTests";
+        //TODO Run Before Need Modify With Your ConnectionString
+        public const string DbConnectString = "mongodb://localhost:27017/MongoDbTests";
 
     }
 

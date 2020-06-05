@@ -1,23 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net45;netstandard2.0;netstandard1.5;</TargetFrameworks>
+    <TargetFrameworks>net452;netstandard2.0;netstandard1.5;</TargetFrameworks>
     <PackageId>MongoDbGenericRepository</PackageId>
     <PackageVersion>1.2.0</PackageVersion>
     <Authors>Alexandre Spieser</Authors>
+    <Title>$(AssemblyName)</Title>
     <Description>A generic repository implementation using the MongoDB C# Sharp 2.0 driver.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>.NET Core supported.</PackageReleaseNotes>
     <Copyright>Copyright 2017 (c) Alexandre Spieser. All rights reserved.</Copyright>
     <PackageTags>MongoDb Repository NoSql Generic</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild> 
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net45|AnyCPU'">
-    <DocumentationFile>bin\Release\net45\MongoDbGenericRepository.xml</DocumentationFile>
-  </PropertyGroup>
+ 
 
   <ItemGroup>
-    <PackageReference Include="MongoDB.Driver" Version="2.7.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.9.3" />
   </ItemGroup>
 
 </Project>

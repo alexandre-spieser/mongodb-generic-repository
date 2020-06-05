@@ -1062,8 +1062,8 @@ namespace CoreIntegrationTests.Infrastructure
             const string expectedIndexName = "SomeContent2_text_SomeContent3_text";
 
             // Act
-            Expression <Func<T, object>> ex = x => x.SomeContent2;
-            Expression <Func<T, object>> ex2 = x => x.SomeContent3;
+            Expression<Func<T, object>> ex = x => x.SomeContent2;
+            Expression<Func<T, object>> ex2 = x => x.SomeContent3;
             var result = await SUT.CreateCombinedTextIndexAsync<T>(new[] { ex, ex2 }, null, PartitionKey);
 
             // Assert
@@ -1078,7 +1078,8 @@ namespace CoreIntegrationTests.Infrastructure
 
         #region Math
 
-        [Fact]
+        //[Fact]
+        [Fact(DisplayName = "Skip_When_Version_3_2", Skip = "Skip_When_Version_3_2")]
         public async Task SumByDecimalAsync()
         {
             // Arrange
@@ -1098,10 +1099,11 @@ namespace CoreIntegrationTests.Infrastructure
             var result = await SUT.SumByAsync<T>(e => e.SomeContent == criteria, e => e.Nested.SomeAmount, PartitionKey);
 
             // Assert
-            //Assert.Equal(expectedSum, result);
+            Assert.Equal(expectedSum, result);
         }
 
-        [Fact]
+        //[Fact]
+        [Fact(DisplayName = "Skip_When_Version_3_2", Skip = "Skip_When_Version_3_2")]
         public void SumByDecimal()
         {
             // Arrange
@@ -1121,7 +1123,7 @@ namespace CoreIntegrationTests.Infrastructure
             var result = SUT.SumBy<T>(e => e.SomeContent == criteria, e => e.Nested.SomeAmount, PartitionKey);
 
             // Assert
-            //Assert.Equal(expectedSum, result);
+            Assert.Equal(expectedSum, result);
         }
 
         #endregion Math
