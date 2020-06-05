@@ -51,6 +51,1067 @@
             <param name="options"></param>
             <returns></returns>
         </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update.UpdateOneAsync``2(``0)">
+            <summary>
+            Asynchronously Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="modifiedDocument">The document with the modifications you want to persist.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update.UpdateOne``2(``0)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="modifiedDocument">The document with the modifications you want to persist.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update.UpdateOneAsync``2(``0,MongoDB.Driver.UpdateDefinition{``0})">
+            <summary>
+            Takes a document you want to modify and applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="documentToModify">The document you want to modify.</param>
+            <param name="update">The update definition for the document.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update.UpdateOne``2(``0,MongoDB.Driver.UpdateDefinition{``0})">
+            <summary>
+            Takes a document you want to modify and applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="documentToModify">The document you want to modify.</param>
+            <param name="update">The update definition for the document.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update.UpdateOne``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
+            <summary>
+            For the entity selected by the filter, updates the property field with the given value..
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The partition key for the document.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update.UpdateOneAsync``3(``0,System.Linq.Expressions.Expression{System.Func{``0,``2}},``2)">
+            <summary>
+            Updates the property field with the given value update a property field in entities.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="documentToModify">The document you want to modify.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update.UpdateOneAsync``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
+            <summary>
+            For the entity selected by the filter, updates the property field with the given value.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The partition key for the document.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update.UpdateOne``3(``0,System.Linq.Expressions.Expression{System.Func{``0,``2}},``2)">
+            <summary>
+            Updates the property field with the given value update a property field in entities.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="documentToModify">The document you want to modify.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update.UpdateOneAsync``3(MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
+            <summary>
+            Updates the property field with the given value update a property field in entities.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update.UpdateOne``3(MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
+            <summary>
+            Updates the property field with the given value update a property field in entities.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.IBaseMongoRepository_Update_ClientSession.UpdateOne``3(MongoDB.Driver.IClientSessionHandle,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="session">The client session.</param>
+            <param name="modifiedDocument">The document with the modifications you want to persist.</param>
+            <param name="cancellationToken">The optional cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.IBaseMongoRepository_Update_ClientSession.UpdateOne``3(MongoDB.Driver.IClientSessionHandle,MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="session">The client session.</param>
+            <param name="modifiedDocument">The document with the modifications you want to persist.</param>
+            <param name="cancellationToken">The optional cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.IBaseMongoRepository_Update_ClientSession.UpdateOne``3(MongoDB.Driver.IClientSessionHandle,``0,System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.Threading.CancellationToken)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="session">The client session.</param>
+            <param name="documentToModify">The document to modify.</param>
+            <param name="update">The update definition.</param>
+            <param name="cancellationToken">The optional cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.IBaseMongoRepository_Update_ClientSession.UpdateOne``2(MongoDB.Driver.IClientSessionHandle,``0,System.Threading.CancellationToken)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="session">The client session.</param>
+            <param name="documentToModify">The document to modify.</param>
+            <param name="update">The update definition.</param>
+            <param name="cancellationToken">The optional cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.IBaseMongoRepository_Update_ClientSession.UpdateOne``2(MongoDB.Driver.IClientSessionHandle,``0,MongoDB.Driver.UpdateDefinition{``0},System.Threading.CancellationToken)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field to update.</typeparam>
+            <param name="session">The client session.</param> 
+            <param name="documentToModify">The document to modify.</param>
+            <param name="field">The field to update.</param>
+            <param name="value">The value of the field.</param>
+            <param name="cancellationToken">The optional cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.IBaseMongoRepository_Update_ClientSession.UpdateOneAsync``3(MongoDB.Driver.IClientSessionHandle,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field to update.</typeparam>
+            <param name="session">The client session.</param>
+            <param name="documentToModify">The document to modify.</param>
+            <param name="field">The field to update.</param>
+            <param name="value">The value of the field.</param>
+            <param name="cancellationToken">The optional cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.IBaseMongoRepository_Update_ClientSession.UpdateOneAsync``3(MongoDB.Driver.IClientSessionHandle,MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field to update.</typeparam>
+            <param name="session">The client session.</param>
+            <param name="filter">The filter for the update.</param>
+            <param name="field">The field to update.</param>
+            <param name="value">The value of the field.</param>
+            <param name="partitionKey">The optional partition key.</param>
+            <param name="cancellationToken">The optional cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.IBaseMongoRepository_Update_ClientSession.UpdateOneAsync``3(MongoDB.Driver.IClientSessionHandle,``0,System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.Threading.CancellationToken)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field to update.</typeparam>
+            <param name="session">The client session.</param>
+            <param name="filter">The filter for the update.</param>
+            <param name="field">The field to update.</param>
+            <param name="value">The value of the field.</param>
+            <param name="partitionKey">The optional partition key.</param>
+            <param name="cancellationToken">The optional cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.IBaseMongoRepository_Update_ClientSession.UpdateOneAsync``2(MongoDB.Driver.IClientSessionHandle,``0,System.Threading.CancellationToken)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field to update.</typeparam>
+            <param name="session">The client session.</param>
+            <param name="filter">The filter for the update.</param>
+            <param name="field">The field to update.</param>
+            <param name="value">The value of the field.</param>
+            <param name="partitionKey">The optional partition key.</param>
+            <param name="cancellationToken">The optional cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.IBaseMongoRepository_Update_ClientSession.UpdateOneAsync``2(MongoDB.Driver.IClientSessionHandle,``0,MongoDB.Driver.UpdateDefinition{``0},System.Threading.CancellationToken)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field to update.</typeparam>
+            <param name="session">The client session.</param>
+            <param name="filter">The filter for the update.</param>
+            <param name="field">The field to update.</param>
+            <param name="value">The value of the field.</param>
+            <param name="partitionKey">The optional partition key.</param>
+            <param name="cancellationToken">The optional cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateOneAsync``2(MongoDB.Driver.IClientSessionHandle,``0,System.Threading.CancellationToken)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="session">The client session.</param>
+            <param name="modifiedDocument">The document with the modifications you want to persist.</param>
+            <param name="cancellationToken">The optional cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateOne``2(MongoDB.Driver.IClientSessionHandle,``0,System.Threading.CancellationToken)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="session">The client session.</param>
+            <param name="modifiedDocument">The document with the modifications you want to persist.</param>
+            <param name="cancellationToken">The optional cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateOneAsync``2(MongoDB.Driver.IClientSessionHandle,``0,MongoDB.Driver.UpdateDefinition{``0},System.Threading.CancellationToken)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="session">The client session.</param>
+            <param name="documentToModify">The document to modify.</param>
+            <param name="update">The update definition.</param>
+            <param name="cancellationToken">The optional cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateOne``2(MongoDB.Driver.IClientSessionHandle,``0,MongoDB.Driver.UpdateDefinition{``0},System.Threading.CancellationToken)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="session">The client session.</param>
+            <param name="documentToModify">The document to modify.</param>
+            <param name="update">The update definition.</param>
+            <param name="cancellationToken">The optional cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateOneAsync``3(MongoDB.Driver.IClientSessionHandle,``0,System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.Threading.CancellationToken)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field to update.</typeparam>
+            <param name="session">The client session.</param> 
+            <param name="documentToModify">The document to modify.</param>
+            <param name="field">The field to update.</param>
+            <param name="value">The value of the field.</param>
+            <param name="cancellationToken">The optional cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateOne``3(MongoDB.Driver.IClientSessionHandle,``0,System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.Threading.CancellationToken)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field to update.</typeparam>
+            <param name="session">The client session.</param>
+            <param name="documentToModify">The document to modify.</param>
+            <param name="field">The field to update.</param>
+            <param name="value">The value of the field.</param>
+            <param name="cancellationToken">The optional cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateOneAsync``3(MongoDB.Driver.IClientSessionHandle,MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field to update.</typeparam>
+            <param name="session">The client session.</param>
+            <param name="filter">The filter for the update.</param>
+            <param name="field">The field to update.</param>
+            <param name="value">The value of the field.</param>
+            <param name="partitionKey">The optional partition key.</param>
+            <param name="cancellationToken">The optional cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateOneAsync``3(MongoDB.Driver.IClientSessionHandle,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field to update.</typeparam>
+            <param name="session">The client session.</param>
+            <param name="filter">The filter for the update.</param>
+            <param name="field">The field to update.</param>
+            <param name="value">The value of the field.</param>
+            <param name="partitionKey">The optional partition key.</param>
+            <param name="cancellationToken">The optional cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateOne``3(MongoDB.Driver.IClientSessionHandle,MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field to update.</typeparam>
+            <param name="session">The client session.</param>
+            <param name="filter">The filter for the update.</param>
+            <param name="field">The field to update.</param>
+            <param name="value">The value of the field.</param>
+            <param name="partitionKey">The optional partition key.</param>
+            <param name="cancellationToken">The optional cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateOne``3(MongoDB.Driver.IClientSessionHandle,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field to update.</typeparam>
+            <param name="session">The client session.</param>
+            <param name="filter">The filter for the update.</param>
+            <param name="field">The field to update.</param>
+            <param name="value">The value of the field.</param>
+            <param name="partitionKey">The optional partition key.</param>
+            <param name="cancellationToken">The optional cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateOneAsync``2(``0)">
+            <summary>
+            Asynchronously Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="modifiedDocument">The document with the modifications you want to persist.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateOne``2(``0)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="modifiedDocument">The document with the modifications you want to persist.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateOneAsync``2(``0,MongoDB.Driver.UpdateDefinition{``0})">
+            <summary>
+            Takes a document you want to modify and applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="documentToModify">The document you want to modify.</param>
+            <param name="update">The update definition for the document.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateOne``2(``0,MongoDB.Driver.UpdateDefinition{``0})">
+            <summary>
+            Takes a document you want to modify and applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="documentToModify">The document you want to modify.</param>
+            <param name="update">The update definition for the document.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateOneAsync``3(``0,System.Linq.Expressions.Expression{System.Func{``0,``2}},``2)">
+            <summary>
+            Updates the property field with the given value update a property field in entities.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="documentToModify">The document you want to modify.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateOne``3(``0,System.Linq.Expressions.Expression{System.Func{``0,``2}},``2)">
+            <summary>
+            Updates the property field with the given value update a property field in entities.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="documentToModify">The document you want to modify.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateOneAsync``3(MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
+            <summary>
+            Updates the property field with the given value update a property field in entities.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateOneAsync``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
+            <summary>
+            For the entity selected by the filter, updates the property field with the given value.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The partition key for the document.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateOne``3(MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
+            <summary>
+            Updates the property field with the given value.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateOne``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
+            <summary>
+            For the entity selected by the filter, updates the property field with the given value.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The partition key for the document.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Base.DataAccessBase.HandlePartitioned``2(``0)">
+            <summary>
+            Gets a collections for a potentially partitioned document type.
+            </summary>
+            <typeparam name="TDocument">The document type.</typeparam>
+            <typeparam name="TKey">The type of the primary key.</typeparam>
+            <param name="document">The document.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Base.DataAccessBase.GetCollection``2(System.String)">
+            <summary>
+            Gets a collections for the type TDocument with a partition key.
+            </summary>
+            <typeparam name="TDocument">The document type.</typeparam>
+            <typeparam name="TKey">The type of the primary key.</typeparam>
+            <param name="partitionKey">The collection partition key.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Base.DataAccessBase.HandlePartitioned``2(System.String)">
+            <summary>
+            Gets a collections for a potentially partitioned document type.
+            </summary>
+            <typeparam name="TDocument">The document type.</typeparam>
+            <typeparam name="TKey">The type of the primary key.</typeparam>
+            <param name="partitionKey">The collection partition key.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Base.DataAccessBase.ConvertExpression``2(System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+            <summary>
+            Converts a LINQ expression of TDocument, TValue to a LINQ expression of TDocument, object
+            </summary>
+            <typeparam name="TDocument">The document type.</typeparam>
+            <typeparam name="TValue">The type of the value.</typeparam>
+            <param name="expression">The expression to convert</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Base.DataAccessBase.MapIndexOptions(MongoDbGenericRepository.Models.IndexCreationOptions)">
+            <summary>
+            Maps a IndexCreationOptions object to a MongoDB.Driver.CreateIndexOptions object
+            </summary>
+            <param name="indexCreationOptions">The options for creating an index.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Base.DataAccessBase.GetMinMongoQuery``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},System.String)">
+            <summary>
+            Gets the minimum value of a property in a mongodb collections that is satisfying the filter.
+            </summary>
+            <typeparam name="TDocument">The document type.</typeparam>
+            <typeparam name="TKey">The type of the primary key.</typeparam>
+            <typeparam name="TValue">The type of the value used to order the query.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="minValueSelector">A property selector to order by ascending.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Base.DataAccessBase.GetMaxMongoQuery``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},System.String)">
+            <summary>
+            Gets the minimum value of a property in a mongodb collections that is satisfying the filter.
+            </summary>
+            <typeparam name="TDocument">The document type.</typeparam>
+            <typeparam name="TKey">The type of the primary key.</typeparam>
+            <typeparam name="TValue">The type of the value used to order the query.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="maxValueSelector">A property selector to order by descending.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Create.MongoDbCreator.AddOneAsync``2(``0)">
+            <summary>
+            Asynchronously adds a document to the collection.
+            Populates the Id and AddedAtUtc fields if necessary.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="document">The document you want to add.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Create.MongoDbCreator.AddOne``2(``0)">
+            <summary>
+            Adds a document to the collection.
+            Populates the Id and AddedAtUtc fields if necessary.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="document">The document you want to add.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Create.MongoDbCreator.AddManyAsync``2(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Asynchronously adds a list of documents to the collection.
+            Populates the Id and AddedAtUtc fields if necessary.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="documents">The documents you want to add.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Create.MongoDbCreator.AddMany``2(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Adds a list of documents to the collection.
+            Populates the Id and AddedAtUtc fields if necessary.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="documents">The documents you want to add.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Create.MongoDbCreator.FormatDocument``2(``0)">
+            <summary>
+            Sets the value of the document Id if it is not set already.
+            </summary>
+            <typeparam name="TDocument">The document type.</typeparam>
+            <typeparam name="TKey">The type of the primary key.</typeparam>
+            <param name="document">The document.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Delete.MongoDbEraser.DeleteOne``2(``0)">
+            <summary>
+            Deletes a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="document">The document you want to delete.</param>
+            <returns>The number of documents deleted.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Delete.MongoDbEraser.DeleteOneAsync``2(``0)">
+            <summary>
+            Asynchronously deletes a document matching the condition of the LINQ expression filter.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="document">The document you want to delete.</param>
+            <returns>The number of documents deleted.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Delete.MongoDbEraser.DeleteOne``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Deletes a document matching the condition of the LINQ expression filter.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+            <returns>The number of documents deleted.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Delete.MongoDbEraser.DeleteOneAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Asynchronously deletes a document matching the condition of the LINQ expression filter.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+            <returns>The number of documents deleted.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Delete.MongoDbEraser.DeleteManyAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Asynchronously deletes the documents matching the condition of the LINQ expression filter.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+            <returns>The number of documents deleted.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Delete.MongoDbEraser.DeleteManyAsync``2(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Asynchronously deletes a list of documents.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="documents">The list of documents to delete.</param>
+            <returns>The number of documents deleted.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Delete.MongoDbEraser.DeleteMany``2(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Deletes a list of documents.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="documents">The list of documents to delete.</param>
+            <returns>The number of documents deleted.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Delete.MongoDbEraser.DeleteMany``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Deletes the documents matching the condition of the LINQ expression filter.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+            <returns>The number of documents deleted.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Index.MongoDbIndexHandler.GetIndexesNamesAsync``2(System.String)">
+            <summary>
+            Returns the names of the indexes present on a collection.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="partitionKey">An optional partition key</param>
+            <returns>A list containing the names of the indexes on on the concerned collection.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Index.MongoDbIndexHandler.CreateTextIndexAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},MongoDbGenericRepository.Models.IndexCreationOptions,System.String)">
+            <summary>
+            Create a text index on the given field.
+            IndexCreationOptions can be supplied to further specify 
+            how the creation should be done.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="field">The field we want to index.</param>
+            <param name="indexCreationOptions">Options for creating an index.</param>
+            <param name="partitionKey">An optional partition key.</param>
+            <returns>The result of the create index operation.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Index.MongoDbIndexHandler.CreateAscendingIndexAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},MongoDbGenericRepository.Models.IndexCreationOptions,System.String)">
+            <summary>
+            Creates an index on the given field in ascending order.
+            IndexCreationOptions can be supplied to further specify 
+            how the creation should be done.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="field">The field we want to index.</param>
+            <param name="indexCreationOptions">Options for creating an index.</param>
+            <param name="partitionKey">An optional partition key.</param>
+            <returns>The result of the create index operation.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Index.MongoDbIndexHandler.CreateDescendingIndexAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},MongoDbGenericRepository.Models.IndexCreationOptions,System.String)">
+            <summary>
+            Creates an index on the given field in descending order.
+            IndexCreationOptions can be supplied to further specify 
+            how the creation should be done.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="field">The field we want to index.</param>
+            <param name="indexCreationOptions">Options for creating an index.</param>
+            <param name="partitionKey">An optional partition key.</param>
+            <returns>The result of the create index operation.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Index.MongoDbIndexHandler.CreateHashedIndexAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},MongoDbGenericRepository.Models.IndexCreationOptions,System.String)">
+            <summary>
+            Creates a hashed index on the given field.
+            IndexCreationOptions can be supplied to further specify 
+            how the creation should be done.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="field">The field we want to index.</param>
+            <param name="indexCreationOptions">Options for creating an index.</param>
+            <param name="partitionKey">An optional partition key.</param>
+            <returns>The result of the create index operation.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Index.MongoDbIndexHandler.CreateCombinedTextIndexAsync``2(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,System.Object}}},MongoDbGenericRepository.Models.IndexCreationOptions,System.String)">
+            <summary>
+            Creates a combined text index.
+            IndexCreationOptions can be supplied to further specify 
+            how the creation should be done.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="fields">The fields we want to index.</param>
+            <param name="indexCreationOptions">Options for creating an index.</param>
+            <param name="partitionKey">An optional partition key.</param>
+            <returns>The result of the create index operation.</returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Index.MongoDbIndexHandler.DropIndexAsync``2(System.String,System.String)">
+            <summary>
+            Drops the index given a field name
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="indexName">The name of the index</param>
+            <param name="partitionKey">An optional partition key</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetByIdAsync``2(``1,System.String)">
+            <summary>
+            Asynchronously returns one document given its id.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="id">The Id of the document you want to get.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetById``2(``1,System.String)">
+            <summary>
+            Returns one document given its id.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="id">The Id of the document you want to get.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetOneAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Asynchronously returns one document given an expression filter.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetOne``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Returns one document given an expression filter.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetCursor``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Returns a collection cursor.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.AnyAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Returns true if any of the document of the collection matches the filter condition.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.Any``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Returns true if any of the document of the collection matches the filter condition.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetAllAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Asynchronously returns a list of the documents matching the filter condition.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetAll``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Returns a list of the documents matching the filter condition.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.CountAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Asynchronously counts how many documents match the filter condition.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partitionKey</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.Count``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
+            <summary>
+            Counts how many documents match the filter condition.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="partitionKey">An optional partitionKey</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetByMaxAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.String)">
+            <summary>
+            Gets the document with the maximum value of a specified property in a MongoDB collections that is satisfying the filter.
+            </summary>
+            <typeparam name="TDocument">The document type.</typeparam>
+            <typeparam name="TKey">The type of the primary key.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="maxValueSelector">A property selector to order by descending.</param>
+            <param name="partitionKey">An optional partitionKey.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetByMax``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.String)">
+            <summary>
+            Gets the document with the maximum value of a specified property in a MongoDB collections that is satisfying the filter.
+            </summary>
+            <typeparam name="TDocument">The document type.</typeparam>
+            <typeparam name="TKey">The type of the primary key.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="maxValueSelector">A property selector to order by descending.</param>
+            <param name="partitionKey">An optional partitionKey.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetByMinAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.String)">
+            <summary>
+            Gets the document with the minimum value of a specified property in a MongoDB collections that is satisfying the filter.
+            </summary>
+            <typeparam name="TDocument">The document type.</typeparam>
+            <typeparam name="TKey">The type of the primary key.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="minValueSelector">A property selector to order by ascending.</param>
+            <param name="partitionKey">An optional partitionKey.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetByMin``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.String)">
+            <summary>
+            Gets the document with the minimum value of a specified property in a MongoDB collections that is satisfying the filter.
+            </summary>
+            <typeparam name="TDocument">The document type.</typeparam>
+            <typeparam name="TKey">The type of the primary key.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="minValueSelector">A property selector to order by ascending.</param>
+            <param name="partitionKey">An optional partitionKey.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetMaxValueAsync``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},System.String)">
+            <summary>
+            Gets the maximum value of a property in a mongodb collections that is satisfying the filter.
+            </summary>
+            <typeparam name="TDocument">The document type.</typeparam>
+            <typeparam name="TKey">The type of the primary key.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="orderByAscending">A property selector to order by ascending.</param>
+            <param name="partitionKey">An optional partitionKey.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetMaxValue``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},System.String)">
+            <summary>
+            Gets the maximum value of a property in a mongodb collections that is satisfying the filter.
+            </summary>
+            <typeparam name="TDocument">The document type.</typeparam>
+            <typeparam name="TKey">The type of the primary key.</typeparam>
+            <typeparam name="TValue">The type of the value used to order the query.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="maxValueSelector">A property selector to order by ascending.</param>
+            <param name="partitionKey">An optional partitionKey.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetMinValueAsync``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},System.String)">
+            <summary>
+            Gets the minimum value of a property in a mongodb collections that is satisfying the filter.
+            </summary>
+            <typeparam name="TDocument">The document type.</typeparam>
+            <typeparam name="TKey">The type of the primary key.</typeparam>
+            <typeparam name="TValue">The type of the value used to order the query.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="minValueSelector">A property selector to order by ascending.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetMinValue``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},System.String)">
+            <summary>
+            Gets the minimum value of a property in a mongodb collections that is satisfying the filter.
+            </summary>
+            <typeparam name="TDocument">The document type.</typeparam>
+            <typeparam name="TKey">The type of the primary key.</typeparam>
+            <typeparam name="TValue">The type of the value used to order the query.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="minValueSelector">A property selector to order by ascending.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.SumByAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Int32}},System.String)">
+            <summary>
+            Sums the values of a selected field for a given filtered collection of documents.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="selector">The field you want to sum.</param>
+            <param name="partitionKey">The partition key of your document, if any.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.SumBy``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Int32}},System.String)">
+            <summary>
+            Sums the values of a selected field for a given filtered collection of documents.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="selector">The field you want to sum.</param>
+            <param name="partitionKey">The partition key of your document, if any.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.SumByAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Decimal}},System.String)">
+            <summary>
+            Sums the values of a selected field for a given filtered collection of documents.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="selector">The field you want to sum.</param>
+            <param name="partitionKey">The partition key of your document, if any.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.SumBy``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Decimal}},System.String)">
+            <summary>
+            Sums the values of a selected field for a given filtered collection of documents.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="selector">The field you want to sum.</param>
+            <param name="partitionKey">The partition key of your document, if any.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GroupBy``4(System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Linq.Expressions.Expression{System.Func{System.Linq.IGrouping{``1,``0},``2}},System.String)">
+            <summary>
+            Groups a collection of documents given a grouping criteria, 
+            and returns a dictionary of listed document groups with keys having the different values of the grouping criteria.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TGroupKey">The type of the grouping criteria.</typeparam>
+            <typeparam name="TProjection">The type of the projected group.</typeparam>
+            <param name="groupingCriteria">The grouping criteria.</param>
+            <param name="groupProjection">The projected group result.</param>
+            <param name="partitionKey">The partition key of your document, if any.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GroupBy``4(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Linq.Expressions.Expression{System.Func{System.Linq.IGrouping{``1,``0},``2}},System.String)">
+            <summary>
+            Groups filtered a collection of documents given a grouping criteria, 
+            and returns a dictionary of listed document groups with keys having the different values of the grouping criteria.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TGroupKey">The type of the grouping criteria.</typeparam>
+            <typeparam name="TProjection">The type of the projected group.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="selector">The grouping criteria.</param>
+            <param name="projection">The projected group result.</param>
+            <param name="partitionKey">The partition key of your document, if any.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetSortedPaginatedAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Boolean,System.Int32,System.Int32,System.String)">
+            <summary>
+            Asynchronously returns a paginated list of the documents matching the filter condition.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="sortSelector">The property selector.</param>
+            <param name="ascending">Order of the sorting.</param>
+            <param name="skipNumber">The number of documents you want to skip. Default value is 0.</param>
+            <param name="takeNumber">The number of documents you want to take. Default value is 50.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetSortedPaginatedAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},MongoDB.Driver.SortDefinition{``0},System.Int32,System.Int32,System.String)">
+            <summary>
+            Asynchronously returns a paginated list of the documents matching the filter condition.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="sortDefinition">The sort definition.</param>
+            <param name="skipNumber">The number of documents you want to skip. Default value is 0.</param>
+            <param name="takeNumber">The number of documents you want to take. Default value is 50.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.ProjectOneAsync``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1}},System.String)">
+            <summary>
+            Asynchronously returns a projected document matching the filter condition.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="projection">The projection expression.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.ProjectOne``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1}},System.String)">
+            <summary>
+            Returns a projected document matching the filter condition.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="projection">The projection expression.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.ProjectManyAsync``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1}},System.String)">
+            <summary>
+            Asynchronously returns a list of projected documents matching the filter condition.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="projection">The projection expression.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.ProjectMany``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1}},System.String)">
+            <summary>
+            Asynchronously returns a list of projected documents matching the filter condition.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="projection">The projection expression.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
         <member name="T:MongoDbGenericRepository.IBaseReadOnlyRepository">
             <summary>
             The IBaseReadOnlyRepository exposes the generic Read Only functionality of the BaseMongoRepository.
@@ -691,6 +1752,31 @@
             <param name="groupProjection">The projected group result.</param>
             <param name="partitionKey">The partition key of your document, if any.</param>
         </member>
+        <member name="M:MongoDbGenericRepository.IReadOnlyMongoRepository`1.GetSortedPaginatedAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Boolean,System.Int32,System.Int32,System.String)">
+            <summary>
+            Asynchronously returns a paginated list of the documents matching the filter condition.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="sortSelector">The property selector.</param>
+            <param name="ascending">Order of the sorting.</param>
+            <param name="skipNumber">The number of documents you want to skip. Default value is 0.</param>
+            <param name="takeNumber">The number of documents you want to take. Default value is 50.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IReadOnlyMongoRepository`1.GetSortedPaginatedAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},MongoDB.Driver.SortDefinition{``0},System.Int32,System.Int32,System.String)">
+            <summary>
+            Asynchronously returns a paginated list of the documents matching the filter condition.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">A LINQ expression filter.</param>
+            <param name="sortDefinition">The sort definition.</param>
+            <param name="skipNumber">The number of documents you want to skip. Default value is 0.</param>
+            <param name="takeNumber">The number of documents you want to take. Default value is 50.</param>
+            <param name="partitionKey">An optional partition key.</param>
+        </member>
         <member name="T:MongoDbGenericRepository.Attributes.CollectionNameAttribute">
             <summary>
             This attribute allows you to specify of the name of the collection.
@@ -1192,6 +2278,140 @@
             <param name="partitionKey">The collection partition key.</param>
             <returns></returns>
         </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateOneAsync``2(MongoDB.Driver.IClientSessionHandle,``0,System.Threading.CancellationToken)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="session">The client session.</param>
+            <param name="modifiedDocument">The document with the modifications you want to persist.</param>
+            <param name="cancellationToken">The optional cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateOne``2(MongoDB.Driver.IClientSessionHandle,``0,System.Threading.CancellationToken)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="session">The client session.</param>
+            <param name="modifiedDocument">The document with the modifications you want to persist.</param>
+            <param name="cancellationToken">The optional cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateOneAsync``2(MongoDB.Driver.IClientSessionHandle,``0,MongoDB.Driver.UpdateDefinition{``0},System.Threading.CancellationToken)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="session">The client session.</param>
+            <param name="documentToModify">The document to modify.</param>
+            <param name="update">The update definition.</param>
+            <param name="cancellationToken">The optional cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateOne``2(MongoDB.Driver.IClientSessionHandle,``0,MongoDB.Driver.UpdateDefinition{``0},System.Threading.CancellationToken)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="session">The client session.</param>
+            <param name="documentToModify">The document to modify.</param>
+            <param name="update">The update definition.</param>
+            <param name="cancellationToken">The optional cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateOneAsync``3(MongoDB.Driver.IClientSessionHandle,``0,System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.Threading.CancellationToken)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field to update.</typeparam>
+            <param name="session">The client session.</param> 
+            <param name="documentToModify">The document to modify.</param>
+            <param name="field">The field to update.</param>
+            <param name="value">The value of the field.</param>
+            <param name="cancellationToken">The optional cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateOne``3(MongoDB.Driver.IClientSessionHandle,``0,System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.Threading.CancellationToken)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field to update.</typeparam>
+            <param name="session">The client session.</param>
+            <param name="documentToModify">The document to modify.</param>
+            <param name="field">The field to update.</param>
+            <param name="value">The value of the field.</param>
+            <param name="cancellationToken">The optional cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateOneAsync``3(MongoDB.Driver.IClientSessionHandle,MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field to update.</typeparam>
+            <param name="session">The client session.</param>
+            <param name="filter">The filter for the update.</param>
+            <param name="field">The field to update.</param>
+            <param name="value">The value of the field.</param>
+            <param name="partitionKey">The optional partition key.</param>
+            <param name="cancellationToken">The optional cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateOneAsync``3(MongoDB.Driver.IClientSessionHandle,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field to update.</typeparam>
+            <param name="session">The client session.</param>
+            <param name="filter">The filter for the update.</param>
+            <param name="field">The field to update.</param>
+            <param name="value">The value of the field.</param>
+            <param name="partitionKey">The optional partition key.</param>
+            <param name="cancellationToken">The optional cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateOne``3(MongoDB.Driver.IClientSessionHandle,MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field to update.</typeparam>
+            <param name="session">The client session.</param>
+            <param name="filter">The filter for the update.</param>
+            <param name="field">The field to update.</param>
+            <param name="value">The value of the field.</param>
+            <param name="partitionKey">The optional partition key.</param>
+            <param name="cancellationToken">The optional cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateOne``3(MongoDB.Driver.IClientSessionHandle,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Updates a document.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field to update.</typeparam>
+            <param name="session">The client session.</param>
+            <param name="filter">The filter for the update.</param>
+            <param name="field">The field to update.</param>
+            <param name="value">The value of the field.</param>
+            <param name="partitionKey">The optional partition key.</param>
+            <param name="cancellationToken">The optional cancellation token.</param>
+            <returns></returns>
+        </member>
         <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateOneAsync``1(``0)">
             <summary>
             Asynchronously Updates a document.
@@ -1548,799 +2768,6 @@
             <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
             <param name="indexName">The name of the index</param>
             <param name="partitionKey">An optional partition key</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update.UpdateOneAsync``2(``0)">
-            <summary>
-            Asynchronously Updates a document.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="modifiedDocument">The document with the modifications you want to persist.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update.UpdateOne``2(``0)">
-            <summary>
-            Updates a document.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="modifiedDocument">The document with the modifications you want to persist.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update.UpdateOneAsync``2(``0,MongoDB.Driver.UpdateDefinition{``0})">
-            <summary>
-            Takes a document you want to modify and applies the update you have defined in MongoDb.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="documentToModify">The document you want to modify.</param>
-            <param name="update">The update definition for the document.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update.UpdateOne``2(``0,MongoDB.Driver.UpdateDefinition{``0})">
-            <summary>
-            Takes a document you want to modify and applies the update you have defined in MongoDb.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="documentToModify">The document you want to modify.</param>
-            <param name="update">The update definition for the document.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update.UpdateOne``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
-            <summary>
-            For the entity selected by the filter, updates the property field with the given value..
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <typeparam name="TField">The type of the field.</typeparam>
-            <param name="filter">The document filter.</param>
-            <param name="field">The field selector.</param>
-            <param name="value">The new value of the property field.</param>
-            <param name="partitionKey">The partition key for the document.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update.UpdateOneAsync``3(``0,System.Linq.Expressions.Expression{System.Func{``0,``2}},``2)">
-            <summary>
-            Updates the property field with the given value update a property field in entities.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <typeparam name="TField">The type of the field.</typeparam>
-            <param name="documentToModify">The document you want to modify.</param>
-            <param name="field">The field selector.</param>
-            <param name="value">The new value of the property field.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update.UpdateOneAsync``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
-            <summary>
-            For the entity selected by the filter, updates the property field with the given value.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <typeparam name="TField">The type of the field.</typeparam>
-            <param name="filter">The document filter.</param>
-            <param name="field">The field selector.</param>
-            <param name="value">The new value of the property field.</param>
-            <param name="partitionKey">The partition key for the document.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update.UpdateOne``3(``0,System.Linq.Expressions.Expression{System.Func{``0,``2}},``2)">
-            <summary>
-            Updates the property field with the given value update a property field in entities.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <typeparam name="TField">The type of the field.</typeparam>
-            <param name="documentToModify">The document you want to modify.</param>
-            <param name="field">The field selector.</param>
-            <param name="value">The new value of the property field.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update.UpdateOneAsync``3(MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
-            <summary>
-            Updates the property field with the given value update a property field in entities.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <typeparam name="TField">The type of the field.</typeparam>
-            <param name="filter">The document filter.</param>
-            <param name="field">The field selector.</param>
-            <param name="value">The new value of the property field.</param>
-            <param name="partitionKey">The value of the partition key.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update.UpdateOne``3(MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
-            <summary>
-            Updates the property field with the given value update a property field in entities.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <typeparam name="TField">The type of the field.</typeparam>
-            <param name="filter">The document filter.</param>
-            <param name="field">The field selector.</param>
-            <param name="value">The new value of the property field.</param>
-            <param name="partitionKey">The value of the partition key.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Base.DataAccessBase.HandlePartitioned``2(``0)">
-            <summary>
-            Gets a collections for a potentially partitioned document type.
-            </summary>
-            <typeparam name="TDocument">The document type.</typeparam>
-            <typeparam name="TKey">The type of the primary key.</typeparam>
-            <param name="document">The document.</param>
-            <returns></returns>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Base.DataAccessBase.GetCollection``2(System.String)">
-            <summary>
-            Gets a collections for the type TDocument with a partition key.
-            </summary>
-            <typeparam name="TDocument">The document type.</typeparam>
-            <typeparam name="TKey">The type of the primary key.</typeparam>
-            <param name="partitionKey">The collection partition key.</param>
-            <returns></returns>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Base.DataAccessBase.HandlePartitioned``2(System.String)">
-            <summary>
-            Gets a collections for a potentially partitioned document type.
-            </summary>
-            <typeparam name="TDocument">The document type.</typeparam>
-            <typeparam name="TKey">The type of the primary key.</typeparam>
-            <param name="partitionKey">The collection partition key.</param>
-            <returns></returns>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Base.DataAccessBase.ConvertExpression``2(System.Linq.Expressions.Expression{System.Func{``0,``1}})">
-            <summary>
-            Converts a LINQ expression of TDocument, TValue to a LINQ expression of TDocument, object
-            </summary>
-            <typeparam name="TDocument">The document type.</typeparam>
-            <typeparam name="TValue">The type of the value.</typeparam>
-            <param name="expression">The expression to convert</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Base.DataAccessBase.MapIndexOptions(MongoDbGenericRepository.Models.IndexCreationOptions)">
-            <summary>
-            Maps a IndexCreationOptions object to a MongoDB.Driver.CreateIndexOptions object
-            </summary>
-            <param name="indexCreationOptions">The options for creating an index.</param>
-            <returns></returns>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Base.DataAccessBase.GetMinMongoQuery``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},System.String)">
-            <summary>
-            Gets the minimum value of a property in a mongodb collections that is satisfying the filter.
-            </summary>
-            <typeparam name="TDocument">The document type.</typeparam>
-            <typeparam name="TKey">The type of the primary key.</typeparam>
-            <typeparam name="TValue">The type of the value used to order the query.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="minValueSelector">A property selector to order by ascending.</param>
-            <param name="partitionKey">An optional partition key.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Base.DataAccessBase.GetMaxMongoQuery``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},System.String)">
-            <summary>
-            Gets the minimum value of a property in a mongodb collections that is satisfying the filter.
-            </summary>
-            <typeparam name="TDocument">The document type.</typeparam>
-            <typeparam name="TKey">The type of the primary key.</typeparam>
-            <typeparam name="TValue">The type of the value used to order the query.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="maxValueSelector">A property selector to order by descending.</param>
-            <param name="partitionKey">An optional partition key.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Create.MongoDbCreator.AddOneAsync``2(``0)">
-            <summary>
-            Asynchronously adds a document to the collection.
-            Populates the Id and AddedAtUtc fields if necessary.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="document">The document you want to add.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Create.MongoDbCreator.AddOne``2(``0)">
-            <summary>
-            Adds a document to the collection.
-            Populates the Id and AddedAtUtc fields if necessary.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="document">The document you want to add.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Create.MongoDbCreator.AddManyAsync``2(System.Collections.Generic.IEnumerable{``0})">
-            <summary>
-            Asynchronously adds a list of documents to the collection.
-            Populates the Id and AddedAtUtc fields if necessary.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="documents">The documents you want to add.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Create.MongoDbCreator.AddMany``2(System.Collections.Generic.IEnumerable{``0})">
-            <summary>
-            Adds a list of documents to the collection.
-            Populates the Id and AddedAtUtc fields if necessary.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="documents">The documents you want to add.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Create.MongoDbCreator.FormatDocument``2(``0)">
-            <summary>
-            Sets the value of the document Id if it is not set already.
-            </summary>
-            <typeparam name="TDocument">The document type.</typeparam>
-            <typeparam name="TKey">The type of the primary key.</typeparam>
-            <param name="document">The document.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Delete.MongoDbEraser.DeleteOne``2(``0)">
-            <summary>
-            Deletes a document.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="document">The document you want to delete.</param>
-            <returns>The number of documents deleted.</returns>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Delete.MongoDbEraser.DeleteOneAsync``2(``0)">
-            <summary>
-            Asynchronously deletes a document matching the condition of the LINQ expression filter.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="document">The document you want to delete.</param>
-            <returns>The number of documents deleted.</returns>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Delete.MongoDbEraser.DeleteOne``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
-            <summary>
-            Deletes a document matching the condition of the LINQ expression filter.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="partitionKey">An optional partition key.</param>
-            <returns>The number of documents deleted.</returns>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Delete.MongoDbEraser.DeleteOneAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
-            <summary>
-            Asynchronously deletes a document matching the condition of the LINQ expression filter.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="partitionKey">An optional partition key.</param>
-            <returns>The number of documents deleted.</returns>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Delete.MongoDbEraser.DeleteManyAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
-            <summary>
-            Asynchronously deletes the documents matching the condition of the LINQ expression filter.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="partitionKey">An optional partition key.</param>
-            <returns>The number of documents deleted.</returns>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Delete.MongoDbEraser.DeleteManyAsync``2(System.Collections.Generic.IEnumerable{``0})">
-            <summary>
-            Asynchronously deletes a list of documents.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="documents">The list of documents to delete.</param>
-            <returns>The number of documents deleted.</returns>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Delete.MongoDbEraser.DeleteMany``2(System.Collections.Generic.IEnumerable{``0})">
-            <summary>
-            Deletes a list of documents.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="documents">The list of documents to delete.</param>
-            <returns>The number of documents deleted.</returns>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Delete.MongoDbEraser.DeleteMany``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
-            <summary>
-            Deletes the documents matching the condition of the LINQ expression filter.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="partitionKey">An optional partition key.</param>
-            <returns>The number of documents deleted.</returns>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Index.MongoDbIndexHandler.GetIndexesNamesAsync``2(System.String)">
-            <summary>
-            Returns the names of the indexes present on a collection.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="partitionKey">An optional partition key</param>
-            <returns>A list containing the names of the indexes on on the concerned collection.</returns>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Index.MongoDbIndexHandler.CreateTextIndexAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},MongoDbGenericRepository.Models.IndexCreationOptions,System.String)">
-            <summary>
-            Create a text index on the given field.
-            IndexCreationOptions can be supplied to further specify 
-            how the creation should be done.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="field">The field we want to index.</param>
-            <param name="indexCreationOptions">Options for creating an index.</param>
-            <param name="partitionKey">An optional partition key.</param>
-            <returns>The result of the create index operation.</returns>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Index.MongoDbIndexHandler.CreateAscendingIndexAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},MongoDbGenericRepository.Models.IndexCreationOptions,System.String)">
-            <summary>
-            Creates an index on the given field in ascending order.
-            IndexCreationOptions can be supplied to further specify 
-            how the creation should be done.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="field">The field we want to index.</param>
-            <param name="indexCreationOptions">Options for creating an index.</param>
-            <param name="partitionKey">An optional partition key.</param>
-            <returns>The result of the create index operation.</returns>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Index.MongoDbIndexHandler.CreateDescendingIndexAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},MongoDbGenericRepository.Models.IndexCreationOptions,System.String)">
-            <summary>
-            Creates an index on the given field in descending order.
-            IndexCreationOptions can be supplied to further specify 
-            how the creation should be done.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="field">The field we want to index.</param>
-            <param name="indexCreationOptions">Options for creating an index.</param>
-            <param name="partitionKey">An optional partition key.</param>
-            <returns>The result of the create index operation.</returns>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Index.MongoDbIndexHandler.CreateHashedIndexAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},MongoDbGenericRepository.Models.IndexCreationOptions,System.String)">
-            <summary>
-            Creates a hashed index on the given field.
-            IndexCreationOptions can be supplied to further specify 
-            how the creation should be done.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="field">The field we want to index.</param>
-            <param name="indexCreationOptions">Options for creating an index.</param>
-            <param name="partitionKey">An optional partition key.</param>
-            <returns>The result of the create index operation.</returns>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Index.MongoDbIndexHandler.CreateCombinedTextIndexAsync``2(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,System.Object}}},MongoDbGenericRepository.Models.IndexCreationOptions,System.String)">
-            <summary>
-            Creates a combined text index.
-            IndexCreationOptions can be supplied to further specify 
-            how the creation should be done.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="fields">The fields we want to index.</param>
-            <param name="indexCreationOptions">Options for creating an index.</param>
-            <param name="partitionKey">An optional partition key.</param>
-            <returns>The result of the create index operation.</returns>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Index.MongoDbIndexHandler.DropIndexAsync``2(System.String,System.String)">
-            <summary>
-            Drops the index given a field name
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="indexName">The name of the index</param>
-            <param name="partitionKey">An optional partition key</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetByIdAsync``2(``1,System.String)">
-            <summary>
-            Asynchronously returns one document given its id.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="id">The Id of the document you want to get.</param>
-            <param name="partitionKey">An optional partition key.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetById``2(``1,System.String)">
-            <summary>
-            Returns one document given its id.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="id">The Id of the document you want to get.</param>
-            <param name="partitionKey">An optional partition key.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetOneAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
-            <summary>
-            Asynchronously returns one document given an expression filter.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="partitionKey">An optional partition key.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetOne``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
-            <summary>
-            Returns one document given an expression filter.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="partitionKey">An optional partition key.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetCursor``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
-            <summary>
-            Returns a collection cursor.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="partitionKey">An optional partition key.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.AnyAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
-            <summary>
-            Returns true if any of the document of the collection matches the filter condition.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="partitionKey">An optional partition key.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.Any``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
-            <summary>
-            Returns true if any of the document of the collection matches the filter condition.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="partitionKey">An optional partition key.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetAllAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
-            <summary>
-            Asynchronously returns a list of the documents matching the filter condition.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="partitionKey">An optional partition key.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetAll``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
-            <summary>
-            Returns a list of the documents matching the filter condition.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="partitionKey">An optional partition key.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.CountAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
-            <summary>
-            Asynchronously counts how many documents match the filter condition.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="partitionKey">An optional partitionKey</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.Count``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String)">
-            <summary>
-            Counts how many documents match the filter condition.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="partitionKey">An optional partitionKey</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetByMaxAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.String)">
-            <summary>
-            Gets the document with the maximum value of a specified property in a MongoDB collections that is satisfying the filter.
-            </summary>
-            <typeparam name="TDocument">The document type.</typeparam>
-            <typeparam name="TKey">The type of the primary key.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="maxValueSelector">A property selector to order by descending.</param>
-            <param name="partitionKey">An optional partitionKey.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetByMax``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.String)">
-            <summary>
-            Gets the document with the maximum value of a specified property in a MongoDB collections that is satisfying the filter.
-            </summary>
-            <typeparam name="TDocument">The document type.</typeparam>
-            <typeparam name="TKey">The type of the primary key.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="maxValueSelector">A property selector to order by descending.</param>
-            <param name="partitionKey">An optional partitionKey.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetByMinAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.String)">
-            <summary>
-            Gets the document with the minimum value of a specified property in a MongoDB collections that is satisfying the filter.
-            </summary>
-            <typeparam name="TDocument">The document type.</typeparam>
-            <typeparam name="TKey">The type of the primary key.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="minValueSelector">A property selector to order by ascending.</param>
-            <param name="partitionKey">An optional partitionKey.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetByMin``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.String)">
-            <summary>
-            Gets the document with the minimum value of a specified property in a MongoDB collections that is satisfying the filter.
-            </summary>
-            <typeparam name="TDocument">The document type.</typeparam>
-            <typeparam name="TKey">The type of the primary key.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="minValueSelector">A property selector to order by ascending.</param>
-            <param name="partitionKey">An optional partitionKey.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetMaxValueAsync``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},System.String)">
-            <summary>
-            Gets the maximum value of a property in a mongodb collections that is satisfying the filter.
-            </summary>
-            <typeparam name="TDocument">The document type.</typeparam>
-            <typeparam name="TKey">The type of the primary key.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="orderByAscending">A property selector to order by ascending.</param>
-            <param name="partitionKey">An optional partitionKey.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetMaxValue``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},System.String)">
-            <summary>
-            Gets the maximum value of a property in a mongodb collections that is satisfying the filter.
-            </summary>
-            <typeparam name="TDocument">The document type.</typeparam>
-            <typeparam name="TKey">The type of the primary key.</typeparam>
-            <typeparam name="TValue">The type of the value used to order the query.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="maxValueSelector">A property selector to order by ascending.</param>
-            <param name="partitionKey">An optional partitionKey.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetMinValueAsync``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},System.String)">
-            <summary>
-            Gets the minimum value of a property in a mongodb collections that is satisfying the filter.
-            </summary>
-            <typeparam name="TDocument">The document type.</typeparam>
-            <typeparam name="TKey">The type of the primary key.</typeparam>
-            <typeparam name="TValue">The type of the value used to order the query.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="minValueSelector">A property selector to order by ascending.</param>
-            <param name="partitionKey">An optional partition key.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetMinValue``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},System.String)">
-            <summary>
-            Gets the minimum value of a property in a mongodb collections that is satisfying the filter.
-            </summary>
-            <typeparam name="TDocument">The document type.</typeparam>
-            <typeparam name="TKey">The type of the primary key.</typeparam>
-            <typeparam name="TValue">The type of the value used to order the query.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="minValueSelector">A property selector to order by ascending.</param>
-            <param name="partitionKey">An optional partition key.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.SumByAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Int32}},System.String)">
-            <summary>
-            Sums the values of a selected field for a given filtered collection of documents.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="selector">The field you want to sum.</param>
-            <param name="partitionKey">The partition key of your document, if any.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.SumBy``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Int32}},System.String)">
-            <summary>
-            Sums the values of a selected field for a given filtered collection of documents.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="selector">The field you want to sum.</param>
-            <param name="partitionKey">The partition key of your document, if any.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.SumByAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Decimal}},System.String)">
-            <summary>
-            Sums the values of a selected field for a given filtered collection of documents.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="selector">The field you want to sum.</param>
-            <param name="partitionKey">The partition key of your document, if any.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.SumBy``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Decimal}},System.String)">
-            <summary>
-            Sums the values of a selected field for a given filtered collection of documents.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="selector">The field you want to sum.</param>
-            <param name="partitionKey">The partition key of your document, if any.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GroupBy``4(System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Linq.Expressions.Expression{System.Func{System.Linq.IGrouping{``1,``0},``2}},System.String)">
-            <summary>
-            Groups a collection of documents given a grouping criteria, 
-            and returns a dictionary of listed document groups with keys having the different values of the grouping criteria.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <typeparam name="TGroupKey">The type of the grouping criteria.</typeparam>
-            <typeparam name="TProjection">The type of the projected group.</typeparam>
-            <param name="groupingCriteria">The grouping criteria.</param>
-            <param name="groupProjection">The projected group result.</param>
-            <param name="partitionKey">The partition key of your document, if any.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GroupBy``4(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Linq.Expressions.Expression{System.Func{System.Linq.IGrouping{``1,``0},``2}},System.String)">
-            <summary>
-            Groups filtered a collection of documents given a grouping criteria, 
-            and returns a dictionary of listed document groups with keys having the different values of the grouping criteria.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <typeparam name="TGroupKey">The type of the grouping criteria.</typeparam>
-            <typeparam name="TProjection">The type of the projected group.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="selector">The grouping criteria.</param>
-            <param name="projection">The projected group result.</param>
-            <param name="partitionKey">The partition key of your document, if any.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetSortedPaginatedAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Boolean,System.Int32,System.Int32,System.String)">
-            <summary>
-            Asynchronously returns a paginated list of the documents matching the filter condition.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="sortSelector">The property selector.</param>
-            <param name="ascending">Order of the sorting.</param>
-            <param name="skipNumber">The number of documents you want to skip. Default value is 0.</param>
-            <param name="takeNumber">The number of documents you want to take. Default value is 50.</param>
-            <param name="partitionKey">An optional partition key.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.GetSortedPaginatedAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},MongoDB.Driver.SortDefinition{``0},System.Int32,System.Int32,System.String)">
-            <summary>
-            Asynchronously returns a paginated list of the documents matching the filter condition.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="sortDefinition">The sort definition.</param>
-            <param name="skipNumber">The number of documents you want to skip. Default value is 0.</param>
-            <param name="takeNumber">The number of documents you want to take. Default value is 50.</param>
-            <param name="partitionKey">An optional partition key.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.ProjectOneAsync``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1}},System.String)">
-            <summary>
-            Asynchronously returns a projected document matching the filter condition.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="projection">The projection expression.</param>
-            <param name="partitionKey">An optional partition key.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.ProjectOne``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1}},System.String)">
-            <summary>
-            Returns a projected document matching the filter condition.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="projection">The projection expression.</param>
-            <param name="partitionKey">An optional partition key.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.ProjectManyAsync``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1}},System.String)">
-            <summary>
-            Asynchronously returns a list of projected documents matching the filter condition.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
-            <param name="filter">A LINQ expression filter.</param>
-            <param name="projection">The projection expression.</param>
-            <param name="partitionKey">An optional partition key.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Read.MongoDbReader.ProjectMany``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1}},System.String)">
-            <summary>
-            Asynchronously returns a list of projected documents matching the filter condition.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
-            <param name="filter">The document filter.</param>
-            <param name="projection">The projection expression.</param>
-            <param name="partitionKey">An optional partition key.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateOneAsync``2(``0)">
-            <summary>
-            Asynchronously Updates a document.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="modifiedDocument">The document with the modifications you want to persist.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateOne``2(``0)">
-            <summary>
-            Updates a document.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="modifiedDocument">The document with the modifications you want to persist.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateOneAsync``2(``0,MongoDB.Driver.UpdateDefinition{``0})">
-            <summary>
-            Takes a document you want to modify and applies the update you have defined in MongoDb.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="documentToModify">The document you want to modify.</param>
-            <param name="update">The update definition for the document.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateOne``2(``0,MongoDB.Driver.UpdateDefinition{``0})">
-            <summary>
-            Takes a document you want to modify and applies the update you have defined in MongoDb.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <param name="documentToModify">The document you want to modify.</param>
-            <param name="update">The update definition for the document.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateOneAsync``3(``0,System.Linq.Expressions.Expression{System.Func{``0,``2}},``2)">
-            <summary>
-            Updates the property field with the given value update a property field in entities.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <typeparam name="TField">The type of the field.</typeparam>
-            <param name="documentToModify">The document you want to modify.</param>
-            <param name="field">The field selector.</param>
-            <param name="value">The new value of the property field.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateOne``3(``0,System.Linq.Expressions.Expression{System.Func{``0,``2}},``2)">
-            <summary>
-            Updates the property field with the given value update a property field in entities.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <typeparam name="TField">The type of the field.</typeparam>
-            <param name="documentToModify">The document you want to modify.</param>
-            <param name="field">The field selector.</param>
-            <param name="value">The new value of the property field.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateOneAsync``3(MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
-            <summary>
-            Updates the property field with the given value update a property field in entities.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <typeparam name="TField">The type of the field.</typeparam>
-            <param name="filter">The document filter.</param>
-            <param name="field">The field selector.</param>
-            <param name="value">The new value of the property field.</param>
-            <param name="partitionKey">The value of the partition key.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateOneAsync``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
-            <summary>
-            For the entity selected by the filter, updates the property field with the given value.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <typeparam name="TField">The type of the field.</typeparam>
-            <param name="filter">The document filter.</param>
-            <param name="field">The field selector.</param>
-            <param name="value">The new value of the property field.</param>
-            <param name="partitionKey">The partition key for the document.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateOne``3(MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
-            <summary>
-            Updates the property field with the given value.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <typeparam name="TField">The type of the field.</typeparam>
-            <param name="filter">The document filter.</param>
-            <param name="field">The field selector.</param>
-            <param name="value">The new value of the property field.</param>
-            <param name="partitionKey">The value of the partition key.</param>
-        </member>
-        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateOne``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
-            <summary>
-            For the entity selected by the filter, updates the property field with the given value.
-            </summary>
-            <typeparam name="TDocument">The type representing a Document.</typeparam>
-            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-            <typeparam name="TField">The type of the field.</typeparam>
-            <param name="filter">The document filter.</param>
-            <param name="field">The field selector.</param>
-            <param name="value">The new value of the property field.</param>
-            <param name="partitionKey">The partition key for the document.</param>
         </member>
         <member name="T:MongoDbGenericRepository.IBaseMongoRepository_Create`1">
             <summary>
@@ -3491,6 +3918,12 @@
             </summary>
             <param name="connectionString">The connections string.</param>
             <param name="databaseName">The name of your database.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.MongoDbContext.#ctor(System.String)">
+            <summary>
+            Initialise an instance of a <see cref="T:MongoDbGenericRepository.IMongoDbContext"/> using a connection string
+            </summary>
+            <param name="connectionString"></param>
         </member>
         <member name="M:MongoDbGenericRepository.MongoDbContext.#ctor(MongoDB.Driver.MongoClient,System.String)">
             <summary>

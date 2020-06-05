@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>MongoDbGenericRepository</id>
-    <version>1.4.0</version>
+    <version>1.4.3</version>
     <title>MongoDb Generic Repository</title>
     <authors>Alexandre Spieser</authors>
     <owners>Alexandre Spieser</owners>
@@ -14,7 +14,15 @@
     <copyright>Copyright 2019 (c) Alexandre Spieser. All rights reserved.</copyright>
     <tags>MongoDb Repository Generic NoSql</tags>
 	<dependencies>
-		<dependency id="MongoDB.Driver" version="2.7.0" />
+    <group targetFramework=".NETFramework4.5.2">
+      <dependency id="MongoDB.Driver" version="2.9.3" exclude="Build,Analyzers" />
+    </group>
+    <group targetFramework=".NETStandard1.5">
+      <dependency id="MongoDB.Driver" version="2.9.3" exclude="Build,Analyzers"  />
+    </group>
+    <group targetFramework=".NETStandard2.0">
+      <dependency id="MongoDB.Driver" version="2.9.3" exclude="Build,Analyzers"/>
+    </group>
 	</dependencies>
   </metadata>
   <files>

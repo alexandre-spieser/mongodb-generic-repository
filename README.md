@@ -15,6 +15,9 @@ You can override this behaviour to enforce legacy behaviour in your app Startup 
 
 `MongoDbContext.SetGuidRepresentation(MongoDB.Bson.GuidRepresentation.CSharpLegacy)`. More info [here](https://github.com/alexandre-spieser/mongodb-generic-repository/issues/7).
 
+# Support This Project
+If you have found this project helpful, either as a library that you use or as a learning tool, please consider buying the team a coffee: <a href="https://www.buymeacoffee.com/zeitquest" target="_blank"><img height="40px" src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" style="max-height: 51px;width: 150px !important;" ></a>
+
 # Usage examples
 
 This repository is meant to be inherited from. 

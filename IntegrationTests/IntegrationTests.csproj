@@ -98,12 +98,6 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MongoDbGenericRepository\MongoDbGenericRepository.csproj">
-      <Project>{efc776c4-2af3-440c-be80-3fbe335817a5}</Project>
-      <Name>MongoDbGenericRepository</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
