@@ -183,5 +183,129 @@ namespace MongoDbGenericRepository.DataAccess.Update
         {
             return UpdateOne<TDocument, TKey, TField>(Builders<TDocument>.Filter.Where(filter), field, value, partitionKey);
         }
+
+        /// <summary>
+        /// For the entities selected by the filter, updates the property field with the given value.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        /// <param name="partitionKey">The partition key for the document.</param>
+        public virtual async Task<long> UpdateManyAsync<TDocument, TKey, TField>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            return await UpdateManyAsync<TDocument, TKey, TField>(Builders<TDocument>.Filter.Where(filter), field, value, partitionKey);
+        }
+
+        /// <summary>
+        /// For the entities selected by the filter, updates the property field with the given value.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        /// <param name="partitionKey">The value of the partition key.</param>
+        public virtual async Task<long> UpdateManyAsync<TDocument, TKey, TField>(FilterDefinition<TDocument> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            var collection = string.IsNullOrEmpty(partitionKey) ? GetCollection<TDocument, TKey>() : GetCollection<TDocument, TKey>(partitionKey);
+            var updateRes = await collection.UpdateManyAsync(filter, Builders<TDocument>.Update.Set(field, value));
+            return updateRes.ModifiedCount;
+        }
+
+        /// <summary>
+        /// For the entities selected by the filter, apply the update definition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        /// <param name="partitionKey">The value of the partition key.</param>
+        public virtual async Task<long> UpdateManyAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, UpdateDefinition<TDocument> update, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            return await UpdateManyAsync<TDocument, TKey>(Builders<TDocument>.Filter.Where(filter), update, partitionKey);
+        }
+
+        /// <summary>
+        /// For the entities selected by the filter, apply the update definition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="updateDefinition">The update definition.</param>
+        /// <param name="partitionKey">The value of the partition key.</param>
+        public virtual async Task<long> UpdateManyAsync<TDocument, TKey>(FilterDefinition<TDocument> filter, UpdateDefinition<TDocument> updateDefinition, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            var collection = string.IsNullOrEmpty(partitionKey) ? GetCollection<TDocument, TKey>() : GetCollection<TDocument, TKey>(partitionKey);
+            var updateRes = await collection.UpdateManyAsync(filter, updateDefinition, new UpdateOptions { IsUpsert = true });
+            return updateRes.ModifiedCount;
+        }
+
+        /// <summary>
+        /// For the entities selected by the filter, updates the property field with the given value.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        /// <param name="partitionKey">The partition key for the document.</param>
+        public virtual long UpdateMany<TDocument, TKey, TField>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            return UpdateMany<TDocument, TKey, TField>(Builders<TDocument>.Filter.Where(filter), field, value, partitionKey);
+        }
+
+        /// <summary>
+        /// For the entities selected by the filter, updates the property field with the given value.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        /// <param name="partitionKey">The value of the partition key.</param>
+        public virtual long UpdateMany<TDocument, TKey, TField>(FilterDefinition<TDocument> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            var collection = string.IsNullOrEmpty(partitionKey) ? GetCollection<TDocument, TKey>() : GetCollection<TDocument, TKey>(partitionKey);
+            var updateRes = collection.UpdateMany(filter, Builders<TDocument>.Update.Set(field, value));
+            return updateRes.ModifiedCount;
+        }
+
+        /// <summary>
+        /// For the entities selected by the filter, apply the update definition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="UpdateDefinition">The update definition.</param>
+        /// <param name="partitionKey">The value of the partition key.</param>
+        public virtual long UpdateMany<TDocument, TKey>(FilterDefinition<TDocument> filter, UpdateDefinition<TDocument> UpdateDefinition, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            var collection = string.IsNullOrEmpty(partitionKey) ? GetCollection<TDocument, TKey>() : GetCollection<TDocument, TKey>(partitionKey);
+            var updateRes = collection.UpdateMany(filter, UpdateDefinition, new UpdateOptions { IsUpsert = true });
+            return updateRes.ModifiedCount;
+        }
     }
 }
