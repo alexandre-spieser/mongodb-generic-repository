@@ -9,15 +9,17 @@ Covered by 400+ integration tests and counting.
 
 The MongoDbGenericRepository is also used in [AspNetCore.Identity.MongoDbCore](https://github.com/alexandre-spieser/AspNetCore.Identity.MongoDbCore).
 
+# Support This Project
+
+If you have found this project helpful, either as a library that you use or as a learning tool, please consider buying the team a coffee: <a href="https://www.buymeacoffee.com/zeitquest" target="_blank"><img height="40px" src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" style="max-height: 51px;width: 150px !important;" ></a>
+
+# Worth Knowing
+
 This package sets the `MongoDefaults.GuidRepresentation` to `MongoDB.Bson.GuidRepresentation.Standard` by default, instead of the default driver setting of `MongoDB.Bson.GuidRepresentation.CSharpLegacy`. This can cause issues if you have been using the driver on an existing application previously or if you are using CosmosDB.
 
 You can override this behaviour to enforce legacy behaviour in your app Startup routine like so :
 
 `MongoDbContext.SetGuidRepresentation(MongoDB.Bson.GuidRepresentation.CSharpLegacy)`. More info [here](https://github.com/alexandre-spieser/mongodb-generic-repository/issues/7).
-
-# Support This Project
-If you have found this project helpful, either as a library that you use or as a learning tool, please consider buying the team a coffee: <a href="https://www.buymeacoffee.com/zeitquest" target="_blank"><img height="40px" src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" style="max-height: 51px;width: 150px !important;" ></a>
-
 
 # Usage examples
 
