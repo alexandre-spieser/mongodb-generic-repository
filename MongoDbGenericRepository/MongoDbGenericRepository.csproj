@@ -3,13 +3,20 @@
   <PropertyGroup>
     <TargetFrameworks>net452;netstandard2.0;netstandard1.5;</TargetFrameworks>
     <PackageId>MongoDbGenericRepository</PackageId>
-    <PackageVersion>1.2.0</PackageVersion>
+    <PackageVersion>1.4.4</PackageVersion>
     <Authors>Alexandre Spieser</Authors>
+    <PackageTitle>MongoDb Generic Repository</PackageTitle>
     <Description>A generic repository implementation using the MongoDB C# Sharp 2.0 driver.</Description>
+    <PackageLicenseUrl>http://www.opensource.org/licenses/mit-license.php</PackageLicenseUrl>
+    <PackageProjectUrl>http://www.opensource.org/licenses/mit-license.php</PackageProjectUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>.NET Core supported.</PackageReleaseNotes>
-    <Copyright>Copyright 2017 (c) Alexandre Spieser. All rights reserved.</Copyright>
-    <PackageTags>MongoDb Repository NoSql Generic</PackageTags>
+    <PackageReleaseNotes>Release notes are at https://github.com/alexandre-spieser/mongodb-generic-repository/releases </PackageReleaseNotes>
+    <Copyright>Copyright 2020 (c) Alexandre Spieser. All rights reserved.</Copyright>
+    <PackageTags>MongoDb Repository Generic NoSql</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.4.4</Version>
+    <RepositoryUrl>https://github.com/alexandre-spieser/mongodb-generic-repository</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net45|AnyCPU'">
@@ -18,6 +25,10 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net452|AnyCPU'">
     <DocumentationFile></DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net452|AnyCPU'">
+    <DocumentationFile>D:\development\mongodb-generic-repository\MongoDbGenericRepository\MongoDbGenericRepository.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

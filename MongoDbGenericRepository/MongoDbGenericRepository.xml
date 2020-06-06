@@ -155,6 +155,94 @@
             <param name="value">The new value of the property field.</param>
             <param name="partitionKey">The value of the partition key.</param>
         </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update.UpdateManyAsync``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
+            <summary>
+            For the entities selected by the filter, updates the property field with the given value.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The partition key for the document.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update.UpdateManyAsync``3(MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
+            <summary>
+            For the entities selected by the filter, updates the property field with the given value.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update.UpdateManyAsync``2(MongoDB.Driver.FilterDefinition{``0},MongoDB.Driver.UpdateDefinition{``0},System.String)">
+            <summary>
+            For the entities selected by the filter, applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="updateDefinition">The update definition to apply.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update.UpdateManyAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},MongoDB.Driver.UpdateDefinition{``0},System.String)">
+            <summary>
+            For the entities selected by the filter, applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="updateDefinition">The update definition to apply.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update.UpdateMany``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
+            <summary>
+            For the entities selected by the filter, updates the property field with the given value.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The partition key for the document.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update.UpdateMany``3(MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
+            <summary>
+            For the entities selected by the filter, updates the property field with the given value.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update.UpdateMany``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},MongoDB.Driver.UpdateDefinition{``0},System.String)">
+            <summary>
+            For the entities selected by the filter, applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="updateDefinition">The update definition to apply.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update.UpdateMany``2(MongoDB.Driver.FilterDefinition{``0},MongoDB.Driver.UpdateDefinition{``0},System.String)">
+            <summary>
+            For the entities selected by the filter, applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="updateDefinition">The update definition to apply.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
         <member name="M:MongoDbGenericRepository.DataAccess.Update.IBaseMongoRepository_Update_ClientSession.UpdateOne``3(MongoDB.Driver.IClientSessionHandle,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String,System.Threading.CancellationToken)">
             <summary>
             Updates a document.
@@ -526,6 +614,87 @@
             <param name="field">The field selector.</param>
             <param name="value">The new value of the property field.</param>
             <param name="partitionKey">The partition key for the document.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateManyAsync``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
+            <summary>
+            For the entities selected by the filter, updates the property field with the given value.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The partition key for the document.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateManyAsync``3(MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
+            <summary>
+            For the entities selected by the filter, updates the property field with the given value.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateManyAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},MongoDB.Driver.UpdateDefinition{``0},System.String)">
+            <summary>
+            For the entities selected by the filter, apply the update definition.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateManyAsync``2(MongoDB.Driver.FilterDefinition{``0},MongoDB.Driver.UpdateDefinition{``0},System.String)">
+            <summary>
+            For the entities selected by the filter, apply the update definition.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="updateDefinition">The update definition.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateMany``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
+            <summary>
+            For the entities selected by the filter, updates the property field with the given value.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The partition key for the document.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateMany``3(MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
+            <summary>
+            For the entities selected by the filter, updates the property field with the given value.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.DataAccess.Update.MongoDbUpdater.UpdateMany``2(MongoDB.Driver.FilterDefinition{``0},MongoDB.Driver.UpdateDefinition{``0},System.String)">
+            <summary>
+            For the entities selected by the filter, apply the update definition.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="UpdateDefinition">The update definition.</param>
+            <param name="partitionKey">The value of the partition key.</param>
         </member>
         <member name="M:MongoDbGenericRepository.DataAccess.Base.DataAccessBase.HandlePartitioned``2(``0)">
             <summary>
@@ -2506,6 +2675,87 @@
             <param name="value">The new value of the property field.</param>
             <param name="partitionKey">The partition key for the document.</param>
         </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateManyAsync``2(MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}},``1,System.String)">
+            <summary>
+            For the entities selected by the filter, updates the property field with the given value.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateManyAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1}},``1,System.String)">
+            <summary>
+            For the entities selected by the filter, updates the property field with the given value.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateManyAsync``1(MongoDB.Driver.FilterDefinition{``0},MongoDB.Driver.UpdateDefinition{``0},System.String)">
+            <summary>
+            For the entities selected by the filter, applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="updateDefinition">The update definition to apply.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateManyAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},MongoDB.Driver.UpdateDefinition{``0},System.String)">
+            <summary>
+            For the entities selected by the filter, applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="updateDefinition">The update definition to apply.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateMany``2(MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}},``1,System.String)">
+            <summary>
+            For the entities selected by the filter, updates the property field with the given value.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateMany``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1}},``1,System.String)">
+            <summary>
+            For the entities selected by the filter, updates the property field with the given value.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateMany``1(MongoDB.Driver.FilterDefinition{``0},MongoDB.Driver.UpdateDefinition{``0},System.String)">
+            <summary>
+            For the entities selected by the filter, applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="updateDefinition">The update definition to apply.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateMany``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},MongoDB.Driver.UpdateDefinition{``0},System.String)">
+            <summary>
+            For the entities selected by the filter, applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="updateDefinition">The update definition to apply.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
         <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateOneAsync``2(``0)">
             <summary>
             Asynchronously Updates a document.
@@ -2609,6 +2859,94 @@
             <param name="field">The field selector.</param>
             <param name="value">The new value of the property field.</param>
             <param name="partitionKey">The partition key for the document.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateManyAsync``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
+            <summary>
+            For the entities selected by the filter, updates the property field with the given value.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The partition key for the document.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateManyAsync``3(MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
+            <summary>
+            For the entities selected by the filter, updates the property field with the given value.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateManyAsync``2(MongoDB.Driver.FilterDefinition{``0},MongoDB.Driver.UpdateDefinition{``0},System.String)">
+            <summary>
+            For the entities selected by the filter, applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="updateDefinition">The update definition to apply.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateManyAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},MongoDB.Driver.UpdateDefinition{``0},System.String)">
+            <summary>
+            For the entities selected by the filter, applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="updateDefinition">The update definition to apply.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateMany``3(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
+            <summary>
+            For the entities selected by the filter, updates the property field with the given value.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The partition key for the document.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateMany``3(MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``2}},``2,System.String)">
+            <summary>
+            For the entities selected by the filter, updates the property field with the given value.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateMany``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},MongoDB.Driver.UpdateDefinition{``0},System.String)">
+            <summary>
+            For the entities selected by the filter, applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="updateDefinition">The update definition to apply.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository.UpdateMany``2(MongoDB.Driver.FilterDefinition{``0},MongoDB.Driver.UpdateDefinition{``0},System.String)">
+            <summary>
+            For the entities selected by the filter, applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="updateDefinition">The update definition to apply.</param>
+            <param name="partitionKey">The value of the partition key.</param>
         </member>
         <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Delete.DeleteOne``2(``0)">
             <summary>
@@ -3141,6 +3479,86 @@
             <param name="field">The field selector.</param>
             <param name="value">The new value of the property field.</param>
             <param name="partitionKey">The partition key for the document.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository`1.UpdateManyAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1}},``1,System.String)">
+            <summary>
+            For the entities selected by the filter, updates the property field with the given value.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The partition key for the document.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository`1.UpdateManyAsync``2(MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}},``1,System.String)">
+            <summary>
+            For the entities selected by the filter, updates the property field with the given value.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository`1.UpdateManyAsync``1(MongoDB.Driver.FilterDefinition{``0},MongoDB.Driver.UpdateDefinition{``0},System.String)">
+            <summary>
+            For the entities selected by the filter, applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="updateDefinition">The update definition to apply.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository`1.UpdateManyAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},MongoDB.Driver.UpdateDefinition{``0},System.String)">
+            <summary>
+            For the entities selected by the filter, applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="updateDefinition">The update definition to apply.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository`1.UpdateMany``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1}},``1,System.String)">
+            <summary>
+            For the entities selected by the filter, updates the property field with the given value.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The partition key for the document.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository`1.UpdateMany``2(MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}},``1,System.String)">
+            <summary>
+            For the entities selected by the filter, updates the property field with the given value.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository`1.UpdateMany``1(MongoDB.Driver.FilterDefinition{``0},MongoDB.Driver.UpdateDefinition{``0},System.String)">
+            <summary>
+            For the entities selected by the filter, applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="updateDefinition">The update definition to apply.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.BaseMongoRepository`1.UpdateMany``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},MongoDB.Driver.UpdateDefinition{``0},System.String)">
+            <summary>
+            For the entities selected by the filter, applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="updateDefinition">The update definition to apply.</param>
+            <param name="partitionKey">The value of the partition key.</param>
         </member>
         <member name="T:MongoDbGenericRepository.IBaseMongoRepository_Delete`1">
             <summary>
@@ -3732,6 +4150,86 @@
             <param name="field">The field selector.</param>
             <param name="value">The new value of the property field.</param>
             <param name="partitionKey">The partition key for the document.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update`1.UpdateManyAsync``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1}},``1,System.String)">
+            <summary>
+            For the entities selected by the filter, updates the property field with the given value.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The partition key for the document.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update`1.UpdateManyAsync``2(MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}},``1,System.String)">
+            <summary>
+            For the entities selected by the filter, updates the property field with the given value.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update`1.UpdateManyAsync``1(MongoDB.Driver.FilterDefinition{``0},MongoDB.Driver.UpdateDefinition{``0},System.String)">
+            <summary>
+            For the entities selected by the filter, applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="updateDefinition">The update definition to apply.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update`1.UpdateManyAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},MongoDB.Driver.UpdateDefinition{``0},System.String)">
+            <summary>
+            For the entities selected by the filter, applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="updateDefinition">The update definition to apply.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update`1.UpdateMany``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,``1}},``1,System.String)">
+            <summary>
+            For the entities selected by the filter, updates the property field with the given value.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The partition key for the document.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update`1.UpdateMany``2(MongoDB.Driver.FilterDefinition{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}},``1,System.String)">
+            <summary>
+            For the entities selected by the filter, updates the property field with the given value.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <typeparam name="TField">The type of the field.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="field">The field selector.</param>
+            <param name="value">The new value of the property field.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update`1.UpdateMany``1(MongoDB.Driver.FilterDefinition{``0},MongoDB.Driver.UpdateDefinition{``0},System.String)">
+            <summary>
+            For the entities selected by the filter, applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="updateDefinition">The update definition to apply.</param>
+            <param name="partitionKey">The value of the partition key.</param>
+        </member>
+        <member name="M:MongoDbGenericRepository.IBaseMongoRepository_Update`1.UpdateMany``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},MongoDB.Driver.UpdateDefinition{``0},System.String)">
+            <summary>
+            For the entities selected by the filter, applies the update you have defined in MongoDb.
+            </summary>
+            <typeparam name="TDocument">The type representing a Document.</typeparam>
+            <param name="filter">The document filter.</param>
+            <param name="updateDefinition">The update definition to apply.</param>
+            <param name="partitionKey">The value of the partition key.</param>
         </member>
         <member name="T:MongoDbGenericRepository.Models.Document">
             <summary>
