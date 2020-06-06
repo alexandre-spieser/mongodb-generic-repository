@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>MongoDbGenericRepository</id>
-    <version>1.4.3</version>
+    <version>1.4.4</version>
     <title>MongoDb Generic Repository</title>
     <authors>Alexandre Spieser</authors>
     <owners>Alexandre Spieser</owners>
@@ -11,18 +11,18 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A generic repository implementation using the MongoDB C# Sharp 2.0 driver.</description>
     <releaseNotes>Release notes are at https://github.com/alexandre-spieser/mongodb-generic-repository/releases</releaseNotes>
-    <copyright>Copyright 2019 (c) Alexandre Spieser. All rights reserved.</copyright>
+    <copyright>Copyright 2020 (c) Alexandre Spieser. All rights reserved.</copyright>
     <tags>MongoDb Repository Generic NoSql</tags>
 	<dependencies>
-    <group targetFramework=".NETFramework4.5.2">
-      <dependency id="MongoDB.Driver" version="2.9.3" exclude="Build,Analyzers" />
-    </group>
-    <group targetFramework=".NETStandard1.5">
-      <dependency id="MongoDB.Driver" version="2.9.3" exclude="Build,Analyzers"  />
-    </group>
-    <group targetFramework=".NETStandard2.0">
-      <dependency id="MongoDB.Driver" version="2.9.3" exclude="Build,Analyzers"/>
-    </group>
+		<group targetFramework=".NETFramework4.5.2">
+		  <dependency id="MongoDB.Driver" version="2.9.3" exclude="Build,Analyzers" />
+		</group>
+		<group targetFramework=".NETStandard1.5">
+		  <dependency id="MongoDB.Driver" version="2.9.3" exclude="Build,Analyzers"  />
+		</group>
+		<group targetFramework=".NETStandard2.0">
+		  <dependency id="MongoDB.Driver" version="2.9.3" exclude="Build,Analyzers"/>
+		</group>
 	</dependencies>
   </metadata>
   <files>

@@ -110,6 +110,94 @@ namespace MongoDbGenericRepository
         /// <param name="partitionKey">The partition key for the document.</param>
         Task<bool> UpdateOneAsync<TDocument, TField>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
             where TDocument : IDocument<TKey>;
+
+        /// <summary>
+        /// For the entities selected by the filter, updates the property field with the given value.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        /// <param name="partitionKey">The partition key for the document.</param>
+        Task<long> UpdateManyAsync<TDocument, TField>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
+            where TDocument : IDocument<TKey>;
+
+        /// <summary>
+        /// For the entities selected by the filter, updates the property field with the given value.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        /// <param name="partitionKey">The value of the partition key.</param>
+        Task<long> UpdateManyAsync<TDocument, TField>(FilterDefinition<TDocument> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
+            where TDocument : IDocument<TKey>;
+
+        /// <summary>
+        /// For the entities selected by the filter, applies the update you have defined in MongoDb.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="updateDefinition">The update definition to apply.</param>
+        /// <param name="partitionKey">The value of the partition key.</param>
+        Task<long> UpdateManyAsync<TDocument>(FilterDefinition<TDocument> filter, UpdateDefinition<TDocument> updateDefinition, string partitionKey = null)
+            where TDocument : IDocument<TKey>;
+
+        /// <summary>
+        /// For the entities selected by the filter, applies the update you have defined in MongoDb.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="updateDefinition">The update definition to apply.</param>
+        /// <param name="partitionKey">The value of the partition key.</param>
+        Task<long> UpdateManyAsync<TDocument>(Expression<Func<TDocument, bool>> filter, UpdateDefinition<TDocument> updateDefinition, string partitionKey = null)
+            where TDocument : IDocument<TKey>;
+
+        /// <summary>
+        /// For the entities selected by the filter, updates the property field with the given value.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        /// <param name="partitionKey">The partition key for the document.</param>
+        long UpdateMany<TDocument, TField>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
+            where TDocument : IDocument<TKey>;
+
+        /// <summary>
+        /// For the entities selected by the filter, updates the property field with the given value.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        /// <param name="partitionKey">The value of the partition key.</param>
+        long UpdateMany<TDocument, TField>(FilterDefinition<TDocument> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
+            where TDocument : IDocument<TKey>;
+
+        /// <summary>
+        /// For the entities selected by the filter, applies the update you have defined in MongoDb.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="updateDefinition">The update definition to apply.</param>
+        /// <param name="partitionKey">The value of the partition key.</param>
+        long UpdateMany<TDocument>(FilterDefinition<TDocument> filter, UpdateDefinition<TDocument> updateDefinition, string partitionKey = null)
+            where TDocument : IDocument<TKey>;
+
+        /// <summary>
+        /// For the entities selected by the filter, applies the update you have defined in MongoDb.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="updateDefinition">The update definition to apply.</param>
+        /// <param name="partitionKey">The value of the partition key.</param>
+        long UpdateMany<TDocument>(Expression<Func<TDocument, bool>> filter, UpdateDefinition<TDocument> updateDefinition, string partitionKey = null)
+            where TDocument : IDocument<TKey>;
     }
 
     public abstract partial class BaseMongoRepository<TKey> : IBaseMongoRepository_Update<TKey>
@@ -265,6 +353,117 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
         {
             return await MongoDbUpdater.UpdateOneAsync<TDocument, TKey, TField>(filter, field, value, partitionKey);
+        }
+
+        /// <summary>
+        /// For the entities selected by the filter, updates the property field with the given value.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        /// <param name="partitionKey">The partition key for the document.</param>
+        public virtual async Task<long> UpdateManyAsync<TDocument, TField>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+        {
+            return await MongoDbUpdater.UpdateManyAsync<TDocument, TKey, TField>(filter, field, value, partitionKey);
+        }
+
+        /// <summary>
+        /// For the entities selected by the filter, updates the property field with the given value.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        /// <param name="partitionKey">The value of the partition key.</param>
+        public virtual async Task<long> UpdateManyAsync<TDocument, TField>(FilterDefinition<TDocument> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+        {
+            return await MongoDbUpdater.UpdateManyAsync<TDocument, TKey, TField>(filter, field, value, partitionKey);
+        }
+
+        /// <summary>
+        /// For the entities selected by the filter, applies the update you have defined in MongoDb.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="updateDefinition">The update definition to apply.</param>
+        /// <param name="partitionKey">The value of the partition key.</param>
+        public virtual async Task<long> UpdateManyAsync<TDocument>(FilterDefinition<TDocument> filter, UpdateDefinition<TDocument> updateDefinition, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+        {
+            return await MongoDbUpdater.UpdateManyAsync<TDocument, TKey>(filter, updateDefinition, partitionKey);
+        }
+
+        /// <summary>
+        /// For the entities selected by the filter, applies the update you have defined in MongoDb.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="updateDefinition">The update definition to apply.</param>
+        /// <param name="partitionKey">The value of the partition key.</param>
+        public virtual async Task<long> UpdateManyAsync<TDocument>(Expression<Func<TDocument, bool>> filter, UpdateDefinition<TDocument> updateDefinition, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+        {
+            return await MongoDbUpdater.UpdateManyAsync<TDocument, TKey>(filter, updateDefinition, partitionKey);
+        }
+
+        /// <summary>
+        /// For the entities selected by the filter, updates the property field with the given value.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        /// <param name="partitionKey">The partition key for the document.</param>
+        public virtual long UpdateMany<TDocument, TField>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+        {
+            return MongoDbUpdater.UpdateMany<TDocument, TKey, TField>(filter, field, value, partitionKey);
+        }
+
+        /// <summary>
+        /// For the entities selected by the filter, updates the property field with the given value.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TField">The type of the field.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="field">The field selector.</param>
+        /// <param name="value">The new value of the property field.</param>
+        /// <param name="partitionKey">The value of the partition key.</param>
+        public virtual long UpdateMany<TDocument, TField>(FilterDefinition<TDocument> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+        {
+            return MongoDbUpdater.UpdateMany<TDocument, TKey, TField>(filter, field, value, partitionKey);
+        }
+
+        /// <summary>
+        /// For the entities selected by the filter, applies the update you have defined in MongoDb.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="updateDefinition">The update definition to apply.</param>
+        /// <param name="partitionKey">The value of the partition key.</param>
+        public virtual long UpdateMany<TDocument>(FilterDefinition<TDocument> filter, UpdateDefinition<TDocument> updateDefinition, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+        {
+            return MongoDbUpdater.UpdateMany<TDocument, TKey>(filter, updateDefinition, partitionKey);
+        }
+
+        /// <summary>
+        /// For the entities selected by the filter, applies the update you have defined in MongoDb.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="updateDefinition">The update definition to apply.</param>
+        /// <param name="partitionKey">The value of the partition key.</param>
+        public virtual long UpdateMany<TDocument>(Expression<Func<TDocument, bool>> filter, UpdateDefinition<TDocument> updateDefinition, string partitionKey = null) where TDocument : IDocument<TKey>
+        {
+            return MongoDbUpdater.UpdateMany<TDocument, TKey>(filter, updateDefinition, partitionKey);
         }
     }
 }
