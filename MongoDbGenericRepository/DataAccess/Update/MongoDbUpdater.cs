@@ -56,7 +56,7 @@ namespace MongoDbGenericRepository.DataAccess.Update
             where TKey : IEquatable<TKey>
         {
             var filter = Builders<TDocument>.Filter.Eq("Id", documentToModify.Id);
-            var updateRes = await HandlePartitioned<TDocument, TKey>(documentToModify).UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
+            var updateRes = await HandlePartitioned<TDocument, TKey>(documentToModify).UpdateOneAsync(filter, update);
             return updateRes.ModifiedCount == 1;
         }
 
@@ -72,7 +72,7 @@ namespace MongoDbGenericRepository.DataAccess.Update
             where TKey : IEquatable<TKey>
         {
             var filter = Builders<TDocument>.Filter.Eq("Id", documentToModify.Id);
-            var updateRes = HandlePartitioned<TDocument, TKey>(documentToModify).UpdateOne(filter, update, new UpdateOptions { IsUpsert = true });
+            var updateRes = HandlePartitioned<TDocument, TKey>(documentToModify).UpdateOne(filter, update);
             return updateRes.ModifiedCount == 1;
         }
 
@@ -250,7 +250,7 @@ namespace MongoDbGenericRepository.DataAccess.Update
             where TKey : IEquatable<TKey>
         {
             var collection = string.IsNullOrEmpty(partitionKey) ? GetCollection<TDocument, TKey>() : GetCollection<TDocument, TKey>(partitionKey);
-            var updateRes = await collection.UpdateManyAsync(filter, updateDefinition, new UpdateOptions { IsUpsert = true });
+            var updateRes = await collection.UpdateManyAsync(filter, updateDefinition);
             return updateRes.ModifiedCount;
         }
 
@@ -304,7 +304,7 @@ namespace MongoDbGenericRepository.DataAccess.Update
             where TKey : IEquatable<TKey>
         {
             var collection = string.IsNullOrEmpty(partitionKey) ? GetCollection<TDocument, TKey>() : GetCollection<TDocument, TKey>(partitionKey);
-            var updateRes = collection.UpdateMany(filter, UpdateDefinition, new UpdateOptions { IsUpsert = true });
+            var updateRes = collection.UpdateMany(filter, UpdateDefinition);
             return updateRes.ModifiedCount;
         }
     }

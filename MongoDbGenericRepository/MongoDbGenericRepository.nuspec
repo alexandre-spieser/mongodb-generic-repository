@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>MongoDbGenericRepository</id>
-    <version>1.4.4</version>
+    <version>1.4.5</version>
     <title>MongoDb Generic Repository</title>
     <authors>Alexandre Spieser</authors>
     <owners>Alexandre Spieser</owners>

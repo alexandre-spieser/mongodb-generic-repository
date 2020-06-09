@@ -62,7 +62,7 @@ namespace MongoDbGenericRepository.DataAccess.Update
             where TKey : IEquatable<TKey>
         {
             var filter = Builders<TDocument>.Filter.Eq("Id", documentToModify.Id);
-            var updateRes = await HandlePartitioned<TDocument, TKey>(documentToModify).UpdateOneAsync(session, filter, update, new UpdateOptions { IsUpsert = true }, cancellationToken).ConfigureAwait(false);
+            var updateRes = await HandlePartitioned<TDocument, TKey>(documentToModify).UpdateOneAsync(session, filter, update, null, cancellationToken).ConfigureAwait(false);
             return updateRes.ModifiedCount == 1;
         }
 
@@ -81,7 +81,7 @@ namespace MongoDbGenericRepository.DataAccess.Update
             where TKey : IEquatable<TKey>
         {
             var filter = Builders<TDocument>.Filter.Eq("Id", documentToModify.Id);
-            var updateRes = HandlePartitioned<TDocument, TKey>(documentToModify).UpdateOne(session, filter, update, new UpdateOptions { IsUpsert = true }, cancellationToken);
+            var updateRes = HandlePartitioned<TDocument, TKey>(documentToModify).UpdateOne(session, filter, update, null, cancellationToken);
             return updateRes.ModifiedCount == 1;
         }
 
