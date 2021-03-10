@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace MongoDbGenericRepository
 {
+    /// <summary>
+    /// The IBaseMongoRepository_Update interface exposing update functionality for documents with Guid Ids.
+    /// </summary>
     public interface IBaseMongoRepository_Update : IBaseMongoRepository_Update<Guid>
     {
         /// <summary>

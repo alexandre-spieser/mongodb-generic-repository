@@ -52,10 +52,6 @@ namespace MongoDbGenericRepository.Models
         /// </summary>  
         public string DefaultLanguage { get; set; }
         /// <summary>
-        /// Gets or sets the size of a geohash bucket.
-        /// </summary>   
-        public double? BucketSize { get; set; }
-        /// <summary>
         /// Gets or sets the precision, in bits, used with geohash indexes.
         /// </summary>   
         public int? Bits { get; set; }

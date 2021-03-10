@@ -7,10 +7,20 @@ using System.Linq.Expressions;
 
 namespace MongoDbGenericRepository.DataAccess.Base
 {
+    /// <summary>
+    /// A base class for accessing the Database and its Collections.
+    /// </summary>
     public class DataAccessBase
     {
+        /// <summary>
+        /// The MongoDbContext
+        /// </summary>
         protected IMongoDbContext MongoDbContext;
 
+        /// <summary>
+        /// The constructor of the DataAccessBase class
+        /// </summary>
+        /// <param name="mongoDbContext"></param>
         public DataAccessBase(IMongoDbContext mongoDbContext)
         {
             MongoDbContext = mongoDbContext;
@@ -108,7 +118,6 @@ namespace MongoDbGenericRepository.DataAccess.Base
                 LanguageOverride = indexCreationOptions.LanguageOverride,
                 ExpireAfter = indexCreationOptions.ExpireAfter,
                 DefaultLanguage = indexCreationOptions.DefaultLanguage,
-                BucketSize = indexCreationOptions.BucketSize,
                 Bits = indexCreationOptions.Bits,
                 Background = indexCreationOptions.Background,
                 Version = indexCreationOptions.Version
