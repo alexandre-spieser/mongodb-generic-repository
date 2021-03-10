@@ -11,7 +11,7 @@ The MongoDbGenericRepository is also used in [AspNetCore.Identity.MongoDbCore](h
 
 # Support This Project
 
-If you have found this project helpful, either as a library that you use or as a learning tool, please consider buying the team a coffee: <a href="https://www.buymeacoffee.com/zeitquest" target="_blank"><img height="40px" src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" style="max-height: 51px;width: 150px !important;" ></a>
+If you have found this project helpful, either as a library that you use or as a learning tool, please consider buying Alex a coffee: <a href="https://www.buymeacoffee.com/zeitquest" target="_blank"><img height="40px" src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" style="max-height: 51px;width: 150px !important;" ></a>
 
 # Worth Knowing
 
