@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MongoDbGenericRepository.DataAccess.Read
@@ -20,14 +21,19 @@ namespace MongoDbGenericRepository.DataAccess.Read
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="projection">The projection expression.</param>
         /// <param name="partitionKey">An optional partition key.</param>
-        public virtual async Task<TProjection> ProjectOneAsync<TDocument, TProjection, TKey>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey = null)
+        /// <param name="cancellationToken">An optional cancellation Token.</param>
+        public virtual async Task<TProjection> ProjectOneAsync<TDocument, TProjection, TKey>(
+            Expression<Func<TDocument, bool>> filter, 
+            Expression<Func<TDocument, TProjection>> projection, 
+            string partitionKey = null,
+            CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
             where TProjection : class
         {
             return await HandlePartitioned<TDocument, TKey>(partitionKey).Find(filter)
                                                                          .Project(projection)
-                                                                         .FirstOrDefaultAsync();
+                                                                         .FirstOrDefaultAsync(cancellationToken);
         }
 
         /// <summary>
@@ -58,14 +64,19 @@ namespace MongoDbGenericRepository.DataAccess.Read
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="projection">The projection expression.</param>
         /// <param name="partitionKey">An optional partition key.</param>
-        public virtual async Task<List<TProjection>> ProjectManyAsync<TDocument, TProjection, TKey>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey = null)
+        /// <param name="cancellationToken">An optional cancellation Token.</param>
+        public virtual async Task<List<TProjection>> ProjectManyAsync<TDocument, TProjection, TKey>(
+            Expression<Func<TDocument, bool>> filter, 
+            Expression<Func<TDocument, TProjection>> projection, 
+            string partitionKey = null,
+            CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
             where TProjection : class
         {
             return await HandlePartitioned<TDocument, TKey>(partitionKey).Find(filter)
                                                                    .Project(projection)
-                                                                   .ToListAsync();
+                                                                   .ToListAsync(cancellationToken);
         }
 
         /// <summary>

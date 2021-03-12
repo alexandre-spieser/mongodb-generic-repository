@@ -343,13 +343,15 @@ namespace MongoDbGenericRepository.DataAccess.Read
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="selector">The field you want to sum.</param>
         /// <param name="partitionKey">The partition key of your document, if any.</param>
+        /// <param name="cancellationToken">An optional cancellation Token.</param>
         public virtual async Task<int> SumByAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter,
                                                        Expression<Func<TDocument, int>> selector,
-                                                       string partitionKey = null)
+                                                       string partitionKey = null,
+                                                       CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return await GetQuery<TDocument, TKey>(filter, partitionKey).SumAsync(selector);
+            return await GetQuery<TDocument, TKey>(filter, partitionKey).SumAsync(selector, cancellationToken);
         }
 
         /// <summary>
