@@ -2,6 +2,7 @@
 using MongoDbGenericRepository.Models;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MongoDbGenericRepository
@@ -18,7 +19,8 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="document">The document you want to add.</param>
-        Task AddOneAsync<TDocument>(TDocument document) where TDocument : IDocument<TKey>;
+        /// <param name="cancellationToken">An optional cancellation Token.</param>
+        Task AddOneAsync<TDocument>(TDocument document, CancellationToken cancellationToken = default) where TDocument : IDocument<TKey>;
 
         /// <summary>
         /// Adds a document to the collection.
@@ -34,7 +36,8 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="documents">The documents you want to add.</param>
-        Task AddManyAsync<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument<TKey>;
+        /// <param name="cancellationToken">An optional cancellation Token.</param>
+        Task AddManyAsync<TDocument>(IEnumerable<TDocument> documents, CancellationToken cancellationToken = default) where TDocument : IDocument<TKey>;
 
         /// <summary>
         /// Adds a list of documents to the collection.
@@ -81,7 +84,8 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="document">The document you want to add.</param>
-        public virtual async Task AddOneAsync<TDocument>(TDocument document) where TDocument : IDocument<TKey>
+        /// <param name="cancellationToken">An optional cancellation Token.</param>
+        public virtual async Task AddOneAsync<TDocument>(TDocument document, CancellationToken cancellationToken = default) where TDocument : IDocument<TKey>
         {
             await MongoDbCreator.AddOneAsync<TDocument, TKey>(document);
         }
@@ -103,9 +107,10 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="documents">The documents you want to add.</param>
-        public virtual async Task AddManyAsync<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument<TKey>
+        /// <param name="cancellationToken">An optional cancellation Token.</param>
+        public virtual async Task AddManyAsync<TDocument>(IEnumerable<TDocument> documents, CancellationToken cancellationToken = default) where TDocument : IDocument<TKey>
         {
-            await MongoDbCreator.AddManyAsync<TDocument, TKey>(documents);
+            await MongoDbCreator.AddManyAsync<TDocument, TKey>(documents, cancellationToken);
         }
 
         /// <summary>

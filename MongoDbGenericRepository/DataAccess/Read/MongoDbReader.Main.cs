@@ -11,8 +11,15 @@ using System.Threading.Tasks;
 
 namespace MongoDbGenericRepository.DataAccess.Read
 {
+    /// <summary>
+    /// A class to read MongoDb document.
+    /// </summary>
     public partial class MongoDbReader : DataAccessBase
     {
+        /// <summary>
+        /// The construct of the MongoDbReader class.
+        /// </summary>
+        /// <param name="mongoDbContext">A <see cref="IMongoDbContext"/> instance.</param>
         public MongoDbReader(IMongoDbContext mongoDbContext) : base(mongoDbContext)
         {
         }
@@ -193,7 +200,7 @@ namespace MongoDbGenericRepository.DataAccess.Read
         /// <typeparam name="TKey">The type of the primary key.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="maxValueSelector">A property selector to order by descending.</param>
-        /// <param name="partitionKey">An optional partitionKey.</param
+        /// <param name="partitionKey">An optional partitionKey.</param>
         /// <param name="cancellationToken">An optional cancellation Token.</param>
         public async virtual Task<TDocument> GetByMaxAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> maxValueSelector, string partitionKey = null, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
