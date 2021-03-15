@@ -796,7 +796,7 @@ namespace CoreIntegrationTests.Infrastructure
 
         #region Index Management
 
-        static SemaphoreSlim textIndexSemaphore = new SemaphoreSlim(1, 1);
+        static readonly SemaphoreSlim textIndexSemaphore = new SemaphoreSlim(1, 1);
 
         [Fact]
         public async Task CreateTextIndexNoOptionAsync()
