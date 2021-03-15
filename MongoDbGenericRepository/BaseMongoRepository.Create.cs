@@ -2,10 +2,15 @@
 using MongoDbGenericRepository.Models;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MongoDbGenericRepository
 {
+    /// <summary>
+    /// The IBaseMongoRepository_Create interface to expose document creation functionality 
+    /// with document having an Id of type Guid.
+    /// </summary>
     public interface IBaseMongoRepository_Create : IBaseMongoRepository_Create<Guid>
     {
         /// <summary>
@@ -15,7 +20,8 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <param name="document">The document you want to add.</param>
-        Task AddOneAsync<TDocument, TKey>(TDocument document)
+        /// <param name="cancellationToken">An optional cancellation Token.</param>
+        Task AddOneAsync<TDocument, TKey>(TDocument document, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>;
 
@@ -37,7 +43,8 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <param name="documents">The documents you want to add.</param>
-        Task AddManyAsync<TDocument, TKey>(IEnumerable<TDocument> documents)
+        /// <param name="cancellationToken">An optional cancellation Token.</param>
+        Task AddManyAsync<TDocument, TKey>(IEnumerable<TDocument> documents, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>;
 
@@ -61,6 +68,10 @@ namespace MongoDbGenericRepository
     {
         private readonly object _initLock = new object();
         private MongoDbCreator _mongoDbCreator;
+
+        /// <summary>
+        /// The MongoDbCreator field.
+        /// </summary>
         protected virtual MongoDbCreator MongoDbCreator
         {
             get
@@ -87,11 +98,12 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <param name="document">The document you want to add.</param>
-        public virtual async Task AddOneAsync<TDocument, TKey>(TDocument document)
+        /// <param name="cancellationToken">An optional cancellation Token.</param>
+        public virtual async Task AddOneAsync<TDocument, TKey>(TDocument document, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            await MongoDbCreator.AddOneAsync<TDocument, TKey>(document);
+            await MongoDbCreator.AddOneAsync<TDocument, TKey>(document, cancellationToken);
         }
 
         /// <summary>
@@ -100,10 +112,11 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="document">The document you want to add.</param>
-        public virtual async Task AddOneAsync<TDocument>(TDocument document) 
+        /// <param name="cancellationToken">An optional cancellation Token.</param>
+        public virtual async Task AddOneAsync<TDocument>(TDocument document, CancellationToken cancellationToken = default) 
             where TDocument : IDocument<Guid>
         {
-            await MongoDbCreator.AddOneAsync<TDocument, Guid>(document);
+            await MongoDbCreator.AddOneAsync<TDocument, Guid>(document, cancellationToken);
         }
 
         /// <summary>
@@ -138,11 +151,12 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <param name="documents">The documents you want to add.</param>
-        public virtual async Task AddManyAsync<TDocument, TKey>(IEnumerable<TDocument> documents)
+        /// <param name="cancellationToken">An optional cancellation Token.</param>
+        public virtual async Task AddManyAsync<TDocument, TKey>(IEnumerable<TDocument> documents, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            await MongoDbCreator.AddManyAsync<TDocument, TKey>(documents);
+            await MongoDbCreator.AddManyAsync<TDocument, TKey>(documents, cancellationToken);
         }
 
         /// <summary>
@@ -151,10 +165,11 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="documents">The documents you want to add.</param>
-        public virtual async Task AddManyAsync<TDocument>(IEnumerable<TDocument> documents) 
+        /// <param name="cancellationToken">An optional cancellation Token.</param>
+        public virtual async Task AddManyAsync<TDocument>(IEnumerable<TDocument> documents, CancellationToken cancellationToken = default) 
             where TDocument : IDocument<Guid>
         {
-            await MongoDbCreator.AddManyAsync<TDocument, Guid>(documents);
+            await MongoDbCreator.AddManyAsync<TDocument, Guid>(documents, cancellationToken);
         }
 
         /// <summary>

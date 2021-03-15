@@ -18,7 +18,7 @@ namespace MongoDbGenericRepository
         /// <param name="session">The client session.</param>
         /// <param name="modifiedDocument">The document with the modifications you want to persist.</param>
         /// <param name="cancellationToken">The optional cancellation token.</param>
-        /// <returns></returns>
+        /// <returns>A boolean value indicating success.</returns>
         public virtual async Task<bool> UpdateOneAsync<TDocument, TKey>(IClientSessionHandle session, TDocument modifiedDocument, CancellationToken cancellationToken = default(CancellationToken))
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
@@ -34,7 +34,7 @@ namespace MongoDbGenericRepository
         /// <param name="session">The client session.</param>
         /// <param name="modifiedDocument">The document with the modifications you want to persist.</param>
         /// <param name="cancellationToken">The optional cancellation token.</param>
-        /// <returns></returns>
+        /// <returns>A boolean value indicating success.</returns>
         public virtual bool UpdateOne<TDocument, TKey>(IClientSessionHandle session, TDocument modifiedDocument, CancellationToken cancellationToken = default(CancellationToken))
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
@@ -51,7 +51,7 @@ namespace MongoDbGenericRepository
         /// <param name="documentToModify">The document to modify.</param>
         /// <param name="update">The update definition.</param>
         /// <param name="cancellationToken">The optional cancellation token.</param>
-        /// <returns></returns>
+        /// <returns>A boolean value indicating success.</returns>
         public virtual async Task<bool> UpdateOneAsync<TDocument, TKey>(IClientSessionHandle session, TDocument documentToModify, UpdateDefinition<TDocument> update, CancellationToken cancellationToken = default(CancellationToken))
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
@@ -68,7 +68,7 @@ namespace MongoDbGenericRepository
         /// <param name="documentToModify">The document to modify.</param>
         /// <param name="update">The update definition.</param>
         /// <param name="cancellationToken">The optional cancellation token.</param>
-        /// <returns></returns>
+        /// <returns>A boolean value indicating success.</returns>
         public virtual bool UpdateOne<TDocument, TKey>(IClientSessionHandle session, TDocument documentToModify, UpdateDefinition<TDocument> update, CancellationToken cancellationToken = default(CancellationToken))
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
@@ -87,7 +87,7 @@ namespace MongoDbGenericRepository
         /// <param name="field">The field to update.</param>
         /// <param name="value">The value of the field.</param>
         /// <param name="cancellationToken">The optional cancellation token.</param>
-        /// <returns></returns>
+        /// <returns>A boolean value indicating success.</returns>
         public virtual async Task<bool> UpdateOneAsync<TDocument, TKey, TField>(IClientSessionHandle session, TDocument documentToModify, Expression<Func<TDocument, TField>> field, TField value, CancellationToken cancellationToken = default(CancellationToken))
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
@@ -106,7 +106,7 @@ namespace MongoDbGenericRepository
         /// <param name="field">The field to update.</param>
         /// <param name="value">The value of the field.</param>
         /// <param name="cancellationToken">The optional cancellation token.</param>
-        /// <returns></returns>
+        /// <returns>A boolean value indicating success.</returns>
         public virtual bool UpdateOne<TDocument, TKey, TField>(IClientSessionHandle session, TDocument documentToModify, Expression<Func<TDocument, TField>> field, TField value, CancellationToken cancellationToken = default(CancellationToken))
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
@@ -126,7 +126,7 @@ namespace MongoDbGenericRepository
         /// <param name="value">The value of the field.</param>
         /// <param name="partitionKey">The optional partition key.</param>
         /// <param name="cancellationToken">The optional cancellation token.</param>
-        /// <returns></returns>
+        /// <returns>A boolean value indicating success.</returns>
         public virtual async Task<bool> UpdateOneAsync<TDocument, TKey, TField>(IClientSessionHandle session, FilterDefinition<TDocument> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null, CancellationToken cancellationToken = default(CancellationToken))
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
@@ -146,7 +146,7 @@ namespace MongoDbGenericRepository
         /// <param name="value">The value of the field.</param>
         /// <param name="partitionKey">The optional partition key.</param>
         /// <param name="cancellationToken">The optional cancellation token.</param>
-        /// <returns></returns>
+        /// <returns>A boolean value indicating success.</returns>
         public virtual async Task<bool> UpdateOneAsync<TDocument, TKey, TField>(IClientSessionHandle session, Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null, CancellationToken cancellationToken = default(CancellationToken))
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
@@ -166,7 +166,7 @@ namespace MongoDbGenericRepository
         /// <param name="value">The value of the field.</param>
         /// <param name="partitionKey">The optional partition key.</param>
         /// <param name="cancellationToken">The optional cancellation token.</param>
-        /// <returns></returns>
+        /// <returns>A boolean value indicating success.</returns>
         public virtual bool UpdateOne<TDocument, TKey, TField>(IClientSessionHandle session, FilterDefinition<TDocument> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null, CancellationToken cancellationToken = default(CancellationToken))
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
@@ -186,7 +186,7 @@ namespace MongoDbGenericRepository
         /// <param name="value">The value of the field.</param>
         /// <param name="partitionKey">The optional partition key.</param>
         /// <param name="cancellationToken">The optional cancellation token.</param>
-        /// <returns></returns>
+        /// <returns>A boolean value indicating success.</returns>
         public virtual bool UpdateOne<TDocument, TKey, TField>(IClientSessionHandle session, Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null, CancellationToken cancellationToken = default(CancellationToken))
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>

@@ -6,12 +6,20 @@ using MongoDbGenericRepository.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MongoDbGenericRepository.DataAccess.Create
 {
+    /// <summary>
+    /// A class to insert MongoDb document.
+    /// </summary>
     public class MongoDbCreator : DataAccessBase
     {
+        /// <summary>
+        /// The construct of the MongoDbCreator class.
+        /// </summary>
+        /// <param name="mongoDbContext">A <see cref="IMongoDbContext"/> instance.</param>
         public MongoDbCreator(IMongoDbContext mongoDbContext) : base(mongoDbContext)
         {
         }
@@ -25,12 +33,13 @@ namespace MongoDbGenericRepository.DataAccess.Create
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <param name="document">The document you want to add.</param>
-        public virtual async Task AddOneAsync<TDocument, TKey>(TDocument document)
+        /// <param name="cancellationToken">An optional cancellation Token.</param>
+        public virtual async Task AddOneAsync<TDocument, TKey>(TDocument document, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
             FormatDocument<TDocument, TKey>(document);
-            await HandlePartitioned<TDocument, TKey>(document).InsertOneAsync(document);
+            await HandlePartitioned<TDocument, TKey>(document).InsertOneAsync(document, null, cancellationToken);
         }
 
         /// <summary>
@@ -55,7 +64,8 @@ namespace MongoDbGenericRepository.DataAccess.Create
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <param name="documents">The documents you want to add.</param>
-        public virtual async Task AddManyAsync<TDocument, TKey>(IEnumerable<TDocument> documents)
+        /// <param name="cancellationToken">An optional cancellation Token.</param>
+        public virtual async Task AddManyAsync<TDocument, TKey>(IEnumerable<TDocument> documents, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -72,12 +82,12 @@ namespace MongoDbGenericRepository.DataAccess.Create
             {
                 foreach (var group in documents.GroupBy(e => ((IPartitionedDocument)e).PartitionKey))
                 {
-                    await HandlePartitioned<TDocument, TKey>(group.FirstOrDefault()).InsertManyAsync(group.ToList());
+                    await HandlePartitioned<TDocument, TKey>(group.FirstOrDefault()).InsertManyAsync(group.ToList(), null, cancellationToken);
                 }
             }
             else
             {
-                await GetCollection<TDocument, TKey>().InsertManyAsync(documents.ToList());
+                await GetCollection<TDocument, TKey>().InsertManyAsync(documents.ToList(), null, cancellationToken);
             }
         }
 
