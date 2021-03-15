@@ -87,7 +87,7 @@ namespace MongoDbGenericRepository
         /// <param name="cancellationToken">An optional cancellation Token.</param>
         public virtual async Task AddOneAsync<TDocument>(TDocument document, CancellationToken cancellationToken = default) where TDocument : IDocument<TKey>
         {
-            await MongoDbCreator.AddOneAsync<TDocument, TKey>(document);
+            await MongoDbCreator.AddOneAsync<TDocument, TKey>(document, cancellationToken);
         }
 
         /// <summary>
