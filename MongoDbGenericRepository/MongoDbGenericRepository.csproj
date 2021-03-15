@@ -4,7 +4,7 @@
     <TargetFrameworks>net452;netstandard2.0;netstandard1.5;</TargetFrameworks>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>MongoDbGenericRepository</PackageId>
-    <PackageVersion>1.4.6</PackageVersion>
+    <PackageVersion>1.4.7</PackageVersion>
     <Authors>Alexandre Spieser</Authors>
     <PackageTitle>MongoDb Generic Repository</PackageTitle>
     <Description>A generic repository implementation using the MongoDB C# Sharp 2.0 driver.</Description>
@@ -15,7 +15,7 @@
     <Copyright>Copyright 2021 (c) Alexandre Spieser. All rights reserved.</Copyright>
     <PackageTags>MongoDb Repository Generic NoSql</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.4.6</Version>
+    <Version>1.4.7</Version>
     <RepositoryUrl>https://github.com/alexandre-spieser/mongodb-generic-repository</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
   </PropertyGroup>
