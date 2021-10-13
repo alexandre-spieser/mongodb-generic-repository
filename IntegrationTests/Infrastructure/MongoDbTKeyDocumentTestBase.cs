@@ -1,5 +1,4 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-using MongoDbGenericRepository.Models;
+﻿using MongoDbGenericRepository.Models;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
