@@ -50,6 +50,30 @@ namespace MongoDbGenericRepository
             where TKey : IEquatable<TKey>;
 
         /// <summary>
+        /// Asynchronously returns one document given filter definition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="findOption">A mongodb filter option.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <param name="cancellationToken">An optional cancellation Token.</param>
+        Task<TDocument> GetOneAsync<TDocument, TKey>(FilterDefinition<TDocument> condition, FindOptions findOption = null,
+            string partitionKey = null, CancellationToken cancellationToken = default)
+            where TDocument : IDocument<TKey> where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// Returns one document given filter definition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="findOption">A mongodb filter option.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        TDocument GetOne<TDocument, TKey>(FilterDefinition<TDocument> condition, FindOptions findOption = null, string partitionKey = null)
+            where TDocument : IDocument<TKey> where TKey : IEquatable<TKey>;
+
+        /// <summary>
         /// Asynchronously returns one document given an expression filter.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
@@ -83,6 +107,29 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>;
 
+        /// <summary>
+        /// Returns true if any of the document of the collection matches the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="countOption">A mongodb counting option.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <param name="cancellationToken">An optional cancellation Token.</param>
+        Task<bool> AnyAsync<TDocument, TKey>(FilterDefinition<TDocument> condition, CountOptions countOption = null, string partitionKey = null,
+            CancellationToken cancellationToken = default)
+            where TDocument : IDocument<TKey> where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// Returns true if any of the document of the collection matches the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="countOption">A mongodb counting option.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        bool Any<TDocument, TKey>(FilterDefinition<TDocument> condition, CountOptions countOption = null, string partitionKey = null)
+            where TDocument : IDocument<TKey> where TKey : IEquatable<TKey>;
 
         /// <summary>
         /// Returns true if any of the document of the collection matches the filter condition.
@@ -112,6 +159,30 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="findOption">A mongodb filter option.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <param name="cancellationToken">An optional cancellation Token.</param>
+        Task<List<TDocument>> GetAllAsync<TDocument, TKey>(FilterDefinition<TDocument> condition,
+            FindOptions findOption = null, string partitionKey = null, CancellationToken cancellationToken = default)
+            where TDocument : IDocument<TKey> where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// Returns a list of the documents matching the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="findOption">A mongodb filter option.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        List<TDocument> GetAll<TDocument, TKey>(FilterDefinition<TDocument> condition, FindOptions findOption = null, string partitionKey = null)
+            where TDocument : IDocument<TKey> where TKey : IEquatable<TKey>;
+        
+        /// <summary>
+        /// Asynchronously returns a list of the documents matching the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="partitionKey">An optional partition key.</param>
         /// <param name="cancellationToken">An optional cancellation Token.</param>
@@ -130,6 +201,31 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>;
 
+        /// <summary>
+        /// Asynchronously counts how many documents match the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="countOption">A mongodb counting option.</param>
+        /// <param name="partitionKey">An optional partitionKey</param>
+        /// <param name="cancellationToken">An optional cancellation Token.</param>
+        Task<long> CountAsync<TDocument, TKey>(FilterDefinition<TDocument> condition, CountOptions countOption = null,
+            string partitionKey = null, CancellationToken cancellationToken = default)
+            where TDocument : IDocument<TKey> where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// Counts how many documents match the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="countOption">A mongodb counting option.</param>
+        /// <param name="partitionKey">An optional partitionKey</param>
+        long Count<TDocument, TKey>(FilterDefinition<TDocument> condition, CountOptions countOption = null,
+            string partitionKey = null)
+            where TDocument : IDocument<TKey> where TKey : IEquatable<TKey>;
+        
         /// <summary>
         /// Asynchronously counts how many documents match the filter condition.
         /// </summary>
