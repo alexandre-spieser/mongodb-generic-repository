@@ -204,6 +204,30 @@ namespace CoreIntegrationTests.Infrastructure
             // Assert
             Assert.True(null != result, GetTestName());
         }
+        
+        [Fact]
+        public async Task GetOneByFilterDefinitionAsync()
+        {
+            // Arrange
+            var document = CreateTestDocument();
+            SUT.AddOne<T, TKey>(document);
+            // Act
+            var result = await SUT.GetOneAsync<T, TKey>(Builders<T>.Filter.Eq(x => x.Id, document.Id), null, PartitionKey);
+            // Assert
+            Assert.True(null != result, GetTestName());
+        }
+        
+        [Fact]
+        public void GetOneByFilterDefinition()
+        {
+            // Arrange
+            var document = CreateTestDocument();
+            SUT.AddOne<T, TKey>(document);
+            // Act
+            var result = SUT.GetOne<T, TKey>(Builders<T>.Filter.Eq(x => x.Id, document.Id), null, PartitionKey);
+            // Assert
+            Assert.True(null != result, GetTestName());
+        }
 
         [Fact]
         public async Task GetOneAsync()
@@ -241,6 +265,30 @@ namespace CoreIntegrationTests.Infrastructure
             // Assert
             Assert.True(1 == count, GetTestName());
         }
+        
+        [Fact]
+        public async Task AnyAsyncByDefinitionReturnsTrue()
+        {
+            // Arrange
+            var document = CreateTestDocument();
+            SUT.AddOne<T, TKey>(document);
+            // Act
+            var result = await SUT.AnyAsync<T, TKey>(Builders<T>.Filter.Eq(x => x.Id, document.Id), null, PartitionKey);
+            // Assert
+            Assert.True(result, GetTestName());
+        }
+
+        [Fact]
+        public async Task AnyAsyncByDefinitionReturnsFalse()
+        {
+            // Arrange
+            var document = CreateTestDocument();
+            SUT.AddOne<T, TKey>(document);
+            // Act
+            var result = await SUT.AnyAsync<T, TKey>(Builders<T>.Filter.Eq(x => x.Id, document.Init<TKey>()), null, PartitionKey);
+            // Assert
+            Assert.False(result, GetTestName());
+        }
 
         [Fact]
         public async Task AnyAsyncReturnsTrue()
@@ -262,6 +310,30 @@ namespace CoreIntegrationTests.Infrastructure
             SUT.AddOne<T, TKey>(document);
             // Act
             var result = await SUT.AnyAsync<T, TKey>(x => x.Id.Equals(document.Init<TKey>()), PartitionKey);
+            // Assert
+            Assert.False(result, GetTestName());
+        }
+        
+        [Fact]
+        public void AnyByDefinitionReturnsTrue()
+        {
+            // Arrange
+            var document = CreateTestDocument();
+            SUT.AddOne<T, TKey>(document);
+            // Act
+            var result = SUT.Any<T, TKey>(Builders<T>.Filter.Eq(x => x.Id, document.Id), null, PartitionKey);
+            // Assert
+            Assert.True(result, GetTestName());
+        }
+
+        [Fact]
+        public void AnyByDefinitionReturnsFalse()
+        {
+            // Arrange
+            var document = CreateTestDocument();
+            SUT.AddOne<T, TKey>(document);
+            // Act
+            var result = SUT.Any<T, TKey>(Builders<T>.Filter.Eq(x => x.Id, document.Init<TKey>()), null, PartitionKey);
             // Assert
             Assert.False(result, GetTestName());
         }
@@ -288,6 +360,34 @@ namespace CoreIntegrationTests.Infrastructure
             var result = SUT.Any<T, TKey>(x => x.Id.Equals(document.Init<TKey>()), PartitionKey);
             // Assert
             Assert.False(result, GetTestName());
+        }
+        
+        [Fact]
+        public async Task GetAllByDefinitionAsync()
+        {
+            // Arrange
+            var documents = CreateTestDocuments(5);
+            var content = GetContent();
+            documents.ForEach(e => e.SomeContent = content);
+            SUT.AddMany<T, TKey>(documents);
+            // Act
+            var result = await SUT.GetAllAsync<T, TKey>(Builders<T>.Filter.Eq(x => x.SomeContent, content), null, PartitionKey);
+            // Assert
+            Assert.True(5 == result.Count, GetTestName());
+        }
+
+        [Fact]
+        public void GetAllByDefinition()
+        {
+            // Arrange
+            var documents = CreateTestDocuments(5);
+            var content = GetContent();
+            documents.ForEach(e => e.SomeContent = content);
+            SUT.AddMany<T, TKey>(documents);
+            // Act
+            var result = SUT.GetAll<T, TKey>(Builders<T>.Filter.Eq(x => x.SomeContent, content), null, PartitionKey);
+            // Assert
+            Assert.True(5 == result.Count, GetTestName());
         }
 
         [Fact]
@@ -316,6 +416,34 @@ namespace CoreIntegrationTests.Infrastructure
             var result = SUT.GetAll<T, TKey>(x => x.SomeContent == content, PartitionKey);
             // Assert
             Assert.True(5 == result.Count, GetTestName());
+        }
+        
+        [Fact]
+        public async Task CountByDefinitionAsync()
+        {
+            // Arrange
+            var documents = CreateTestDocuments(5);
+            var content = GetContent();
+            documents.ForEach(e => e.SomeContent = content);
+            SUT.AddMany<T, TKey>(documents);
+            // Act
+            var result = await SUT.CountAsync<T, TKey>(Builders<T>.Filter.Eq(x => x.SomeContent, content), null, PartitionKey);
+            // Assert
+            Assert.True(5 == result, GetTestName());
+        }
+
+        [Fact]
+        public void CountByDefinition()
+        {
+            // Arrange
+            var documents = CreateTestDocuments(5);
+            var content = GetContent();
+            documents.ForEach(e => e.SomeContent = content);
+            SUT.AddMany<T, TKey>(documents);
+            // Act
+            var result = SUT.Count<T, TKey>(Builders<T>.Filter.Eq(x => x.SomeContent, content), null, PartitionKey);
+            // Assert
+            Assert.True(5 == result, GetTestName());
         }
 
         [Fact]
