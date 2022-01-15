@@ -21,6 +21,18 @@ namespace MongoDbGenericRepository
         /// Asynchronously returns a paginated list of the documents matching the filter condition.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="findOption">A mongodb filter option.</param>
+        /// <param name="skipNumber">The number of documents you want to skip. Default value is 0.</param>
+        /// <param name="takeNumber">The number of documents you want to take. Default value is 50.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        Task<List<TDocument>> GetPaginatedAsync<TDocument>(FilterDefinition<TDocument> condition, FindOptions findOption = null, int skipNumber = 0, int takeNumber = 50, string partitionKey = null)
+            where TDocument : IDocument;
+        
+        /// <summary>
+        /// Asynchronously returns a paginated list of the documents matching the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="filter"></param>
         /// <param name="skipNumber">The number of documents you want to skip. Default value is 0.</param>
         /// <param name="takeNumber">The number of documents you want to take. Default value is 50.</param>
@@ -28,6 +40,20 @@ namespace MongoDbGenericRepository
         Task<List<TDocument>> GetPaginatedAsync<TDocument>(Expression<Func<TDocument, bool>> filter, int skipNumber = 0, int takeNumber = 50, string partitionKey = null)
             where TDocument : IDocument;
 
+        /// <summary>
+        /// Asynchronously returns a paginated list of the documents matching the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="findOption">A mongodb filter option.</param>
+        /// <param name="skipNumber">The number of documents you want to skip. Default value is 0.</param>
+        /// <param name="takeNumber">The number of documents you want to take. Default value is 50.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        Task<List<TDocument>> GetPaginatedAsync<TDocument, TKey>(FilterDefinition<TDocument> condition, FindOptions findOption = null, int skipNumber = 0, int takeNumber = 50, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
+        
         /// <summary>
         /// Asynchronously returns a paginated list of the documents matching the filter condition.
         /// </summary>

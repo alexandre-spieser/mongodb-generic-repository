@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using MongoDB.Driver;
 
 namespace MongoDbGenericRepository
 {
@@ -32,6 +33,17 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>;
 
         /// <summary>
+        /// Deletes a document matching the condition of the filter definition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="deleteOption">A mongodb delete option.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <returns>The number of documents deleted.</returns>
+        long DeleteOne<TDocument>(FilterDefinition<TDocument> condition, DeleteOptions deleteOption = null, string partitionKey = null)
+            where TDocument : IDocument<TKey>;
+        
+        /// <summary>
         /// Deletes a document matching the condition of the LINQ expression filter.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
@@ -39,6 +51,17 @@ namespace MongoDbGenericRepository
         /// <param name="partitionKey">An optional partition key.</param>
         /// <returns>The number of documents deleted.</returns>
         long DeleteOne<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
+            where TDocument : IDocument<TKey>;
+        
+        /// <summary>
+        /// Asynchronously deletes a document matching the condition of the filter definition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="deleteOption">A mongodb delete option.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <returns>The number of documents deleted.</returns>
+        Task<long> DeleteOneAsync<TDocument>(FilterDefinition<TDocument> condition, DeleteOptions deleteOption = null, string partitionKey = null)
             where TDocument : IDocument<TKey>;
 
         /// <summary>
@@ -49,6 +72,17 @@ namespace MongoDbGenericRepository
         /// <param name="partitionKey">An optional partition key.</param>
         /// <returns>The number of documents deleted.</returns>
         Task<long> DeleteOneAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
+            where TDocument : IDocument<TKey>;
+
+        /// <summary>
+        /// Asynchronously deletes the documents matching the condition of the filter definition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="deleteOption">A mongodb delete option.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <returns>The number of documents deleted.</returns>
+        Task<long> DeleteManyAsync<TDocument>(FilterDefinition<TDocument> condition, DeleteOptions deleteOption = null, string partitionKey = null)
             where TDocument : IDocument<TKey>;
 
         /// <summary>
@@ -79,6 +113,18 @@ namespace MongoDbGenericRepository
         long DeleteMany<TDocument>(IEnumerable<TDocument> documents)
             where TDocument : IDocument<TKey>;
 
+        /// <summary>
+        /// Deletes the documents matching the condition of the filter definition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="deleteOption">A mongodb delete option.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <returns>The number of documents deleted.</returns>
+        long DeleteMany<TDocument>(FilterDefinition<TDocument> condition, DeleteOptions deleteOption = null, string partitionKey = null)
+            where TDocument : IDocument<TKey>;
+        
         /// <summary>
         /// Deletes the documents matching the condition of the LINQ expression filter.
         /// </summary>
@@ -141,6 +187,20 @@ namespace MongoDbGenericRepository
         }
 
         /// <summary>
+        /// Deletes a document matching the condition of the filter definition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="deleteOption">A mongodb delete option.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <returns>The number of documents deleted.</returns>
+        public virtual long DeleteOne<TDocument>(FilterDefinition<TDocument> condition, DeleteOptions deleteOption = null,
+            string partitionKey = null) where TDocument : IDocument<TKey>
+        {
+            return MongoDbEraser.DeleteOne<TDocument, TKey>(condition, deleteOption, partitionKey).DeletedCount;
+        }
+
+        /// <summary>
         /// Deletes a document matching the condition of the LINQ expression filter.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
@@ -154,6 +214,20 @@ namespace MongoDbGenericRepository
         }
 
         /// <summary>
+        /// Deletes a document matching the condition of the filter definition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="deleteOption">A mongodb delete option.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <returns>The number of documents deleted.</returns>
+        public virtual async Task<long> DeleteOneAsync<TDocument>(FilterDefinition<TDocument> condition, DeleteOptions deleteOption = null, string partitionKey = null) where TDocument : IDocument<TKey>
+        {
+            var result = await MongoDbEraser.DeleteOneAsync<TDocument, TKey>(condition, deleteOption, partitionKey);
+            return result.DeletedCount;
+        }
+
+        /// <summary>
         /// Asynchronously deletes a document matching the condition of the LINQ expression filter.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
@@ -164,6 +238,21 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
         {
             return await MongoDbEraser.DeleteOneAsync<TDocument, TKey>(filter, partitionKey);
+        }
+
+        /// <summary>
+        /// Asynchronously deletes the documents matching the condition of the filter definition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="deleteOption">A mongodb delete option.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <returns>The number of documents deleted.</returns>
+        public virtual async Task<long> DeleteManyAsync<TDocument>(FilterDefinition<TDocument> condition, DeleteOptions deleteOption = null,
+            string partitionKey = null) where TDocument : IDocument<TKey>
+        {
+            var result = await MongoDbEraser.DeleteManyAsync<TDocument, TKey>(condition, deleteOption, partitionKey);
+            return result.DeletedCount;
         }
 
         /// <summary>
@@ -201,6 +290,19 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
         {
             return MongoDbEraser.DeleteMany<TDocument, TKey>(documents);
+        }
+
+        /// <summary>
+        /// Deletes the documents matching the condition of the filter definition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="deleteOption">A mongodb delete option.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <returns>The number of documents deleted.</returns>
+        public long DeleteMany<TDocument>(FilterDefinition<TDocument> condition, DeleteOptions deleteOption = null, string partitionKey = null) where TDocument : IDocument<TKey>
+        {
+            return MongoDbEraser.DeleteMany<TDocument, TKey>(condition, deleteOption, partitionKey).DeletedCount;
         }
 
         /// <summary>

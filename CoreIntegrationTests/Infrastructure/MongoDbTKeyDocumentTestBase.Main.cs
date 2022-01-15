@@ -267,6 +267,19 @@ namespace CoreIntegrationTests.Infrastructure
         }
         
         [Fact]
+        public void GetCursorFilterDefinition()
+        {
+            // Arrange
+            var document = CreateTestDocument();
+            SUT.AddOne<T, TKey>(document);
+            // Act
+            var cursor = SUT.GetCursor<T, TKey>(Builders<T>.Filter.Eq(x => x.Id, document.Id), partitionKey: PartitionKey);
+            var count = cursor.CountDocuments();
+            // Assert
+            Assert.True(1 == count, GetTestName());
+        }
+        
+        [Fact]
         public async Task AnyAsyncByDefinitionReturnsTrue()
         {
             // Arrange
@@ -503,6 +516,19 @@ namespace CoreIntegrationTests.Infrastructure
             Assert.True(1 == result);
             Assert.False(SUT.Any<T, TKey>(e => e.Id.Equals(document.Id), PartitionKey), GetTestName());
         }
+        
+        [Fact]
+        public void DeleteOneFilterDefinition()
+        {
+            // Arrange
+            var document = CreateTestDocument();
+            SUT.AddOne<T, TKey>(document);
+            // Act
+            var result = SUT.DeleteOne<T, TKey>(Builders<T>.Filter.Eq(x => x.Id, document.Id), partitionKey: PartitionKey);
+            // Assert
+            Assert.True(1 == result);
+            Assert.False(SUT.Any<T, TKey>(e => e.Id.Equals(document.Id), PartitionKey), GetTestName());
+        }
 
         [Fact]
         public async Task DeleteOneAsync()
@@ -529,6 +555,19 @@ namespace CoreIntegrationTests.Infrastructure
             Assert.True(1 == result);
             Assert.False(SUT.Any<T, TKey>(e => e.Id.Equals(document.Id), PartitionKey), GetTestName());
         }
+        
+        [Fact]
+        public async Task DeleteOneAsyncFilterDefinition()
+        {
+            // Arrange
+            var document = CreateTestDocument();
+            SUT.AddOne<T, TKey>(document);
+            // Act
+            var result = await SUT.DeleteOneAsync<T, TKey>(Builders<T>.Filter.Eq(x => x.Id, document.Id), partitionKey: PartitionKey);
+            // Assert
+            Assert.True(1 == result);
+            Assert.False(SUT.Any<T, TKey>(e => e.Id.Equals(document.Id), PartitionKey), GetTestName());
+        }
 
         [Fact]
         public async Task DeleteManyAsyncLinq()
@@ -540,6 +579,21 @@ namespace CoreIntegrationTests.Infrastructure
             SUT.AddMany<T, TKey>(documents);
             // Act
             var result = await SUT.DeleteManyAsync<T, TKey>(e => e.SomeContent == criteria, PartitionKey);
+            // Assert
+            Assert.True(5 == result);
+            Assert.False(SUT.Any<T, TKey>(e => e.SomeContent == criteria, PartitionKey), GetTestName());
+        }
+        
+        [Fact]
+        public async Task DeleteManyAsyncFilterDefinition()
+        {
+            // Arrange
+            var criteria = $"{GetTestName()}.{DocumentTypeName}";
+            var documents = CreateTestDocuments(5);
+            documents.ForEach(e => e.SomeContent = criteria);
+            SUT.AddMany<T, TKey>(documents);
+            // Act
+            var result = await SUT.DeleteManyAsync<T, TKey>(Builders<T>.Filter.Eq(x => x.SomeContent, criteria), partitionKey: PartitionKey);
             // Assert
             Assert.True(5 == result);
             Assert.False(SUT.Any<T, TKey>(e => e.SomeContent == criteria, PartitionKey), GetTestName());
@@ -583,6 +637,21 @@ namespace CoreIntegrationTests.Infrastructure
             SUT.AddMany<T, TKey>(documents);
             // Act
             var result = SUT.DeleteMany<T, TKey>(e => e.SomeContent == criteria, PartitionKey);
+            // Assert
+            Assert.True(5 == result);
+            Assert.False(SUT.Any<T, TKey>(e => e.SomeContent == criteria, PartitionKey), GetTestName());
+        }
+        
+        [Fact]
+        public void DeleteManyFilterDefinition()
+        {
+            // Arrange
+            var criteria = $"{GetTestName()}.{DocumentTypeName}";
+            var documents = CreateTestDocuments(5);
+            documents.ForEach(e => e.SomeContent = criteria);
+            SUT.AddMany<T, TKey>(documents);
+            // Act
+            var result = SUT.DeleteMany<T, TKey>(Builders<T>.Filter.Eq(x => x.SomeContent, criteria), partitionKey: PartitionKey);
             // Assert
             Assert.True(5 == result);
             Assert.False(SUT.Any<T, TKey>(e => e.SomeContent == criteria, PartitionKey), GetTestName());
@@ -645,6 +714,59 @@ namespace CoreIntegrationTests.Infrastructure
             Assert.True(someDate.Minute == result.SomeDate.Minute, GetTestName());
             Assert.True(someDate.Second == result.SomeDate.Second, GetTestName());
         }
+        
+        [Fact]
+        public async Task ProjectOneAsyncFilterDefinitionProjectDefinition()
+        {
+            // Arrange
+            var projectionBuilder = new ProjectionDefinitionBuilder<T>();
+            var someContent = GetContent();
+            var someDate = DateTime.UtcNow;
+            var document = CreateTestDocument();
+            document.SomeContent = someContent;
+            document.Nested.SomeDate = someDate;
+            SUT.AddOne<T, TKey>(document);
+            // Act
+            var result = await SUT.ProjectOneAsync<T, MyTestProjection, TKey>(
+                Builders<T>.Filter.Eq(x => x.Id, document.Id),
+                projectionBuilder.Expression(x => new MyTestProjection
+                {
+                    SomeContent = x.SomeContent,
+                    SomeDate = x.Nested.SomeDate
+                }),
+                partitionKey: PartitionKey);
+            // Assert
+            Assert.True(null != result, GetTestName());
+            Assert.True(someContent == result.SomeContent, GetTestName());
+            Assert.True(someDate.Minute == result.SomeDate.Minute, GetTestName());
+            Assert.True(someDate.Second == result.SomeDate.Second, GetTestName());
+        }
+        
+        [Fact]
+        public async Task ProjectOneAsyncFilterDefinitionProjectExpression()
+        {
+            // Arrange
+            var someContent = GetContent();
+            var someDate = DateTime.UtcNow;
+            var document = CreateTestDocument();
+            document.SomeContent = someContent;
+            document.Nested.SomeDate = someDate;
+            SUT.AddOne<T, TKey>(document);
+            // Act
+            var result = await SUT.ProjectOneAsync<T, MyTestProjection, TKey>(
+                Builders<T>.Filter.Eq(x => x.Id, document.Id),
+                x => new MyTestProjection
+                {
+                    SomeContent = x.SomeContent,
+                    SomeDate = x.Nested.SomeDate
+                },
+                partitionKey: PartitionKey);
+            // Assert
+            Assert.True(null != result, GetTestName());
+            Assert.True(someContent == result.SomeContent, GetTestName());
+            Assert.True(someDate.Minute == result.SomeDate.Minute, GetTestName());
+            Assert.True(someDate.Second == result.SomeDate.Second, GetTestName());
+        }
 
         [Fact]
         public void ProjectOne()
@@ -665,6 +787,59 @@ namespace CoreIntegrationTests.Infrastructure
                     SomeDate = x.Nested.SomeDate
                 },
                 PartitionKey);
+            // Assert
+            Assert.True(null != result, GetTestName());
+            Assert.True(someContent == result.SomeContent, GetTestName());
+            Assert.True(someDate.Minute == result.SomeDate.Minute, GetTestName());
+            Assert.True(someDate.Second == result.SomeDate.Second, GetTestName());
+        }
+        
+        [Fact]
+        public void ProjectOneFilterDefinitionProjectDefinition()
+        {
+            // Arrange
+            var projectionBuilder = new ProjectionDefinitionBuilder<T>();
+            var someContent = GetContent();
+            var someDate = DateTime.UtcNow;
+            var document = CreateTestDocument();
+            document.SomeContent = someContent;
+            document.Nested.SomeDate = someDate;
+            SUT.AddOne<T, TKey>(document);
+            // Act
+            var result = SUT.ProjectOne<T, MyTestProjection, TKey>(
+                Builders<T>.Filter.Eq(x => x.Id, document.Id),
+                projectionBuilder.Expression(x => new MyTestProjection
+                {
+                    SomeContent = x.SomeContent,
+                    SomeDate = x.Nested.SomeDate
+                }),
+                partitionKey: PartitionKey);
+            // Assert
+            Assert.True(null != result, GetTestName());
+            Assert.True(someContent == result.SomeContent, GetTestName());
+            Assert.True(someDate.Minute == result.SomeDate.Minute, GetTestName());
+            Assert.True(someDate.Second == result.SomeDate.Second, GetTestName());
+        }
+        
+        [Fact]
+        public void ProjectOneFilterDefinitionProjectExpression()
+        {
+            // Arrange
+            var someContent = GetContent();
+            var someDate = DateTime.UtcNow;
+            var document = CreateTestDocument();
+            document.SomeContent = someContent;
+            document.Nested.SomeDate = someDate;
+            SUT.AddOne<T, TKey>(document);
+            // Act
+            var result = SUT.ProjectOne<T, MyTestProjection, TKey>(
+                Builders<T>.Filter.Eq(x => x.Id, document.Id),
+                x => new MyTestProjection
+                {
+                    SomeContent = x.SomeContent,
+                    SomeDate = x.Nested.SomeDate
+                },
+                partitionKey: PartitionKey);
             // Assert
             Assert.True(null != result, GetTestName());
             Assert.True(someContent == result.SomeContent, GetTestName());
@@ -701,6 +876,67 @@ namespace CoreIntegrationTests.Infrastructure
             Assert.True(someDate.Minute == result.First().SomeDate.Minute, GetTestName());
             Assert.True(someDate.Second == result.First().SomeDate.Second, GetTestName());
         }
+        
+        [Fact]
+        public async Task ProjectManyAsyncFilterDefinitionProjectDefinition()
+        {
+            // Arrange
+            var projectionBuilder = new ProjectionDefinitionBuilder<T>();
+            var someContent = GetContent();
+            var someDate = DateTime.UtcNow;
+            var documents = CreateTestDocuments(5);
+            documents.ForEach(e =>
+            {
+                e.SomeContent = someContent;
+                e.Nested.SomeDate = someDate;
+            });
+
+            SUT.AddMany<T, TKey>(documents);
+            // Act
+            var result = await SUT.ProjectManyAsync<T, MyTestProjection, TKey>(
+                Builders<T>.Filter.Eq(x => x.SomeContent, someContent),
+                projectionBuilder.Expression(x => new MyTestProjection
+                {
+                    SomeContent = x.SomeContent,
+                    SomeDate = x.Nested.SomeDate
+                }),
+                partitionKey: PartitionKey);
+            // Assert
+            Assert.True(5 == result.Count, GetTestName());
+            Assert.True(someContent == result.First().SomeContent, GetTestName());
+            Assert.True(someDate.Minute == result.First().SomeDate.Minute, GetTestName());
+            Assert.True(someDate.Second == result.First().SomeDate.Second, GetTestName());
+        }
+        
+        [Fact]
+        public async Task ProjectManyAsyncFilterDefinitionProjectExpression()
+        {
+            // Arrange
+            var someContent = GetContent();
+            var someDate = DateTime.UtcNow;
+            var documents = CreateTestDocuments(5);
+            documents.ForEach(e =>
+            {
+                e.SomeContent = someContent;
+                e.Nested.SomeDate = someDate;
+            });
+
+            SUT.AddMany<T, TKey>(documents);
+            // Act
+            var result = await SUT.ProjectManyAsync<T, MyTestProjection, TKey>(
+                Builders<T>.Filter.Eq(x => x.SomeContent, someContent),
+                x => new MyTestProjection
+                {
+                    SomeContent = x.SomeContent,
+                    SomeDate = x.Nested.SomeDate
+                },
+                partitionKey: PartitionKey);
+            // Assert
+            Assert.True(5 == result.Count, GetTestName());
+            Assert.True(someContent == result.First().SomeContent, GetTestName());
+            Assert.True(someDate.Minute == result.First().SomeDate.Minute, GetTestName());
+            Assert.True(someDate.Second == result.First().SomeDate.Second, GetTestName());
+        }
 
         [Fact]
         public void ProjectMany()
@@ -725,6 +961,67 @@ namespace CoreIntegrationTests.Infrastructure
                     SomeDate = x.Nested.SomeDate
                 },
                 PartitionKey);
+            // Assert
+            Assert.True(5 == result.Count, GetTestName());
+            Assert.True(someContent == result.First().SomeContent, GetTestName());
+            Assert.True(someDate.Minute == result.First().SomeDate.Minute, GetTestName());
+            Assert.True(someDate.Second == result.First().SomeDate.Second, GetTestName());
+        }
+        
+        [Fact]
+        public void ProjectManyFilterDefinitionProjectDefinition()
+        {
+            // Arrange
+            var projectionBuilder = new ProjectionDefinitionBuilder<T>();
+            var someContent = GetContent();
+            var someDate = DateTime.UtcNow;
+            var documents = CreateTestDocuments(5);
+            documents.ForEach(e =>
+            {
+                e.SomeContent = someContent;
+                e.Nested.SomeDate = someDate;
+            });
+
+            SUT.AddMany<T, TKey>(documents);
+            // Act
+            var result = SUT.ProjectMany<T, MyTestProjection, TKey>(
+                Builders<T>.Filter.Eq(x => x.SomeContent, someContent),
+                projectionBuilder.Expression(x => new MyTestProjection
+                {
+                    SomeContent = x.SomeContent,
+                    SomeDate = x.Nested.SomeDate
+                }),
+                partitionKey:PartitionKey);
+            // Assert
+            Assert.True(5 == result.Count, GetTestName());
+            Assert.True(someContent == result.First().SomeContent, GetTestName());
+            Assert.True(someDate.Minute == result.First().SomeDate.Minute, GetTestName());
+            Assert.True(someDate.Second == result.First().SomeDate.Second, GetTestName());
+        }
+        
+        [Fact]
+        public void ProjectManyFilterDefinitionProjectExpression()
+        {
+            // Arrange
+            var someContent = GetContent();
+            var someDate = DateTime.UtcNow;
+            var documents = CreateTestDocuments(5);
+            documents.ForEach(e =>
+            {
+                e.SomeContent = someContent;
+                e.Nested.SomeDate = someDate;
+            });
+
+            SUT.AddMany<T, TKey>(documents);
+            // Act
+            var result = SUT.ProjectMany<T, MyTestProjection, TKey>(
+                Builders<T>.Filter.Eq(x => x.SomeContent, someContent),
+                x => new MyTestProjection
+                {
+                    SomeContent = x.SomeContent,
+                    SomeDate = x.Nested.SomeDate
+                },
+                partitionKey:PartitionKey);
             // Assert
             Assert.True(5 == result.Count, GetTestName());
             Assert.True(someContent == result.First().SomeContent, GetTestName());
@@ -759,6 +1056,29 @@ namespace CoreIntegrationTests.Infrastructure
             Assert.Equal(expectedMax.Id, result.Id);
         }
 
+        [Fact] 
+        public async Task GetByMaxAsyncFilterDefinition()
+        {
+            // Arrange
+            var criteria = $"{GetTestName()}.{DocumentTypeName}.{Guid.NewGuid()}";
+            var documents = CreateTestDocuments(5);
+            var i = 1;
+            documents.ForEach(e =>
+            {
+                e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
+                e.SomeContent = criteria;
+            });
+            SUT.AddMany<T, TKey>(documents);
+            var expectedMax = documents.OrderByDescending(e => e.Nested.SomeDate).First();
+
+            // Act
+            var result = await SUT.GetByMaxAsync<T, TKey>( Builders<T>.Filter.Eq(e => e.SomeContent, criteria), e => e.Nested.SomeDate, partitionKey: PartitionKey);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(expectedMax.Id, result.Id);
+        }
+
         [Fact]
         public void GetByMax()
         {
@@ -776,6 +1096,29 @@ namespace CoreIntegrationTests.Infrastructure
 
             // Act
             var result = SUT.GetByMax<T, TKey>(e => e.SomeContent == criteria, e => e.Nested.SomeDate, PartitionKey);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(expectedMax.Id, result.Id);
+        }
+        
+        [Fact]
+        public void GetByMaxFilterDefinition()
+        {
+            // Arrange
+            var criteria = $"{GetTestName()}.{DocumentTypeName}.{Guid.NewGuid()}";
+            var documents = CreateTestDocuments(5);
+            var i = 1;
+            documents.ForEach(e =>
+            {
+                e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
+                e.SomeContent = criteria;
+            });
+            SUT.AddMany<T, TKey>(documents);
+            var expectedMax = documents.OrderByDescending(e => e.Nested.SomeDate).First();
+
+            // Act
+            var result = SUT.GetByMax<T, TKey>(Builders<T>.Filter.Eq(e => e.SomeContent, criteria), e => e.Nested.SomeDate, partitionKey: PartitionKey);
 
             // Assert
             Assert.NotNull(result);
@@ -804,6 +1147,29 @@ namespace CoreIntegrationTests.Infrastructure
             Assert.False(result == default(DateTime));
             Assert.Equal(expectedMax.Nested.SomeDate.Date, result.Date);
         }
+        
+        [Fact]
+        public void GetMaxValueFilterDefinition()
+        {
+            // Arrange
+            var criteria = $"{GetTestName()}.{DocumentTypeName}.{Guid.NewGuid()}";
+            var documents = CreateTestDocuments(5);
+            var i = 1;
+            documents.ForEach(e =>
+            {
+                e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
+                e.SomeContent = criteria;
+            });
+            SUT.AddMany<T, TKey>(documents);
+            var expectedMax = documents.OrderByDescending(e => e.Nested.SomeDate).First();
+
+            // Act
+            var result = SUT.GetMaxValue<T, TKey, DateTime>(Builders<T>.Filter.Eq(e => e.SomeContent, criteria), e => e.Nested.SomeDate, partitionKey: PartitionKey);
+
+            // Assert
+            Assert.False(result == default(DateTime));
+            Assert.Equal(expectedMax.Nested.SomeDate.Date, result.Date);
+        }
 
         [Fact]
         public async Task GetMaxValueAsync()
@@ -822,6 +1188,30 @@ namespace CoreIntegrationTests.Infrastructure
 
             // Act
             var result = await SUT.GetMaxValueAsync<T, TKey, DateTime>(e => e.SomeContent == criteria, e => e.Nested.SomeDate, PartitionKey);
+
+            // Assert
+            Assert.False(result == default(DateTime));
+            Assert.Equal(expectedMax.Nested.SomeDate.Date, result.Date);
+        }
+        
+        [Fact]
+        public async Task GetMaxValueAsyncFilterDefinition()
+        {
+            // Arrange
+            var criteria = $"{GetTestName()}.{DocumentTypeName}.{Guid.NewGuid()}";
+            var documents = CreateTestDocuments(5);
+            var i = 1;
+            documents.ForEach(e =>
+            {
+                e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
+                e.SomeContent = criteria;
+            });
+            SUT.AddMany<T, TKey>(documents);
+            var expectedMax = documents.OrderByDescending(e => e.Nested.SomeDate).First();
+
+            // Act
+            var result = await SUT.GetMaxValueAsync<T, TKey, DateTime>(Builders<T>.Filter.Eq(e => e.SomeContent, criteria),
+                e => e.Nested.SomeDate, partitionKey: PartitionKey);
 
             // Assert
             Assert.False(result == default(DateTime));
@@ -850,6 +1240,30 @@ namespace CoreIntegrationTests.Infrastructure
             Assert.NotNull(result);
             Assert.Equal(expectedMin.Id, result.Id);
         }
+        
+        [Fact]
+        public async Task GetByMinAsyncFilterDefinition()
+        {
+            // Arrange
+            var criteria = $"{GetTestName()}.{DocumentTypeName}.{Guid.NewGuid()}";
+            var documents = CreateTestDocuments(5);
+            var i = 1;
+            documents.ForEach(e =>
+            {
+                e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
+                e.SomeContent = criteria;
+            });
+            SUT.AddMany<T, TKey>(documents);
+            var expectedMin = documents.OrderBy(e => e.Nested.SomeDate).First();
+
+            // Act
+            var result = await SUT.GetByMinAsync<T, TKey>(Builders<T>.Filter.Eq(e => e.SomeContent, criteria), e => e.Nested.SomeDate,
+                partitionKey: PartitionKey);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(expectedMin.Id, result.Id);
+        }
 
         [Fact]
         public void GetByMin()
@@ -868,6 +1282,30 @@ namespace CoreIntegrationTests.Infrastructure
 
             // Act
             var result = SUT.GetByMin<T, TKey>(e => e.SomeContent == criteria, e => e.Nested.SomeDate, PartitionKey);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(expectedMin.Id, result.Id);
+        }
+        
+        [Fact]
+        public void GetByMinFilterCriteria()
+        {
+            // Arrange
+            var criteria = $"{GetTestName()}.{DocumentTypeName}.{Guid.NewGuid()}";
+            var documents = CreateTestDocuments(5);
+            var i = 1;
+            documents.ForEach(e =>
+            {
+                e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
+                e.SomeContent = criteria;
+            });
+            SUT.AddMany<T, TKey>(documents);
+            var expectedMin = documents.OrderBy(e => e.Nested.SomeDate).First();
+
+            // Act
+            var result = SUT.GetByMin<T, TKey>(Builders<T>.Filter.Eq(e => e.SomeContent, criteria), e => e.Nested.SomeDate,
+                partitionKey: PartitionKey);
 
             // Assert
             Assert.NotNull(result);
@@ -896,6 +1334,30 @@ namespace CoreIntegrationTests.Infrastructure
             Assert.True(result != default(DateTime));
             Assert.Equal(expectedMin.Nested.SomeDate.Date, result.Date);
         }
+        
+        [Fact]
+        public void GetMinValueFilterDefinition()
+        {
+            // Arrange
+            var criteria = $"{GetTestName()}.{DocumentTypeName}.{Guid.NewGuid()}";
+            var documents = CreateTestDocuments(5);
+            var i = 1;
+            documents.ForEach(e =>
+            {
+                e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
+                e.SomeContent = criteria;
+            });
+            SUT.AddMany<T, TKey>(documents);
+            var expectedMin = documents.OrderBy(e => e.Nested.SomeDate).First();
+
+            // Act
+            var result = SUT.GetMinValue<T, TKey, DateTime>(Builders<T>.Filter.Eq(e => e.SomeContent, criteria), e => e.Nested.SomeDate,
+                partitionKey: PartitionKey);
+
+            // Assert
+            Assert.True(result != default(DateTime));
+            Assert.Equal(expectedMin.Nested.SomeDate.Date, result.Date);
+        }
 
         [Fact]
         public async Task GetMinValueAsync()
@@ -914,6 +1376,30 @@ namespace CoreIntegrationTests.Infrastructure
 
             // Act
             var result = await SUT.GetMinValueAsync<T, TKey, DateTime>(e => e.SomeContent == criteria, e => e.Nested.SomeDate, PartitionKey);
+
+            // Assert
+            Assert.True(result != default(DateTime));
+            Assert.Equal(expectedMin.Nested.SomeDate.Date, result.Date);
+        }
+        
+        [Fact]
+        public async Task GetMinValueAsyncFilterDefinition()
+        {
+            // Arrange
+            var criteria = $"{GetTestName()}.{DocumentTypeName}.{Guid.NewGuid()}";
+            var documents = CreateTestDocuments(5);
+            var i = 1;
+            documents.ForEach(e =>
+            {
+                e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
+                e.SomeContent = criteria;
+            });
+            SUT.AddMany<T, TKey>(documents);
+            var expectedMin = documents.OrderBy(e => e.Nested.SomeDate).First();
+
+            // Act
+            var result = await SUT.GetMinValueAsync<T, TKey, DateTime>(Builders<T>.Filter.Eq(e => e.SomeContent, criteria),
+                e => e.Nested.SomeDate, partitionKey: PartitionKey);
 
             // Assert
             Assert.True(result != default(DateTime));
@@ -1230,6 +1716,46 @@ namespace CoreIntegrationTests.Infrastructure
             Assert.True(!result.Contains(notExpected));
             Assert.Equal(expectedFirstResult.Id, result[0].Id);
         }
+        
+        [Fact]
+        public async Task GetSortedPaginatedAsyncFilterDefinition()
+        {
+            // Arrange
+            var content = $"{Guid.NewGuid()}";
+            var documents = CreateTestDocuments(10);
+            for (var i = 0; i < 5; i++)
+            {
+                documents[i].GroupingKey = 8;
+                documents[i].Nested.SomeAmount = Random.Next(1, 500000);
+                documents[i].SomeContent = content;
+            }
+            for (var i = 5; i < documents.Count; i++)
+            {
+                documents[i].GroupingKey = 9;
+                documents[i].SomeContent = content;
+            }
+            SUT.AddMany<T, TKey>(documents);
+
+            documents = documents.OrderByDescending(e => e.Nested.SomeAmount).ToList();
+            var notExpected = documents.First();
+            var expectedFirstResult = documents[1];
+
+            // Act
+            var condition = Builders<T>.Filter.And(Builders<T>.Filter.Eq(x => x.GroupingKey, 8),
+                Builders<T>.Filter.Eq(x => x.SomeContent, content));
+            var result = await SUT.GetSortedPaginatedAsync<T, TKey>(
+                condition,
+                e => e.Nested.SomeAmount,
+                null,
+                false,
+                1,5,
+                PartitionKey);
+
+            // Assert
+            Assert.Equal(4, result.Count);
+            Assert.True(!result.Contains(notExpected));
+            Assert.Equal(expectedFirstResult.Id, result[0].Id);
+        }
 
         [Fact]
         public async Task GetSortedPaginatedAsyncWithSortOptions()
@@ -1261,6 +1787,46 @@ namespace CoreIntegrationTests.Infrastructure
                             sorting,
                             1, 5,
                             PartitionKey);
+
+            // Assert
+            Assert.Equal(4, result.Count);
+            Assert.True(!result.Contains(notExpected));
+            Assert.Equal(expectedFirstResult.Id, result[0].Id);
+        }
+        
+        [Fact]
+        public async Task GetSortedPaginatedAsyncFilterDefinitionWithSortOptions()
+        {
+            // Arrange
+            var content = $"{Guid.NewGuid()}";
+            var documents = CreateTestDocuments(10);
+            for (var i = 0; i < 5; i++)
+            {
+                documents[i].GroupingKey = 8;
+                documents[i].Nested.SomeAmount = Random.Next(1, 500000);
+                documents[i].SomeContent = content;
+            }
+            for (var i = 5; i < documents.Count; i++)
+            {
+                documents[i].GroupingKey = 9;
+                documents[i].SomeContent = content;
+            }
+            SUT.AddMany<T, TKey>(documents);
+
+            documents = documents.OrderByDescending(e => e.Nested.SomeAmount).ToList();
+            var notExpected = documents.First();
+            var expectedFirstResult = documents[1];
+            var sorting = Builders<T>.Sort.Descending(e => e.Nested.SomeAmount);
+
+            // Act
+            var condition = Builders<T>.Filter.And(Builders<T>.Filter.Eq(x => x.GroupingKey, 8),
+                Builders<T>.Filter.Eq(x => x.SomeContent, content));
+            var result = await SUT.GetSortedPaginatedAsync<T, TKey>(
+                condition,
+                sorting,
+                null,
+                1, 5,
+                PartitionKey);
 
             // Assert
             Assert.Equal(4, result.Count);

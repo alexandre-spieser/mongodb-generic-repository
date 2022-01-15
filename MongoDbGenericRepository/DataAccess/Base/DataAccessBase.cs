@@ -132,6 +132,24 @@ namespace MongoDbGenericRepository.DataAccess.Base
             };
         }
 
+        /// <summary>
+        /// Gets the minimum value of a property in a mongodb collections that is satisfying the filter.
+        /// </summary>
+        /// <typeparam name="TDocument">The document type.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key.</typeparam>
+        /// <typeparam name="TValue">The type of the value used to order the query.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="minValueSelector">A property selector to order by ascending.</param>
+        /// <param name="findOption">A mongodb filter option.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        protected virtual IFindFluent<TDocument, TDocument> GetMinMongoQuery<TDocument, TKey, TValue>(FilterDefinition<TDocument> condition, Expression<Func<TDocument, TValue>> minValueSelector, FindOptions findOption = null, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            return GetCollection<TDocument, TKey>(partitionKey).Find(condition, findOption)
+                .SortBy(ConvertExpression(minValueSelector))
+                .Limit(1);
+        }
 
         /// <summary>
         /// Gets the minimum value of a property in a mongodb collections that is satisfying the filter.
@@ -151,6 +169,25 @@ namespace MongoDbGenericRepository.DataAccess.Base
                                                                .Limit(1);
         }
 
+        /// <summary>
+        /// Gets the minimum value of a property in a mongodb collections that is satisfying the filter.
+        /// </summary>
+        /// <typeparam name="TDocument">The document type.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key.</typeparam>
+        /// <typeparam name="TValue">The type of the value used to order the query.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="maxValueSelector">A property selector to order by descending.</param>
+        /// <param name="findOption">A mongodb filter option.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        protected virtual IFindFluent<TDocument, TDocument> GetMaxMongoQuery<TDocument, TKey, TValue>(FilterDefinition<TDocument> condition, Expression<Func<TDocument, TValue>> maxValueSelector, FindOptions findOption = null, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            return GetCollection<TDocument, TKey>(partitionKey).Find(condition, findOption)
+                .SortByDescending(ConvertExpression(maxValueSelector))
+                .Limit(1);
+        }
+        
         /// <summary>
         /// Gets the minimum value of a property in a mongodb collections that is satisfying the filter.
         /// </summary>
