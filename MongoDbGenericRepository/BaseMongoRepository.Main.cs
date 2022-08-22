@@ -24,7 +24,7 @@ namespace MongoDbGenericRepository
         }
 
         /// <summary>
-        /// The contructor taking a <see cref="IMongoDbContext"/>.
+        /// The constructor taking a <see cref="IMongoDbContext"/>.
         /// </summary>
         /// <param name="mongoDbContext">A mongodb context implementing <see cref="IMongoDbContext"/></param>
         protected BaseMongoRepository(IMongoDbContext mongoDbContext) : base(mongoDbContext)
@@ -32,11 +32,26 @@ namespace MongoDbGenericRepository
         }
 
         /// <summary>
-        /// The contructor taking a <see cref="IMongoDatabase"/>.
+        /// The constructor taking a <see cref="IMongoDatabase"/>.
         /// </summary>
         /// <param name="mongoDatabase">A mongodb context implementing <see cref="IMongoDatabase"/></param>
         protected BaseMongoRepository(IMongoDatabase mongoDatabase) : base(mongoDatabase)
         {
+        }
+
+        /// <summary>
+        /// Asynchronously returns a paginated list of the documents matching the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="findOption">A mongodb filter option.</param>
+        /// <param name="skipNumber">The number of documents you want to skip. Default value is 0.</param>
+        /// <param name="takeNumber">The number of documents you want to take. Default value is 50.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        public virtual Task<List<TDocument>> GetPaginatedAsync<TDocument>(FilterDefinition<TDocument> condition, FindOptions findOption = null, int skipNumber = 0, int takeNumber = 50,
+            string partitionKey = null) where TDocument : IDocument
+        {
+            return HandlePartitioned<TDocument>(partitionKey).Find(condition, findOption).Skip(skipNumber).Limit(takeNumber).ToListAsync();
         }
 
         /// <summary>
@@ -55,6 +70,22 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument
         {
             return await HandlePartitioned<TDocument>(partitionKey).Find(filter).Skip(skipNumber).Limit(takeNumber).ToListAsync();
+        }
+
+        /// <summary>
+        /// Asynchronously returns a paginated list of the documents matching the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="findOption">A mongodb filter option.</param>
+        /// <param name="skipNumber">The number of documents you want to skip. Default value is 0.</param>
+        /// <param name="takeNumber">The number of documents you want to take. Default value is 50.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        public virtual Task<List<TDocument>> GetPaginatedAsync<TDocument, TKey>(FilterDefinition<TDocument> condition, FindOptions findOption = null, int skipNumber = 0, int takeNumber = 50,
+            string partitionKey = null) where TDocument : IDocument<TKey> where TKey : IEquatable<TKey>
+        {
+            return HandlePartitioned<TDocument, TKey>(partitionKey).Find(condition, findOption).Skip(skipNumber).Limit(takeNumber).ToListAsync();
         }
 
         /// <summary>

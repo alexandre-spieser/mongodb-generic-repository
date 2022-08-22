@@ -131,6 +131,18 @@ namespace MongoDbGenericRepository
         /// Returns a collection cursor.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="findOption">A mongodb filter option.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        public IFindFluent<TDocument, TDocument> GetCursor<TDocument>(FilterDefinition<TDocument> condition, FindOptions findOption = null, string partitionKey = null) where TDocument : IDocument<TKey>
+        {
+            return MongoDbReader.GetCursor<TDocument, TKey>(condition, findOption, partitionKey);
+        }
+
+        /// <summary>
+        /// Returns a collection cursor.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="partitionKey">An optional partition key.</param>
         public IFindFluent<TDocument, TDocument> GetCursor<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument<TKey>
@@ -208,6 +220,23 @@ namespace MongoDbGenericRepository
         /// Gets the document with the maximum value of a specified property in a MongoDB collections that is satisfying the filter.
         /// </summary>
         /// <typeparam name="TDocument">The document type.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="maxValueSelector">A property selector to order by descending.</param>
+        /// <param name="findOption">A mongodb filter option.</param>
+        /// <param name="partitionKey">An optional partitionKey.</param>
+        /// <param name="cancellationToken">An optional cancellation Token.</param>
+        public virtual Task<TDocument> GetByMaxAsync<TDocument>(FilterDefinition<TDocument> condition,
+            Expression<Func<TDocument, object>> maxValueSelector, FindOptions findOption = null, string partitionKey = null,
+            CancellationToken cancellationToken = default) 
+            where TDocument : IDocument<TKey>
+        {
+            return MongoDbReader.GetByMaxAsync<TDocument, TKey>(condition, maxValueSelector, findOption, partitionKey, cancellationToken);
+        }
+
+        /// <summary>
+        /// Gets the document with the maximum value of a specified property in a MongoDB collections that is satisfying the filter.
+        /// </summary>
+        /// <typeparam name="TDocument">The document type.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="maxValueSelector">A property selector to order by descending.</param>
         /// <param name="partitionKey">An optional partitionKey.</param>
@@ -215,6 +244,21 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
         {
             return await MongoDbReader.GetByMaxAsync<TDocument, TKey>(filter, maxValueSelector, partitionKey);
+        }
+
+        /// <summary>
+        /// Gets the document with the maximum value of a specified property in a MongoDB collections that is satisfying the filter.
+        /// </summary>
+        /// <typeparam name="TDocument">The document type.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="maxValueSelector">A property selector to order by descending.</param>
+        /// <param name="findOption">A mongodb filter option.</param>
+        /// <param name="partitionKey">An optional partitionKey.</param>
+        public virtual TDocument GetByMax<TDocument>(FilterDefinition<TDocument> condition, Expression<Func<TDocument, object>> maxValueSelector,
+            FindOptions findOption = null, string partitionKey = null) 
+            where TDocument : IDocument<TKey>
+        {
+            return MongoDbReader.GetByMax<TDocument, TKey>(condition, maxValueSelector, findOption, partitionKey);
         }
 
         /// <summary>
@@ -232,6 +276,23 @@ namespace MongoDbGenericRepository
         }
 
         /// <summary>
+        /// Gets the document with the minimum value of a specified property in a MongoDB collections that is satisfying the filter.
+        /// </summary>
+        /// <typeparam name="TDocument">The document type.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="minValueSelector">A property selector to order by ascending.</param>
+        /// <param name="findOption">A mongodb filter option.</param>
+        /// <param name="partitionKey">An optional partitionKey.</param>
+        /// <param name="cancellationToken">An optional cancellation Token.</param>
+        public virtual Task<TDocument> GetByMinAsync<TDocument>(FilterDefinition<TDocument> condition,
+            Expression<Func<TDocument, object>> minValueSelector, FindOptions findOption = null, string partitionKey = null,
+            CancellationToken cancellationToken = default) 
+            where TDocument : IDocument<TKey>
+        {
+            return MongoDbReader.GetByMinAsync<TDocument, TKey>(condition, minValueSelector, findOption, partitionKey, cancellationToken);
+        }
+
+        /// <summary>
         /// Gets the document with the maximum value of a specified property in a MongoDB collections that is satisfying the filter.
         /// </summary>
         /// <typeparam name="TDocument">The document type.</typeparam>
@@ -245,6 +306,20 @@ namespace MongoDbGenericRepository
         }
 
         /// <summary>
+        /// Gets the document with the minimum value of a specified property in a MongoDB collections that is satisfying the filter.
+        /// </summary>
+        /// <typeparam name="TDocument">The document type.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="minValueSelector">A property selector to order by ascending.</param>
+        /// <param name="findOption">A mongodb filter option.</param>
+        /// <param name="partitionKey">An optional partitionKey.</param>
+        public virtual TDocument GetByMin<TDocument>(FilterDefinition<TDocument> condition, Expression<Func<TDocument, object>> minValueSelector,
+            FindOptions findOption = null, string partitionKey = null) where TDocument : IDocument<TKey>
+        {
+            return MongoDbReader.GetByMin<TDocument, TKey>(condition, minValueSelector, findOption, partitionKey);
+        }
+
+        /// <summary>
         /// Gets the document with the maximum value of a specified property in a MongoDB collections that is satisfying the filter.
         /// </summary>
         /// <typeparam name="TDocument">The document type.</typeparam>
@@ -255,6 +330,24 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
         {
             return MongoDbReader.GetByMin<TDocument, TKey>(filter, minValueSelector, partitionKey);
+        }
+
+        /// <summary>
+        /// Gets the maximum value of a property in a mongodb collections that is satisfying the filter.
+        /// </summary>
+        /// <typeparam name="TDocument">The document type.</typeparam>
+        /// <typeparam name="TValue">The type of the field for which you want the maximum value.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="maxValueSelector">A property selector to order by ascending.</param>
+        /// <param name="findOption">A mongodb filter option.</param>
+        /// <param name="partitionKey">An optional partitionKey.</param>
+        /// <param name="cancellationToken">An optional cancellation Token.</param>
+        public virtual Task<TValue> GetMaxValueAsync<TDocument, TValue>(FilterDefinition<TDocument> condition,
+            Expression<Func<TDocument, TValue>> maxValueSelector, FindOptions findOption = null, string partitionKey = null,
+            CancellationToken cancellationToken = default) 
+            where TDocument : IDocument<TKey>
+        {
+            return MongoDbReader.GetMaxValueAsync<TDocument, TKey, TValue>(condition, maxValueSelector, findOption, partitionKey, cancellationToken);
         }
 
         /// <summary>
@@ -276,6 +369,22 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument">The document type.</typeparam>
         /// <typeparam name="TValue">The type of the value used to order the query.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="maxValueSelector">A property selector to order by ascending.</param>
+        /// <param name="findOption">A mongodb filter option.</param>
+        /// <param name="partitionKey">An optional partitionKey.</param>
+        public virtual TValue GetMaxValue<TDocument, TValue>(FilterDefinition<TDocument> condition,
+            Expression<Func<TDocument, TValue>> maxValueSelector, FindOptions findOption = null, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+        {
+            return MongoDbReader.GetMaxValue<TDocument, TKey, TValue>(condition, maxValueSelector, findOption, partitionKey);
+        }
+
+        /// <summary>
+        /// Gets the maximum value of a property in a mongodb collections that is satisfying the filter.
+        /// </summary>
+        /// <typeparam name="TDocument">The document type.</typeparam>
+        /// <typeparam name="TValue">The type of the value used to order the query.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="maxValueSelector">A property selector to order by ascending.</param>
         /// <param name="partitionKey">An optional partitionKey.</param>
@@ -283,6 +392,25 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
         {
             return MongoDbReader.GetMaxValue<TDocument, TKey, TValue>(filter, maxValueSelector, partitionKey);
+        }
+
+        /// <summary>
+        /// Gets the minimum value of a property in a mongodb collections that is satisfying the filter.
+        /// </summary>
+        /// <typeparam name="TDocument">The document type.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key.</typeparam>
+        /// <typeparam name="TValue">The type of the value used to order the query.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="minValueSelector">A property selector to order by ascending.</param>
+        /// <param name="findOption">A mongodb filter option.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <param name="cancellationToken">An optional cancellation Token.</param>
+        public virtual Task<TValue> GetMinValueAsync<TDocument, TValue>(FilterDefinition<TDocument> condition,
+            Expression<Func<TDocument, TValue>> minValueSelector, FindOptions findOption = null, string partitionKey = null,
+            CancellationToken cancellationToken = default) 
+            where TDocument : IDocument<TKey>
+        {
+            return MongoDbReader.GetMinValueAsync<TDocument, TKey, TValue>(condition, minValueSelector, findOption, partitionKey, cancellationToken);
         }
 
         /// <summary>
@@ -297,6 +425,22 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>
         {
             return await MongoDbReader.GetMinValueAsync<TDocument, TKey, TValue>(filter, minValueSelector, partitionKey);
+        }
+
+        /// <summary>
+        /// Gets the minimum value of a property in a mongodb collections that is satisfying the filter.
+        /// </summary>
+        /// <typeparam name="TDocument">The document type.</typeparam>
+        /// <typeparam name="TValue">The type of the value used to order the query.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="minValueSelector">A property selector to order by ascending.</param>
+        /// <param name="findOption">A mongodb filter option.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        public virtual TValue GetMinValue<TDocument, TValue>(FilterDefinition<TDocument> condition,
+            Expression<Func<TDocument, TValue>> minValueSelector, FindOptions findOption = null, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+        {
+            return MongoDbReader.GetMinValue<TDocument, TKey, TValue>(condition, minValueSelector, findOption, partitionKey);
         }
 
         /// <summary>
@@ -385,6 +529,44 @@ namespace MongoDbGenericRepository
         /// Asynchronously returns a projected document matching the filter condition.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="projection">A project definition.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <param name="findOption">A mongodb filter option.</param>
+        /// <param name="cancellationToken">An optional cancellation Token.</param>
+        public virtual Task<TProjection> ProjectOneAsync<TDocument, TProjection>(FilterDefinition<TDocument> condition,
+            ProjectionDefinition<TDocument, TProjection> projection, FindOptions findOption = null, string partitionKey = null,
+            CancellationToken cancellationToken = default) 
+            where TDocument : IDocument<TKey> 
+            where TProjection : class
+        {
+            return MongoDbReader.ProjectOneAsync<TDocument, TProjection, TKey>(condition, projection, findOption, partitionKey, cancellationToken);
+        }
+
+        /// <summary>
+        /// Asynchronously returns a projected document matching the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="projection">The projection expression.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <param name="findOption">A mongodb filter option.</param>
+        /// <param name="cancellationToken">An optional cancellation Token.</param>
+        public virtual Task<TProjection> ProjectOneAsync<TDocument, TProjection>(FilterDefinition<TDocument> condition,
+            Expression<Func<TDocument, TProjection>> projection, FindOptions findOption = null, string partitionKey = null,
+            CancellationToken cancellationToken = default) 
+            where TDocument : IDocument<TKey> 
+            where TProjection : class
+        {
+            return MongoDbReader.ProjectOneAsync<TDocument, TProjection, TKey>(condition, projection, findOption, partitionKey, cancellationToken);
+        }
+
+        /// <summary>
+        /// Asynchronously returns a projected document matching the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
@@ -395,6 +577,40 @@ namespace MongoDbGenericRepository
             where TProjection : class
         {
             return await MongoDbReader.ProjectOneAsync<TDocument, TProjection, TKey>(filter, projection, partitionKey);
+        }
+
+        /// <summary>
+        /// Returns a projected document matching the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="projection">A project definition.</param>
+        /// <param name="findOption">A mongodb filter option.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        public virtual TProjection ProjectOne<TDocument, TProjection>(FilterDefinition<TDocument> condition,
+            ProjectionDefinition<TDocument, TProjection> projection, FindOptions findOption = null, string partitionKey = null)
+            where TDocument : IDocument<TKey> 
+            where TProjection : class
+        {
+            return MongoDbReader.ProjectOne<TDocument, TProjection, TKey>(condition, projection, findOption, partitionKey);
+        }
+
+        /// <summary>
+        /// Returns a projected document matching the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="projection">The projection expression.</param>
+        /// <param name="findOption">A mongodb filter option.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        public virtual TProjection ProjectOne<TDocument, TProjection>(FilterDefinition<TDocument> condition,
+            Expression<Func<TDocument, TProjection>> projection, FindOptions findOption = null, string partitionKey = null)
+            where TDocument : IDocument<TKey> 
+            where TProjection : class
+        {
+            return MongoDbReader.ProjectOne<TDocument, TProjection, TKey>(condition, projection, findOption, partitionKey);
         }
 
         /// <summary>
@@ -417,6 +633,44 @@ namespace MongoDbGenericRepository
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="projection">A project definition.</param>
+        /// <param name="findOption">A mongodb filter option.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <param name="cancellationToken">An optional cancellation Token.</param>
+        public virtual Task<List<TProjection>> ProjectManyAsync<TDocument, TProjection>(FilterDefinition<TDocument> condition,
+            ProjectionDefinition<TDocument, TProjection> projection, FindOptions findOption = null, string partitionKey = null,
+            CancellationToken cancellationToken = default) 
+            where TDocument : IDocument<TKey> 
+            where TProjection : class
+        {
+            return MongoDbReader.ProjectManyAsync<TDocument, TProjection, TKey>(condition, projection, findOption, partitionKey, cancellationToken);
+        }
+
+        /// <summary>
+        /// Asynchronously returns a list of projected documents matching the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="projection">The projection expression.</param>
+        /// <param name="findOption">A mongodb filter option.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <param name="cancellationToken">An optional cancellation Token.</param>
+        public virtual Task<List<TProjection>> ProjectManyAsync<TDocument, TProjection>(FilterDefinition<TDocument> condition,
+            Expression<Func<TDocument, TProjection>> projection, FindOptions findOption = null, string partitionKey = null,
+            CancellationToken cancellationToken = default) 
+            where TDocument : IDocument<TKey> 
+            where TProjection : class
+        {
+            return MongoDbReader.ProjectManyAsync<TDocument, TProjection, TKey>(condition, projection, findOption, partitionKey, cancellationToken);
+        }
+
+        /// <summary>
+        /// Asynchronously returns a list of projected documents matching the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="projection">The projection expression.</param>
         /// <param name="partitionKey">An optional partition key.</param>
@@ -425,6 +679,40 @@ namespace MongoDbGenericRepository
             where TProjection : class
         {
             return await MongoDbReader.ProjectManyAsync<TDocument, TProjection, TKey>(filter, projection, partitionKey);
+        }
+
+        /// <summary>
+        /// Asynchronously returns a list of projected documents matching the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="projection">A project definition.</param>
+        /// <param name="findOption">A mongodb filter option.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        public List<TProjection> ProjectMany<TDocument, TProjection>(FilterDefinition<TDocument> condition,
+            ProjectionDefinition<TDocument, TProjection> projection, FindOptions findOption = null, string partitionKey = null)
+            where TDocument : IDocument<TKey> 
+            where TProjection : class
+        {
+            return MongoDbReader.ProjectMany<TDocument, TProjection, TKey>(condition, projection, findOption, partitionKey);
+        }
+
+        /// <summary>
+        /// Asynchronously returns a list of projected documents matching the filter condition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
+        /// <param name="condition">A mongodb filter definition.</param>
+        /// <param name="projection">The projection expression.</param>
+        /// <param name="findOption">A mongodb filter option.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        public List<TProjection> ProjectMany<TDocument, TProjection>(FilterDefinition<TDocument> condition,
+            Expression<Func<TDocument, TProjection>> projection, FindOptions findOption = null, string partitionKey = null)
+            where TDocument : IDocument<TKey> 
+            where TProjection : class
+        {
+            return MongoDbReader.ProjectMany<TDocument, TProjection, TKey>(condition, projection, findOption, partitionKey);
         }
 
         /// <summary>
