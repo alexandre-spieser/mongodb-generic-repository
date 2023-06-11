@@ -13,8 +13,9 @@ namespace MongoDbGenericRepository
     /// </summary>
     public abstract partial class BaseMongoRepository : IBaseMongoRepository_Update
     {
-        private MongoDbUpdater _mongoDbUpdater;
-        protected virtual MongoDbUpdater MongoDbUpdater
+        private volatile IMongoDbUpdater _mongoDbUpdater;
+
+        protected virtual IMongoDbUpdater MongoDbUpdater
         {
             get
             {

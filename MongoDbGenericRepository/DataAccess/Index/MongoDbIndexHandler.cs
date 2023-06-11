@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MongoDbGenericRepository.DataAccess.Index
 {
-    public class MongoDbIndexHandler : DataAccessBase
+    public class MongoDbIndexHandler : DataAccessBase, IMongoDbIndexHandler
     {
         public MongoDbIndexHandler(IMongoDbContext mongoDbContext) : base(mongoDbContext)
         {

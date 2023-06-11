@@ -14,7 +14,7 @@ namespace MongoDbGenericRepository.DataAccess.Create
     /// <summary>
     /// A class to insert MongoDb document.
     /// </summary>
-    public class MongoDbCreator : DataAccessBase
+    public class MongoDbCreator : DataAccessBase, IMongoDbCreator
     {
         /// <summary>
         /// The construct of the MongoDbCreator class.

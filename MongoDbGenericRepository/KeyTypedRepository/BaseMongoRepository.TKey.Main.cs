@@ -5,20 +5,6 @@ using System;
 namespace MongoDbGenericRepository
 {
     /// <summary>
-    /// The interface exposing all the CRUD and Index functionalities for Key typed repositories.
-    /// </summary>
-    /// <typeparam name="TKey">The type of the document Id.</typeparam>
-    public interface IBaseMongoRepository<TKey> :
-        IReadOnlyMongoRepository<TKey>,
-        IBaseMongoRepository_Create<TKey>,
-        IBaseMongoRepository_Delete<TKey>,
-        IBaseMongoRepository_Index<TKey>,
-        IBaseMongoRepository_Update<TKey>
-        where TKey : IEquatable<TKey>
-    {
-    }
-
-    /// <summary>
     /// The base Repository, it is meant to be inherited from by your custom custom MongoRepository implementation.
     /// Its constructor must be given a connection string and a database name.
     /// </summary>
@@ -41,7 +27,7 @@ namespace MongoDbGenericRepository
         }
 
         /// <summary>
-        /// The contructor taking a <see cref="IMongoDbContext"/>.
+        /// The constructor taking a <see cref="IMongoDbContext"/>.
         /// </summary>
         /// <param name="mongoDbContext">A mongodb context implementing <see cref="IMongoDbContext"/></param>
         protected BaseMongoRepository(IMongoDbContext mongoDbContext) : base(mongoDbContext)
@@ -49,7 +35,7 @@ namespace MongoDbGenericRepository
         }
 
         /// <summary>
-        /// The contructor taking a <see cref="IMongoDatabase"/>.
+        /// The constructor taking a <see cref="IMongoDatabase"/>.
         /// </summary>
         /// <param name="mongoDatabase">A mongodb context implementing <see cref="IMongoDatabase"/></param>
         protected BaseMongoRepository(IMongoDatabase mongoDatabase) : base(mongoDatabase)

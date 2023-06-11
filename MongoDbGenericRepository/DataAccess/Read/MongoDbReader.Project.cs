@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MongoDbGenericRepository.DataAccess.Read
 {
-    public partial class MongoDbReader
+    public partial class MongoDbReader : IMongoDbReader
     {
         /// <summary>
         /// Asynchronously returns a projected document matching the filter condition.

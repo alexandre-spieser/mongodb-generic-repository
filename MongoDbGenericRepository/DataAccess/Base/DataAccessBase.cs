@@ -10,7 +10,7 @@ namespace MongoDbGenericRepository.DataAccess.Base
     /// <summary>
     /// A base class for accessing the Database and its Collections.
     /// </summary>
-    public class DataAccessBase
+    public class DataAccessBase : IDataAccessBase
     {
         /// <summary>
         /// The MongoDbContext

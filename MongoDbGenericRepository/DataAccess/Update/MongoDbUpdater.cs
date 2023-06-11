@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MongoDbGenericRepository.DataAccess.Update
 {
-    public partial class MongoDbUpdater : DataAccessBase
+    public partial class MongoDbUpdater : DataAccessBase, IMongoDbUpdater
     {
         public MongoDbUpdater(IMongoDbContext mongoDbContext) : base(mongoDbContext)
         {

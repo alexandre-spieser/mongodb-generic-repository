@@ -24,7 +24,7 @@ namespace MongoDbGenericRepository
         }
 
         /// <summary>
-        /// The contructor taking a <see cref="IMongoDbContext"/>.
+        /// The constructor taking a <see cref="IMongoDbContext"/>.
         /// </summary>
         /// <param name="mongoDbContext">A mongodb context implementing <see cref="IMongoDbContext"/></param>
         protected BaseMongoRepository(IMongoDbContext mongoDbContext) : base(mongoDbContext)
@@ -32,7 +32,7 @@ namespace MongoDbGenericRepository
         }
 
         /// <summary>
-        /// The contructor taking a <see cref="IMongoDatabase"/>.
+        /// The constructor taking a <see cref="IMongoDatabase"/>.
         /// </summary>
         /// <param name="mongoDatabase">A mongodb context implementing <see cref="IMongoDatabase"/></param>
         protected BaseMongoRepository(IMongoDatabase mongoDatabase) : base(mongoDatabase)

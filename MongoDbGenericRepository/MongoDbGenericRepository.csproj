@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net472;netstandard2.0;</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;net48</TargetFrameworks>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>MongoDbGenericRepository</PackageId>
     <PackageVersion>1.4.8</PackageVersion>

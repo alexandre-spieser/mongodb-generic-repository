@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MongoDbGenericRepository.DataAccess.Delete
 {
-    public class MongoDbEraser : DataAccessBase
+    public class MongoDbEraser : DataAccessBase, IMongoDbEraser
     {
         public MongoDbEraser(IMongoDbContext mongoDbContext) : base(mongoDbContext)
         {

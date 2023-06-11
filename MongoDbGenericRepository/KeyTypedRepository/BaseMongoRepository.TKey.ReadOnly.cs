@@ -34,7 +34,7 @@ namespace MongoDbGenericRepository
         /// <summary>
         /// A MongoDb Reader for read operations
         /// </summary>
-        protected MongoDbReader MongoDbReader = null;
+        protected IMongoDbReader MongoDbReader = null;
 
         /// <summary>
         /// The constructor taking a connection string and a database name.
@@ -47,7 +47,7 @@ namespace MongoDbGenericRepository
         }
 
         /// <summary>
-        /// The contructor taking a <see cref="IMongoDatabase"/>.
+        /// The constructor taking a <see cref="IMongoDatabase"/>.
         /// </summary>
         /// <param name="mongoDatabase">A mongodb context implementing <see cref="IMongoDatabase"/></param>
         protected ReadOnlyMongoRepository(IMongoDatabase mongoDatabase) : this(new MongoDbContext(mongoDatabase))
@@ -55,7 +55,7 @@ namespace MongoDbGenericRepository
         }
 
         /// <summary>
-        /// The contructor taking a <see cref="IMongoDbContext"/>.
+        /// The constructor taking a <see cref="IMongoDbContext"/>.
         /// </summary>
         /// <param name="mongoDbContext">A mongodb context implementing <see cref="IMongoDbContext"/></param>
         protected ReadOnlyMongoRepository(IMongoDbContext mongoDbContext)
