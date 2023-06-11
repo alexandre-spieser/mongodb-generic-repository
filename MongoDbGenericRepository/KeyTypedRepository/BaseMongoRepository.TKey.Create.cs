@@ -11,7 +11,8 @@ namespace MongoDbGenericRepository
     /// The base Repository, it is meant to be inherited from by your custom custom MongoRepository implementation.
     /// Its constructor must be given a connection string and a database name.
     /// </summary>
-    public abstract partial class BaseMongoRepository<TKey> : IBaseMongoRepository_Create<TKey> where TKey : IEquatable<TKey>
+    public abstract partial class BaseMongoRepository<TKey> : IBaseMongoRepository_Create<TKey> 
+        where TKey : IEquatable<TKey>
     {
         private volatile IMongoDbCreator _mongoDbCreator;
 
@@ -22,11 +23,11 @@ namespace MongoDbGenericRepository
         {
             get
             {
-                if(_mongoDbCreator == null)
+                if (_mongoDbCreator == null)
                 {
                     lock (_initLock)
                     {
-                        if(_mongoDbCreator == null)
+                        if (_mongoDbCreator == null)
                         {
                             _mongoDbCreator = new MongoDbCreator(MongoDbContext);
                         }
@@ -34,6 +35,7 @@ namespace MongoDbGenericRepository
                 }
                 return _mongoDbCreator;
             }
+
             set { _mongoDbCreator = value; }
         }
 

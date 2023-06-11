@@ -6,6 +6,9 @@ using MongoDbGenericRepository.Models;
 
 namespace MongoDbGenericRepository
 {
+    /// <summary>
+    /// The base Mongo Repository Delete interface. used to delete documents from the collections.
+    /// </summary>
     public interface IBaseMongoRepository_Delete : IBaseMongoRepository_Delete<Guid>
     {
         /// <summary>

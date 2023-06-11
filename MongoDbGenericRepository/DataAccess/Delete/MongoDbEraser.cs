@@ -1,5 +1,4 @@
 ﻿using MongoDB.Driver;
-using MongoDB.Driver.Linq;
 using MongoDbGenericRepository.DataAccess.Base;
 using MongoDbGenericRepository.Models;
 using System;
@@ -10,8 +9,13 @@ using System.Threading.Tasks;
 
 namespace MongoDbGenericRepository.DataAccess.Delete
 {
+    /// <inheritdoc cref="MongoDbGenericRepository.DataAccess.Delete.IMongoDbEraser" />
     public class MongoDbEraser : DataAccessBase, IMongoDbEraser
     {
+        /// <summary>
+        /// The MongoDbEraser constructor.
+        /// </summary>
+        /// <param name="mongoDbContext">the MongoDb Context</param>
         public MongoDbEraser(IMongoDbContext mongoDbContext) : base(mongoDbContext)
         {
         }
@@ -104,26 +108,27 @@ namespace MongoDbGenericRepository.DataAccess.Delete
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            if (!documents.Any())
+            var documentList = documents.ToList();
+            
+            if (!documentList.Any())
             {
                 return 0;
             }
+
             // cannot use typeof(IPartitionedDocument).IsAssignableFrom(typeof(TDocument)), not available in netstandard 1.5
-            if (documents.Any(e => e is IPartitionedDocument))
+            if (documentList.Any(e => e is IPartitionedDocument))
             {
                 long deleteCount = 0;
-                foreach (var group in documents.GroupBy(e => ((IPartitionedDocument)e).PartitionKey))
+                foreach (var group in documentList.GroupBy(e => ((IPartitionedDocument)e).PartitionKey))
                 {
-                    var groupIdsTodelete = group.Select(e => e.Id).ToArray();
-                    deleteCount += (await HandlePartitioned<TDocument, TKey>(group.FirstOrDefault()).DeleteManyAsync(x => groupIdsTodelete.Contains(x.Id))).DeletedCount;
+                    var groupIdsToDelete = group.Select(e => e.Id).ToArray();
+                    deleteCount += (await HandlePartitioned<TDocument, TKey>(group.FirstOrDefault()).DeleteManyAsync(x => groupIdsToDelete.Contains(x.Id))).DeletedCount;
                 }
                 return deleteCount;
             }
-            else
-            {
-                var idsTodelete = documents.Select(e => e.Id).ToArray();
-                return (await HandlePartitioned<TDocument, TKey>(documents.FirstOrDefault()).DeleteManyAsync(x => idsTodelete.Contains(x.Id))).DeletedCount;
-            }
+
+            var idsToDelete = documentList.Select(e => e.Id).ToArray();
+            return (await HandlePartitioned<TDocument, TKey>(documentList.FirstOrDefault()).DeleteManyAsync(x => idsToDelete.Contains(x.Id))).DeletedCount;
         }
 
         /// <summary>
@@ -137,26 +142,27 @@ namespace MongoDbGenericRepository.DataAccess.Delete
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            if (!documents.Any())
+            var documentList = documents.ToList();
+            
+            if (!documentList.Any())
             {
                 return 0;
             }
+
             // cannot use typeof(IPartitionedDocument).IsAssignableFrom(typeof(TDocument)), not available in netstandard 1.5
-            if (documents.Any(e => e is IPartitionedDocument))
+            if (documentList.Any(e => e is IPartitionedDocument))
             {
                 long deleteCount = 0;
-                foreach (var group in documents.GroupBy(e => ((IPartitionedDocument)e).PartitionKey))
+                foreach (var group in documentList.GroupBy(e => ((IPartitionedDocument)e).PartitionKey))
                 {
-                    var groupIdsTodelete = group.Select(e => e.Id).ToArray();
-                    deleteCount += (HandlePartitioned<TDocument, TKey>(group.FirstOrDefault()).DeleteMany(x => groupIdsTodelete.Contains(x.Id))).DeletedCount;
+                    var groupIdsToDelete = group.Select(e => e.Id).ToArray();
+                    deleteCount += (HandlePartitioned<TDocument, TKey>(group.FirstOrDefault()).DeleteMany(x => groupIdsToDelete.Contains(x.Id))).DeletedCount;
                 }
                 return deleteCount;
             }
-            else
-            {
-                var idsTodelete = documents.Select(e => e.Id).ToArray();
-                return (HandlePartitioned<TDocument, TKey>(documents.FirstOrDefault()).DeleteMany(x => idsTodelete.Contains(x.Id))).DeletedCount;
-            }
+
+            var idsToDelete = documentList.Select(e => e.Id).ToArray();
+            return HandlePartitioned<TDocument, TKey>(documentList.FirstOrDefault()).DeleteMany(x => idsToDelete.Contains(x.Id)).DeletedCount;
         }
 
         /// <summary>

@@ -1,6 +1,4 @@
-﻿using MongoDB.Driver;
-using MongoDB.Driver.Linq;
-using MongoDbGenericRepository.DataAccess.Base;
+﻿using MongoDbGenericRepository.DataAccess.Base;
 using MongoDbGenericRepository.Models;
 using MongoDbGenericRepository.Utils;
 using System;
@@ -69,25 +67,29 @@ namespace MongoDbGenericRepository.DataAccess.Create
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            if (!documents.Any())
+            var documentsList = documents.ToList();
+            
+            if (!documentsList.Any())
             {
                 return;
             }
-            foreach (var document in documents)
+
+            foreach (var document in documentsList)
             {
                 FormatDocument<TDocument, TKey>(document);
             }
+
             // cannot use typeof(IPartitionedDocument).IsAssignableFrom(typeof(TDocument)), not available in netstandard 1.5
-            if (documents.Any(e => e is IPartitionedDocument))
+            if (documentsList.Any(e => e is IPartitionedDocument))
             {
-                foreach (var group in documents.GroupBy(e => ((IPartitionedDocument)e).PartitionKey))
+                foreach (var group in documentsList.GroupBy(e => ((IPartitionedDocument)e).PartitionKey))
                 {
                     await HandlePartitioned<TDocument, TKey>(group.FirstOrDefault()).InsertManyAsync(group.ToList(), null, cancellationToken);
                 }
             }
             else
             {
-                await GetCollection<TDocument, TKey>().InsertManyAsync(documents.ToList(), null, cancellationToken);
+                await GetCollection<TDocument, TKey>().InsertManyAsync(documentsList.ToList(), null, cancellationToken);
             }
         }
 
@@ -102,25 +104,29 @@ namespace MongoDbGenericRepository.DataAccess.Create
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            if (!documents.Any())
+            var documentList = documents.ToList();
+
+            if (!documentList.Any())
             {
                 return;
             }
-            foreach (var document in documents)
+
+            foreach (var document in documentList)
             {
                 FormatDocument<TDocument, TKey>(document);
             }
+
             // cannot use typeof(IPartitionedDocument).IsAssignableFrom(typeof(TDocument)), not available in netstandard 1.5
-            if (documents.Any(e => e is IPartitionedDocument))
+            if (documentList.Any(e => e is IPartitionedDocument))
             {
-                foreach (var group in documents.GroupBy(e => ((IPartitionedDocument)e).PartitionKey))
+                foreach (var group in documentList.GroupBy(e => ((IPartitionedDocument)e).PartitionKey))
                 {
                     HandlePartitioned<TDocument, TKey>(group.FirstOrDefault()).InsertMany(group.ToList());
                 }
             }
             else
             {
-                GetCollection<TDocument, TKey>().InsertMany(documents.ToList());
+                GetCollection<TDocument, TKey>().InsertMany(documentList.ToList());
             }
         }
 

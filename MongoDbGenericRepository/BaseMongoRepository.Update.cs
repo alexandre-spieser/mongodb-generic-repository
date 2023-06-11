@@ -15,6 +15,9 @@ namespace MongoDbGenericRepository
     {
         private volatile IMongoDbUpdater _mongoDbUpdater;
 
+        /// <summary>
+        /// The MongoDb accessor to update data.
+        /// </summary>
         protected virtual IMongoDbUpdater MongoDbUpdater
         {
             get
@@ -203,7 +206,6 @@ namespace MongoDbGenericRepository
         /// For the entities selected by the filter, applies the update you have defined in MongoDb.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <param name="filter">The document filter.</param>
         /// <param name="updateDefinition">The update definition to apply.</param>
         /// <param name="partitionKey">The value of the partition key.</param>

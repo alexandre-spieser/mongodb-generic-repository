@@ -6,6 +6,9 @@ using MongoDbGenericRepository.Models;
 
 namespace MongoDbGenericRepository.DataAccess.Base
 {
+    /// <summary>
+    /// A interface for accessing the Database and its Collections.
+    /// </summary>
     public interface IDataAccessBase
     {
         /// <summary>

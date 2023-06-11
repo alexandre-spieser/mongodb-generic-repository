@@ -2,7 +2,6 @@
 using MongoDB.Driver.Linq;
 using MongoDbGenericRepository.Models;
 using System;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace MongoDbGenericRepository.DataAccess.Base

@@ -1,6 +1,4 @@
-﻿using MongoDbGenericRepository;
-using MongoDbGenericRepository.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -8,12 +6,12 @@ using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using MongoDbGenericRepository.Models;
 using Xunit;
 
 namespace CoreIntegrationTests.Infrastructure
 {
-    public abstract partial class MongoDbDocumentTestBase<T> :
-        IClassFixture<MongoDbTestFixture<T, Guid>>
+    public abstract partial class MongoDbDocumentTestBase<T> 
         where T : TestDoc, new()
     {
 
@@ -74,7 +72,7 @@ namespace CoreIntegrationTests.Infrastructure
             // Arrange
             var document = CreateTestDocument();
             // Act
-            SUT.AddOne<T>(document);
+            SUT.AddOne(document);
             // Assert
             long count = string.IsNullOrEmpty(PartitionKey) ? SUT.Count<T>(e => e.Id.Equals(document.Id))
                                                             : SUT.Count<T>(e => e.Id.Equals(document.Id), PartitionKey);
@@ -87,7 +85,7 @@ namespace CoreIntegrationTests.Infrastructure
             // Arrange
             var document = CreateTestDocument();
             // Act
-            await SUT.AddOneAsync<T>(document);
+            await SUT.AddOneAsync(document);
             // Assert
             long count = string.IsNullOrEmpty(PartitionKey) ? SUT.Count<T>(e => e.Id.Equals(document.Id))
                                                             : SUT.Count<T>(e => e.Id.Equals(document.Id), PartitionKey);
@@ -100,7 +98,7 @@ namespace CoreIntegrationTests.Infrastructure
             // Arrange
             var documents = CreateTestDocuments(2);
             // Act
-            SUT.AddMany<T>(documents);
+            SUT.AddMany(documents);
             // Assert
             long count = string.IsNullOrEmpty(PartitionKey) ? SUT.Count<T>(e => e.Id.Equals(documents[0].Id)
                                                                                    || e.Id.Equals(documents[1].Id))
@@ -123,7 +121,7 @@ namespace CoreIntegrationTests.Infrastructure
                     ((IPartitionedDocument)documents[2]).PartitionKey = secondPartitionKey;
                     ((IPartitionedDocument)documents[3]).PartitionKey = secondPartitionKey;
                     // Act
-                    SUT.AddMany<T>(documents);
+                    SUT.AddMany(documents);
                     // Assert
                     long count = SUT.Count<T>(e => e.Id.Equals(documents[0].Id) || e.Id.Equals(documents[1].Id), PartitionKey);
                     long secondPartitionCount = SUT.Count<T>(e => e.Id.Equals(documents[2].Id) || e.Id.Equals(documents[3].Id), secondPartitionKey);
@@ -141,7 +139,7 @@ namespace CoreIntegrationTests.Infrastructure
             // Arrange
             var documents = CreateTestDocuments(2);
             // Act
-            await SUT.AddManyAsync<T>(documents);
+            await SUT.AddManyAsync(documents);
             // Assert
             long count = string.IsNullOrEmpty(PartitionKey) ? SUT.Count<T>(e => e.Id.Equals(documents[0].Id)
                                                                                    || e.Id.Equals(documents[1].Id))
@@ -164,7 +162,7 @@ namespace CoreIntegrationTests.Infrastructure
                     ((IPartitionedDocument)documents[2]).PartitionKey = secondPartitionKey;
                     ((IPartitionedDocument)documents[3]).PartitionKey = secondPartitionKey;
                     // Act
-                    await SUT.AddManyAsync<T>(documents);
+                    await SUT.AddManyAsync(documents);
                     // Assert
                     long count = SUT.Count<T>(e => e.Id.Equals(documents[0].Id) || e.Id.Equals(documents[1].Id), PartitionKey);
                     long secondPartitionCount = SUT.Count<T>(e => e.Id.Equals(documents[2].Id) || e.Id.Equals(documents[3].Id), secondPartitionKey);
@@ -185,7 +183,7 @@ namespace CoreIntegrationTests.Infrastructure
         {
             // Arrange
             var document = CreateTestDocument();
-            SUT.AddOne<T>(document);
+            await SUT.AddOneAsync(document);
             // Act
             var result = await SUT.GetByIdAsync<T>(document.Id, PartitionKey);
             // Assert
@@ -197,7 +195,7 @@ namespace CoreIntegrationTests.Infrastructure
         {
             // Arrange
             var document = CreateTestDocument();
-            SUT.AddOne<T>(document);
+            SUT.AddOne(document);
             // Act
             var result = SUT.GetById<T>(document.Id, PartitionKey);
             // Assert
@@ -209,7 +207,7 @@ namespace CoreIntegrationTests.Infrastructure
         {
             // Arrange
             var document = CreateTestDocument();
-            SUT.AddOne<T>(document);
+            SUT.AddOne(document);
             // Act
             var result = await SUT.GetOneAsync<T>(x => x.Id.Equals(document.Id), PartitionKey);
             // Assert
@@ -221,7 +219,7 @@ namespace CoreIntegrationTests.Infrastructure
         {
             // Arrange
             var document = CreateTestDocument();
-            SUT.AddOne<T>(document);
+            SUT.AddOne(document);
             // Act
             var result = SUT.GetOne<T>(x => x.Id.Equals(document.Id), PartitionKey);
             // Assert
@@ -233,7 +231,7 @@ namespace CoreIntegrationTests.Infrastructure
         {
             // Arrange
             var document = CreateTestDocument();
-            SUT.AddOne<T>(document);
+            SUT.AddOne(document);
             // Act
             var cursor = SUT.GetCursor<T>(x => x.Id.Equals(document.Id), PartitionKey);
             var count = cursor.CountDocuments();
@@ -246,7 +244,7 @@ namespace CoreIntegrationTests.Infrastructure
         {
             // Arrange
             var document = CreateTestDocument();
-            SUT.AddOne<T>(document);
+            SUT.AddOne(document);
             // Act
             var result = await SUT.AnyAsync<T>(x => x.Id.Equals(document.Id), PartitionKey);
             // Assert
@@ -258,7 +256,7 @@ namespace CoreIntegrationTests.Infrastructure
         {
             // Arrange
             var document = CreateTestDocument();
-            SUT.AddOne<T>(document);
+            SUT.AddOne(document);
             // Act
             var result = await SUT.AnyAsync<T>(x => x.Id.Equals(Guid.NewGuid()), PartitionKey);
             // Assert
@@ -270,7 +268,7 @@ namespace CoreIntegrationTests.Infrastructure
         {
             // Arrange
             var document = CreateTestDocument();
-            SUT.AddOne<T>(document);
+            SUT.AddOne(document);
             // Act
             var result = SUT.Any<T>(x => x.Id.Equals(document.Id), PartitionKey);
             // Assert
@@ -282,7 +280,7 @@ namespace CoreIntegrationTests.Infrastructure
         {
             // Arrange
             var document = CreateTestDocument();
-            SUT.AddOne<T>(document);
+            SUT.AddOne(document);
             // Act
             var result = SUT.Any<T>(x => x.Id.Equals(Guid.NewGuid()), PartitionKey);
             // Assert
@@ -296,7 +294,7 @@ namespace CoreIntegrationTests.Infrastructure
             var documents = CreateTestDocuments(5);
             var content = GetContent();
             documents.ForEach(e => e.SomeContent = content);
-            SUT.AddMany<T>(documents);
+            SUT.AddMany(documents);
             // Act
             var result = await SUT.GetAllAsync<T>(x => x.SomeContent == content, PartitionKey);
             // Assert
@@ -310,7 +308,7 @@ namespace CoreIntegrationTests.Infrastructure
             var documents = CreateTestDocuments(5);
             var content = GetContent();
             documents.ForEach(e => e.SomeContent = content);
-            SUT.AddMany<T>(documents);
+            SUT.AddMany(documents);
             // Act
             var result = SUT.GetAll<T>(x => x.SomeContent == content, PartitionKey);
             // Assert
@@ -324,7 +322,7 @@ namespace CoreIntegrationTests.Infrastructure
             var documents = CreateTestDocuments(5);
             var content = GetContent();
             documents.ForEach(e => e.SomeContent = content);
-            SUT.AddMany<T>(documents);
+            SUT.AddMany(documents);
             // Act
             var result = await SUT.CountAsync<T>(x => x.SomeContent == content, PartitionKey);
             // Assert
@@ -338,7 +336,7 @@ namespace CoreIntegrationTests.Infrastructure
             var documents = CreateTestDocuments(5);
             var content = GetContent();
             documents.ForEach(e => e.SomeContent = content);
-            SUT.AddMany<T>(documents);
+            SUT.AddMany(documents);
             // Act
             var result = SUT.Count<T>(x => x.SomeContent == content, PartitionKey);
             // Assert
@@ -354,9 +352,9 @@ namespace CoreIntegrationTests.Infrastructure
         {
             // Arrange
             var document = CreateTestDocument();
-            SUT.AddOne<T>(document);
+            SUT.AddOne(document);
             // Act
-            var result = SUT.DeleteOne<T>(document);
+            var result = SUT.DeleteOne(document);
             // Assert
             Assert.True(1 == result);
             Assert.False(SUT.Any<T>(e => e.Id.Equals(document.Id), PartitionKey), GetTestName());
@@ -367,7 +365,7 @@ namespace CoreIntegrationTests.Infrastructure
         {
             // Arrange
             var document = CreateTestDocument();
-            SUT.AddOne<T>(document);
+            SUT.AddOne(document);
             // Act
             var result = SUT.DeleteOne<T>(e => e.Id.Equals(document.Id), PartitionKey);
             // Assert
@@ -380,9 +378,9 @@ namespace CoreIntegrationTests.Infrastructure
         {
             // Arrange
             var document = CreateTestDocument();
-            SUT.AddOne<T>(document);
+            SUT.AddOne(document);
             // Act
-            var result = await SUT.DeleteOneAsync<T>(document);
+            var result = await SUT.DeleteOneAsync(document);
             // Assert
             Assert.True(1 == result);
             Assert.False(SUT.Any<T>(e => e.Id.Equals(document.Id), PartitionKey), GetTestName());
@@ -393,7 +391,7 @@ namespace CoreIntegrationTests.Infrastructure
         {
             // Arrange
             var document = CreateTestDocument();
-            SUT.AddOne<T>(document);
+            SUT.AddOne(document);
             // Act
             var result = await SUT.DeleteOneAsync<T>(e => e.Id.Equals(document.Id), PartitionKey);
             // Assert
@@ -408,7 +406,7 @@ namespace CoreIntegrationTests.Infrastructure
             var criteria = $"{GetTestName()}.{DocumentTypeName}";
             var documents = CreateTestDocuments(5);
             documents.ForEach(e => e.SomeContent = criteria);
-            SUT.AddMany<T>(documents);
+            SUT.AddMany(documents);
             // Act
             var result = await SUT.DeleteManyAsync<T>(e => e.SomeContent == criteria, PartitionKey);
             // Assert
@@ -432,9 +430,9 @@ namespace CoreIntegrationTests.Infrastructure
                 ((IPartitionedDocument)documents[4]).PartitionKey = secondKey;
             }
 
-            SUT.AddMany<T>(documents);
+            SUT.AddMany(documents);
             // Act
-            var result = await SUT.DeleteManyAsync<T>(documents);
+            var result = await SUT.DeleteManyAsync(documents);
             // Assert
             Assert.True(5 == result);
             Assert.False(SUT.Any<T>(e => e.SomeContent == criteria, PartitionKey), GetTestName());
@@ -451,7 +449,7 @@ namespace CoreIntegrationTests.Infrastructure
             var criteria = $"{GetTestName()}.{DocumentTypeName}";
             var documents = CreateTestDocuments(5);
             documents.ForEach(e => e.SomeContent = criteria);
-            SUT.AddMany<T>(documents);
+            SUT.AddMany(documents);
             // Act
             var result = SUT.DeleteMany<T>(e => e.SomeContent == criteria, PartitionKey);
             // Assert
@@ -475,9 +473,9 @@ namespace CoreIntegrationTests.Infrastructure
                 ((IPartitionedDocument)documents[4]).PartitionKey = secondKey;
             }
 
-            SUT.AddMany<T>(documents);
+            SUT.AddMany(documents);
             // Act
-            var result = SUT.DeleteMany<T>(documents);
+            var result = SUT.DeleteMany(documents);
             // Assert
             Assert.True(5 == result);
             Assert.False(SUT.Any<T>(e => e.SomeContent == criteria, PartitionKey), GetTestName());
@@ -500,7 +498,7 @@ namespace CoreIntegrationTests.Infrastructure
             var document = CreateTestDocument();
             document.SomeContent = someContent;
             document.Nested.SomeDate = someDate;
-            SUT.AddOne<T>(document);
+            SUT.AddOne(document);
             // Act
             var result = await SUT.ProjectOneAsync<T, MyTestProjection>(
                 x => x.Id.Equals(document.Id),
@@ -526,7 +524,7 @@ namespace CoreIntegrationTests.Infrastructure
             var document = CreateTestDocument();
             document.SomeContent = someContent;
             document.Nested.SomeDate = someDate;
-            SUT.AddOne<T>(document);
+            SUT.AddOne(document);
             // Act
             var result = SUT.ProjectOne<T, MyTestProjection>(
                 x => x.Id.Equals(document.Id),
@@ -556,7 +554,7 @@ namespace CoreIntegrationTests.Infrastructure
                 e.Nested.SomeDate = someDate;
             });
 
-            SUT.AddMany<T>(documents);
+            SUT.AddMany(documents);
             // Act
             var result = await SUT.ProjectManyAsync<T, MyTestProjection>(
                 x => x.SomeContent == someContent,
@@ -586,7 +584,7 @@ namespace CoreIntegrationTests.Infrastructure
                 e.Nested.SomeDate = someDate;
             });
 
-            SUT.AddMany<T>(documents);
+            SUT.AddMany(documents);
             // Act
             var result = SUT.ProjectMany<T, MyTestProjection>(
                 x => x.SomeContent == someContent,
@@ -619,7 +617,7 @@ namespace CoreIntegrationTests.Infrastructure
                 e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
                 e.SomeContent = criteria;
             });
-            SUT.AddMany<T>(documents);
+            SUT.AddMany(documents);
             var expectedMax = documents.OrderByDescending(e => e.Nested.SomeDate).First();
 
             // Act
@@ -642,7 +640,7 @@ namespace CoreIntegrationTests.Infrastructure
                 e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
                 e.SomeContent = criteria;
             });
-            SUT.AddMany<T>(documents);
+            SUT.AddMany(documents);
             var expectedMax = documents.OrderByDescending(e => e.Nested.SomeDate).First();
 
             // Act
@@ -665,7 +663,7 @@ namespace CoreIntegrationTests.Infrastructure
                 e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
                 e.SomeContent = criteria;
             });
-            SUT.AddMany<T>(documents);
+            SUT.AddMany(documents);
             var expectedMin = documents.OrderBy(e => e.Nested.SomeDate).First();
 
             // Act
@@ -688,7 +686,7 @@ namespace CoreIntegrationTests.Infrastructure
                 e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
                 e.SomeContent = criteria;
             });
-            SUT.AddMany<T>(documents);
+            SUT.AddMany(documents);
             var expectedMin = documents.OrderBy(e => e.Nested.SomeDate).First();
 
             // Act
@@ -711,7 +709,7 @@ namespace CoreIntegrationTests.Infrastructure
                 e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
                 e.SomeContent = criteria;
             });
-            SUT.AddMany<T>(documents);
+            SUT.AddMany(documents);
             var expectedMin = documents.OrderBy(e => e.Nested.SomeDate).First();
 
             // Act
@@ -734,7 +732,7 @@ namespace CoreIntegrationTests.Infrastructure
                 e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
                 e.SomeContent = criteria;
             });
-            SUT.AddMany<T>(documents);
+            SUT.AddMany(documents);
             var expectedMin = documents.OrderBy(e => e.Nested.SomeDate).First();
 
             // Act
@@ -757,7 +755,7 @@ namespace CoreIntegrationTests.Infrastructure
                 e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
                 e.SomeContent = criteria;
             });
-            SUT.AddMany<T>(documents);
+            SUT.AddMany(documents);
             var expectedMax = documents.OrderByDescending(e => e.Nested.SomeDate).First();
 
             // Act
@@ -780,7 +778,7 @@ namespace CoreIntegrationTests.Infrastructure
                 e.Nested.SomeDate = e.Nested.SomeDate.AddDays(i++);
                 e.SomeContent = criteria;
             });
-            SUT.AddMany<T>(documents);
+            SUT.AddMany(documents);
             var expectedMin = documents.OrderByDescending(e => e.Nested.SomeDate).First();
 
             // Act
@@ -910,7 +908,7 @@ namespace CoreIntegrationTests.Infrastructure
             // Act
             Expression <Func<T, object>> ex = x => x.SomeContent2;
             Expression <Func<T, object>> ex2 = x => x.SomeContent3;
-            var result = await SUT.CreateCombinedTextIndexAsync<T>(new[] { ex, ex2 }, null, PartitionKey);
+            var result = await SUT.CreateCombinedTextIndexAsync(new[] { ex, ex2 }, null, PartitionKey);
 
             // Assert
             var listOfIndexNames = await SUT.GetIndexesNamesAsync<T>(PartitionKey);
@@ -937,7 +935,7 @@ namespace CoreIntegrationTests.Infrastructure
                 e.Nested.SomeAmount = 5m;
                 e.SomeContent = criteria;
             });
-            SUT.AddMany<T>(documents);
+            SUT.AddMany(documents);
             var expectedSum = documents.Sum(e => e.Nested.SomeAmount);
 
             // Act
@@ -960,7 +958,7 @@ namespace CoreIntegrationTests.Infrastructure
                 e.Nested.SomeAmount = 5m;
                 e.SomeContent = criteria;
             });
-            SUT.AddMany<T>(documents);
+            SUT.AddMany(documents);
             var expectedSum = documents.Sum(e => e.Nested.SomeAmount);
 
             // Act

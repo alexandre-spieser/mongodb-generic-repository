@@ -2,13 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
 using MongoDbGenericRepository.DataAccess.Base;
 using MongoDbGenericRepository.Models;
 
 namespace MongoDbGenericRepository.DataAccess.Delete
 {
+    /// <summary>
+    /// The MongoDbEraser interface. used to delete documents from the collections.
+    /// </summary>
     public interface IMongoDbEraser : IDataAccessBase
     {
         /// <summary>
@@ -100,51 +101,6 @@ namespace MongoDbGenericRepository.DataAccess.Delete
         /// <param name="partitionKey">An optional partition key.</param>
         /// <returns>The number of documents deleted.</returns>
         long DeleteMany<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
-            where TDocument : IDocument<TKey>
-            where TKey : IEquatable<TKey>;
-
-        /// <summary>
-        /// Gets a IMongoQueryable for a potentially partitioned document type and a filter.
-        /// </summary>
-        /// <typeparam name="TDocument">The document type.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key.</typeparam>
-        /// <param name="filter">The filter definition.</param>
-        /// <param name="partitionKey">The collection partition key.</param>
-        /// <returns></returns>
-        IMongoQueryable<TDocument> GetQuery<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
-            where TDocument : IDocument<TKey>
-            where TKey : IEquatable<TKey>;
-
-        /// <summary>
-        /// Gets a collections for a potentially partitioned document type.
-        /// </summary>
-        /// <typeparam name="TDocument">The document type.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key.</typeparam>
-        /// <param name="document">The document.</param>
-        /// <returns></returns>
-        IMongoCollection<TDocument> HandlePartitioned<TDocument, TKey>(TDocument document)
-            where TDocument : IDocument<TKey>
-            where TKey : IEquatable<TKey>;
-
-        /// <summary>
-        /// Gets a collections for a potentially partitioned document type.
-        /// </summary>
-        /// <typeparam name="TDocument">The document type.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key.</typeparam>
-        /// <param name="partitionKey">The collection partition key.</param>
-        /// <returns></returns>
-        IMongoCollection<TDocument> HandlePartitioned<TDocument, TKey>(string partitionKey)
-            where TDocument : IDocument<TKey>
-            where TKey : IEquatable<TKey>;
-
-        /// <summary>
-        /// Gets a collections for the type TDocument with a partition key.
-        /// </summary>
-        /// <typeparam name="TDocument">The document type.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key.</typeparam>
-        /// <param name="partitionKey">The collection partition key.</param>
-        /// <returns></returns>
-        IMongoCollection<TDocument> GetCollection<TDocument, TKey>(string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>;
     }

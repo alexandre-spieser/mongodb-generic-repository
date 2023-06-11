@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using MongoDbGenericRepository.Models;
 
 namespace MongoDbGenericRepository
 {
+    /// <summary>
+    /// read only repository interface
+    /// </summary>
+    /// <typeparam name="TKey">The key type</typeparam>
     public interface IReadOnlyMongoRepository<TKey> where TKey : IEquatable<TKey>
     {
         #region Read

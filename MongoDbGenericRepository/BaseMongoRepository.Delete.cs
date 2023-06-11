@@ -11,6 +11,9 @@ namespace MongoDbGenericRepository
     {
         private volatile IMongoDbEraser _mongoDbEraser;
         
+        /// <summary>
+        /// The MongoDbEraser used to delete documents.
+        /// </summary>
         protected virtual IMongoDbEraser MongoDbEraser
         {
             get

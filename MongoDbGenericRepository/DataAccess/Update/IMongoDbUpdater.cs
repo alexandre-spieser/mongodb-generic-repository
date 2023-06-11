@@ -3,12 +3,14 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Driver;
-using MongoDB.Driver.Linq;
 using MongoDbGenericRepository.DataAccess.Base;
 using MongoDbGenericRepository.Models;
 
 namespace MongoDbGenericRepository.DataAccess.Update
 {
+    /// <summary>
+    /// A interface for updating documents in MongoDb.
+    /// </summary>
     public interface IMongoDbUpdater : IDataAccessBase
     {
         /// <summary>
@@ -323,8 +325,7 @@ namespace MongoDbGenericRepository.DataAccess.Update
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <param name="filter">The document filter.</param>
-        /// <param name="field">The field selector.</param>
-        /// <param name="value">The new value of the property field.</param>
+        /// <param name="update">the update definiton</param>
         /// <param name="partitionKey">The value of the partition key.</param>
         Task<long> UpdateManyAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, UpdateDefinition<TDocument> update, string partitionKey = null)
             where TDocument : IDocument<TKey>
@@ -335,7 +336,6 @@ namespace MongoDbGenericRepository.DataAccess.Update
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <typeparam name="TField">The type of the field.</typeparam>
         /// <param name="filter">The document filter.</param>
         /// <param name="updateDefinition">The update definition.</param>
         /// <param name="partitionKey">The value of the partition key.</param>
@@ -376,56 +376,10 @@ namespace MongoDbGenericRepository.DataAccess.Update
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <typeparam name="TField">The type of the field.</typeparam>
         /// <param name="filter">The document filter.</param>
-        /// <param name="UpdateDefinition">The update definition.</param>
+        /// <param name="updateDefinition">The update definition.</param>
         /// <param name="partitionKey">The value of the partition key.</param>
-        long UpdateMany<TDocument, TKey>(FilterDefinition<TDocument> filter, UpdateDefinition<TDocument> UpdateDefinition, string partitionKey = null)
-            where TDocument : IDocument<TKey>
-            where TKey : IEquatable<TKey>;
-
-        /// <summary>
-        /// Gets a IMongoQueryable for a potentially partitioned document type and a filter.
-        /// </summary>
-        /// <typeparam name="TDocument">The document type.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key.</typeparam>
-        /// <param name="filter">The filter definition.</param>
-        /// <param name="partitionKey">The collection partition key.</param>
-        /// <returns></returns>
-        IMongoQueryable<TDocument> GetQuery<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
-            where TDocument : IDocument<TKey>
-            where TKey : IEquatable<TKey>;
-
-        /// <summary>
-        /// Gets a collections for a potentially partitioned document type.
-        /// </summary>
-        /// <typeparam name="TDocument">The document type.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key.</typeparam>
-        /// <param name="document">The document.</param>
-        /// <returns></returns>
-        IMongoCollection<TDocument> HandlePartitioned<TDocument, TKey>(TDocument document)
-            where TDocument : IDocument<TKey>
-            where TKey : IEquatable<TKey>;
-
-        /// <summary>
-        /// Gets a collections for a potentially partitioned document type.
-        /// </summary>
-        /// <typeparam name="TDocument">The document type.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key.</typeparam>
-        /// <param name="partitionKey">The collection partition key.</param>
-        /// <returns></returns>
-        IMongoCollection<TDocument> HandlePartitioned<TDocument, TKey>(string partitionKey)
-            where TDocument : IDocument<TKey>
-            where TKey : IEquatable<TKey>;
-
-        /// <summary>
-        /// Gets a collections for the type TDocument with a partition key.
-        /// </summary>
-        /// <typeparam name="TDocument">The document type.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key.</typeparam>
-        /// <param name="partitionKey">The collection partition key.</param>
-        /// <returns></returns>
-        IMongoCollection<TDocument> GetCollection<TDocument, TKey>(string partitionKey = null)
+        long UpdateMany<TDocument, TKey>(FilterDefinition<TDocument> filter, UpdateDefinition<TDocument> updateDefinition, string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>;
     }

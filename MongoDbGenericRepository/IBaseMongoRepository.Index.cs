@@ -6,6 +6,9 @@ using MongoDbGenericRepository.Models;
 
 namespace MongoDbGenericRepository
 {
+    /// <summary>
+    /// The interface exposing index management functionality for Guid Keyed repositories. 
+    /// </summary>
     public interface IBaseMongoRepository_Index : IBaseMongoRepository_Index<Guid>
     {
         /// <summary>

@@ -12,6 +12,9 @@ namespace MongoDbGenericRepository
     {
         private volatile IMongoDbUpdater _mongoDbUpdater;
 
+        /// <summary>
+        /// The MongoDb accessor to update data.
+        /// </summary>
         protected virtual IMongoDbUpdater MongoDbUpdater
         {
             get

@@ -6,6 +6,10 @@ using MongoDbGenericRepository.Models;
 
 namespace MongoDbGenericRepository
 {
+    /// <summary>
+    /// The base Mongo Repository Update interface. used to update documents in the collections.
+    /// </summary>
+    /// <typeparam name="TKey"></typeparam>
     public interface IBaseMongoRepository_Update<TKey> where TKey : IEquatable<TKey>
     {
         /// <summary>

@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace MongoDbGenericRepository
@@ -29,12 +28,12 @@ namespace MongoDbGenericRepository
         /// <summary>
         /// The MongoDbContext
         /// </summary>
-        protected IMongoDbContext MongoDbContext = null;
+        protected IMongoDbContext MongoDbContext;
 
         /// <summary>
         /// A MongoDb Reader for read operations
         /// </summary>
-        protected IMongoDbReader MongoDbReader = null;
+        protected IMongoDbReader MongoDbReader;
 
         /// <summary>
         /// The constructor taking a connection string and a database name.
@@ -63,19 +62,29 @@ namespace MongoDbGenericRepository
             SetupMongoDbContext(mongoDbContext);
         }
 
+        /// <summary>
+        /// Setups the repository with a <see cref="IMongoDbContext"/>.
+        /// </summary>
+        /// <param name="mongoDbContext"></param>
         protected void SetupMongoDbContext(IMongoDbContext mongoDbContext)
         {
             MongoDbContext = MongoDbContext ?? mongoDbContext;
             MongoDbReader = MongoDbReader ?? new MongoDbReader(MongoDbContext);
         }
 
+        /// <summary>
+        /// Setups the repository with a connection string and a database name.
+        /// </summary>
+        /// <param name="connectionString"></param>
+        /// <param name="databaseName">The database name. If the database name is null or whitespace it is taken from the connection string</param>
         protected void SetupMongoDbContext(string connectionString, string databaseName)
         {
-            if (databaseName == null)
+            if (string.IsNullOrWhiteSpace(databaseName))
             {
                 var mongoUrl = new MongoUrl(connectionString);
-                databaseName = databaseName ?? mongoUrl.DatabaseName;
+                databaseName = mongoUrl.DatabaseName;
             }
+
             ConnectionString = connectionString;
             DatabaseName = databaseName;
             SetupMongoDbContext(new MongoDbContext(connectionString, databaseName));

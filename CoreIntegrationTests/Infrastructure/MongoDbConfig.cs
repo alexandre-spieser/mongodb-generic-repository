@@ -5,8 +5,8 @@ namespace CoreIntegrationTests.Infrastructure
 {
     internal static class MongoDbConfig
     {
-        private static bool _initialized = false;
-        private static object _initializationLock = new object();
+        private static bool _initialized;
+        private static object _initializationLock = new();
         private static object _initializationTarget;
 
         public static void EnsureConfigured()

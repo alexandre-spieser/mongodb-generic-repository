@@ -34,7 +34,7 @@ namespace MongoDbGenericRepository.DataAccess.Read
         /// <param name="id">The Id of the document you want to get.</param>
         /// <param name="partitionKey">An optional partition key.</param>
         /// <param name="cancellationToken">An optional cancellation Token.</param>
-        public async virtual Task<TDocument> GetByIdAsync<TDocument, TKey>(TKey id, string partitionKey = null, CancellationToken cancellationToken = default)
+        public virtual async Task<TDocument> GetByIdAsync<TDocument, TKey>(TKey id, string partitionKey = null, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -98,7 +98,7 @@ namespace MongoDbGenericRepository.DataAccess.Read
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="partitionKey">An optional partition key.</param>
         /// <param name="cancellationToken">An optional cancellation Token.</param>
-        public async virtual Task<TDocument> GetOneAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null, CancellationToken cancellationToken = default)
+        public virtual async Task<TDocument> GetOneAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -176,7 +176,7 @@ namespace MongoDbGenericRepository.DataAccess.Read
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="partitionKey">An optional partition key.</param>
         /// <param name="cancellationToken">An optional cancellation Token.</param>
-        public async virtual Task<bool> AnyAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null, CancellationToken cancellationToken = default)
+        public virtual async Task<bool> AnyAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -240,7 +240,7 @@ namespace MongoDbGenericRepository.DataAccess.Read
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="partitionKey">An optional partition key.</param>
         /// <param name="cancellationToken">An optional cancellation Token.</param>
-        public async virtual Task<List<TDocument>> GetAllAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<TDocument>> GetAllAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -302,7 +302,7 @@ namespace MongoDbGenericRepository.DataAccess.Read
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="partitionKey">An optional partitionKey</param>
         /// <param name="cancellationToken">An optional cancellation Token.</param>
-        public async virtual Task<long> CountAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null, CancellationToken cancellationToken = default)
+        public virtual async Task<long> CountAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -336,7 +336,7 @@ namespace MongoDbGenericRepository.DataAccess.Read
         /// <param name="maxValueSelector">A property selector to order by descending.</param>
         /// <param name="partitionKey">An optional partitionKey.</param>
         /// <param name="cancellationToken">An optional cancellation Token.</param>
-        public async virtual Task<TDocument> GetByMaxAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> maxValueSelector, string partitionKey = null, CancellationToken cancellationToken = default)
+        public virtual async Task<TDocument> GetByMaxAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> maxValueSelector, string partitionKey = null, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -373,7 +373,7 @@ namespace MongoDbGenericRepository.DataAccess.Read
         /// <param name="minValueSelector">A property selector to order by ascending.</param>
         /// <param name="partitionKey">An optional partitionKey.</param>
         /// <param name="cancellationToken">An optional cancellation Token.</param>
-        public async virtual Task<TDocument> GetByMinAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> minValueSelector, string partitionKey = null, CancellationToken cancellationToken = default)
+        public virtual async Task<TDocument> GetByMinAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> minValueSelector, string partitionKey = null, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -411,7 +411,7 @@ namespace MongoDbGenericRepository.DataAccess.Read
         /// <param name="maxValueSelector">A property selector to order by ascending.</param>
         /// <param name="partitionKey">An optional partitionKey.</param>
         /// <param name="cancellationToken">An optional cancellation Token.</param>
-        public async virtual Task<TValue> GetMaxValueAsync<TDocument, TKey, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> maxValueSelector, string partitionKey = null, CancellationToken cancellationToken = default)
+        public virtual async Task<TValue> GetMaxValueAsync<TDocument, TKey, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> maxValueSelector, string partitionKey = null, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {

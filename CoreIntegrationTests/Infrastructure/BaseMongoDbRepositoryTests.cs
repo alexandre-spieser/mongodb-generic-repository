@@ -62,18 +62,18 @@ namespace CoreIntegrationTests.Infrastructure
         }
 
         #region IDisposable Support
-        private bool disposedValue = false; // Pour détecter les appels redondants
+        private bool _disposedValue; // Pour détecter les appels redondants
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
                 if (disposing)
                 {
                     Cleanup();
                 }
 
-                disposedValue = true;
+                _disposedValue = true;
             }
         }
 
