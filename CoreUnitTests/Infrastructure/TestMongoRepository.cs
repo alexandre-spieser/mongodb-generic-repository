@@ -6,13 +6,12 @@ using MongoDbGenericRepository.DataAccess.Read;
 
 namespace CoreUnitTests.Infrastructure;
 
-public class TestKeyedMongoRepository : BaseMongoRepository<int>
+public class TestMongoRepository : BaseMongoRepository
 {
-    public TestKeyedMongoRepository(IMongoDatabase mongoDatabase)
-        : base(mongoDatabase)
+    public TestMongoRepository(IMongoDatabase mongoDatabase) : base(mongoDatabase)
     {
     }
-
+    
     public void SetIndexHandler(IMongoDbIndexHandler indexHandler)
     {
         MongoDbIndexHandler = indexHandler;
