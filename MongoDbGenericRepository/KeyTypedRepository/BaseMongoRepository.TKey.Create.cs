@@ -14,7 +14,7 @@ namespace MongoDbGenericRepository
     public abstract partial class BaseMongoRepository<TKey> : IBaseMongoRepository_Create<TKey> 
         where TKey : IEquatable<TKey>
     {
-        private volatile IMongoDbCreator _mongoDbCreator;
+        private IMongoDbCreator _mongoDbCreator;
 
         /// <summary>
         /// The MongoDb accessor to insert data.

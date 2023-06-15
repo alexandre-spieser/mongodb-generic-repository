@@ -10,7 +10,7 @@ namespace MongoDbGenericRepository
     public abstract partial class BaseMongoRepository<TKey> : IBaseMongoRepository_Update<TKey>
         where TKey : IEquatable<TKey>
     {
-        private volatile IMongoDbUpdater _mongoDbUpdater;
+        private IMongoDbUpdater _mongoDbUpdater;
 
         /// <summary>
         /// The MongoDb accessor to update data.

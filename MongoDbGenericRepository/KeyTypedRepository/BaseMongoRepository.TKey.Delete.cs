@@ -10,7 +10,7 @@ namespace MongoDbGenericRepository
     public abstract partial class BaseMongoRepository<TKey>: IBaseMongoRepository_Delete<TKey> 
         where TKey : IEquatable<TKey>
     {
-        private volatile IMongoDbEraser _mongoDbEraser;
+        private IMongoDbEraser _mongoDbEraser;
 
         /// <summary>
         /// The MongoDb accessor to delete data.

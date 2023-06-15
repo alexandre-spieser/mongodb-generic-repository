@@ -13,7 +13,7 @@ namespace MongoDbGenericRepository
     /// </summary>
     public abstract partial class BaseMongoRepository : IBaseMongoRepository_Index
     {
-        private volatile IMongoDbIndexHandler _mongoDbIndexHandler;
+        private IMongoDbIndexHandler _mongoDbIndexHandler;
 
         /// <summary>
         /// The MongoDb accessor to manage indexes.

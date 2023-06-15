@@ -390,15 +390,7 @@ namespace MongoDbGenericRepository
 
         #region Project
 
-        /// <summary>
-        /// Asynchronously returns a projected document matching the filter condition.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
-        /// <param name="filter">A LINQ expression filter.</param>
-        /// <param name="projection">The projection expression.</param>
-        /// <param name="partitionKey">An optional partition key.</param>
+        /// <inheritdoc cref="IReadOnlyMongoRepository"/>
         public virtual async Task<TProjection> ProjectOneAsync<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TProjection : class

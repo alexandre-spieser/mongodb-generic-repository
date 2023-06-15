@@ -253,7 +253,6 @@ namespace MongoDbGenericRepository
         /// Asynchronously returns a projected document matching the filter condition.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="projection">The projection expression.</param>
@@ -346,7 +345,6 @@ namespace MongoDbGenericRepository
         /// Asynchronously returns a paginated list of the documents matching the filter condition.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="sortSelector">The property selector.</param>
         /// <param name="ascending">Order of the sorting.</param>
@@ -366,7 +364,6 @@ namespace MongoDbGenericRepository
         /// Asynchronously returns a paginated list of the documents matching the filter condition.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="sortDefinition">The sort definition.</param>
         /// <param name="skipNumber">The number of documents you want to skip. Default value is 0.</param>

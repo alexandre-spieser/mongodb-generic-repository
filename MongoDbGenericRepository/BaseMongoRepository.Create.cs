@@ -14,7 +14,7 @@ namespace MongoDbGenericRepository
     public abstract partial class BaseMongoRepository : IBaseMongoRepository_Create
     {
         private readonly object _initLock = new object();
-        private volatile IMongoDbCreator _mongoDbCreator;
+        private IMongoDbCreator _mongoDbCreator;
 
         /// <summary>
         /// The MongoDbCreator field.

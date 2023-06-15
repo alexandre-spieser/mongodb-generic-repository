@@ -9,8 +9,8 @@ namespace MongoDbGenericRepository
 {
     public abstract partial class BaseMongoRepository : IBaseMongoRepository_Delete
     {
-        private volatile IMongoDbEraser _mongoDbEraser;
-        
+        private IMongoDbEraser _mongoDbEraser;
+
         /// <summary>
         /// The MongoDbEraser used to delete documents.
         /// </summary>

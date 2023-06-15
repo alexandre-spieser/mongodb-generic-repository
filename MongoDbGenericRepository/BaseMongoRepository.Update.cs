@@ -13,7 +13,7 @@ namespace MongoDbGenericRepository
     /// </summary>
     public abstract partial class BaseMongoRepository : IBaseMongoRepository_Update
     {
-        private volatile IMongoDbUpdater _mongoDbUpdater;
+        private IMongoDbUpdater _mongoDbUpdater;
 
         /// <summary>
         /// The MongoDb accessor to update data.

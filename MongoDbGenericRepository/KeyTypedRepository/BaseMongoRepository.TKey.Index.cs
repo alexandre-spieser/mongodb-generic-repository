@@ -14,7 +14,7 @@ namespace MongoDbGenericRepository
     public abstract partial class BaseMongoRepository<TKey> : IBaseMongoRepository_Index<TKey>
         where TKey : IEquatable<TKey>
     {
-        private volatile IMongoDbIndexHandler _mongoDbIndexHandler;
+        private IMongoDbIndexHandler _mongoDbIndexHandler;
 
         /// <summary>
         /// The MongoDb accessor to manage indexes.
