@@ -3,6 +3,7 @@ using MongoDbGenericRepository.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MongoDbGenericRepository
@@ -35,94 +36,115 @@ namespace MongoDbGenericRepository
 
         #region Delete
 
-        /// <summary>
-        /// Asynchronously deletes a document.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <param name="document">The document you want to delete.</param>
-        /// <returns>The number of documents deleted.</returns>
-        public virtual async Task<long> DeleteOneAsync<TDocument>(TDocument document) where TDocument : IDocument<Guid>
+        /// <inheritdoc />
+        public virtual async Task<long> DeleteOneAsync<TDocument>(TDocument document)
+            where TDocument : IDocument<Guid>
         {
-            return await MongoDbEraser.DeleteOneAsync<TDocument, Guid>(document);
+            return await DeleteOneAsync(document, CancellationToken.None);
         }
 
-        /// <summary>
-        /// Deletes a document.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <param name="document">The document you want to delete.</param>
-        /// <returns>The number of documents deleted.</returns>
-        public virtual long DeleteOne<TDocument>(TDocument document) where TDocument : IDocument<Guid>
+        /// <inheritdoc />
+        public virtual async Task<long> DeleteOneAsync<TDocument>(TDocument document, CancellationToken cancellationToken)
+            where TDocument : IDocument<Guid>
+        {
+            return await MongoDbEraser.DeleteOneAsync<TDocument, Guid>(document, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public virtual long DeleteOne<TDocument>(TDocument document)
+            where TDocument : IDocument<Guid>
         {
             return MongoDbEraser.DeleteOne<TDocument, Guid>(document);
         }
 
-        /// <summary>
-        /// Deletes a document matching the condition of the LINQ expression filter.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <param name="filter">A LINQ expression filter.</param>
-        /// <param name="partitionKey">An optional partition key.</param>
-        /// <returns>The number of documents deleted.</returns>
-        public virtual long DeleteOne<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument<Guid>
+        /// <inheritdoc />
+
+        public virtual long DeleteOne<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
+            where TDocument : IDocument<Guid>
         {
             return MongoDbEraser.DeleteOne<TDocument, Guid>(filter, partitionKey);
         }
 
-        /// <summary>
-        /// Asynchronously deletes a document matching the condition of the LINQ expression filter.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <param name="filter">A LINQ expression filter.</param>
-        /// <param name="partitionKey">An optional partition key.</param>
-        /// <returns>The number of documents deleted.</returns>
-        public virtual async Task<long> DeleteOneAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument<Guid>
+        /// <inheritdoc />
+        public virtual async Task<long> DeleteOneAsync<TDocument>(Expression<Func<TDocument, bool>> filter)
+            where TDocument : IDocument<Guid>
         {
-            return await MongoDbEraser.DeleteOneAsync<TDocument, Guid>(filter, partitionKey);
+            return await DeleteOneAsync(filter, null, CancellationToken.None);
         }
 
-        /// <summary>
-        /// Asynchronously deletes the documents matching the condition of the LINQ expression filter.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <param name="filter">A LINQ expression filter.</param>
-        /// <param name="partitionKey">An optional partition key.</param>
-        /// <returns>The number of documents deleted.</returns>
-        public virtual async Task<long> DeleteManyAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument<Guid>
+        /// <inheritdoc />
+        public virtual async Task<long> DeleteOneAsync<TDocument>(Expression<Func<TDocument, bool>> filter, CancellationToken cancellationToken)
+            where TDocument : IDocument<Guid>
         {
-            return await MongoDbEraser.DeleteManyAsync<TDocument, Guid>(filter, partitionKey);
+            return await DeleteOneAsync(filter, null, cancellationToken);
         }
 
-        /// <summary>
-        /// Asynchronously deletes a list of documents.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <param name="documents">The list of documents to delete.</param>
-        /// <returns>The number of documents deleted.</returns>
-        public virtual async Task<long> DeleteManyAsync<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument<Guid>
+        /// <inheritdoc />
+        public virtual async Task<long> DeleteOneAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey)
+            where TDocument : IDocument<Guid>
+        {
+            return await DeleteOneAsync(filter, partitionKey, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<long> DeleteOneAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey, CancellationToken cancellationToken)
+            where TDocument : IDocument<Guid>
+        {
+            return await MongoDbEraser.DeleteOneAsync<TDocument, Guid>(filter, partitionKey, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public async Task<long> DeleteManyAsync<TDocument>(Expression<Func<TDocument, bool>> filter)
+            where TDocument : IDocument<Guid>
+        {
+            return await DeleteManyAsync(filter, null, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public async Task<long> DeleteManyAsync<TDocument>(Expression<Func<TDocument, bool>> filter, CancellationToken cancellationToken)
+            where TDocument : IDocument<Guid>
+        {
+            return await DeleteManyAsync(filter, null, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<long> DeleteManyAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey)
+            where TDocument : IDocument<Guid>
+        {
+            return await DeleteManyAsync(filter, partitionKey, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public async Task<long> DeleteManyAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey, CancellationToken cancellationToken)
+            where TDocument : IDocument<Guid>
+        {
+            return await MongoDbEraser.DeleteManyAsync<TDocument, Guid>(filter, partitionKey, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<long> DeleteManyAsync<TDocument>(IEnumerable<TDocument> documents)
+            where TDocument : IDocument<Guid>
         {
             return await DeleteManyAsync<TDocument, Guid>(documents);
         }
 
-        /// <summary>
-        /// Deletes a list of documents.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <param name="documents">The list of documents to delete.</param>
-        /// <returns>The number of documents deleted.</returns>
-        public virtual long DeleteMany<TDocument>(IEnumerable<TDocument> documents) where TDocument : IDocument<Guid>
+        /// <inheritdoc />
+        public virtual async Task<long> DeleteManyAsync<TDocument>(IEnumerable<TDocument> documents, CancellationToken cancellationToken)
+            where TDocument : IDocument<Guid>
+        {
+            return await DeleteManyAsync<TDocument, Guid>(documents, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public virtual long DeleteMany<TDocument>(IEnumerable<TDocument> documents)
+            where TDocument : IDocument<Guid>
         {
             return DeleteMany<TDocument, Guid>(documents);
         }
 
-        /// <summary>
-        /// Deletes the documents matching the condition of the LINQ expression filter.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <param name="filter">A LINQ expression filter.</param>
-        /// <param name="partitionKey">An optional partition key.</param>
-        /// <returns>The number of documents deleted.</returns>
-        public virtual long DeleteMany<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null) where TDocument : IDocument<Guid>
+        /// <inheritdoc />
+        public virtual long DeleteMany<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
+            where TDocument : IDocument<Guid>
         {
             return MongoDbEraser.DeleteMany<TDocument, Guid>(filter, partitionKey);
         }
@@ -131,13 +153,7 @@ namespace MongoDbGenericRepository
 
         #region Delete TKey
 
-        /// <summary>
-        /// Deletes a document.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <param name="document">The document you want to delete.</param>
-        /// <returns>The number of documents deleted.</returns>
+        /// <inheritdoc />
         public virtual long DeleteOne<TDocument, TKey>(TDocument document)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
@@ -145,18 +161,20 @@ namespace MongoDbGenericRepository
             return MongoDbEraser.DeleteOne<TDocument, TKey>(document);
         }
 
-        /// <summary>
-        /// Asynchronously deletes a document matching the condition of the LINQ expression filter.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <param name="document">The document you want to delete.</param>
-        /// <returns>The number of documents deleted.</returns>
+        /// <inheritdoc />
         public virtual async Task<long> DeleteOneAsync<TDocument, TKey>(TDocument document)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return await MongoDbEraser.DeleteOneAsync<TDocument, TKey>(document);
+            return await DeleteOneAsync<TDocument, TKey>(document, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<long> DeleteOneAsync<TDocument, TKey>(TDocument document, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            return await MongoDbEraser.DeleteOneAsync<TDocument, TKey>(document, cancellationToken);
         }
 
         /// <summary>
@@ -174,48 +192,84 @@ namespace MongoDbGenericRepository
             return MongoDbEraser.DeleteOne<TDocument, TKey>(filter, partitionKey);
         }
 
-        /// <summary>
-        /// Asynchronously deletes a document matching the condition of the LINQ expression filter.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <param name="filter">A LINQ expression filter.</param>
-        /// <param name="partitionKey">An optional partition key.</param>
-        /// <returns>The number of documents deleted.</returns>
-        public virtual async Task<long> DeleteOneAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
+        /// <inheritdoc />
+        public virtual async Task<long> DeleteOneAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return await MongoDbEraser.DeleteOneAsync<TDocument, TKey>(filter, partitionKey);
+            return await DeleteOneAsync<TDocument, TKey>(filter, null, CancellationToken.None);
         }
 
-        /// <summary>
-        /// Asynchronously deletes the documents matching the condition of the LINQ expression filter.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <param name="filter">A LINQ expression filter.</param>
-        /// <param name="partitionKey">An optional partition key.</param>
-        /// <returns>The number of documents deleted.</returns>
-        public virtual async Task<long> DeleteManyAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
+        /// <inheritdoc />
+        public virtual async Task<long> DeleteOneAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return await MongoDbEraser.DeleteManyAsync<TDocument, TKey>(filter, partitionKey);
+            return await DeleteOneAsync<TDocument, TKey>(filter, null, cancellationToken);
         }
 
-        /// <summary>
-        /// Asynchronously deletes a list of documents.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <param name="documents">The list of documents to delete.</param>
-        /// <returns>The number of documents deleted.</returns>
+        /// <inheritdoc />
+        public virtual async Task<long> DeleteOneAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            return await DeleteOneAsync<TDocument, TKey>(filter, partitionKey, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<long> DeleteOneAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            return await MongoDbEraser.DeleteOneAsync<TDocument, TKey>(filter, partitionKey, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<long> DeleteManyAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            return await DeleteManyAsync<TDocument, TKey>(filter, null, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<long> DeleteManyAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            return await DeleteManyAsync<TDocument, TKey>(filter, null, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<long> DeleteManyAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            return await DeleteManyAsync<TDocument, TKey>(filter, partitionKey, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<long> DeleteManyAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            return await MongoDbEraser.DeleteManyAsync<TDocument, TKey>(filter, partitionKey, cancellationToken);
+        }
+
+        /// <inheritdoc />
         public virtual async Task<long> DeleteManyAsync<TDocument, TKey>(IEnumerable<TDocument> documents)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return await MongoDbEraser.DeleteManyAsync<TDocument, TKey>(documents);
+            return await DeleteManyAsync<TDocument, TKey>(documents, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<long> DeleteManyAsync<TDocument, TKey>(IEnumerable<TDocument> documents, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            return await MongoDbEraser.DeleteManyAsync<TDocument, TKey>(documents, cancellationToken);
         }
 
         /// <summary>

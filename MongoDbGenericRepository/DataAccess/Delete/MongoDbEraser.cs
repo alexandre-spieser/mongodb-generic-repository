@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MongoDbGenericRepository.DataAccess.Delete
@@ -22,13 +23,7 @@ namespace MongoDbGenericRepository.DataAccess.Delete
 
         #region Delete TKey
 
-        /// <summary>
-        /// Deletes a document.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <param name="document">The document you want to delete.</param>
-        /// <returns>The number of documents deleted.</returns>
+        /// <inheritdoc />
         public virtual long DeleteOne<TDocument, TKey>(TDocument document)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
@@ -37,29 +32,16 @@ namespace MongoDbGenericRepository.DataAccess.Delete
             return HandlePartitioned<TDocument, TKey>(document).DeleteOne(filter).DeletedCount;
         }
 
-        /// <summary>
-        /// Asynchronously deletes a document matching the condition of the LINQ expression filter.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <param name="document">The document you want to delete.</param>
-        /// <returns>The number of documents deleted.</returns>
-        public virtual async Task<long> DeleteOneAsync<TDocument, TKey>(TDocument document)
+        /// <inheritdoc />
+        public virtual async Task<long> DeleteOneAsync<TDocument, TKey>(TDocument document, CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
             var filter = Builders<TDocument>.Filter.Eq("Id", document.Id);
-            return (await HandlePartitioned<TDocument, TKey>(document).DeleteOneAsync(filter)).DeletedCount;
+            return (await HandlePartitioned<TDocument, TKey>(document).DeleteOneAsync(filter, cancellationToken)).DeletedCount;
         }
 
-        /// <summary>
-        /// Deletes a document matching the condition of the LINQ expression filter.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <param name="filter">A LINQ expression filter.</param>
-        /// <param name="partitionKey">An optional partition key.</param>
-        /// <returns>The number of documents deleted.</returns>
+        /// <inheritdoc />
         public virtual long DeleteOne<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
@@ -67,44 +49,24 @@ namespace MongoDbGenericRepository.DataAccess.Delete
             return HandlePartitioned<TDocument, TKey>(partitionKey).DeleteOne(filter).DeletedCount;
         }
 
-        /// <summary>
-        /// Asynchronously deletes a document matching the condition of the LINQ expression filter.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <param name="filter">A LINQ expression filter.</param>
-        /// <param name="partitionKey">An optional partition key.</param>
-        /// <returns>The number of documents deleted.</returns>
-        public virtual async Task<long> DeleteOneAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
+        /// <inheritdoc />
+        public virtual async Task<long> DeleteOneAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey, CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return (await HandlePartitioned<TDocument, TKey>(partitionKey).DeleteOneAsync(filter)).DeletedCount;
+            return (await HandlePartitioned<TDocument, TKey>(partitionKey).DeleteOneAsync(filter, cancellationToken)).DeletedCount;
         }
 
-        /// <summary>
-        /// Asynchronously deletes the documents matching the condition of the LINQ expression filter.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <param name="filter">A LINQ expression filter.</param>
-        /// <param name="partitionKey">An optional partition key.</param>
-        /// <returns>The number of documents deleted.</returns>
-        public virtual async Task<long> DeleteManyAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
+        /// <inheritdoc />
+        public virtual async Task<long> DeleteManyAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey, CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
             return (await HandlePartitioned<TDocument, TKey>(partitionKey).DeleteManyAsync(filter)).DeletedCount;
         }
 
-        /// <summary>
-        /// Asynchronously deletes a list of documents.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <param name="documents">The list of documents to delete.</param>
-        /// <returns>The number of documents deleted.</returns>
-        public virtual async Task<long> DeleteManyAsync<TDocument, TKey>(IEnumerable<TDocument> documents)
+        /// <inheritdoc />
+        public virtual async Task<long> DeleteManyAsync<TDocument, TKey>(IEnumerable<TDocument> documents, CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -122,13 +84,15 @@ namespace MongoDbGenericRepository.DataAccess.Delete
                 foreach (var group in documentList.GroupBy(e => ((IPartitionedDocument)e).PartitionKey))
                 {
                     var groupIdsToDelete = group.Select(e => e.Id).ToArray();
-                    deleteCount += (await HandlePartitioned<TDocument, TKey>(group.FirstOrDefault()).DeleteManyAsync(x => groupIdsToDelete.Contains(x.Id))).DeletedCount;
+                    deleteCount += (await HandlePartitioned<TDocument, TKey>(group.FirstOrDefault())
+                            .DeleteManyAsync(x => groupIdsToDelete.Contains(x.Id), cancellationToken: cancellationToken))
+                        .DeletedCount;
                 }
                 return deleteCount;
             }
 
             var idsToDelete = documentList.Select(e => e.Id).ToArray();
-            return (await HandlePartitioned<TDocument, TKey>(documentList.FirstOrDefault()).DeleteManyAsync(x => idsToDelete.Contains(x.Id))).DeletedCount;
+            return (await HandlePartitioned<TDocument, TKey>(documentList.FirstOrDefault()).DeleteManyAsync(x => idsToDelete.Contains(x.Id), cancellationToken: cancellationToken)).DeletedCount;
         }
 
         /// <summary>
