@@ -1,5 +1,7 @@
+using AutoFixture;
 using MongoDB.Driver;
 using MongoDbGenericRepository.DataAccess.Create;
+using MongoDbGenericRepository.DataAccess.Delete;
 using MongoDbGenericRepository.DataAccess.Index;
 using MongoDbGenericRepository.DataAccess.Read;
 using Moq;
@@ -15,7 +17,10 @@ public class TestMongoRepositoryContext
     protected TestMongoRepositoryContext()
     {
         _mongoDatabase = new Mock<IMongoDatabase>();
+        Fixture = new Fixture();
     }
+
+    public Fixture Fixture { get; set; }
 
     protected TestMongoRepository Sut
     {
@@ -31,7 +36,7 @@ public class TestMongoRepositoryContext
 
                 if (Creator != null)
                 {
-                    _sut.SetDbCreator(Creator.Object);    
+                    _sut.SetDbCreator(Creator.Object);
                 }
 
                 if (Reader != null)
@@ -45,7 +50,10 @@ public class TestMongoRepositoryContext
     }
 
     protected Mock<IMongoDbIndexHandler> IndexHandler { get; set; }
+
     protected Mock<IMongoDbCreator> Creator { get; set; }
 
     protected Mock<IMongoDbReader> Reader { get; set; }
+
+    protected Mock<IMongoDbEraser> Eraser { get; set; }
 }

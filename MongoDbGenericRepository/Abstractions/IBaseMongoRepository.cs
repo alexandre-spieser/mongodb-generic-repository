@@ -1,24 +1,24 @@
-﻿using MongoDB.Driver;
-using MongoDbGenericRepository.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using MongoDB.Driver;
+using MongoDbGenericRepository.Models;
 
 namespace MongoDbGenericRepository
 {
     /// <summary>
-    /// The IBaseMongoRepository interface exposes the CRUD functionality of the BaseMongoRepository.
+    ///     The IBaseMongoRepository interface exposes the CRUD functionality of the BaseMongoRepository.
     /// </summary>
-    public interface IBaseMongoRepository : 
-        IReadOnlyMongoRepository, 
-        IBaseMongoRepository_Create, 
-        IBaseMongoRepository_Update, 
-        IBaseMongoRepository_Delete, 
+    public interface IBaseMongoRepository :
+        IReadOnlyMongoRepository,
+        IBaseMongoRepository_Create,
+        IBaseMongoRepository_Update,
+        IBaseMongoRepository_Delete,
         IBaseMongoRepository_Index
     {
         /// <summary>
-        /// Asynchronously returns a paginated list of the documents matching the filter condition.
+        ///     Asynchronously returns a paginated list of the documents matching the filter condition.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="filter"></param>
@@ -29,7 +29,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument;
 
         /// <summary>
-        /// Asynchronously returns a paginated list of the documents matching the filter condition.
+        ///     Asynchronously returns a paginated list of the documents matching the filter condition.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
@@ -42,7 +42,7 @@ namespace MongoDbGenericRepository
             where TKey : IEquatable<TKey>;
 
         /// <summary>
-        /// GetAndUpdateOne with filter
+        ///     GetAndUpdateOne with filter
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="filter"></param>
@@ -53,7 +53,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument;
 
         /// <summary>
-        /// GetAndUpdateOne with filter
+        ///     GetAndUpdateOne with filter
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
@@ -62,8 +62,7 @@ namespace MongoDbGenericRepository
         /// <param name="options"></param>
         /// <returns></returns>
         Task<TDocument> GetAndUpdateOne<TDocument, TKey>(FilterDefinition<TDocument> filter, UpdateDefinition<TDocument> update, FindOneAndUpdateOptions<TDocument, TDocument> options)
-                                        where TDocument : IDocument<TKey>
-                                        where TKey : IEquatable<TKey>;
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
     }
-
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using CoreUnitTests.Infrastructure;
 using MongoDB.Bson;
@@ -18,7 +19,7 @@ public class BaseIndexTests : TestMongoRepositoryContext
 
         asyncCursor
             .SetupGet(x => x.Current)
-            .Returns(new[] {index});
+            .Returns(new[] { index });
 
         var indexManager = new Mock<IMongoIndexManager<TDocument>>();
         indexManager
@@ -28,7 +29,7 @@ public class BaseIndexTests : TestMongoRepositoryContext
         collection
             .SetupGet(x => x.Indexes)
             .Returns(indexManager.Object);
-        
+
         return asyncCursor;
     }
 }

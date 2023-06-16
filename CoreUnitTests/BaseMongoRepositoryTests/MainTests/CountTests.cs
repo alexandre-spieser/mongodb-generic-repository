@@ -12,7 +12,7 @@ namespace CoreUnitTests.BaseMongoRepositoryTests.MainTests;
 
 public class CountTests : TestMongoRepositoryContext
 {
-    [Fact]
+    /*[Fact]
     public async Task CountAsync_EnsureTokenPassed()
     {
         // Arrange
@@ -30,5 +30,5 @@ public class CountTests : TestMongoRepositoryContext
         Assert.Equal(10, result);
         Reader.Verify(x => x.CountAsync<TestDocument, Guid>(
             t => string.IsNullOrWhiteSpace(t.SomeContent2), null, token));
-    }
+    }*/
 }

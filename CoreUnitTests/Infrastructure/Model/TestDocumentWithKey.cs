@@ -4,11 +4,12 @@ using MongoDbGenericRepository.Models;
 
 namespace CoreUnitTests.Infrastructure.Model;
 
-public class TestDocumentWithKey : IDocument<int> 
+public class TestDocumentWithKey<TKey> : IDocument<TKey>
+    where TKey : IEquatable<TKey>
 {
-    public int Id { get; set; }
+    public TKey Id { get; set; }
     public int Version { get; set; }
-    
+
     public TestDocumentWithKey()
     {
         Version = 2;

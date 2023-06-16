@@ -8,10 +8,11 @@ namespace CoreUnitTests.Infrastructure;
 
 public class TestMongoRepository : BaseMongoRepository
 {
-    public TestMongoRepository(IMongoDatabase mongoDatabase) : base(mongoDatabase)
+    public TestMongoRepository(IMongoDatabase mongoDatabase)
+        : base(mongoDatabase)
     {
     }
-    
+
     public void SetIndexHandler(IMongoDbIndexHandler indexHandler)
     {
         MongoDbIndexHandler = indexHandler;

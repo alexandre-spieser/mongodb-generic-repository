@@ -1,12 +1,15 @@
+using System;
 using MongoDB.Driver;
 using MongoDbGenericRepository;
 using MongoDbGenericRepository.DataAccess.Create;
+using MongoDbGenericRepository.DataAccess.Delete;
 using MongoDbGenericRepository.DataAccess.Index;
 using MongoDbGenericRepository.DataAccess.Read;
 
 namespace CoreUnitTests.Infrastructure;
 
-public class TestKeyedMongoRepository : BaseMongoRepository<int>
+public class TestKeyedMongoRepository<TKey> : BaseMongoRepository<TKey>
+    where TKey : IEquatable<TKey>
 {
     public TestKeyedMongoRepository(IMongoDatabase mongoDatabase)
         : base(mongoDatabase)
@@ -26,5 +29,10 @@ public class TestKeyedMongoRepository : BaseMongoRepository<int>
     public void SetReader(IMongoDbReader reader)
     {
         MongoDbReader = reader;
+    }
+
+    public void SetEraser(IMongoDbEraser eraser)
+    {
+        MongoDbEraser = eraser;
     }
 }
