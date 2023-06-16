@@ -24,6 +24,56 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>;
 
         /// <summary>
+        /// Deletes a document.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="document">The document you want to delete.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The number of documents deleted.</returns>
+        long DeleteOne<TDocument>(TDocument document, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>;
+
+        /// <summary>
+        /// Deletes a document matching the condition of the LINQ expression filter.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <returns>The number of documents deleted.</returns>
+        long DeleteOne<TDocument>(Expression<Func<TDocument, bool>> filter)
+            where TDocument : IDocument<TKey>;
+
+        /// <summary>
+        /// Deletes a document matching the condition of the LINQ expression filter.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The number of documents deleted.</returns>
+        long DeleteOne<TDocument>(Expression<Func<TDocument, bool>> filter, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>;
+
+        /// <summary>
+        /// Deletes a document matching the condition of the LINQ expression filter.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <returns>The number of documents deleted.</returns>
+        long DeleteOne<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey)
+            where TDocument : IDocument<TKey>;
+
+        /// <summary>
+        /// Deletes a document matching the condition of the LINQ expression filter.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <param name="filter">A LINQ expression filter.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The number of documents deleted.</returns>
+        long DeleteOne<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>;
+
+        /// <summary>
         /// Asynchronously deletes a document matching the condition of the LINQ expression filter.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
@@ -42,15 +92,6 @@ namespace MongoDbGenericRepository
         Task<long> DeleteOneAsync<TDocument>(TDocument document, CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>;
 
-        /// <summary>
-        /// Deletes a document matching the condition of the LINQ expression filter.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <param name="filter">A LINQ expression filter.</param>
-        /// <param name="partitionKey">An optional partition key.</param>
-        /// <returns>The number of documents deleted.</returns>
-        long DeleteOne<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
-            where TDocument : IDocument<TKey>;
 
         /// <summary>
         /// Asynchronously deletes a document matching the condition of the LINQ expression filter.

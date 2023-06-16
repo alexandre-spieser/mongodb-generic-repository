@@ -37,7 +37,7 @@ public class GetIndexNamesTests : BaseIndexTests
     {
         // Arrange
         const string indexName = "theIndexName";
-        var token = new CancellationToken();
+        var token = new CancellationToken(true);
         IndexHandler = new Mock<IMongoDbIndexHandler>();
         IndexHandler
             .Setup(x => x.GetIndexesNamesAsync<TestDocument, Guid>(null, token))
@@ -78,7 +78,7 @@ public class GetIndexNamesTests : BaseIndexTests
         // Arrange
         const string partitionKey = "thePartitionKey";
         const string indexName = "theIndexName";
-        var token = new CancellationToken();
+        var token = new CancellationToken(true);
 
         IndexHandler = new Mock<IMongoDbIndexHandler>();
         IndexHandler
@@ -117,7 +117,7 @@ public class GetIndexNamesTests : BaseIndexTests
     {
         // Arrange
         const string indexName = "theIndexName";
-        var token = new CancellationToken();
+        var token = new CancellationToken(true);
         IndexHandler = new Mock<IMongoDbIndexHandler>();
         IndexHandler
             .Setup(x => x.GetIndexesNamesAsync<TestDocumentWithKey, int>(null, token))
@@ -157,7 +157,7 @@ public class GetIndexNamesTests : BaseIndexTests
         // Arrange
         const string indexName = "theIndexName";
         const string partitionKey = "thePartitionKey";
-        var token = new CancellationToken();
+        var token = new CancellationToken(true);
 
         IndexHandler = new Mock<IMongoDbIndexHandler>();
         IndexHandler

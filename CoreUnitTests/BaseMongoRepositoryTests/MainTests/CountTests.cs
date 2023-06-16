@@ -16,7 +16,7 @@ public class CountTests : TestMongoRepositoryContext
     public async Task CountAsync_EnsureTokenPassed()
     {
         // Arrange
-        var token = new CancellationToken();
+        var token = new CancellationToken(true);
 
         Reader = new Mock<IMongoDbReader>();
         Reader

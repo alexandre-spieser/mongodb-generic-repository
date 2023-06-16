@@ -16,7 +16,7 @@ public class AddOneTests : TestMongoRepositoryContext
     {
         // Arrange
         Creator = new Mock<IMongoDbCreator>();
-        var token = new CancellationToken();
+        var token = new CancellationToken(true);
         var document = new TestDocument();
 
         // Act

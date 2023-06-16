@@ -67,7 +67,7 @@ public class CreateTextIndexTests : BaseIndexTests
     {
         // Arrange
         IndexHandler = new Mock<IMongoDbIndexHandler>();
-        var token = new CancellationToken();
+        var token = new CancellationToken(true);
 
         // Act
         await Sut.CreateTextIndexAsync<TestDocument>(_fieldExpression, token);
@@ -82,7 +82,7 @@ public class CreateTextIndexTests : BaseIndexTests
     {
         // Arrange
         IndexHandler = new Mock<IMongoDbIndexHandler>();
-        var token = new CancellationToken();
+        var token = new CancellationToken(true);
         var options = new IndexCreationOptions { Name = "theIndexName" };
 
         // Act
@@ -99,7 +99,7 @@ public class CreateTextIndexTests : BaseIndexTests
     {
         // Arrange
         const string partitionKey = "thePartitionKey";
-        var token = new CancellationToken();
+        var token = new CancellationToken(true);
         IndexHandler = new Mock<IMongoDbIndexHandler>();
 
         // Act
@@ -130,7 +130,7 @@ public class CreateTextIndexTests : BaseIndexTests
     {
         // Arrange
         IndexHandler = new Mock<IMongoDbIndexHandler>();
-        var token = new CancellationToken();
+        var token = new CancellationToken(true);
 
         // Act
         await Sut.CreateTextIndexAsync<TestDocumentWithKey, int>(t => t.SomeContent2, token);
@@ -179,7 +179,7 @@ public class CreateTextIndexTests : BaseIndexTests
         // Arrange
         const string partitionKey = "thePartitionKey";
         const string indexName = "theIndexName";
-        var token = new CancellationToken();
+        var token = new CancellationToken(true);
         var options = new IndexCreationOptions { Name = indexName };
         IndexHandler = new Mock<IMongoDbIndexHandler>();
 

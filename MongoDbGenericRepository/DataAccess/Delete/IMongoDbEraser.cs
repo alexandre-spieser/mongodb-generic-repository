@@ -19,8 +19,9 @@ namespace MongoDbGenericRepository.DataAccess.Delete
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <param name="document">The document you want to delete.</param>
+        /// <param name="cancellationToken">An optional cancellation token</param>
         /// <returns>The number of documents deleted.</returns>
-        long DeleteOne<TDocument, TKey>(TDocument document)
+        long DeleteOne<TDocument, TKey>(TDocument document, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>;
 
@@ -31,8 +32,9 @@ namespace MongoDbGenericRepository.DataAccess.Delete
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="partitionKey">An optional partition key.</param>
+        /// <param name="cancellationToken">An optional cancellation token</param>
         /// <returns>The number of documents deleted.</returns>
-        long DeleteOne<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
+        long DeleteOne<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>;
 

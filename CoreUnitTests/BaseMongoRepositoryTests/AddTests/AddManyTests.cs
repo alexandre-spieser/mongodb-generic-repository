@@ -12,13 +12,13 @@ namespace CoreUnitTests.BaseMongoRepositoryTests.AddTests;
 
 public class AddManyTests : TestMongoRepositoryContext
 {
-    
+
     [Fact]
     public async Task AddManyAsync_EnsureTokenPassed()
     {
         // Arrange
         Creator = new Mock<IMongoDbCreator>();
-        var token = new CancellationToken();
+        var token = new CancellationToken(true);
         var documents = new List<TestDocument>
         {
             new(), new(), new()

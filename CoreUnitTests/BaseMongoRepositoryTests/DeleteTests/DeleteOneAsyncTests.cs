@@ -40,7 +40,7 @@ public class DeleteOneAsyncTests : TestMongoRepositoryContext
         // Arrange
         var document = Fixture.Create<TestDocument>();
         var count = Fixture.Create<long>();
-        var token = new CancellationToken();
+        var token = new CancellationToken(true);
 
         Eraser = new Mock<IMongoDbEraser>();
 
@@ -85,7 +85,7 @@ public class DeleteOneAsyncTests : TestMongoRepositoryContext
         // Arrange
         var count = Fixture.Create<long>();
         var content = Fixture.Create<string>();
-        var token = new CancellationToken();
+        var token = new CancellationToken(true);
 
         Expression<Func<TestDocument, bool>> filter = x => x.SomeContent == content;
 
@@ -134,7 +134,7 @@ public class DeleteOneAsyncTests : TestMongoRepositoryContext
         var count = Fixture.Create<long>();
         var content = Fixture.Create<string>();
         var partitionKey = Fixture.Create<string>();
-        var token = new CancellationToken();
+        var token = new CancellationToken(true);
 
         Expression<Func<TestDocument, bool>> filter = x => x.SomeContent == content;
 
@@ -180,7 +180,7 @@ public class DeleteOneAsyncTests : TestMongoRepositoryContext
         // Arrange
         var document = Fixture.Create<TestDocumentWithKey<int>>();
         var count = Fixture.Create<long>();
-        var token = new CancellationToken();
+        var token = new CancellationToken(true);
 
         Eraser = new Mock<IMongoDbEraser>();
 
@@ -225,7 +225,7 @@ public class DeleteOneAsyncTests : TestMongoRepositoryContext
         // Arrange
         var count = Fixture.Create<long>();
         var content = Fixture.Create<string>();
-        var token = new CancellationToken();
+        var token = new CancellationToken(true);
 
         Expression<Func<TestDocumentWithKey<int>, bool>> filter = x => x.SomeContent == content;
 
@@ -274,7 +274,7 @@ public class DeleteOneAsyncTests : TestMongoRepositoryContext
         var count = Fixture.Create<long>();
         var content = Fixture.Create<string>();
         var partitionKey = Fixture.Create<string>();
-        var token = new CancellationToken();
+        var token = new CancellationToken(true);
 
         Expression<Func<TestDocumentWithKey<int>, bool>> filter = x => x.SomeContent == content;
 

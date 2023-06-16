@@ -16,7 +16,7 @@ public class CreateAscendingIndexTests : BaseIndexTests
     {
         // Arrange
         IndexHandler = new Mock<IMongoDbIndexHandler>();
-        var token = new CancellationToken();
+        var token = new CancellationToken(true);
 
         // Act
         Expression<Func<TestDocument, object>> fieldExpression = t => t.SomeContent2;

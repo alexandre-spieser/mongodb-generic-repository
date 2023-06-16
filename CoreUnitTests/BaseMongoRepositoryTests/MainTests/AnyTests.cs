@@ -16,7 +16,7 @@ public class AnyTests : TestMongoRepositoryContext
     public async Task AnyAsync_EnsureTokenPassed()
     {
         // Arrange
-        var token = new CancellationToken();
+        var token = new CancellationToken(true);
 
         Reader = new Mock<IMongoDbReader>();
         Reader

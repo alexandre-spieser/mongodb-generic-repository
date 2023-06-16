@@ -38,14 +38,42 @@ namespace MongoDbGenericRepository
         public virtual long DeleteOne<TDocument>(TDocument document)
             where TDocument : IDocument<TKey>
         {
-            return MongoDbEraser.DeleteOne<TDocument, TKey>(document);
+            return DeleteOne(document, CancellationToken.None);
         }
 
         /// <inheritdoc />
-        public virtual long DeleteOne<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
+        public virtual long DeleteOne<TDocument>(TDocument document, CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
         {
-            return MongoDbEraser.DeleteOne<TDocument, TKey>(filter, partitionKey);
+            return MongoDbEraser.DeleteOne<TDocument, TKey>(document, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public virtual long DeleteOne<TDocument>(Expression<Func<TDocument, bool>> filter)
+            where TDocument : IDocument<TKey>
+        {
+            return DeleteOne(filter, null, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public virtual long DeleteOne<TDocument>(Expression<Func<TDocument, bool>> filter, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+        {
+            return DeleteOne(filter, null, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public virtual long DeleteOne<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey)
+            where TDocument : IDocument<TKey>
+        {
+            return DeleteOne(filter, partitionKey, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public virtual long DeleteOne<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+        {
+            return MongoDbEraser.DeleteOne<TDocument, TKey>(filter, partitionKey, cancellationToken);
         }
 
         /// <inheritdoc />

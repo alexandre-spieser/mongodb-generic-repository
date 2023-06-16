@@ -42,7 +42,7 @@ public class DeleteManyAsyncTests : TestMongoRepositoryContext
         // Arrange
         var documents = Fixture.CreateMany<TestDocument>().ToList();
         var count = Fixture.Create<long>();
-        var cancellationToken = new CancellationToken();
+        var cancellationToken = new CancellationToken(true);
         Eraser = new Mock<IMongoDbEraser>();
 
         Eraser
@@ -89,7 +89,7 @@ public class DeleteManyAsyncTests : TestMongoRepositoryContext
         // Arrange
         var content = Fixture.Create<string>();
         var count = Fixture.Create<long>();
-        var token = new CancellationToken();
+        var token = new CancellationToken(true);
 
         Expression<Func<TestDocument, bool>> filter = x => x.SomeContent == content;
 
@@ -144,7 +144,7 @@ public class DeleteManyAsyncTests : TestMongoRepositoryContext
         var content = Fixture.Create<string>();
         var count = Fixture.Create<long>();
         var partitionKey = Fixture.Create<string>();
-        var token = new CancellationToken();
+        var token = new CancellationToken(true);
 
         Expression<Func<TestDocument, bool>> filter = x => x.SomeContent == content;
 
@@ -193,19 +193,20 @@ public class DeleteManyAsyncTests : TestMongoRepositoryContext
         // Arrange
         var documents = Fixture.CreateMany<TestDocumentWithKey<int>>().ToList();
         var count = Fixture.Create<long>();
-        var cancellationToken = new CancellationToken();
+        var cancellationToken = new CancellationToken(true);
         Eraser = new Mock<IMongoDbEraser>();
 
         Eraser
-            .Setup(x => x.DeleteManyAsync<TestDocumentWithKey<int>, int>(It.IsAny<IEnumerable<TestDocumentWithKey<int>>>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(count);
+            .Setup(x => x.DeleteManyAsync<TestDocumentWithKey<int>, int>(documents, cancellationToken))
+            .ReturnsAsync(count)
+            .Verifiable();
 
         // Act
         var result = await Sut.DeleteManyAsync<TestDocumentWithKey<int>, int>(documents, cancellationToken);
 
         // Assert
         result.Should().Be(count);
-        Eraser.Verify(x => x.DeleteManyAsync<TestDocumentWithKey<int>, int>(documents, cancellationToken), Times.Once);
+        Eraser.Verify();
     }
 
     [Fact]
@@ -240,7 +241,7 @@ public class DeleteManyAsyncTests : TestMongoRepositoryContext
         // Arrange
         var content = Fixture.Create<string>();
         var count = Fixture.Create<long>();
-        var token = new CancellationToken();
+        var token = new CancellationToken(true);
 
         Expression<Func<TestDocumentWithKey<int>, bool>> filter = x => x.SomeContent == content;
 
@@ -295,7 +296,7 @@ public class DeleteManyAsyncTests : TestMongoRepositoryContext
         var content = Fixture.Create<string>();
         var count = Fixture.Create<long>();
         var partitionKey = Fixture.Create<string>();
-        var token = new CancellationToken();
+        var token = new CancellationToken(true);
 
         Expression<Func<TestDocumentWithKey<int>, bool>> filter = x => x.SomeContent == content;
 

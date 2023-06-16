@@ -42,7 +42,7 @@ public class DeleteManyAsyncTests : TestKeyedMongoRepositoryContext<int>
         // Arrange
         var documents = Fixture.CreateMany<TestDocumentWithKey<int>>().ToList();
         var count = Fixture.Create<long>();
-        var cancellationToken = new CancellationToken();
+        var cancellationToken = new CancellationToken(true);
         Eraser = new Mock<IMongoDbEraser>();
 
         Eraser
@@ -89,7 +89,7 @@ public class DeleteManyAsyncTests : TestKeyedMongoRepositoryContext<int>
         // Arrange
         var content = Fixture.Create<string>();
         var count = Fixture.Create<long>();
-        var token = new CancellationToken();
+        var token = new CancellationToken(true);
 
         Expression<Func<TestDocumentWithKey<int>, bool>> filter = x => x.SomeContent == content;
 
@@ -144,7 +144,7 @@ public class DeleteManyAsyncTests : TestKeyedMongoRepositoryContext<int>
         var content = Fixture.Create<string>();
         var count = Fixture.Create<long>();
         var partitionKey = Fixture.Create<string>();
-        var token = new CancellationToken();
+        var token = new CancellationToken(true);
 
         Expression<Func<TestDocumentWithKey<int>, bool>> filter = x => x.SomeContent == content;
 
