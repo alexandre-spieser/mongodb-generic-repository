@@ -56,6 +56,7 @@ public class DeleteManyTests : TestKeyedMongoRepositoryContext<int>
         result.Should().Be(count);
         Eraser.Verify(x => x.DeleteMany<TestDocumentWithKey<int>, int>(filter, null), Times.Once);
     }
+
     [Fact]
     public void WithFilterAndPartitionKey_ShouldDeleteMany()
     {
@@ -69,7 +70,7 @@ public class DeleteManyTests : TestKeyedMongoRepositoryContext<int>
         Eraser = new Mock<IMongoDbEraser>();
 
         Eraser
-            .Setup(x => x.DeleteMany<TestDocumentWithKey<int>, int>(It.IsAny<Expression<Func<TestDocumentWithKey<int>, bool>>>(), null))
+            .Setup(x => x.DeleteMany<TestDocumentWithKey<int>, int>(It.IsAny<Expression<Func<TestDocumentWithKey<int>, bool>>>(), It.IsAny<string>()))
             .Returns(count);
 
         // Act

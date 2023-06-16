@@ -162,6 +162,14 @@ namespace MongoDbGenericRepository
         }
 
         /// <inheritdoc />
+        public virtual long DeleteOne<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            return MongoDbEraser.DeleteOne<TDocument, TKey>(filter, partitionKey);
+        }
+
+        /// <inheritdoc />
         public virtual async Task<long> DeleteOneAsync<TDocument, TKey>(TDocument document)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
@@ -175,21 +183,6 @@ namespace MongoDbGenericRepository
             where TKey : IEquatable<TKey>
         {
             return await MongoDbEraser.DeleteOneAsync<TDocument, TKey>(document, cancellationToken);
-        }
-
-        /// <summary>
-        /// Deletes a document matching the condition of the LINQ expression filter.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <param name="filter">A LINQ expression filter.</param>
-        /// <param name="partitionKey">An optional partition key.</param>
-        /// <returns>The number of documents deleted.</returns>
-        public virtual long DeleteOne<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
-            where TDocument : IDocument<TKey>
-            where TKey : IEquatable<TKey>
-        {
-            return MongoDbEraser.DeleteOne<TDocument, TKey>(filter, partitionKey);
         }
 
         /// <inheritdoc />

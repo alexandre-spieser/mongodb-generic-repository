@@ -43,6 +43,11 @@ public class TestMongoRepositoryContext
                 {
                     _sut.SetReader(Reader.Object);
                 }
+
+                if (Eraser != null)
+                {
+                    _sut.SetEraser(Eraser.Object);
+                }
             }
 
             return _sut;

@@ -1,6 +1,7 @@
 using MongoDB.Driver;
 using MongoDbGenericRepository;
 using MongoDbGenericRepository.DataAccess.Create;
+using MongoDbGenericRepository.DataAccess.Delete;
 using MongoDbGenericRepository.DataAccess.Index;
 using MongoDbGenericRepository.DataAccess.Read;
 
@@ -26,5 +27,10 @@ public class TestMongoRepository : BaseMongoRepository
     public void SetReader(IMongoDbReader reader)
     {
         MongoDbReader = reader;
+    }
+
+    public void SetEraser(IMongoDbEraser eraser)
+    {
+        MongoDbEraser = eraser;
     }
 }

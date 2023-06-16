@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq.Expressions;
-using System.Threading;
 using AutoFixture;
 using CoreUnitTests.Infrastructure;
 using CoreUnitTests.Infrastructure.Model;
