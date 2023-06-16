@@ -197,16 +197,15 @@ public class DeleteManyAsyncTests : TestMongoRepositoryContext
         Eraser = new Mock<IMongoDbEraser>();
 
         Eraser
-            .Setup(x => x.DeleteManyAsync<TestDocumentWithKey<int>, int>(documents, cancellationToken))
-            .ReturnsAsync(count)
-            .Verifiable();
+            .Setup(x => x.DeleteManyAsync<TestDocumentWithKey<int>, int>(It.IsAny<IEnumerable<TestDocumentWithKey<int>>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(count);
 
         // Act
         var result = await Sut.DeleteManyAsync<TestDocumentWithKey<int>, int>(documents, cancellationToken);
 
         // Assert
         result.Should().Be(count);
-        Eraser.Verify();
+        Eraser.Verify(x => x.DeleteManyAsync<TestDocumentWithKey<int>, int>(documents, cancellationToken), Times.Once);
     }
 
     [Fact]
