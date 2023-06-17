@@ -24,7 +24,7 @@ namespace MongoDbGenericRepository.DataAccess.Delete
         #region Delete TKey
 
         /// <inheritdoc />
-        public virtual long DeleteOne<TDocument, TKey>(TDocument document, CancellationToken cancellationToken)
+        public virtual long DeleteOne<TDocument, TKey>(TDocument document, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {

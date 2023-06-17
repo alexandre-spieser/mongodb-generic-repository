@@ -1,74 +1,54 @@
-﻿using MongoDbGenericRepository.DataAccess.Base;
-using MongoDbGenericRepository.Models;
-using MongoDbGenericRepository.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MongoDbGenericRepository.DataAccess.Base;
+using MongoDbGenericRepository.Models;
+using MongoDbGenericRepository.Utils;
 
 namespace MongoDbGenericRepository.DataAccess.Create
 {
     /// <summary>
-    /// A class to insert MongoDb document.
+    ///     A class to insert MongoDb document.
     /// </summary>
     public class MongoDbCreator : DataAccessBase, IMongoDbCreator
     {
         /// <summary>
-        /// The construct of the MongoDbCreator class.
+        ///     The construct of the MongoDbCreator class.
         /// </summary>
-        /// <param name="mongoDbContext">A <see cref="IMongoDbContext"/> instance.</param>
+        /// <param name="mongoDbContext">A <see cref="IMongoDbContext" /> instance.</param>
         public MongoDbCreator(IMongoDbContext mongoDbContext) : base(mongoDbContext)
         {
         }
 
-        #region Create TKey
-
-        /// <summary>
-        /// Asynchronously adds a document to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <param name="document">The document you want to add.</param>
-        /// <param name="cancellationToken">An optional cancellation Token.</param>
+        /// <inheritdoc />
         public virtual async Task AddOneAsync<TDocument, TKey>(TDocument document, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
             FormatDocument<TDocument, TKey>(document);
-            await HandlePartitioned<TDocument, TKey>(document).InsertOneAsync(document, null, cancellationToken);
+            await HandlePartitioned<TDocument, TKey>(document)
+                .InsertOneAsync(document, null, cancellationToken);
         }
 
-        /// <summary>
-        /// Adds a document to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <param name="document">The document you want to add.</param>
-        public virtual void AddOne<TDocument, TKey>(TDocument document)
+        /// <inheritdoc />
+        public virtual void AddOne<TDocument, TKey>(TDocument document, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
             FormatDocument<TDocument, TKey>(document);
-            HandlePartitioned<TDocument, TKey>(document).InsertOne(document);
+            HandlePartitioned<TDocument, TKey>(document)
+                .InsertOne(document, null, cancellationToken);
         }
 
-        /// <summary>
-        /// Asynchronously adds a list of documents to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <param name="documents">The documents you want to add.</param>
-        /// <param name="cancellationToken">An optional cancellation Token.</param>
+        /// <inheritdoc />
         public virtual async Task AddManyAsync<TDocument, TKey>(IEnumerable<TDocument> documents, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
             var documentsList = documents.ToList();
-            
+
             if (!documentsList.Any())
             {
                 return;
@@ -82,7 +62,7 @@ namespace MongoDbGenericRepository.DataAccess.Create
             // cannot use typeof(IPartitionedDocument).IsAssignableFrom(typeof(TDocument)), not available in netstandard 1.5
             if (documentsList.Any(e => e is IPartitionedDocument))
             {
-                foreach (var group in documentsList.GroupBy(e => ((IPartitionedDocument)e).PartitionKey))
+                foreach (var group in documentsList.GroupBy(e => ((IPartitionedDocument) e).PartitionKey))
                 {
                     await HandlePartitioned<TDocument, TKey>(group.FirstOrDefault()).InsertManyAsync(group.ToList(), null, cancellationToken);
                 }
@@ -93,14 +73,8 @@ namespace MongoDbGenericRepository.DataAccess.Create
             }
         }
 
-        /// <summary>
-        /// Adds a list of documents to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <param name="documents">The documents you want to add.</param>
-        public virtual void AddMany<TDocument, TKey>(IEnumerable<TDocument> documents)
+        /// <inheritdoc />
+        public virtual void AddMany<TDocument, TKey>(IEnumerable<TDocument> documents, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -119,21 +93,19 @@ namespace MongoDbGenericRepository.DataAccess.Create
             // cannot use typeof(IPartitionedDocument).IsAssignableFrom(typeof(TDocument)), not available in netstandard 1.5
             if (documentList.Any(e => e is IPartitionedDocument))
             {
-                foreach (var group in documentList.GroupBy(e => ((IPartitionedDocument)e).PartitionKey))
+                foreach (var group in documentList.GroupBy(e => ((IPartitionedDocument) e).PartitionKey))
                 {
-                    HandlePartitioned<TDocument, TKey>(group.FirstOrDefault()).InsertMany(group.ToList());
+                    HandlePartitioned<TDocument, TKey>(group.FirstOrDefault()).InsertMany(group.ToList(), cancellationToken: cancellationToken);
                 }
             }
             else
             {
-                GetCollection<TDocument, TKey>().InsertMany(documentList.ToList());
+                GetCollection<TDocument, TKey>().InsertMany(documentList.ToList(), cancellationToken: cancellationToken);
             }
         }
 
-        #endregion
-
         /// <summary>
-        /// Sets the value of the document Id if it is not set already.
+        ///     Sets the value of the document Id if it is not set already.
         /// </summary>
         /// <typeparam name="TDocument">The document type.</typeparam>
         /// <typeparam name="TKey">The type of the primary key.</typeparam>
@@ -146,6 +118,7 @@ namespace MongoDbGenericRepository.DataAccess.Create
             {
                 throw new ArgumentNullException(nameof(document));
             }
+
             var defaultTKey = default(TKey);
             if (document.Id == null
                 || (defaultTKey != null

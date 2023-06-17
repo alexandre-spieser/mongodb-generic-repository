@@ -31,7 +31,8 @@ namespace MongoDbGenericRepository.DataAccess.Create
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <param name="document">The document you want to add.</param>
-        void AddOne<TDocument, TKey>(TDocument document)
+        /// <param name="cancellationToken">An optional cancellation Token.</param>
+        void AddOne<TDocument, TKey>(TDocument document, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>;
 
@@ -54,7 +55,8 @@ namespace MongoDbGenericRepository.DataAccess.Create
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <param name="documents">The documents you want to add.</param>
-        void AddMany<TDocument, TKey>(IEnumerable<TDocument> documents)
+        /// <param name="cancellationToken">An optional cancellation Token.</param>
+        void AddMany<TDocument, TKey>(IEnumerable<TDocument> documents, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>;
     }
