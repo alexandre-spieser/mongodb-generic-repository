@@ -164,14 +164,42 @@ namespace MongoDbGenericRepository
         public virtual long DeleteMany<TDocument>(IEnumerable<TDocument> documents)
             where TDocument : IDocument<TKey>
         {
-            return MongoDbEraser.DeleteMany<TDocument, TKey>(documents);
+            return DeleteMany(documents, CancellationToken.None);
         }
 
         /// <inheritdoc />
-        public virtual long DeleteMany<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
+        public virtual long DeleteMany<TDocument>(IEnumerable<TDocument> documents, CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
         {
-            return MongoDbEraser.DeleteMany<TDocument, TKey>(filter, partitionKey);
+            return MongoDbEraser.DeleteMany<TDocument, TKey>(documents, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public virtual long DeleteMany<TDocument>(Expression<Func<TDocument, bool>> filter)
+            where TDocument : IDocument<TKey>
+        {
+            return DeleteMany<TDocument>(filter, null, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public virtual long DeleteMany<TDocument>(Expression<Func<TDocument, bool>> filter, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+        {
+            return DeleteMany<TDocument>(filter, null, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public virtual long DeleteMany<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey)
+            where TDocument : IDocument<TKey>
+        {
+            return DeleteMany<TDocument>(filter, partitionKey, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public virtual long DeleteMany<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+        {
+            return MongoDbEraser.DeleteMany<TDocument, TKey>(filter, partitionKey, cancellationToken);
         }
     }
 }

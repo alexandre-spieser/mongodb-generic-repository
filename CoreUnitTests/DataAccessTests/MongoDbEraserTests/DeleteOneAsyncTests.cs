@@ -1,6 +1,7 @@
 using System;
 using System.Linq.Expressions;
 using System.Threading;
+using System.Threading.Tasks;
 using AutoFixture;
 using CoreUnitTests.Infrastructure;
 using CoreUnitTests.Infrastructure.Model;
@@ -13,10 +14,10 @@ using Xunit;
 
 namespace CoreUnitTests.DataAccessTests.MongoDbEraserTests;
 
-public class DeleteOneTests : GenericTestContext<MongoDbEraser>
+public class DeleteOneAsyncTests : GenericTestContext<MongoDbEraser>
 {
     [Fact]
-    public void WithDocumentAndCancellationToken_DeletesOne()
+    public async Task WithDocumentAndCancellationToken_DeletesOne()
     {
         // Arrange
         var count = Fixture.Create<long>();
@@ -25,8 +26,8 @@ public class DeleteOneTests : GenericTestContext<MongoDbEraser>
 
         var collection = MockOf<IMongoCollection<TestDocument>>();
         collection
-            .Setup(x => x.DeleteOne(It.IsAny<FilterDefinition<TestDocument>>(), It.IsAny<CancellationToken>()))
-            .Returns(new DeleteResult.Acknowledged(count));
+            .Setup(x => x.DeleteOneAsync(It.IsAny<FilterDefinition<TestDocument>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new DeleteResult.Acknowledged(count));
 
         var dbContext = MockOf<IMongoDbContext>();
         dbContext
@@ -34,21 +35,21 @@ public class DeleteOneTests : GenericTestContext<MongoDbEraser>
             .Returns(collection.Object);
 
         // Act
-        var result = Sut.DeleteOne<TestDocument, Guid>(document, token);
+        var result = await Sut.DeleteOneAsync<TestDocument, Guid>(document, token);
 
         // Assert
         result.Should().Be(count);
 
         var expectedFilter = Builders<TestDocument>.Filter.Eq("Id", document.Id);
         collection.Verify(
-            x => x.DeleteOne(
+            x => x.DeleteOneAsync(
                 It.Is<FilterDefinition<TestDocument>>(f => f.EquivalentTo(expectedFilter)),
                 token),
             Times.Once());
     }
 
     [Fact]
-    public void WithFilterAndPartitionKeyAndCancellationToken_DeletesOne()
+    public async Task WithFilterAndPartitionKeyAndCancellationToken_DeletesOne()
     {
         // Arrange
         var count = Fixture.Create<long>();
@@ -58,8 +59,8 @@ public class DeleteOneTests : GenericTestContext<MongoDbEraser>
 
         var collection = MockOf<IMongoCollection<TestDocument>>();
         collection
-            .Setup(x => x.DeleteOne(It.IsAny<FilterDefinition<TestDocument>>(), It.IsAny<CancellationToken>()))
-            .Returns(new DeleteResult.Acknowledged(count));
+            .Setup(x => x.DeleteOneAsync(It.IsAny<FilterDefinition<TestDocument>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new DeleteResult.Acknowledged(count));
 
         var dbContext = MockOf<IMongoDbContext>();
         dbContext
@@ -69,12 +70,12 @@ public class DeleteOneTests : GenericTestContext<MongoDbEraser>
         Expression<Func<TestDocument, bool>> filter = d => d.Id == document.Id;
 
         // Act
-        var result = Sut.DeleteOne<TestDocument, Guid>(filter, partitionKey, token);
+        var result = await Sut.DeleteOneAsync<TestDocument, Guid>(filter, partitionKey, token);
 
         // Assert
         result.Should().Be(count);
         collection.Verify(
-            x => x.DeleteOne(
+            x => x.DeleteOneAsync(
                 It.Is<FilterDefinition<TestDocument>>(f => f.EquivalentTo(filter)),
                 token),
             Times.Once());

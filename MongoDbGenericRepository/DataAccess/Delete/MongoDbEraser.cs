@@ -24,7 +24,7 @@ namespace MongoDbGenericRepository.DataAccess.Delete
         #region Delete TKey
 
         /// <inheritdoc />
-        public virtual long DeleteOne<TDocument, TKey>(TDocument document, CancellationToken cancellationToken = default)
+        public virtual long DeleteOne<TDocument, TKey>(TDocument document, CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -33,7 +33,7 @@ namespace MongoDbGenericRepository.DataAccess.Delete
         }
 
         /// <inheritdoc />
-        public virtual long DeleteOne<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null, CancellationToken cancellationToken = default)
+        public virtual long DeleteOne<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey, CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -41,7 +41,7 @@ namespace MongoDbGenericRepository.DataAccess.Delete
         }
 
         /// <inheritdoc />
-        public virtual async Task<long> DeleteOneAsync<TDocument, TKey>(TDocument document, CancellationToken cancellationToken)
+        public virtual async Task<long> DeleteOneAsync<TDocument, TKey>(TDocument document, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -68,7 +68,7 @@ namespace MongoDbGenericRepository.DataAccess.Delete
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return (await HandlePartitioned<TDocument, TKey>(partitionKey).DeleteManyAsync(filter)).DeletedCount;
+            return (await HandlePartitioned<TDocument, TKey>(partitionKey).DeleteManyAsync(filter, cancellationToken)).DeletedCount;
         }
 
         /// <inheritdoc />
@@ -103,14 +103,8 @@ namespace MongoDbGenericRepository.DataAccess.Delete
                 .DeletedCount;
         }
 
-        /// <summary>
-        ///     Deletes a list of documents.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <param name="documents">The list of documents to delete.</param>
-        /// <returns>The number of documents deleted.</returns>
-        public virtual long DeleteMany<TDocument, TKey>(IEnumerable<TDocument> documents)
+        /// <inheritdoc />
+        public virtual long DeleteMany<TDocument, TKey>(IEnumerable<TDocument> documents, CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -128,29 +122,22 @@ namespace MongoDbGenericRepository.DataAccess.Delete
                 foreach (var group in documentList.GroupBy(e => ((IPartitionedDocument) e).PartitionKey))
                 {
                     var groupIdsToDelete = group.Select(e => e.Id).ToArray();
-                    deleteCount += HandlePartitioned<TDocument, TKey>(group.FirstOrDefault()).DeleteMany(x => groupIdsToDelete.Contains(x.Id)).DeletedCount;
+                    deleteCount += HandlePartitioned<TDocument, TKey>(group.FirstOrDefault()).DeleteMany(x => groupIdsToDelete.Contains(x.Id), cancellationToken).DeletedCount;
                 }
 
                 return deleteCount;
             }
 
             var idsToDelete = documentList.Select(e => e.Id).ToArray();
-            return HandlePartitioned<TDocument, TKey>(documentList.FirstOrDefault()).DeleteMany(x => idsToDelete.Contains(x.Id)).DeletedCount;
+            return HandlePartitioned<TDocument, TKey>(documentList.FirstOrDefault()).DeleteMany(x => idsToDelete.Contains(x.Id), cancellationToken).DeletedCount;
         }
 
-        /// <summary>
-        ///     Deletes the documents matching the condition of the LINQ expression filter.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <param name="filter">A LINQ expression filter.</param>
-        /// <param name="partitionKey">An optional partition key.</param>
-        /// <returns>The number of documents deleted.</returns>
-        public virtual long DeleteMany<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
+        /// <inheritdoc />
+        public virtual long DeleteMany<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey, CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return HandlePartitioned<TDocument, TKey>(partitionKey).DeleteMany(filter).DeletedCount;
+            return HandlePartitioned<TDocument, TKey>(partitionKey).DeleteMany(filter, cancellationToken).DeletedCount;
         }
 
         #endregion
