@@ -1,15 +1,15 @@
-﻿using MongoDbGenericRepository.DataAccess.Create;
-using MongoDbGenericRepository.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using MongoDbGenericRepository.DataAccess.Create;
+using MongoDbGenericRepository.Models;
 
 namespace MongoDbGenericRepository
 {
     /// <summary>
-    /// The base Repository, it is meant to be inherited from by your custom custom MongoRepository implementation.
-    /// Its constructor must be given a connection string and a database name.
+    ///     The base Repository, it is meant to be inherited from by your custom custom MongoRepository implementation.
+    ///     Its constructor must be given a connection string and a database name.
     /// </summary>
     public abstract partial class BaseMongoRepository : IBaseMongoRepository_Create
     {
@@ -17,13 +17,16 @@ namespace MongoDbGenericRepository
         private IMongoDbCreator _mongoDbCreator;
 
         /// <summary>
-        /// The MongoDbCreator field.
+        ///     The MongoDbCreator field.
         /// </summary>
         protected virtual IMongoDbCreator MongoDbCreator
         {
             get
             {
-                if (_mongoDbCreator != null) { return _mongoDbCreator; }
+                if (_mongoDbCreator != null)
+                {
+                    return _mongoDbCreator;
+                }
 
                 lock (_initLock)
                 {
@@ -35,115 +38,127 @@ namespace MongoDbGenericRepository
 
                 return _mongoDbCreator;
             }
-            set { _mongoDbCreator = value; }
+            set => _mongoDbCreator = value;
         }
 
-        /// <summary>
-        /// Asynchronously adds a document to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <param name="document">The document you want to add.</param>
-        /// <param name="cancellationToken">An optional cancellation Token.</param>
-        public virtual async Task AddOneAsync<TDocument, TKey>(TDocument document, CancellationToken cancellationToken = default)
+        /// <inheritdoc />
+        public virtual async Task AddOneAsync<TDocument, TKey>(TDocument document)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            await AddOneAsync<TDocument, TKey>(document, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task AddOneAsync<TDocument, TKey>(TDocument document, CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
             await MongoDbCreator.AddOneAsync<TDocument, TKey>(document, cancellationToken);
         }
 
-        /// <summary>
-        /// Asynchronously adds a document to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <param name="document">The document you want to add.</param>
-        /// <param name="cancellationToken">An optional cancellation Token.</param>
-        public virtual async Task AddOneAsync<TDocument>(TDocument document, CancellationToken cancellationToken = default) 
+        /// <inheritdoc />
+        public virtual async Task AddOneAsync<TDocument>(TDocument document)
             where TDocument : IDocument<Guid>
         {
-            await MongoDbCreator.AddOneAsync<TDocument, Guid>(document, cancellationToken);
+            await AddOneAsync<TDocument, Guid>(document, CancellationToken.None);
         }
 
-        /// <summary>
-        /// Adds a document to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <param name="document">The document you want to add.</param>
+        /// <inheritdoc />
+        public virtual async Task AddOneAsync<TDocument>(TDocument document, CancellationToken cancellationToken)
+            where TDocument : IDocument<Guid>
+        {
+            await AddOneAsync<TDocument, Guid>(document, cancellationToken);
+        }
+
+        /// <inheritdoc />
         public virtual void AddOne<TDocument, TKey>(TDocument document)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            MongoDbCreator.AddOne<TDocument, TKey>(document);
+            AddOne<TDocument, TKey>(document, CancellationToken.None);
         }
 
-        /// <summary>
-        /// Adds a document to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <param name="document">The document you want to add.</param>
-        public virtual void AddOne<TDocument>(TDocument document) where TDocument : IDocument<Guid>
+        /// <inheritdoc />
+        public virtual void AddOne<TDocument, TKey>(TDocument document, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
         {
-            MongoDbCreator.AddOne<TDocument, Guid>(document);
+            MongoDbCreator.AddOne<TDocument, TKey>(document, cancellationToken);
         }
 
-        /// <summary>
-        /// Asynchronously adds a list of documents to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <param name="documents">The documents you want to add.</param>
-        /// <param name="cancellationToken">An optional cancellation Token.</param>
-        public virtual async Task AddManyAsync<TDocument, TKey>(IEnumerable<TDocument> documents, CancellationToken cancellationToken = default)
+        /// <inheritdoc />
+        public virtual void AddOne<TDocument>(TDocument document)
+            where TDocument : IDocument<Guid>
+        {
+            AddOne<TDocument, Guid>(document, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public virtual void AddOne<TDocument>(TDocument document, CancellationToken cancellationToken)
+            where TDocument : IDocument<Guid>
+        {
+            AddOne<TDocument, Guid>(document, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task AddManyAsync<TDocument, TKey>(IEnumerable<TDocument> documents)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            await AddManyAsync<TDocument, TKey>(documents, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task AddManyAsync<TDocument, TKey>(IEnumerable<TDocument> documents, CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
             await MongoDbCreator.AddManyAsync<TDocument, TKey>(documents, cancellationToken);
         }
 
-        /// <summary>
-        /// Asynchronously adds a list of documents to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <param name="documents">The documents you want to add.</param>
-        /// <param name="cancellationToken">An optional cancellation Token.</param>
-        public virtual async Task AddManyAsync<TDocument>(IEnumerable<TDocument> documents, CancellationToken cancellationToken = default) 
+        /// <inheritdoc />
+        public virtual async Task AddManyAsync<TDocument>(IEnumerable<TDocument> documents)
             where TDocument : IDocument<Guid>
         {
-            await MongoDbCreator.AddManyAsync<TDocument, Guid>(documents, cancellationToken);
+            await AddManyAsync<TDocument, Guid>(documents, CancellationToken.None);
         }
 
-        /// <summary>
-        /// Adds a list of documents to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <param name="documents">The documents you want to add.</param>
+        /// <inheritdoc />
+        public virtual async Task AddManyAsync<TDocument>(IEnumerable<TDocument> documents, CancellationToken cancellationToken)
+            where TDocument : IDocument<Guid>
+        {
+            await AddManyAsync<TDocument, Guid>(documents, cancellationToken);
+        }
+
+        /// <inheritdoc />
         public virtual void AddMany<TDocument, TKey>(IEnumerable<TDocument> documents)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            MongoDbCreator.AddMany<TDocument, TKey>(documents);
+            AddMany<TDocument, TKey>(documents, CancellationToken.None);
         }
 
-        /// <summary>
-        /// Adds a list of documents to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <param name="documents">The documents you want to add.</param>
-        public virtual void AddMany<TDocument>(IEnumerable<TDocument> documents) 
+        /// <inheritdoc />
+        public virtual void AddMany<TDocument, TKey>(IEnumerable<TDocument> documents, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            MongoDbCreator.AddMany<TDocument, TKey>(documents, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public virtual void AddMany<TDocument>(IEnumerable<TDocument> documents)
             where TDocument : IDocument<Guid>
         {
-            MongoDbCreator.AddMany<TDocument, Guid>(documents);
+            AddMany<TDocument, Guid>(documents, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public virtual void AddMany<TDocument>(IEnumerable<TDocument> documents, CancellationToken cancellationToken)
+            where TDocument : IDocument<Guid>
+        {
+            AddMany<TDocument, Guid>(documents, cancellationToken);
         }
     }
-
 }
