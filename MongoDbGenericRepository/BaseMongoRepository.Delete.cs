@@ -1,10 +1,10 @@
-﻿using MongoDbGenericRepository.DataAccess.Delete;
-using MongoDbGenericRepository.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using MongoDbGenericRepository.DataAccess.Delete;
+using MongoDbGenericRepository.Models;
 
 namespace MongoDbGenericRepository
 {
@@ -13,13 +13,16 @@ namespace MongoDbGenericRepository
         private IMongoDbEraser _mongoDbEraser;
 
         /// <summary>
-        /// The MongoDbEraser used to delete documents.
+        ///     The MongoDbEraser used to delete documents.
         /// </summary>
         protected virtual IMongoDbEraser MongoDbEraser
         {
             get
             {
-                if (_mongoDbEraser != null) { return _mongoDbEraser; }
+                if (_mongoDbEraser != null)
+                {
+                    return _mongoDbEraser;
+                }
 
                 lock (_initLock)
                 {
@@ -31,7 +34,7 @@ namespace MongoDbGenericRepository
 
                 return _mongoDbEraser;
             }
-            set { _mongoDbEraser = value; }
+            set => _mongoDbEraser = value;
         }
 
         #region Delete
@@ -114,7 +117,10 @@ namespace MongoDbGenericRepository
         }
 
         /// <inheritdoc />
-        public virtual async Task<long> DeleteOneAsync<TDocument>(Expression<Func<TDocument, bool>> filter, string partitionKey, CancellationToken cancellationToken)
+        public virtual async Task<long> DeleteOneAsync<TDocument>(
+            Expression<Func<TDocument, bool>> filter,
+            string partitionKey,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<Guid>
         {
             return await DeleteOneAsync<TDocument, Guid>(filter, partitionKey, cancellationToken);
@@ -297,7 +303,10 @@ namespace MongoDbGenericRepository
         }
 
         /// <inheritdoc />
-        public virtual async Task<long> DeleteOneAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey, CancellationToken cancellationToken)
+        public virtual async Task<long> DeleteOneAsync<TDocument, TKey>(
+            Expression<Func<TDocument, bool>> filter,
+            string partitionKey,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -329,7 +338,10 @@ namespace MongoDbGenericRepository
         }
 
         /// <inheritdoc />
-        public virtual async Task<long> DeleteManyAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey, CancellationToken cancellationToken)
+        public virtual async Task<long> DeleteManyAsync<TDocument, TKey>(
+            Expression<Func<TDocument, bool>> filter,
+            string partitionKey,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -401,6 +413,5 @@ namespace MongoDbGenericRepository
         }
 
         #endregion
-
     }
 }

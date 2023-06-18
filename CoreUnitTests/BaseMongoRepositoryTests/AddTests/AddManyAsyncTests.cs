@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using AutoFixture;
 using CoreUnitTests.Infrastructure;
 using CoreUnitTests.Infrastructure.Model;
@@ -10,25 +11,24 @@ using Xunit;
 
 namespace CoreUnitTests.BaseMongoRepositoryTests.AddTests;
 
-public class AddManyTests : TestMongoRepositoryContext
+public class AddManyAsyncTests : TestMongoRepositoryContext
 {
-
     [Fact]
-    public void WithDocument_ShouldAddOne()
+    public async Task WithDocument_ShouldAddOne()
     {
         // Arrange
         var documents = Fixture.CreateMany<TestDocument>().ToList();
         Creator = new Mock<IMongoDbCreator>();
 
         // Act
-        Sut.AddMany(documents);
+        await Sut.AddManyAsync(documents);
 
         // Assert
-        Creator.Verify(x => x.AddMany<TestDocument, Guid>(documents, CancellationToken.None), Times.Once);
+        Creator.Verify(x => x.AddManyAsync<TestDocument, Guid>(documents, CancellationToken.None), Times.Once);
     }
 
     [Fact]
-    public void WithDocumentAndCancellationToken_ShouldAddOne()
+    public async Task WithDocumentAndCancellationToken_ShouldAddOne()
     {
         // Arrange
         var documents = Fixture.CreateMany<TestDocument>().ToList();
@@ -36,30 +36,30 @@ public class AddManyTests : TestMongoRepositoryContext
         Creator = new Mock<IMongoDbCreator>();
 
         // Act
-        Sut.AddMany(documents, token);
+        await Sut.AddManyAsync(documents, token);
 
         // Assert
-        Creator.Verify(x => x.AddMany<TestDocument, Guid>(documents, token), Times.Once);
+        Creator.Verify(x => x.AddManyAsync<TestDocument, Guid>(documents, token), Times.Once);
     }
 
     #region Keyed
 
     [Fact]
-    public void Keyed_WithDocument_ShouldAddOne()
+    public async Task Keyed_WithDocument_ShouldAddOne()
     {
         // Arrange
         var documents = Fixture.CreateMany<TestDocumentWithKey<int>>().ToList();
         Creator = new Mock<IMongoDbCreator>();
 
         // Act
-        Sut.AddMany<TestDocumentWithKey<int>, int>(documents);
+        await Sut.AddManyAsync<TestDocumentWithKey<int>, int>(documents);
 
         // Assert
-        Creator.Verify(x => x.AddMany<TestDocumentWithKey<int>, int>(documents, CancellationToken.None), Times.Once);
+        Creator.Verify(x => x.AddManyAsync<TestDocumentWithKey<int>, int>(documents, CancellationToken.None), Times.Once);
     }
 
     [Fact]
-    public void Keyed_WithDocumentAndCancellationToken_ShouldAddOne()
+    public async Task Keyed_WithDocumentAndCancellationToken_ShouldAddOne()
     {
         // Arrange
         var documents = Fixture.CreateMany<TestDocumentWithKey<int>>().ToList();
@@ -67,10 +67,10 @@ public class AddManyTests : TestMongoRepositoryContext
         Creator = new Mock<IMongoDbCreator>();
 
         // Act
-        Sut.AddMany<TestDocumentWithKey<int>, int>(documents, token);
+        await Sut.AddManyAsync<TestDocumentWithKey<int>, int>(documents, token);
 
         // Assert
-        Creator.Verify(x => x.AddMany<TestDocumentWithKey<int>, int>(documents, token), Times.Once);
+        Creator.Verify(x => x.AddManyAsync<TestDocumentWithKey<int>, int>(documents, token), Times.Once);
     }
 
     #endregion
