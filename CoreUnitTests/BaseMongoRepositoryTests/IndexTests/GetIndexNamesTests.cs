@@ -19,7 +19,7 @@ public class GetIndexNamesTests : BaseIndexTests
         const string indexName = "theIndexName";
 
         IndexHandler
-            .Setup(x => x.GetIndexesNamesAsync<TestDocument, Guid>(null))
+            .Setup(x => x.GetIndexesNamesAsync<TestDocument, Guid>(It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new List<string> { indexName });
 
         // Act
@@ -28,7 +28,7 @@ public class GetIndexNamesTests : BaseIndexTests
         // Assert
         Assert.NotNull(result);
         Assert.Contains(result, x => x == indexName);
-        IndexHandler.Verify(x => x.GetIndexesNamesAsync<TestDocument, Guid>(null), Times.Once());
+        IndexHandler.Verify(x => x.GetIndexesNamesAsync<TestDocument, Guid>(null, CancellationToken.None), Times.Once());
     }
 
     /*
@@ -61,7 +61,7 @@ public class GetIndexNamesTests : BaseIndexTests
 
         IndexHandler = new Mock<IMongoDbIndexHandler>();
         IndexHandler
-            .Setup(x => x.GetIndexesNamesAsync<TestDocument, Guid>(partitionKey))
+            .Setup(x => x.GetIndexesNamesAsync<TestDocument, Guid>(It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new List<string> { indexName });
 
         // Act

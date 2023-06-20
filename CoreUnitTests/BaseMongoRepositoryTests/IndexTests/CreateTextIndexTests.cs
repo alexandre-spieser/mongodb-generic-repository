@@ -12,20 +12,20 @@ namespace CoreUnitTests.BaseMongoRepositoryTests.IndexTests;
 
 public class CreateTextIndexTests : BaseIndexTests
 {
-    private readonly Expression<Func<TestDocument, object>> _fieldExpression = t => t.SomeContent2;
+    private readonly Expression<Func<TestDocument, object>> fieldExpression = t => t.SomeContent2;
 
     [Fact]
-    public async Task Ensure_Creates_Index()
+    public async Task WhenFieldExpression_CreatesIndex()
     {
         // Arrange
         IndexHandler = new Mock<IMongoDbIndexHandler>();
 
         // Act
-        await Sut.CreateTextIndexAsync<TestDocument>(_fieldExpression);
+        await Sut.CreateTextIndexAsync(fieldExpression);
 
         // Assert
         IndexHandler.Verify(
-            x => x.CreateTextIndexAsync<TestDocument, Guid>(_fieldExpression, null, null));
+            x => x.CreateTextIndexAsync<TestDocument, Guid>(fieldExpression, null, null, CancellationToken.None));
     }
 
     [Fact]
@@ -36,12 +36,12 @@ public class CreateTextIndexTests : BaseIndexTests
         var options = new IndexCreationOptions { Name = "theIndexName" };
 
         // Act
-        await Sut.CreateTextIndexAsync<TestDocument>(_fieldExpression, options);
+        await Sut.CreateTextIndexAsync(fieldExpression, options);
 
         // Assert
         IndexHandler.Verify(
             x => x.CreateTextIndexAsync<TestDocument, Guid>(
-                _fieldExpression, options, null));
+                fieldExpression, options, null, CancellationToken.None));
     }
 
     [Fact]
@@ -53,16 +53,15 @@ public class CreateTextIndexTests : BaseIndexTests
         IndexHandler = new Mock<IMongoDbIndexHandler>();
 
         // Act
-        await Sut.CreateTextIndexAsync<TestDocument>(_fieldExpression, partitionKey: partitionKey);
+        await Sut.CreateTextIndexAsync(fieldExpression, partitionKey: partitionKey);
 
         // Assert
         IndexHandler.Verify(
             x => x.CreateTextIndexAsync<TestDocument, Guid>(
-                _fieldExpression, null, partitionKey));
+                fieldExpression, null, partitionKey, CancellationToken.None));
     }
 
-    /*
-    [Fact]
+    /*[Fact]
     public async Task Ensure_Creates_Index_With_CancellationToken()
     {
         // Arrange
@@ -70,13 +69,14 @@ public class CreateTextIndexTests : BaseIndexTests
         var token = new CancellationToken(true);
 
         // Act
-        await Sut.CreateTextIndexAsync<TestDocument>(_fieldExpression, token);
+        await Sut.CreateTextIndexAsync<TestDocument>(fieldExpression, token);
 
         // Assert
         IndexHandler.Verify(
             x => x.CreateTextIndexAsync<TestDocument, Guid>(_fieldExpression, null, null, token));
-    }
+    }*/
 
+    /*
     [Fact]
     public async Task Ensure_Passes_Options_With_CancellationToken()
     {
