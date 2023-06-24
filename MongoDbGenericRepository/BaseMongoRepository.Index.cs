@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
+using System.Threading;
 using MongoDbGenericRepository.Models;
 
 namespace MongoDbGenericRepository
@@ -36,93 +37,195 @@ namespace MongoDbGenericRepository
             set { _mongoDbIndexHandler = value; }
         }
 
-        /// <summary>
-        /// Returns the names of the indexes present on a collection.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <param name="partitionKey">An optional partition key</param>
-        /// <returns>A list containing the names of the indexes on on the concerned collection.</returns>
-        public async Task<List<string>> GetIndexesNamesAsync<TDocument>(string partitionKey = null)
+        /// <inheritdoc />
+        public async Task<List<string>> GetIndexesNamesAsync<TDocument>()
             where TDocument : IDocument<Guid>
         {
-            return await MongoDbIndexHandler.GetIndexesNamesAsync<TDocument, Guid>(partitionKey);
+            return await GetIndexesNamesAsync<TDocument, Guid>(null, CancellationToken.None);
         }
 
-        /// <summary>
-        /// Returns the names of the indexes present on a collection.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type for the key of the document.</typeparam>
-        /// <param name="partitionKey">An optional partition key</param>
-        /// <returns>A list containing the names of the indexes on on the concerned collection.</returns>
-        public virtual async Task<List<string>> GetIndexesNamesAsync<TDocument, TKey>(string partitionKey = null)
+
+        /// <inheritdoc />
+        public async Task<List<string>> GetIndexesNamesAsync<TDocument>(CancellationToken cancellationToken)
+            where TDocument : IDocument<Guid>
+        {
+            return await GetIndexesNamesAsync<TDocument, Guid>(null, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public async Task<List<string>> GetIndexesNamesAsync<TDocument>(string partitionKey)
+            where TDocument : IDocument<Guid>
+        {
+            return await GetIndexesNamesAsync<TDocument, Guid>(partitionKey);
+        }
+
+        /// <inheritdoc />
+        public async Task<List<string>> GetIndexesNamesAsync<TDocument>(string partitionKey, CancellationToken cancellationToken)
+            where TDocument : IDocument<Guid>
+        {
+            return await GetIndexesNamesAsync<TDocument, Guid>(partitionKey, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<List<string>> GetIndexesNamesAsync<TDocument, TKey>()
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return await MongoDbIndexHandler.GetIndexesNamesAsync<TDocument, TKey>(partitionKey);
+            return await GetIndexesNamesAsync<TDocument, TKey>(null, CancellationToken.None);
         }
 
-        /// <summary>
-        /// Create a text index on the given field.
-        /// IndexCreationOptions can be supplied to further specify 
-        /// how the creation should be done.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <param name="field">The field we want to index.</param>
-        /// <param name="indexCreationOptions">Options for creating an index.</param>
-        /// <param name="partitionKey">An optional partition key.</param>
-        /// <returns>The result of the create index operation.</returns>
-        public async Task<string> CreateTextIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions = null, string partitionKey = null)
-            where TDocument : IDocument<Guid>
-        {
-            return await MongoDbIndexHandler.CreateTextIndexAsync<TDocument, Guid>(field, indexCreationOptions, partitionKey);
-        }
-
-        /// <summary>
-        /// Create a text index on the given field.
-        /// IndexCreationOptions can be supplied to further specify 
-        /// how the creation should be done.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <param name="field">The field we want to index.</param>
-        /// <param name="indexCreationOptions">Options for creating an index.</param>
-        /// <param name="partitionKey">An optional partition key.</param>
-        /// <returns>The result of the create index operation.</returns>
-        public virtual async Task<string> CreateTextIndexAsync<TDocument, TKey>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions = null, string partitionKey = null)
+        /// <inheritdoc />
+        public virtual async Task<List<string>> GetIndexesNamesAsync<TDocument, TKey>(CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
-            return await MongoDbIndexHandler.CreateTextIndexAsync<TDocument, TKey>(field, indexCreationOptions, partitionKey);
+            return await GetIndexesNamesAsync<TDocument, TKey>(null, cancellationToken);
         }
 
-        /// <summary>
-        /// Creates an index on the given field in ascending order.
-        /// IndexCreationOptions can be supplied to further specify 
-        /// how the creation should be done.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <param name="field">The field we want to index.</param>
-        /// <param name="indexCreationOptions">Options for creating an index.</param>
-        /// <param name="partitionKey">An optional partition key.</param>
-        /// <returns>The result of the create index operation.</returns>
-        public async Task<string> CreateAscendingIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions = null, string partitionKey = null) 
+        /// <inheritdoc />
+        public virtual async Task<List<string>> GetIndexesNamesAsync<TDocument, TKey>(string partitionKey)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            return await GetIndexesNamesAsync<TDocument, TKey>(partitionKey, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<List<string>> GetIndexesNamesAsync<TDocument, TKey>(string partitionKey, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            return await MongoDbIndexHandler.GetIndexesNamesAsync<TDocument, TKey>(partitionKey, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public async Task<string> CreateTextIndexAsync<TDocument>(Expression<Func<TDocument, object>> field)
             where TDocument : IDocument<Guid>
         {
-            return await MongoDbIndexHandler.CreateAscendingIndexAsync<TDocument, Guid>(field, indexCreationOptions, partitionKey);
+            return await CreateTextIndexAsync<TDocument, Guid>(field, null, null, CancellationToken.None);
         }
 
-        /// <summary>
-        /// Creates an index on the given field in ascending order.
-        /// IndexCreationOptions can be supplied to further specify 
-        /// how the creation should be done.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
-        /// <param name="field">The field we want to index.</param>
-        /// <param name="indexCreationOptions">Options for creating an index.</param>
-        /// <param name="partitionKey">An optional partition key.</param>
-        /// <returns>The result of the create index operation.</returns>
+        /// <inheritdoc />
+        public async Task<string> CreateTextIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, CancellationToken cancellationToken)
+            where TDocument : IDocument<Guid>
+        {
+            return await CreateTextIndexAsync<TDocument, Guid>(field, null, null, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public async Task<string> CreateTextIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, string partitionKey)
+            where TDocument : IDocument<Guid>
+        {
+            return await CreateTextIndexAsync<TDocument, Guid>(field, null, partitionKey, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public async Task<string> CreateTextIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, string partitionKey, CancellationToken cancellationToken)
+            where TDocument : IDocument<Guid>
+        {
+            return await CreateTextIndexAsync<TDocument, Guid>(field, null, partitionKey, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public async Task<string> CreateTextIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions)
+            where TDocument : IDocument<Guid>
+        {
+            return await CreateTextIndexAsync<TDocument, Guid>(field, indexCreationOptions, null, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public async Task<string> CreateTextIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions, CancellationToken cancellationToken)
+            where TDocument : IDocument<Guid>
+        {
+            return await CreateTextIndexAsync<TDocument, Guid>(field, indexCreationOptions, null, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public async Task<string> CreateTextIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions, string partitionKey)
+            where TDocument : IDocument<Guid>
+        {
+            return await CreateTextIndexAsync<TDocument, Guid>(field, indexCreationOptions, partitionKey, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public async Task<string> CreateTextIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions, string partitionKey, CancellationToken cancellationToken)
+            where TDocument : IDocument<Guid>
+        {
+            return await CreateTextIndexAsync<TDocument, Guid>(field, indexCreationOptions, partitionKey, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<string> CreateTextIndexAsync<TDocument, TKey>(Expression<Func<TDocument, object>> field)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            return await CreateTextIndexAsync<TDocument, TKey>(field, null, null, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<string> CreateTextIndexAsync<TDocument, TKey>(Expression<Func<TDocument, object>> field, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            return await CreateTextIndexAsync<TDocument, TKey>(field, null, null, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<string> CreateTextIndexAsync<TDocument, TKey>(Expression<Func<TDocument, object>> field, string partitionKey)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            return await CreateTextIndexAsync<TDocument, TKey>(field, null, partitionKey, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<string> CreateTextIndexAsync<TDocument, TKey>(Expression<Func<TDocument, object>> field, string partitionKey, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            return await CreateTextIndexAsync<TDocument, TKey>(field, null, partitionKey, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<string> CreateTextIndexAsync<TDocument, TKey>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            return await CreateTextIndexAsync<TDocument, TKey>(field, indexCreationOptions, null, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<string> CreateTextIndexAsync<TDocument, TKey>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            return await CreateTextIndexAsync<TDocument, TKey>(field, indexCreationOptions, null, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<string> CreateTextIndexAsync<TDocument, TKey>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions, string partitionKey)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            return await CreateTextIndexAsync<TDocument, TKey>(field, indexCreationOptions, partitionKey, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<string> CreateTextIndexAsync<TDocument, TKey>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions, string partitionKey, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            return await MongoDbIndexHandler.CreateTextIndexAsync<TDocument, TKey>(field, indexCreationOptions, partitionKey, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public async Task<string> CreateAscendingIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions = null, string partitionKey = null)
+            where TDocument : IDocument<Guid>
+        {
+            return await CreateAscendingIndexAsync<TDocument, Guid>(field, indexCreationOptions, partitionKey);
+        }
+
+        /// <inheritdoc />
         public virtual async Task<string> CreateAscendingIndexAsync<TDocument, TKey>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions = null, string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
@@ -130,20 +233,11 @@ namespace MongoDbGenericRepository
             return await MongoDbIndexHandler.CreateAscendingIndexAsync<TDocument, TKey>(field, indexCreationOptions, partitionKey);
         }
 
-        /// <summary>
-        /// Creates an index on the given field in descending order.
-        /// IndexCreationOptions can be supplied to further specify 
-        /// how the creation should be done.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <param name="field">The field we want to index.</param>
-        /// <param name="indexCreationOptions">Options for creating an index.</param>
-        /// <param name="partitionKey">An optional partition key.</param>
-        /// <returns>The result of the create index operation.</returns>
+        /// <inheritdoc />
         public async Task<string> CreateDescendingIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions = null, string partitionKey = null)
             where TDocument : IDocument<Guid>
         {
-            return await MongoDbIndexHandler.CreateDescendingIndexAsync<TDocument, Guid>(field, indexCreationOptions, partitionKey);
+            return await CreateDescendingIndexAsync<TDocument, Guid>(field, indexCreationOptions, partitionKey);
         }
 
         /// <inheritdoc />
@@ -154,20 +248,11 @@ namespace MongoDbGenericRepository
             return await MongoDbIndexHandler.CreateDescendingIndexAsync<TDocument, TKey>(field, indexCreationOptions, partitionKey);
         }
 
-        /// <summary>
-        /// Creates a hashed index on the given field.
-        /// IndexCreationOptions can be supplied to further specify 
-        /// how the creation should be done.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <param name="field">The field we want to index.</param>
-        /// <param name="indexCreationOptions">Options for creating an index.</param>
-        /// <param name="partitionKey">An optional partition key.</param>
-        /// <returns>The result of the create index operation.</returns>
+        /// <inheritdoc />
         public async Task<string> CreateHashedIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions = null, string partitionKey = null)
             where TDocument : IDocument<Guid>
         {
-            return await MongoDbIndexHandler.CreateHashedIndexAsync<TDocument, Guid>(field, indexCreationOptions, partitionKey);
+            return await CreateHashedIndexAsync<TDocument, Guid>(field, indexCreationOptions, partitionKey);
         }
 
         /// <inheritdoc />
@@ -178,20 +263,11 @@ namespace MongoDbGenericRepository
             return await MongoDbIndexHandler.CreateHashedIndexAsync<TDocument, TKey>(field, indexCreationOptions, partitionKey);
         }
 
-        /// <summary>
-        /// Creates a combined text index.
-        /// IndexCreationOptions can be supplied to further specify 
-        /// how the creation should be done.
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <param name="fields">The fields we want to index.</param>
-        /// <param name="indexCreationOptions">Options for creating an index.</param>
-        /// <param name="partitionKey">An optional partition key.</param>
-        /// <returns>The result of the create index operation.</returns>
-        public async Task<string> CreateCombinedTextIndexAsync<TDocument>(IEnumerable<Expression<Func<TDocument, object>>> fields, IndexCreationOptions indexCreationOptions = null, string partitionKey = null) 
+        /// <inheritdoc />
+        public async Task<string> CreateCombinedTextIndexAsync<TDocument>(IEnumerable<Expression<Func<TDocument, object>>> fields, IndexCreationOptions indexCreationOptions = null, string partitionKey = null)
             where TDocument : IDocument<Guid>
         {
-            return await MongoDbIndexHandler.CreateCombinedTextIndexAsync<TDocument, Guid>(fields, indexCreationOptions, partitionKey);
+            return await CreateCombinedTextIndexAsync<TDocument, Guid>(fields, indexCreationOptions, partitionKey);
         }
 
         /// <inheritdoc />
@@ -202,16 +278,11 @@ namespace MongoDbGenericRepository
             return await MongoDbIndexHandler.CreateCombinedTextIndexAsync<TDocument, TKey>(fields, indexCreationOptions, partitionKey);
         }
 
-        /// <summary>
-        /// Drops the index given a field name
-        /// </summary>
-        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
-        /// <param name="indexName">The name of the index</param>
-        /// <param name="partitionKey">An optional partition key</param>
+        /// <inheritdoc />
         public async Task DropIndexAsync<TDocument>(string indexName, string partitionKey = null)
             where TDocument : IDocument<Guid>
         {
-            await MongoDbIndexHandler.DropIndexAsync<TDocument, Guid>(indexName, partitionKey);
+            await DropIndexAsync<TDocument, Guid>(indexName, partitionKey);
         }
 
         /// <inheritdoc />
