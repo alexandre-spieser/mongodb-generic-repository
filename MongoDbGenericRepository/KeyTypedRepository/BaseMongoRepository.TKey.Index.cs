@@ -284,10 +284,59 @@ namespace MongoDbGenericRepository
         }
 
         /// <inheritdoc />
-        public virtual async Task<string> CreateHashedIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions = null, string partitionKey = null)
+        public virtual async Task<string> CreateHashedIndexAsync<TDocument>(Expression<Func<TDocument, object>> field)
             where TDocument : IDocument<TKey>
         {
-            return await MongoDbIndexHandler.CreateHashedIndexAsync<TDocument, TKey>(field, indexCreationOptions, partitionKey);
+            return await CreateHashedIndexAsync(field, null, null, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<string> CreateHashedIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+        {
+            return await CreateHashedIndexAsync(field, null, null, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<string> CreateHashedIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions)
+            where TDocument : IDocument<TKey>
+        {
+            return await CreateHashedIndexAsync(field, indexCreationOptions, null, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<string> CreateHashedIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+        {
+            return await CreateHashedIndexAsync(field, indexCreationOptions, null, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<string> CreateHashedIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, string partitionKey)
+            where TDocument : IDocument<TKey>
+        {
+            return await CreateHashedIndexAsync(field, null, partitionKey, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<string> CreateHashedIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, string partitionKey, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+        {
+            return await CreateHashedIndexAsync(field, null, partitionKey, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<string> CreateHashedIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions, string partitionKey)
+            where TDocument : IDocument<TKey>
+        {
+            return await CreateHashedIndexAsync(field, indexCreationOptions, partitionKey, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<string> CreateHashedIndexAsync<TDocument>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions, string partitionKey, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+        {
+            return await MongoDbIndexHandler.CreateHashedIndexAsync<TDocument, TKey>(field, indexCreationOptions, partitionKey, cancellationToken);
         }
 
         /// <inheritdoc />
