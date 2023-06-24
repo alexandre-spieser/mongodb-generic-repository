@@ -340,17 +340,87 @@ namespace MongoDbGenericRepository
         }
 
         /// <inheritdoc />
-        public virtual async Task<string> CreateCombinedTextIndexAsync<TDocument>(IEnumerable<Expression<Func<TDocument, object>>> fields, IndexCreationOptions indexCreationOptions = null, string partitionKey = null)
+        public virtual async Task<string> CreateCombinedTextIndexAsync<TDocument>(IEnumerable<Expression<Func<TDocument, object>>> fields)
             where TDocument : IDocument<TKey>
         {
-            return await MongoDbIndexHandler.CreateCombinedTextIndexAsync<TDocument, TKey>(fields, indexCreationOptions, partitionKey);
+            return await CreateCombinedTextIndexAsync(fields, null, null, CancellationToken.None);
         }
 
         /// <inheritdoc />
-        public virtual async Task DropIndexAsync<TDocument>(string indexName, string partitionKey = null)
+        public virtual async Task<string> CreateCombinedTextIndexAsync<TDocument>(IEnumerable<Expression<Func<TDocument, object>>> fields, CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
         {
-            await MongoDbIndexHandler.DropIndexAsync<TDocument, TKey>(indexName, partitionKey);
+            return await CreateCombinedTextIndexAsync(fields, null, null, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<string> CreateCombinedTextIndexAsync<TDocument>(IEnumerable<Expression<Func<TDocument, object>>> fields, IndexCreationOptions indexCreationOptions)
+            where TDocument : IDocument<TKey>
+        {
+            return await CreateCombinedTextIndexAsync(fields, indexCreationOptions, null, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<string> CreateCombinedTextIndexAsync<TDocument>(IEnumerable<Expression<Func<TDocument, object>>> fields, IndexCreationOptions indexCreationOptions, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+        {
+            return await CreateCombinedTextIndexAsync(fields, indexCreationOptions, null, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<string> CreateCombinedTextIndexAsync<TDocument>(IEnumerable<Expression<Func<TDocument, object>>> fields, string partitionKey)
+            where TDocument : IDocument<TKey>
+        {
+            return await CreateCombinedTextIndexAsync(fields, null, partitionKey, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<string> CreateCombinedTextIndexAsync<TDocument>(IEnumerable<Expression<Func<TDocument, object>>> fields, string partitionKey, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+        {
+            return await CreateCombinedTextIndexAsync(fields, null, partitionKey, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<string> CreateCombinedTextIndexAsync<TDocument>(IEnumerable<Expression<Func<TDocument, object>>> fields, IndexCreationOptions indexCreationOptions, string partitionKey)
+            where TDocument : IDocument<TKey>
+        {
+            return await CreateCombinedTextIndexAsync(fields, indexCreationOptions, partitionKey, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<string> CreateCombinedTextIndexAsync<TDocument>(IEnumerable<Expression<Func<TDocument, object>>> fields, IndexCreationOptions indexCreationOptions, string partitionKey, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+        {
+            return await MongoDbIndexHandler.CreateCombinedTextIndexAsync<TDocument, TKey>(fields, indexCreationOptions, partitionKey, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task DropIndexAsync<TDocument>(string indexName)
+            where TDocument : IDocument<TKey>
+        {
+            await DropIndexAsync<TDocument>(indexName, null, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task DropIndexAsync<TDocument>(string indexName, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+        {
+            await DropIndexAsync<TDocument>(indexName, null, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task DropIndexAsync<TDocument>(string indexName, string partitionKey)
+            where TDocument : IDocument<TKey>
+        {
+            await DropIndexAsync<TDocument>(indexName, partitionKey, CancellationToken.None);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task DropIndexAsync<TDocument>(string indexName, string partitionKey, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+        {
+            await MongoDbIndexHandler.DropIndexAsync<TDocument, TKey>(indexName, partitionKey, cancellationToken);
         }
     }
 }
