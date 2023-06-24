@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoFixture;
 using CoreUnitTests.Infrastructure.Model;
@@ -7,14 +8,13 @@ using MongoDbGenericRepository.DataAccess.Index;
 using MongoDbGenericRepository.Models;
 using Moq;
 using Xunit;
-using CancellationToken = System.Threading.CancellationToken;
 
 namespace CoreUnitTests.BaseMongoRepositoryTests.IndexTests;
 
-public class CreateTextIndexTests : BaseIndexTests
+public class CreateAscendingIndexAsyncTests : BaseIndexTests
 {
-    private readonly Expression<Func<TestDocument, object>> fieldExpression = t => t.SomeContent2;
     private readonly Expression<Func<TestDocumentWithKey<int>, object>> keyedFieldExpression = t => t.SomeContent2;
+    private readonly Expression<Func<TestDocument, object>> fieldExpression = t => t.SomeContent2;
 
     [Fact]
     public async Task WithFieldExpression_CreatesIndex()
@@ -23,11 +23,11 @@ public class CreateTextIndexTests : BaseIndexTests
         IndexHandler = new Mock<IMongoDbIndexHandler>();
 
         // Act
-        await Sut.CreateTextIndexAsync(fieldExpression);
+        await Sut.CreateAscendingIndexAsync(fieldExpression);
 
         // Assert
         IndexHandler.Verify(
-            x => x.CreateTextIndexAsync<TestDocument, Guid>(fieldExpression, null, null, CancellationToken.None));
+            x => x.CreateAscendingIndexAsync<TestDocument, Guid>(fieldExpression, null, null, CancellationToken.None));
     }
 
     [Fact]
@@ -38,11 +38,11 @@ public class CreateTextIndexTests : BaseIndexTests
         IndexHandler = new Mock<IMongoDbIndexHandler>();
 
         // Act
-        await Sut.CreateTextIndexAsync(fieldExpression, token);
+        await Sut.CreateAscendingIndexAsync(fieldExpression, token);
 
         // Assert
         IndexHandler.Verify(
-            x => x.CreateTextIndexAsync<TestDocument, Guid>(fieldExpression, null, null, token));
+            x => x.CreateAscendingIndexAsync<TestDocument, Guid>(fieldExpression, null, null, token));
     }
 
     [Fact]
@@ -54,11 +54,11 @@ public class CreateTextIndexTests : BaseIndexTests
         IndexHandler = new Mock<IMongoDbIndexHandler>();
 
         // Act
-        await Sut.CreateTextIndexAsync(fieldExpression, options);
+        await Sut.CreateAscendingIndexAsync(fieldExpression, options);
 
         // Assert
         IndexHandler.Verify(
-            x => x.CreateTextIndexAsync<TestDocument, Guid>(
+            x => x.CreateAscendingIndexAsync<TestDocument, Guid>(
                 fieldExpression, options, null, CancellationToken.None));
     }
 
@@ -72,11 +72,11 @@ public class CreateTextIndexTests : BaseIndexTests
         IndexHandler = new Mock<IMongoDbIndexHandler>();
 
         // Act
-        await Sut.CreateTextIndexAsync(fieldExpression, options, token);
+        await Sut.CreateAscendingIndexAsync(fieldExpression, options, token);
 
         // Assert
         IndexHandler.Verify(
-            x => x.CreateTextIndexAsync<TestDocument, Guid>(
+            x => x.CreateAscendingIndexAsync<TestDocument, Guid>(
                 fieldExpression, options, null, token));
     }
 
@@ -88,11 +88,11 @@ public class CreateTextIndexTests : BaseIndexTests
         IndexHandler = new Mock<IMongoDbIndexHandler>();
 
         // Act
-        await Sut.CreateTextIndexAsync(fieldExpression, partitionKey);
+        await Sut.CreateAscendingIndexAsync(fieldExpression, partitionKey);
 
         // Assert
         IndexHandler.Verify(
-            x => x.CreateTextIndexAsync<TestDocument, Guid>(
+            x => x.CreateAscendingIndexAsync<TestDocument, Guid>(
                 fieldExpression, null, partitionKey, CancellationToken.None));
     }
 
@@ -105,11 +105,11 @@ public class CreateTextIndexTests : BaseIndexTests
         IndexHandler = new Mock<IMongoDbIndexHandler>();
 
         // Act
-        await Sut.CreateTextIndexAsync(fieldExpression, partitionKey, token);
+        await Sut.CreateAscendingIndexAsync(fieldExpression, partitionKey, token);
 
         // Assert
         IndexHandler.Verify(
-            x => x.CreateTextIndexAsync<TestDocument, Guid>(
+            x => x.CreateAscendingIndexAsync<TestDocument, Guid>(
                 fieldExpression, null, partitionKey, token));
     }
 
@@ -124,11 +124,11 @@ public class CreateTextIndexTests : BaseIndexTests
         IndexHandler = new Mock<IMongoDbIndexHandler>();
 
         // Act
-        await Sut.CreateTextIndexAsync(fieldExpression, options, partitionKey);
+        await Sut.CreateAscendingIndexAsync(fieldExpression, options, partitionKey);
 
         // Assert
         IndexHandler.Verify(
-            x => x.CreateTextIndexAsync<TestDocument, Guid>(
+            x => x.CreateAscendingIndexAsync<TestDocument, Guid>(
                 fieldExpression, options, partitionKey, CancellationToken.None));
     }
 
@@ -144,47 +144,47 @@ public class CreateTextIndexTests : BaseIndexTests
         IndexHandler = new Mock<IMongoDbIndexHandler>();
 
         // Act
-        await Sut.CreateTextIndexAsync(fieldExpression, options, partitionKey, token);
+        await Sut.CreateAscendingIndexAsync(fieldExpression, options, partitionKey, token);
 
         // Assert
         IndexHandler.Verify(
-            x => x.CreateTextIndexAsync<TestDocument, Guid>(
+            x => x.CreateAscendingIndexAsync<TestDocument, Guid>(
                 fieldExpression, options, partitionKey, token));
     }
 
     #region Keyed
 
     [Fact]
-    public async Task Keyed_WithKeyedFieldExpression_CreatesIndex()
+    public async Task Keyed_WithFieldExpression_CreatesIndex()
     {
         // Arrange
         IndexHandler = new Mock<IMongoDbIndexHandler>();
 
         // Act
-        await Sut.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(keyedFieldExpression);
+        await Sut.CreateAscendingIndexAsync<TestDocumentWithKey<int>, int>(keyedFieldExpression);
 
         // Assert
         IndexHandler.Verify(
-            x => x.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(keyedFieldExpression, null, null, CancellationToken.None));
+            x => x.CreateAscendingIndexAsync<TestDocumentWithKey<int>, int>(keyedFieldExpression, null, null, CancellationToken.None));
     }
 
     [Fact]
-    public async Task Keyed_WithKeyedFieldExpressionAndCancellationToken_CreatesIndex()
+    public async Task Keyed_WithFieldExpressionAndCancellationToken_CreatesIndex()
     {
         // Arrange
         var token = new CancellationToken(true);
         IndexHandler = new Mock<IMongoDbIndexHandler>();
 
         // Act
-        await Sut.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(keyedFieldExpression, token);
+        await Sut.CreateAscendingIndexAsync<TestDocumentWithKey<int>, int>(keyedFieldExpression, token);
 
         // Assert
         IndexHandler.Verify(
-            x => x.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(keyedFieldExpression, null, null, token));
+            x => x.CreateAscendingIndexAsync<TestDocumentWithKey<int>, int>(keyedFieldExpression, null, null, token));
     }
 
     [Fact]
-    public async Task Keyed_WithKeyedFieldExpressionAndOptions_CreatesIndex()
+    public async Task Keyed_WithFieldExpressionAndOptions_CreatesIndex()
     {
         // Arrange
         var indexName = Fixture.Create<string>();
@@ -192,16 +192,16 @@ public class CreateTextIndexTests : BaseIndexTests
         IndexHandler = new Mock<IMongoDbIndexHandler>();
 
         // Act
-        await Sut.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(keyedFieldExpression, options);
+        await Sut.CreateAscendingIndexAsync<TestDocumentWithKey<int>, int>(keyedFieldExpression, options);
 
         // Assert
         IndexHandler.Verify(
-            x => x.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(
+            x => x.CreateAscendingIndexAsync<TestDocumentWithKey<int>, int>(
                 keyedFieldExpression, options, null, CancellationToken.None));
     }
 
     [Fact]
-    public async Task Keyed_WithKeyedFieldExpressionAndOptionsAndCancellationToken_CreatesIndex()
+    public async Task Keyed_WithFieldExpressionAndOptionsAndCancellationToken_CreatesIndex()
     {
         // Arrange
         var indexName = Fixture.Create<string>();
@@ -210,32 +210,32 @@ public class CreateTextIndexTests : BaseIndexTests
         IndexHandler = new Mock<IMongoDbIndexHandler>();
 
         // Act
-        await Sut.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(keyedFieldExpression, options, token);
+        await Sut.CreateAscendingIndexAsync<TestDocumentWithKey<int>, int>(keyedFieldExpression, options, token);
 
         // Assert
         IndexHandler.Verify(
-            x => x.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(
+            x => x.CreateAscendingIndexAsync<TestDocumentWithKey<int>, int>(
                 keyedFieldExpression, options, null, token));
     }
 
     [Fact]
-    public async Task Keyed_WithKeyedFieldExpressionAndPartitionKey_CreatesIndex()
+    public async Task Keyed_WithFieldExpressionAndPartitionKey_CreatesIndex()
     {
         // Arrange
         var partitionKey = Fixture.Create<string>();
         IndexHandler = new Mock<IMongoDbIndexHandler>();
 
         // Act
-        await Sut.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(keyedFieldExpression, partitionKey);
+        await Sut.CreateAscendingIndexAsync<TestDocumentWithKey<int>, int>(keyedFieldExpression, partitionKey);
 
         // Assert
         IndexHandler.Verify(
-            x => x.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(
+            x => x.CreateAscendingIndexAsync<TestDocumentWithKey<int>, int>(
                 keyedFieldExpression, null, partitionKey, CancellationToken.None));
     }
 
     [Fact]
-    public async Task Keyed_WithKeyedFieldExpressionAndPartitionKeyAndCancellationToken_CreatesIndex()
+    public async Task Keyed_WithFieldExpressionAndPartitionKeyAndCancellationToken_CreatesIndex()
     {
         // Arrange
         var partitionKey = Fixture.Create<string>();
@@ -243,16 +243,16 @@ public class CreateTextIndexTests : BaseIndexTests
         IndexHandler = new Mock<IMongoDbIndexHandler>();
 
         // Act
-        await Sut.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(keyedFieldExpression, partitionKey, token);
+        await Sut.CreateAscendingIndexAsync<TestDocumentWithKey<int>, int>(keyedFieldExpression, partitionKey, token);
 
         // Assert
         IndexHandler.Verify(
-            x => x.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(
+            x => x.CreateAscendingIndexAsync<TestDocumentWithKey<int>, int>(
                 keyedFieldExpression, null, partitionKey, token));
     }
 
     [Fact]
-    public async Task Keyed_WithKeyedFieldExpressionAndOptionsAndPartitionKey_CreatesIndex()
+    public async Task Keyed_WithFieldExpressionAndOptionsAndPartitionKey_CreatesIndex()
     {
         // Arrange
         var partitionKey = Fixture.Create<string>();
@@ -262,16 +262,16 @@ public class CreateTextIndexTests : BaseIndexTests
         IndexHandler = new Mock<IMongoDbIndexHandler>();
 
         // Act
-        await Sut.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(keyedFieldExpression, options, partitionKey);
+        await Sut.CreateAscendingIndexAsync<TestDocumentWithKey<int>, int>(keyedFieldExpression, options, partitionKey);
 
         // Assert
         IndexHandler.Verify(
-            x => x.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(
+            x => x.CreateAscendingIndexAsync<TestDocumentWithKey<int>, int>(
                 keyedFieldExpression, options, partitionKey, CancellationToken.None));
     }
 
     [Fact]
-    public async Task Keyed_WithKeyedFieldExpressionAndOptionsAndPartitionKeyAndCancellationToken_CreatesIndex()
+    public async Task Keyed_WithFieldExpressionAndOptionsAndPartitionKeyAndCancellationToken_CreatesIndex()
     {
         // Arrange
         var partitionKey = Fixture.Create<string>();
@@ -282,11 +282,11 @@ public class CreateTextIndexTests : BaseIndexTests
         IndexHandler = new Mock<IMongoDbIndexHandler>();
 
         // Act
-        await Sut.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(keyedFieldExpression, options, partitionKey, token);
+        await Sut.CreateAscendingIndexAsync<TestDocumentWithKey<int>, int>(keyedFieldExpression, options, partitionKey, token);
 
         // Assert
         IndexHandler.Verify(
-            x => x.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(
+            x => x.CreateAscendingIndexAsync<TestDocumentWithKey<int>, int>(
                 keyedFieldExpression, options, partitionKey, token));
     }
 

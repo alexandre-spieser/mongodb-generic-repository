@@ -10,7 +10,7 @@ using Xunit;
 
 namespace CoreUnitTests.BaseMongoRepositoryTests.IndexTests;
 
-public class GetIndexNamesTests : BaseIndexTests
+public class GetIndexNamesAsyncTests : BaseIndexTests
 {
     [Fact]
     public async Task WithNoParameters_ReturnsIndexNames()

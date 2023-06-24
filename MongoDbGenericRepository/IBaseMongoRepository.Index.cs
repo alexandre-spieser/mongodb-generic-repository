@@ -180,10 +180,196 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
         /// <param name="field">The field we want to index.</param>
+        /// <returns>The result of the create index operation.</returns>
+        Task<string> CreateAscendingIndexAsync<TDocument, TKey>(Expression<Func<TDocument, object>> field)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// Creates an index on the given field in ascending order.
+        /// IndexCreationOptions can be supplied to further specify
+        /// how the creation should be done.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="field">The field we want to index.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The result of the create index operation.</returns>
+        Task<string> CreateAscendingIndexAsync<TDocument, TKey>(Expression<Func<TDocument, object>> field, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// Creates an index on the given field in ascending order.
+        /// IndexCreationOptions can be supplied to further specify
+        /// how the creation should be done.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="field">The field we want to index.</param>
+        /// <param name="indexCreationOptions">Options for creating an index.</param>
+        /// <returns>The result of the create index operation.</returns>
+        Task<string> CreateAscendingIndexAsync<TDocument, TKey>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// Creates an index on the given field in ascending order.
+        /// IndexCreationOptions can be supplied to further specify
+        /// how the creation should be done.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="field">The field we want to index.</param>
+        /// <param name="indexCreationOptions">Options for creating an index.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The result of the create index operation.</returns>
+        Task<string> CreateAscendingIndexAsync<TDocument, TKey>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// Creates an index on the given field in ascending order.
+        /// IndexCreationOptions can be supplied to further specify
+        /// how the creation should be done.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="field">The field we want to index.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <returns>The result of the create index operation.</returns>
+        Task<string> CreateAscendingIndexAsync<TDocument, TKey>(Expression<Func<TDocument, object>> field, string partitionKey)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// Creates an index on the given field in ascending order.
+        /// IndexCreationOptions can be supplied to further specify
+        /// how the creation should be done.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="field">The field we want to index.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The result of the create index operation.</returns>
+        Task<string> CreateAscendingIndexAsync<TDocument, TKey>(Expression<Func<TDocument, object>> field, string partitionKey, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// Creates an index on the given field in ascending order.
+        /// IndexCreationOptions can be supplied to further specify
+        /// how the creation should be done.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="field">The field we want to index.</param>
         /// <param name="indexCreationOptions">Options for creating an index.</param>
         /// <param name="partitionKey">An optional partition key.</param>
         /// <returns>The result of the create index operation.</returns>
-        Task<string> CreateAscendingIndexAsync<TDocument, TKey>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions = null, string partitionKey = null)
+        Task<string> CreateAscendingIndexAsync<TDocument, TKey>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions, string partitionKey)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// Creates an index on the given field in ascending order.
+        /// IndexCreationOptions can be supplied to further specify
+        /// how the creation should be done.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="field">The field we want to index.</param>
+        /// <param name="indexCreationOptions">Options for creating an index.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The result of the create index operation.</returns>
+        Task<string> CreateAscendingIndexAsync<TDocument, TKey>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions, string partitionKey, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// Creates an index on the given field in descending order.
+        /// IndexCreationOptions can be supplied to further specify
+        /// how the creation should be done.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="field">The field we want to index.</param>
+        /// <returns>The result of the create index operation.</returns>
+        Task<string> CreateDescendingIndexAsync<TDocument, TKey>(Expression<Func<TDocument, object>> field)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// Creates an index on the given field in descending order.
+        /// IndexCreationOptions can be supplied to further specify
+        /// how the creation should be done.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="field">The field we want to index.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The result of the create index operation.</returns>
+        Task<string> CreateDescendingIndexAsync<TDocument, TKey>(Expression<Func<TDocument, object>> field, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// Creates an index on the given field in descending order.
+        /// IndexCreationOptions can be supplied to further specify
+        /// how the creation should be done.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="field">The field we want to index.</param>
+        /// <param name="indexCreationOptions">Options for creating an index.</param>
+        /// <returns>The result of the create index operation.</returns>
+        Task<string> CreateDescendingIndexAsync<TDocument, TKey>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// Creates an index on the given field in descending order.
+        /// IndexCreationOptions can be supplied to further specify
+        /// how the creation should be done.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="field">The field we want to index.</param>
+        /// <param name="indexCreationOptions">Options for creating an index.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The result of the create index operation.</returns>
+        Task<string> CreateDescendingIndexAsync<TDocument, TKey>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions, CancellationToken cancellationToken)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// Creates an index on the given field in descending order.
+        /// IndexCreationOptions can be supplied to further specify
+        /// how the creation should be done.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="field">The field we want to index.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <returns>The result of the create index operation.</returns>
+        Task<string> CreateDescendingIndexAsync<TDocument, TKey>(Expression<Func<TDocument, object>> field, string partitionKey)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// Creates an index on the given field in descending order.
+        /// IndexCreationOptions can be supplied to further specify
+        /// how the creation should be done.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="field">The field we want to index.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The result of the create index operation.</returns>
+        Task<string> CreateDescendingIndexAsync<TDocument, TKey>(Expression<Func<TDocument, object>> field, string partitionKey, CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>;
 
@@ -198,7 +384,23 @@ namespace MongoDbGenericRepository
         /// <param name="indexCreationOptions">Options for creating an index.</param>
         /// <param name="partitionKey">An optional partition key.</param>
         /// <returns>The result of the create index operation.</returns>
-        Task<string> CreateDescendingIndexAsync<TDocument, TKey>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions = null, string partitionKey = null)
+        Task<string> CreateDescendingIndexAsync<TDocument, TKey>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions, string partitionKey)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        /// Creates an index on the given field in descending order.
+        /// IndexCreationOptions can be supplied to further specify
+        /// how the creation should be done.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="field">The field we want to index.</param>
+        /// <param name="indexCreationOptions">Options for creating an index.</param>
+        /// <param name="partitionKey">An optional partition key.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The result of the create index operation.</returns>
+        Task<string> CreateDescendingIndexAsync<TDocument, TKey>(Expression<Func<TDocument, object>> field, IndexCreationOptions indexCreationOptions, string partitionKey, CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>;
 
