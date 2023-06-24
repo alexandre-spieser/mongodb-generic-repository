@@ -1,21 +1,23 @@
 using System;
 using System.Linq.Expressions;
-using System.Threading;
 using System.Threading.Tasks;
+using AutoFixture;
 using CoreUnitTests.Infrastructure.Model;
 using MongoDbGenericRepository.DataAccess.Index;
 using MongoDbGenericRepository.Models;
 using Moq;
 using Xunit;
+using CancellationToken = System.Threading.CancellationToken;
 
 namespace CoreUnitTests.BaseMongoRepositoryTests.IndexTests;
 
 public class CreateTextIndexTests : BaseIndexTests
 {
     private readonly Expression<Func<TestDocument, object>> fieldExpression = t => t.SomeContent2;
+    private readonly Expression<Func<TestDocumentWithKey<int>, object>> keyedFieldExpression = t => t.SomeContent2;
 
     [Fact]
-    public async Task WhenFieldExpression_CreatesIndex()
+    public async Task WithFieldExpression_CreatesIndex()
     {
         // Arrange
         IndexHandler = new Mock<IMongoDbIndexHandler>();
@@ -29,11 +31,27 @@ public class CreateTextIndexTests : BaseIndexTests
     }
 
     [Fact]
-    public async Task Ensure_Passes_Options()
+    public async Task WithFieldExpressionAndCancellationToken_CreatesIndex()
     {
         // Arrange
+        var token = new CancellationToken(true);
         IndexHandler = new Mock<IMongoDbIndexHandler>();
-        var options = new IndexCreationOptions { Name = "theIndexName" };
+
+        // Act
+        await Sut.CreateTextIndexAsync(fieldExpression, token);
+
+        // Assert
+        IndexHandler.Verify(
+            x => x.CreateTextIndexAsync<TestDocument, Guid>(fieldExpression, null, null, token));
+    }
+
+    [Fact]
+    public async Task WithFieldExpressionAndOptions_CreatesIndex()
+    {
+        // Arrange
+        var indexName = Fixture.Create<string>();
+        var options = new IndexCreationOptions { Name = indexName };
+        IndexHandler = new Mock<IMongoDbIndexHandler>();
 
         // Act
         await Sut.CreateTextIndexAsync(fieldExpression, options);
@@ -45,15 +63,32 @@ public class CreateTextIndexTests : BaseIndexTests
     }
 
     [Fact]
-    public async Task Ensure_Passes_PartitionKey()
+    public async Task WithFieldExpressionAndOptionsAndCancellationToken_CreatesIndex()
     {
         // Arrange
-        const string partitionKey = "thePartitionKey";
-
+        var indexName = Fixture.Create<string>();
+        var options = new IndexCreationOptions { Name = indexName };
+        var token = new CancellationToken(true);
         IndexHandler = new Mock<IMongoDbIndexHandler>();
 
         // Act
-        await Sut.CreateTextIndexAsync(fieldExpression, partitionKey: partitionKey);
+        await Sut.CreateTextIndexAsync(fieldExpression, options, token);
+
+        // Assert
+        IndexHandler.Verify(
+            x => x.CreateTextIndexAsync<TestDocument, Guid>(
+                fieldExpression, options, null, token));
+    }
+
+    [Fact]
+    public async Task WithFieldExpressionAndPartitionKey_CreatesIndex()
+    {
+        // Arrange
+        var partitionKey = Fixture.Create<string>();
+        IndexHandler = new Mock<IMongoDbIndexHandler>();
+
+        // Act
+        await Sut.CreateTextIndexAsync(fieldExpression, partitionKey);
 
         // Assert
         IndexHandler.Verify(
@@ -61,135 +96,199 @@ public class CreateTextIndexTests : BaseIndexTests
                 fieldExpression, null, partitionKey, CancellationToken.None));
     }
 
-    /*[Fact]
-    public async Task Ensure_Creates_Index_With_CancellationToken()
-    {
-        // Arrange
-        IndexHandler = new Mock<IMongoDbIndexHandler>();
-        var token = new CancellationToken(true);
-
-        // Act
-        await Sut.CreateTextIndexAsync<TestDocument>(fieldExpression, token);
-
-        // Assert
-        IndexHandler.Verify(
-            x => x.CreateTextIndexAsync<TestDocument, Guid>(_fieldExpression, null, null, token));
-    }*/
-
-    /*
     [Fact]
-    public async Task Ensure_Passes_Options_With_CancellationToken()
+    public async Task WithFieldExpressionAndPartitionKeyAndCancellationToken_CreatesIndex()
     {
         // Arrange
-        IndexHandler = new Mock<IMongoDbIndexHandler>();
+        var partitionKey = Fixture.Create<string>();
         var token = new CancellationToken(true);
-        var options = new IndexCreationOptions { Name = "theIndexName" };
+        IndexHandler = new Mock<IMongoDbIndexHandler>();
 
         // Act
-        await Sut.CreateTextIndexAsync<TestDocument>(_fieldExpression, token, options);
+        await Sut.CreateTextIndexAsync(fieldExpression, partitionKey, token);
 
         // Assert
         IndexHandler.Verify(
             x => x.CreateTextIndexAsync<TestDocument, Guid>(
-                _fieldExpression, options, null, token));
+                fieldExpression, null, partitionKey, token));
     }
 
     [Fact]
-    public async Task Ensure_Passes_PartitionKey_With_CancellationToken()
+    public async Task WithFieldExpressionAndOptionsAndPartitionKey_CreatesIndex()
     {
         // Arrange
-        const string partitionKey = "thePartitionKey";
-        var token = new CancellationToken(true);
+        var partitionKey = Fixture.Create<string>();
+        var indexName = Fixture.Create<string>();
+        var options = new IndexCreationOptions { Name = indexName };
+
         IndexHandler = new Mock<IMongoDbIndexHandler>();
 
         // Act
-        await Sut.CreateTextIndexAsync<TestDocument>(_fieldExpression, token, partitionKey: partitionKey);
+        await Sut.CreateTextIndexAsync(fieldExpression, options, partitionKey);
 
         // Assert
         IndexHandler.Verify(
             x => x.CreateTextIndexAsync<TestDocument, Guid>(
-                _fieldExpression, null, partitionKey, token));
+                fieldExpression, options, partitionKey, CancellationToken.None));
     }
 
     [Fact]
-    public async Task Ensure_Creates_Index_Custom_Key()
+    public async Task WithFieldExpressionAndOptionsAndPartitionKeyAndCancellationToken_CreatesIndex()
     {
         // Arrange
-        IndexHandler = new Mock<IMongoDbIndexHandler>();
-        Expression<Func<TestDocumentWithKey, object>> fieldExpression = t => t.SomeContent2;
-
-        // Act
-        await Sut.CreateTextIndexAsync<TestDocumentWithKey, int>(fieldExpression);
-
-        // Assert
-        IndexHandler.Verify(x => x.CreateTextIndexAsync<TestDocumentWithKey, int>(fieldExpression, null, null, default));
-    }
-
-    [Fact]
-    public async Task Ensure_Passes_CancellationToken_Custom_Key()
-    {
-        // Arrange
-        IndexHandler = new Mock<IMongoDbIndexHandler>();
+        var partitionKey = Fixture.Create<string>();
         var token = new CancellationToken(true);
+        var indexName = Fixture.Create<string>();
+        var options = new IndexCreationOptions { Name = indexName };
+
+        IndexHandler = new Mock<IMongoDbIndexHandler>();
 
         // Act
-        await Sut.CreateTextIndexAsync<TestDocumentWithKey, int>(t => t.SomeContent2, token);
+        await Sut.CreateTextIndexAsync(fieldExpression, options, partitionKey, token);
 
         // Assert
         IndexHandler.Verify(
-            x => x.CreateTextIndexAsync<TestDocumentWithKey, int>(
-                t => t.SomeContent2, null, null, token));
+            x => x.CreateTextIndexAsync<TestDocument, Guid>(
+                fieldExpression, options, partitionKey, token));
     }
 
+    #region Keyed
+
     [Fact]
-    public async Task Ensure_Passes_Options_Custom_Key()
+    public async Task Keyed_WithKeyedFieldExpression_CreatesIndex()
     {
         // Arrange
         IndexHandler = new Mock<IMongoDbIndexHandler>();
-        var options = new IndexCreationOptions { Name = "theIndexName" };
 
         // Act
-        await Sut.CreateTextIndexAsync<TestDocumentWithKey, int>(t => t.SomeContent2, options);
-
-        // Assert
-        IndexHandler.Verify(x => x.CreateTextIndexAsync<TestDocumentWithKey, int>(t => t.SomeContent2, options, null, default));
-    }
-
-    [Fact]
-    public async Task Ensure_Passes_PartitionKey_Custom_Key()
-    {
-        // Arrange
-        const string partitionKey = "thePartitionKey";
-
-        IndexHandler = new Mock<IMongoDbIndexHandler>();
-        var options = new IndexCreationOptions { Name = "theIndexName" };
-
-        // Act
-        await Sut.CreateTextIndexAsync<TestDocumentWithKey, int>(t => t.SomeContent2, options, partitionKey);
+        await Sut.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(keyedFieldExpression);
 
         // Assert
         IndexHandler.Verify(
-            x => x.CreateTextIndexAsync<TestDocumentWithKey, int>(
-                t => t.SomeContent2, options, partitionKey, default));
+            x => x.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(keyedFieldExpression, null, null, CancellationToken.None));
     }
 
     [Fact]
-    public async Task Ensure_Passes_PartitionKey_And_CancellationToken_Custom_Key()
+    public async Task Keyed_WithKeyedFieldExpressionAndCancellationToken_CreatesIndex()
     {
         // Arrange
-        const string partitionKey = "thePartitionKey";
-        const string indexName = "theIndexName";
         var token = new CancellationToken(true);
+        IndexHandler = new Mock<IMongoDbIndexHandler>();
+
+        // Act
+        await Sut.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(keyedFieldExpression, token);
+
+        // Assert
+        IndexHandler.Verify(
+            x => x.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(keyedFieldExpression, null, null, token));
+    }
+
+    [Fact]
+    public async Task Keyed_WithKeyedFieldExpressionAndOptions_CreatesIndex()
+    {
+        // Arrange
+        var indexName = Fixture.Create<string>();
         var options = new IndexCreationOptions { Name = indexName };
         IndexHandler = new Mock<IMongoDbIndexHandler>();
 
         // Act
-        await Sut.CreateTextIndexAsync<TestDocumentWithKey, int>(t => t.SomeContent2, token, options, partitionKey);
+        await Sut.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(keyedFieldExpression, options);
 
         // Assert
-        IndexHandler
-            .Verify(x => x.CreateTextIndexAsync<TestDocumentWithKey, int>(
-                t => t.SomeContent2, options, partitionKey, token));
+        IndexHandler.Verify(
+            x => x.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(
+                keyedFieldExpression, options, null, CancellationToken.None));
     }
-    */
+
+    [Fact]
+    public async Task Keyed_WithKeyedFieldExpressionAndOptionsAndCancellationToken_CreatesIndex()
+    {
+        // Arrange
+        var indexName = Fixture.Create<string>();
+        var options = new IndexCreationOptions { Name = indexName };
+        var token = new CancellationToken(true);
+        IndexHandler = new Mock<IMongoDbIndexHandler>();
+
+        // Act
+        await Sut.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(keyedFieldExpression, options, token);
+
+        // Assert
+        IndexHandler.Verify(
+            x => x.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(
+                keyedFieldExpression, options, null, token));
+    }
+
+    [Fact]
+    public async Task Keyed_WithKeyedFieldExpressionAndPartitionKey_CreatesIndex()
+    {
+        // Arrange
+        var partitionKey = Fixture.Create<string>();
+        IndexHandler = new Mock<IMongoDbIndexHandler>();
+
+        // Act
+        await Sut.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(keyedFieldExpression, partitionKey);
+
+        // Assert
+        IndexHandler.Verify(
+            x => x.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(
+                keyedFieldExpression, null, partitionKey, CancellationToken.None));
+    }
+
+    [Fact]
+    public async Task Keyed_WithKeyedFieldExpressionAndPartitionKeyAndCancellationToken_CreatesIndex()
+    {
+        // Arrange
+        var partitionKey = Fixture.Create<string>();
+        var token = new CancellationToken(true);
+        IndexHandler = new Mock<IMongoDbIndexHandler>();
+
+        // Act
+        await Sut.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(keyedFieldExpression, partitionKey, token);
+
+        // Assert
+        IndexHandler.Verify(
+            x => x.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(
+                keyedFieldExpression, null, partitionKey, token));
+    }
+
+    [Fact]
+    public async Task Keyed_WithKeyedFieldExpressionAndOptionsAndPartitionKey_CreatesIndex()
+    {
+        // Arrange
+        var partitionKey = Fixture.Create<string>();
+        var indexName = Fixture.Create<string>();
+        var options = new IndexCreationOptions { Name = indexName };
+
+        IndexHandler = new Mock<IMongoDbIndexHandler>();
+
+        // Act
+        await Sut.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(keyedFieldExpression, options, partitionKey);
+
+        // Assert
+        IndexHandler.Verify(
+            x => x.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(
+                keyedFieldExpression, options, partitionKey, CancellationToken.None));
+    }
+
+    [Fact]
+    public async Task Keyed_WithKeyedFieldExpressionAndOptionsAndPartitionKeyAndCancellationToken_CreatesIndex()
+    {
+        // Arrange
+        var partitionKey = Fixture.Create<string>();
+        var token = new CancellationToken(true);
+        var indexName = Fixture.Create<string>();
+        var options = new IndexCreationOptions { Name = indexName };
+
+        IndexHandler = new Mock<IMongoDbIndexHandler>();
+
+        // Act
+        await Sut.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(keyedFieldExpression, options, partitionKey, token);
+
+        // Assert
+        IndexHandler.Verify(
+            x => x.CreateTextIndexAsync<TestDocumentWithKey<int>, int>(
+                keyedFieldExpression, options, partitionKey, token));
+    }
+
+    #endregion
 }

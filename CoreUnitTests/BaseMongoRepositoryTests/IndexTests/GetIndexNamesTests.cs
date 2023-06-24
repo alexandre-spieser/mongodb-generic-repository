@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoFixture;
 using CoreUnitTests.Infrastructure.Model;
 using MongoDbGenericRepository.DataAccess.Index;
 using Moq;
@@ -12,11 +13,11 @@ namespace CoreUnitTests.BaseMongoRepositoryTests.IndexTests;
 public class GetIndexNamesTests : BaseIndexTests
 {
     [Fact]
-    public async Task Ensure_Returns_IndexNames()
+    public async Task WithNoParameters_ReturnsIndexNames()
     {
         // Arrange
         IndexHandler = new Mock<IMongoDbIndexHandler>();
-        const string indexName = "theIndexName";
+        var indexName = Fixture.Create<string>();
 
         IndexHandler
             .Setup(x => x.GetIndexesNamesAsync<TestDocument, Guid>(It.IsAny<string>(), It.IsAny<CancellationToken>()))
@@ -31,16 +32,16 @@ public class GetIndexNamesTests : BaseIndexTests
         IndexHandler.Verify(x => x.GetIndexesNamesAsync<TestDocument, Guid>(null, CancellationToken.None), Times.Once());
     }
 
-    /*
     [Fact]
-    public async Task Ensure_Passes_Provided_CancellationToken()
+    public async Task WithCancellationToken_ReturnsIndexNames()
     {
         // Arrange
-        const string indexName = "theIndexName";
-        var token = new CancellationToken(true);
         IndexHandler = new Mock<IMongoDbIndexHandler>();
+        var indexName = Fixture.Create<string>();
+        var token = new CancellationToken(true);
+
         IndexHandler
-            .Setup(x => x.GetIndexesNamesAsync<TestDocument, Guid>(null, token))
+            .Setup(x => x.GetIndexesNamesAsync<TestDocument, Guid>(It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new List<string> { indexName });
 
         // Act
@@ -49,17 +50,17 @@ public class GetIndexNamesTests : BaseIndexTests
         // Assert
         Assert.NotNull(result);
         Assert.Contains(result, x => x == indexName);
+        IndexHandler.Verify(x => x.GetIndexesNamesAsync<TestDocument, Guid>(null, token), Times.Once());
     }
-    */
 
     [Fact]
-    public async Task Ensure_Handles_PartitionKey()
+    public async Task WithPartitionKey_ReturnsIndexNames()
     {
         // Arrange
-        const string partitionKey = "thePartitionKey";
-        const string indexName = "theIndexName";
-
         IndexHandler = new Mock<IMongoDbIndexHandler>();
+        var indexName = Fixture.Create<string>();
+        var partitionKey = Fixture.Create<string>();
+
         IndexHandler
             .Setup(x => x.GetIndexesNamesAsync<TestDocument, Guid>(It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new List<string> { indexName });
@@ -70,105 +71,112 @@ public class GetIndexNamesTests : BaseIndexTests
         // Assert
         Assert.NotNull(result);
         Assert.Contains(result, x => x == indexName);
+        IndexHandler.Verify(x => x.GetIndexesNamesAsync<TestDocument, Guid>(partitionKey, CancellationToken.None), Times.Once());
     }
 
-    /*[Fact]
-    public async Task Ensure_Passes_Provided_CancellationToken_And_Handles_Partition_Key()
+    [Fact]
+    public async Task WithPartitionKeyAndCancellationToken_ReturnsIndexNames()
     {
         // Arrange
-        const string partitionKey = "thePartitionKey";
-        const string indexName = "theIndexName";
+        IndexHandler = new Mock<IMongoDbIndexHandler>();
+        var indexName = Fixture.Create<string>();
+        var partitionKey = Fixture.Create<string>();
         var token = new CancellationToken(true);
 
-        IndexHandler = new Mock<IMongoDbIndexHandler>();
         IndexHandler
-            .Setup(x => x.GetIndexesNamesAsync<TestDocument, Guid>(partitionKey, token))
+            .Setup(x => x.GetIndexesNamesAsync<TestDocument, Guid>(It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new List<string> { indexName });
 
         // Act
-        var result = await Sut.GetIndexesNamesAsync<TestDocument>(token, partitionKey);
+        var result = await Sut.GetIndexesNamesAsync<TestDocument>(partitionKey, token);
 
         // Assert
         Assert.NotNull(result);
         Assert.Contains(result, x => x == indexName);
-    }*/
+        IndexHandler.Verify(x => x.GetIndexesNamesAsync<TestDocument, Guid>(partitionKey, token), Times.Once());
+    }
 
-    /*[Fact]
-    public async Task Ensure_Returns_IndexNames_Custom_Primary_Key()
+    [Fact]
+    public async Task Keyed_WithNoParameters_ReturnsIndexNames()
     {
         // Arrange
-        const string indexName = "theIndexName";
-
         IndexHandler = new Mock<IMongoDbIndexHandler>();
+        var indexName = Fixture.Create<string>();
+
         IndexHandler
-            .Setup(x => x.GetIndexesNamesAsync<TestDocumentWithKey, int>(null))
+            .Setup(x => x.GetIndexesNamesAsync<TestDocumentWithKey<int>, int>(It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new List<string> { indexName });
 
         // Act
-        var result = await Sut.GetIndexesNamesAsync<TestDocumentWithKey, int>();
+        var result = await Sut.GetIndexesNamesAsync<TestDocumentWithKey<int>, int>();
 
         // Assert
         Assert.NotNull(result);
         Assert.Contains(result, x => x == indexName);
-    }*/
+        IndexHandler.Verify(x => x.GetIndexesNamesAsync<TestDocumentWithKey<int>, int>(null, CancellationToken.None), Times.Once());
+    }
 
-    /*[Fact]
-    public async Task Ensure_Passes_Provided_CancellationToken_Custom_Primary_Key()
+    [Fact]
+    public async Task Keyed_WithCancellationToken_ReturnsIndexNames()
     {
         // Arrange
-        const string indexName = "theIndexName";
-        var token = new CancellationToken(true);
         IndexHandler = new Mock<IMongoDbIndexHandler>();
-        IndexHandler
-            .Setup(x => x.GetIndexesNamesAsync<TestDocumentWithKey, int>(null, token))
-            .ReturnsAsync(new List<string> { indexName });
-
-        // Act
-        var result = await Sut.GetIndexesNamesAsync<TestDocumentWithKey, int>(token);
-
-        // Assert
-        Assert.NotNull(result);
-        Assert.Contains(result, x => x == indexName);
-    }*/
-
-    /*[Fact]
-    public async Task Ensure_Handles_PartitionKey_Custom_Primary_Key()
-    {
-        // Arrange
-        const string indexName = "theIndexName";
-        const string partitionKey = "thePartitionKey";
-
-        IndexHandler = new Mock<IMongoDbIndexHandler>();
-        IndexHandler
-            .Setup(x => x.GetIndexesNamesAsync<TestDocumentWithKey, int>(partitionKey))
-            .ReturnsAsync(new List<string> { indexName });
-
-        // Act
-        var result = await Sut.GetIndexesNamesAsync<TestDocumentWithKey, int>(partitionKey);
-
-        // Assert
-        Assert.NotNull(result);
-        Assert.Contains(result, x => x == indexName);
-    }*/
-
-    /*[Fact]
-    public async Task Ensure_Passes_Provided_CancellationToken_And_Handles_Partition_Key_Custom_Primary_Key()
-    {
-        // Arrange
-        const string indexName = "theIndexName";
-        const string partitionKey = "thePartitionKey";
+        var indexName = Fixture.Create<string>();
         var token = new CancellationToken(true);
 
-        IndexHandler = new Mock<IMongoDbIndexHandler>();
         IndexHandler
-            .Setup(x => x.GetIndexesNamesAsync<TestDocumentWithKey, int>(partitionKey, token))
+            .Setup(x => x.GetIndexesNamesAsync<TestDocumentWithKey<int>, int>(It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new List<string> { indexName });
 
         // Act
-        var result = await Sut.GetIndexesNamesAsync<TestDocumentWithKey, int>(token, partitionKey);
+        var result = await Sut.GetIndexesNamesAsync<TestDocumentWithKey<int>, int>(token);
 
         // Assert
         Assert.NotNull(result);
         Assert.Contains(result, x => x == indexName);
-    }*/
+        IndexHandler.Verify(x => x.GetIndexesNamesAsync<TestDocumentWithKey<int>, int>(null, token), Times.Once());
+    }
+
+    [Fact]
+    public async Task Keyed_WithPartitionKey_ReturnsIndexNames()
+    {
+        // Arrange
+        IndexHandler = new Mock<IMongoDbIndexHandler>();
+        var indexName = Fixture.Create<string>();
+        var partitionKey = Fixture.Create<string>();
+
+        IndexHandler
+            .Setup(x => x.GetIndexesNamesAsync<TestDocumentWithKey<int>, int>(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new List<string> { indexName });
+
+        // Act
+        var result = await Sut.GetIndexesNamesAsync<TestDocumentWithKey<int>, int>(partitionKey);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Contains(result, x => x == indexName);
+        IndexHandler.Verify(x => x.GetIndexesNamesAsync<TestDocumentWithKey<int>, int>(partitionKey, CancellationToken.None), Times.Once());
+    }
+
+    [Fact]
+    public async Task Keyed_WithPartitionKeyAndCancellationToken_ReturnsIndexNames()
+    {
+        // Arrange
+        IndexHandler = new Mock<IMongoDbIndexHandler>();
+        var indexName = Fixture.Create<string>();
+        var partitionKey = Fixture.Create<string>();
+        var token = new CancellationToken(true);
+
+        IndexHandler
+            .Setup(x => x.GetIndexesNamesAsync<TestDocumentWithKey<int>, int>(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new List<string> { indexName });
+
+        // Act
+        var result = await Sut.GetIndexesNamesAsync<TestDocumentWithKey<int>, int>(partitionKey, token);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Contains(result, x => x == indexName);
+        IndexHandler.Verify(x => x.GetIndexesNamesAsync<TestDocumentWithKey<int>, int>(partitionKey, token), Times.Once());
+    }
 }
