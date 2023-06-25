@@ -168,7 +168,6 @@ namespace MongoDbGenericRepository.DataAccess.Base
                                                                .Limit(1);
         }
 
-
         #endregion
     }
 }
