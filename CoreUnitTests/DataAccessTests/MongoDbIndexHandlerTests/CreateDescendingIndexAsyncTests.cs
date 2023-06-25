@@ -19,7 +19,7 @@ public class CreateDescendingIndexAsyncTests : BaseIndexTests
     private readonly Expression<Func<TestDocument, object>> fieldExpression = t => t.SomeContent2;
 
     [Fact]
-    public async Task WhenFieldExpression_ThenCreatesIndex()
+    public async Task WithFieldExpression_CreatesIndex()
     {
         // Arrange
         var expectedIndexName = Fixture.Create<string>();
@@ -42,7 +42,7 @@ public class CreateDescendingIndexAsyncTests : BaseIndexTests
     }
 
     [Fact]
-    public async Task WhenFieldExpressionAndOptions_ThenCreatesIndex()
+    public async Task WithFieldExpressionAndOptions_CreatesIndex()
     {
         // Arrange
         var expectedIndexName = Fixture.Create<string>();
@@ -68,7 +68,7 @@ public class CreateDescendingIndexAsyncTests : BaseIndexTests
     }
 
     [Fact]
-    public async Task WhenFieldExpressionAndPartitionKey_ThenCreatesIndex()
+    public async Task WithFieldExpressionAndPartitionKey_CreatesIndex()
     {
         // Arrange
         var expectedIndexName = Fixture.Create<string>();
@@ -95,7 +95,7 @@ public class CreateDescendingIndexAsyncTests : BaseIndexTests
     }
 
     [Fact]
-    public async Task WhenFieldExpressionAndCancellationToken_ThenCreatesIndex()
+    public async Task WithFieldExpressionAndCancellationToken_CreatesIndex()
     {
         // Arrange
         var expectedIndexName = Fixture.Create<string>();
@@ -121,7 +121,7 @@ public class CreateDescendingIndexAsyncTests : BaseIndexTests
     }
 
     [Fact]
-    public async Task WhenFieldExpressionAndOptionsAndPartitionKeyAndCancellationToken_ThenCreatesIndex()
+    public async Task WithFieldExpressionAndOptionsAndPartitionKeyAndCancellationToken_CreatesIndex()
     {
         // Arrange
         var expectedIndexName = Fixture.Create<string>();

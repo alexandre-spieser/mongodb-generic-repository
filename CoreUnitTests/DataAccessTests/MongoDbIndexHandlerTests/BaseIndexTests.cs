@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Threading;
 using CoreUnitTests.Infrastructure;
 using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using MongoDbGenericRepository.DataAccess.Index;
 using Moq;
@@ -41,5 +40,4 @@ public class BaseIndexTests : GenericTestContext<MongoDbIndexHandler>
 
         return (asyncCursor, indexManager);
     }
-
 }

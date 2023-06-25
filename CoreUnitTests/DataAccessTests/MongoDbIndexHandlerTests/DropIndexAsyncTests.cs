@@ -13,7 +13,7 @@ namespace CoreUnitTests.DataAccessTests.MongoDbIndexHandlerTests;
 public class DropIndexAsyncTests : BaseIndexTests
 {
     [Fact]
-    public async Task WhenIndexName_ThenDropsIndex()
+    public async Task WithIndexName_DropsIndex()
     {
         // Arrange
         var expectedIndexName = Fixture.Create<string>();
@@ -30,7 +30,7 @@ public class DropIndexAsyncTests : BaseIndexTests
     }
 
     [Fact]
-    public async Task WhenIndexNameAndPartitionKey_ThenDropsIndex()
+    public async Task WithIndexNameAndPartitionKey_DropsIndex()
     {
         // Arrange
         var expectedIndexName = Fixture.Create<string>();
@@ -50,7 +50,7 @@ public class DropIndexAsyncTests : BaseIndexTests
     }
 
     [Fact]
-    public async Task WhenIndexNameAndCancellationToken_ThenDropsIndex()
+    public async Task WithIndexNameAndCancellationToken_DropsIndex()
     {
         // Arrange
         var expectedIndexName = Fixture.Create<string>();
@@ -69,7 +69,7 @@ public class DropIndexAsyncTests : BaseIndexTests
     }
 
     [Fact]
-    public async Task WhenIndexNameAndPartitionKeyAndCancellationToken_ThenDropsIndex()
+    public async Task WithIndexNameAndPartitionKeyAndCancellationToken_DropsIndex()
     {
         // Arrange
         var expectedIndexName = Fixture.Create<string>();

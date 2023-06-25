@@ -25,7 +25,7 @@ namespace MongoDbGenericRepository
         IMongoCollection<TDocument> GetCollection<TDocument>(string partitionKey = null);
 
         /// <summary>
-        /// Drops a collection having a partitionkey, use very carefully.
+        /// Drops a collection having a partitionKey, use very carefully.
         /// </summary>
         /// <typeparam name="TDocument"></typeparam>
         void DropCollection<TDocument>(string partitionKey = null);
