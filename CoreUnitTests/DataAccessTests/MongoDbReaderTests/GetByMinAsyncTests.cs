@@ -14,7 +14,7 @@ using Xunit;
 
 namespace CoreUnitTests.DataAccessTests.MongoDbReaderTests;
 
-public class GetByMaxAsyncTests : BaseReaderTests
+public class GetByMinAsyncTests : BaseReaderTests
 {
     private readonly Expression<Func<TestDocument, bool>> filter = x => x.SomeContent == "SomeContent";
     private readonly Expression<Func<TestDocument, object>> selector = x => x.SomeValue;
@@ -28,7 +28,7 @@ public class GetByMaxAsyncTests : BaseReaderTests
         var (context, cursor) = SetupAsyncGet(documents, collection);
 
         // Act
-        var result = await Sut.GetByMaxAsync<TestDocument, Guid>(filter, selector);
+        var result = await Sut.GetByMinAsync<TestDocument, Guid>(filter, selector);
 
         // Assert
         context.Verify(x => x.GetCollection<TestDocument>(null), Times.Once);
@@ -48,7 +48,7 @@ public class GetByMaxAsyncTests : BaseReaderTests
         var (context, cursor) = SetupAsyncGet(documents, collection);
 
         // Act
-        var result = await Sut.GetByMaxAsync<TestDocument, Guid>(filter, selector, cancellationToken: token);
+        var result = await Sut.GetByMinAsync<TestDocument, Guid>(filter, selector, cancellationToken: token);
 
         // Assert
         context.Verify(x => x.GetCollection<TestDocument>(null), Times.Once);
@@ -68,7 +68,7 @@ public class GetByMaxAsyncTests : BaseReaderTests
         var (context, cursor) = SetupAsyncGet(documents, collection, partitionKey);
 
         // Act
-        var result = await Sut.GetByMaxAsync<TestDocument, Guid>(filter, selector, partitionKey);
+        var result = await Sut.GetByMinAsync<TestDocument, Guid>(filter, selector, partitionKey);
 
         // Assert
         context.Verify(x => x.GetCollection<TestDocument>(partitionKey), Times.Once);
@@ -89,7 +89,7 @@ public class GetByMaxAsyncTests : BaseReaderTests
         var (context, cursor) = SetupAsyncGet(documents, collection, partitionKey);
 
         // Act
-        var result = await Sut.GetByMaxAsync<TestDocument, Guid>(filter, selector, partitionKey, token);
+        var result = await Sut.GetByMinAsync<TestDocument, Guid>(filter, selector, partitionKey, token);
 
         // Assert
         context.Verify(x => x.GetCollection<TestDocument>(partitionKey), Times.Once);

@@ -14,99 +14,99 @@ using Xunit;
 
 namespace CoreUnitTests.DataAccessTests.MongoDbReaderTests;
 
-public class GetByMaxAsyncTests : BaseReaderTests
+public class GetByMaxTests : BaseReaderTests
 {
     private readonly Expression<Func<TestDocument, bool>> filter = x => x.SomeContent == "SomeContent";
     private readonly Expression<Func<TestDocument, object>> selector = x => x.SomeValue;
 
     [Fact]
-    public async Task WithFilterAndSelector_GetsMatchingDocument()
+    public void WithFilterAndSelector_GetsMatchingDocument()
     {
         // Arrange
         var collection = MockOf<IMongoCollection<TestDocument>>();
         var documents = Fixture.CreateMany<TestDocument>().ToList();
-        var (context, cursor) = SetupAsyncGet(documents, collection);
+        var (context, cursor) = SetupSyncGet(documents, collection);
 
         // Act
-        var result = await Sut.GetByMaxAsync<TestDocument, Guid>(filter, selector);
+        var result = Sut.GetByMax<TestDocument, Guid>(filter, selector);
 
         // Assert
         context.Verify(x => x.GetCollection<TestDocument>(null), Times.Once);
         cursor.Verify(x => x.Current, Times.Once);
-        cursor.Verify(x => x.MoveNextAsync(CancellationToken.None), Times.Once);
+        cursor.Verify(x => x.MoveNext(CancellationToken.None), Times.Once);
         result.Should().NotBeNull();
         result.Should().Be(documents[0]);
     }
 
     [Fact]
-    public async Task WithFilterAndSelectorAndCancellationToken_GetsMatchingDocument()
+    public void WithFilterAndSelectorAndCancellationToken_GetsMatchingDocument()
     {
         // Arrange
         var collection = MockOf<IMongoCollection<TestDocument>>();
         var documents = Fixture.CreateMany<TestDocument>().ToList();
         var token = new CancellationToken(true);
-        var (context, cursor) = SetupAsyncGet(documents, collection);
+        var (context, cursor) = SetupSyncGet(documents, collection);
 
         // Act
-        var result = await Sut.GetByMaxAsync<TestDocument, Guid>(filter, selector, cancellationToken: token);
+        var result = Sut.GetByMax<TestDocument, Guid>(filter, selector, cancellationToken: token);
 
         // Assert
         context.Verify(x => x.GetCollection<TestDocument>(null), Times.Once);
         cursor.Verify(x => x.Current, Times.Once);
-        cursor.Verify(x => x.MoveNextAsync(token), Times.Once);
+        cursor.Verify(x => x.MoveNext(token), Times.Once);
         result.Should().NotBeNull();
         result.Should().Be(documents[0]);
     }
 
     [Fact]
-    public async Task WithFilterAndSelectorAndPartitionKey_GetsMatchingDocument()
+    public void WithFilterAndSelectorAndPartitionKey_GetsMatchingDocument()
     {
         // Arrange
         var collection = MockOf<IMongoCollection<TestDocument>>();
         var documents = Fixture.CreateMany<TestDocument>().ToList();
         var partitionKey = Fixture.Create<string>();
-        var (context, cursor) = SetupAsyncGet(documents, collection, partitionKey);
+        var (context, cursor) = SetupSyncGet(documents, collection, partitionKey);
 
         // Act
-        var result = await Sut.GetByMaxAsync<TestDocument, Guid>(filter, selector, partitionKey);
+        var result = Sut.GetByMax<TestDocument, Guid>(filter, selector, partitionKey);
 
         // Assert
         context.Verify(x => x.GetCollection<TestDocument>(partitionKey), Times.Once);
         cursor.Verify(x => x.Current, Times.Once);
-        cursor.Verify(x => x.MoveNextAsync(CancellationToken.None), Times.Once);
+        cursor.Verify(x => x.MoveNext(CancellationToken.None), Times.Once);
         result.Should().NotBeNull();
         result.Should().Be(documents[0]);
     }
 
     [Fact]
-    public async Task WithFilterAndSelectorAndPartitionKeyAndCancellationToken_GetsMatchingDocument()
+    public void WithFilterAndSelectorAndPartitionKeyAndCancellationToken_GetsMatchingDocument()
     {
         // Arrange
         var collection = MockOf<IMongoCollection<TestDocument>>();
         var documents = Fixture.CreateMany<TestDocument>().ToList();
         var partitionKey = Fixture.Create<string>();
         var token = new CancellationToken(true);
-        var (context, cursor) = SetupAsyncGet(documents, collection, partitionKey);
+        var (context, cursor) = SetupSyncGet(documents, collection, partitionKey);
 
         // Act
-        var result = await Sut.GetByMaxAsync<TestDocument, Guid>(filter, selector, partitionKey, token);
+        var result = Sut.GetByMax<TestDocument, Guid>(filter, selector, partitionKey, token);
 
         // Assert
         context.Verify(x => x.GetCollection<TestDocument>(partitionKey), Times.Once);
         cursor.Verify(x => x.Current, Times.Once);
-        cursor.Verify(x => x.MoveNextAsync(token), Times.Once);
+        cursor.Verify(x => x.MoveNext(token), Times.Once);
         result.Should().NotBeNull();
         result.Should().Be(documents[0]);
     }
 
-    private (Mock<IMongoDbContext>, Mock<IAsyncCursor<TDocument>>) SetupAsyncGet<TDocument>(
+    private (Mock<IMongoDbContext>, Mock<IAsyncCursor<TDocument>>) SetupSyncGet<TDocument>(
         List<TDocument> documents,
         Mock<IMongoCollection<TDocument>> collection,
         string partitionKey = null)
     {
-        var asyncCursor = SetupAsyncCursor(documents);
+        var asyncCursor = SetupSyncCursor(documents);
 
-        SetupFindAsync(collection, asyncCursor);
+        SetupFindSync(collection, asyncCursor);
 
         var context = MockOf<IMongoDbContext>();
 

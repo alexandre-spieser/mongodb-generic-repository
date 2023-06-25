@@ -14,7 +14,7 @@ using Xunit;
 
 namespace CoreUnitTests.DataAccessTests.MongoDbReaderTests;
 
-public class GetOneAsyncTests : BaseReaderTests
+public class GetAllAsyncTests : BaseReaderTests
 {
     [Fact]
     public async Task WithFilter_GetsMatchingDocuments()
@@ -27,14 +27,14 @@ public class GetOneAsyncTests : BaseReaderTests
 
 
         // Act
-        var result = await Sut.GetOneAsync<TestDocument, Guid>(filter);
+        var result = await Sut.GetAllAsync<TestDocument, Guid>(filter);
 
         // Assert
         context.Verify(x => x.GetCollection<TestDocument>(null), Times.Once);
-        cursor.Verify(x => x.Current, Times.Once);
-        cursor.Verify(x => x.MoveNextAsync(CancellationToken.None), Times.Once);
+        cursor.Verify(x => x.Current, Times.Exactly(documents.Count));
+        cursor.Verify(x => x.MoveNextAsync(CancellationToken.None), Times.Exactly(documents.Count + 1));
         result.Should().NotBeNull();
-        result.Should().Be(documents[0]);
+        result.Should().OnlyContain(x => documents.Contains(x));
     }
 
     [Fact]
@@ -43,19 +43,19 @@ public class GetOneAsyncTests : BaseReaderTests
         // Arrange
         var collection = MockOf<IMongoCollection<TestDocument>>();
         var documents = Fixture.CreateMany<TestDocument>().ToList();
-        var token = new CancellationToken(true);
+        var token = new CancellationToken(false);
         Expression<Func<TestDocument, bool>> filter = x => x.Id == documents[0].Id;
         var (context, cursor) = SetupAsyncGet(documents, collection);
 
         // Act
-        var result = await Sut.GetOneAsync<TestDocument, Guid>(filter, cancellationToken: token);
+        var result = await Sut.GetAllAsync<TestDocument, Guid>(filter, cancellationToken: token);
 
         // Assert
         context.Verify(x => x.GetCollection<TestDocument>(null), Times.Once);
-        cursor.Verify(x => x.Current, Times.Once);
-        cursor.Verify(x => x.MoveNextAsync(token), Times.Once);
+        cursor.Verify(x => x.Current, Times.Exactly(documents.Count));
+        cursor.Verify(x => x.MoveNextAsync(token), Times.Exactly(documents.Count + 1));
         result.Should().NotBeNull();
-        result.Should().Be(documents[0]);
+        result.Should().OnlyContain(x => documents.Contains(x));
     }
 
     [Fact]
@@ -69,14 +69,14 @@ public class GetOneAsyncTests : BaseReaderTests
         var (context, cursor) = SetupAsyncGet(documents, collection, partitionKey);
 
         // Act
-        var result = await Sut.GetOneAsync<TestDocument, Guid>(filter, partitionKey);
+        var result = await Sut.GetAllAsync<TestDocument, Guid>(filter, partitionKey);
 
         // Assert
         context.Verify(x => x.GetCollection<TestDocument>(partitionKey), Times.Once);
-        cursor.Verify(x => x.Current, Times.Once);
-        cursor.Verify(x => x.MoveNextAsync(CancellationToken.None), Times.Once);
+        cursor.Verify(x => x.Current, Times.Exactly(documents.Count));
+        cursor.Verify(x => x.MoveNextAsync(CancellationToken.None), Times.Exactly(documents.Count + 1));
         result.Should().NotBeNull();
-        result.Should().Be(documents[0]);
+        result.Should().OnlyContain(x => documents.Contains(x));
     }
 
     [Fact]
@@ -86,19 +86,19 @@ public class GetOneAsyncTests : BaseReaderTests
         var collection = MockOf<IMongoCollection<TestDocument>>();
         var documents = Fixture.CreateMany<TestDocument>().ToList();
         var partitionKey = Fixture.Create<string>();
-        var token = new CancellationToken(true);
+        var token = new CancellationToken(false);
         Expression<Func<TestDocument, bool>> filter = x => x.Id == documents[0].Id;
         var (context, cursor) = SetupAsyncGet(documents, collection, partitionKey);
 
         // Act
-        var result = await Sut.GetOneAsync<TestDocument, Guid>(filter, partitionKey, token);
+        var result = await Sut.GetAllAsync<TestDocument, Guid>(filter, partitionKey, token);
 
         // Assert
         context.Verify(x => x.GetCollection<TestDocument>(partitionKey), Times.Once);
-        cursor.Verify(x => x.Current, Times.Once);
-        cursor.Verify(x => x.MoveNextAsync(token), Times.Once);
+        cursor.Verify(x => x.Current, Times.Exactly(documents.Count));
+        cursor.Verify(x => x.MoveNextAsync(token), Times.Exactly(documents.Count + 1));
         result.Should().NotBeNull();
-        result.Should().Be(documents[0]);
+        result.Should().OnlyContain(x => documents.Contains(x));
     }
 
     [Fact]
@@ -111,14 +111,14 @@ public class GetOneAsyncTests : BaseReaderTests
         var (context, cursor) = SetupAsyncGet(documents, collection);
 
         // Act
-        var result = await Sut.GetOneAsync<TestDocument, Guid>(condition);
+        var result = await Sut.GetAllAsync<TestDocument, Guid>(condition);
 
         // Assert
         context.Verify(x => x.GetCollection<TestDocument>(null), Times.Once);
-        cursor.Verify(x => x.Current, Times.Once);
-        cursor.Verify(x => x.MoveNextAsync(CancellationToken.None), Times.Once);
+        cursor.Verify(x => x.Current, Times.Exactly(documents.Count));
+        cursor.Verify(x => x.MoveNextAsync(CancellationToken.None), Times.Exactly(documents.Count + 1));
         result.Should().NotBeNull();
-        result.Should().Be(documents[0]);
+        result.Should().OnlyContain(x => documents.Contains(x));
     }
 
     [Fact]
@@ -128,18 +128,18 @@ public class GetOneAsyncTests : BaseReaderTests
         var collection = MockOf<IMongoCollection<TestDocument>>();
         var documents = Fixture.CreateMany<TestDocument>().ToList();
         var condition = Builders<TestDocument>.Filter.Eq("Id", documents[0].Id);
-        var token = new CancellationToken(true);
+        var token = new CancellationToken(false);
         var (context, cursor) = SetupAsyncGet(documents, collection);
 
         // Act
-        var result = await Sut.GetOneAsync<TestDocument, Guid>(condition, cancellationToken: token);
+        var result = await Sut.GetAllAsync<TestDocument, Guid>(condition, cancellationToken: token);
 
         // Assert
         context.Verify(x => x.GetCollection<TestDocument>(null), Times.Once);
-        cursor.Verify(x => x.Current, Times.Once);
-        cursor.Verify(x => x.MoveNextAsync(token), Times.Once);
+        cursor.Verify(x => x.Current, Times.Exactly(documents.Count));
+        cursor.Verify(x => x.MoveNextAsync(token), Times.Exactly(documents.Count + 1));
         result.Should().NotBeNull();
-        result.Should().Be(documents[0]);
+        result.Should().OnlyContain(x => documents.Contains(x));
     }
 
     [Fact]
@@ -153,14 +153,14 @@ public class GetOneAsyncTests : BaseReaderTests
         var (context, cursor) = SetupAsyncGet(documents, collection, partitionKey);
 
         // Act
-        var result = await Sut.GetOneAsync<TestDocument, Guid>(condition, partitionKey: partitionKey);
+        var result = await Sut.GetAllAsync<TestDocument, Guid>(condition, partitionKey: partitionKey);
 
         // Assert
         context.Verify(x => x.GetCollection<TestDocument>(partitionKey), Times.Once);
-        cursor.Verify(x => x.MoveNextAsync(CancellationToken.None), Times.Once);
-        cursor.Verify(x => x.Current, Times.Once);
+        cursor.Verify(x => x.MoveNextAsync(CancellationToken.None), Times.Exactly(documents.Count + 1));
+        cursor.Verify(x => x.Current, Times.Exactly(documents.Count));
         result.Should().NotBeNull();
-        result.Should().Be(documents[0]);
+        result.Should().OnlyContain(x => documents.Contains(x));
     }
 
     [Fact]
@@ -171,18 +171,18 @@ public class GetOneAsyncTests : BaseReaderTests
         var documents = Fixture.CreateMany<TestDocument>().ToList();
         var condition = Builders<TestDocument>.Filter.Eq("Id", documents[0].Id);
         var partitionKey = Fixture.Create<string>();
-        var token = new CancellationToken(true);
+        var token = new CancellationToken(false);
         var (context, cursor) = SetupAsyncGet(documents, collection, partitionKey);
 
         // Act
-        var result = await Sut.GetOneAsync<TestDocument, Guid>(condition, partitionKey: partitionKey, cancellationToken: token);
+        var result = await Sut.GetAllAsync<TestDocument, Guid>(condition, partitionKey: partitionKey, cancellationToken: token);
 
         // Assert
         context.Verify(x => x.GetCollection<TestDocument>(partitionKey), Times.Once);
-        cursor.Verify(x => x.Current, Times.Once);
-        cursor.Verify(x => x.MoveNextAsync(token), Times.Once);
+        cursor.Verify(x => x.Current, Times.Exactly(documents.Count));
+        cursor.Verify(x => x.MoveNextAsync(token), Times.Exactly(documents.Count + 1));
         result.Should().NotBeNull();
-        result.Should().Be(documents[0]);
+        result.Should().OnlyContain(x => documents.Contains(x));
     }
 
     [Fact]
@@ -200,14 +200,14 @@ public class GetOneAsyncTests : BaseReaderTests
         var (context, cursor) = SetupAsyncGet(documents, collection);
 
         // Act
-        var result = await Sut.GetOneAsync<TestDocument, Guid>(condition, options);
+        var result = await Sut.GetAllAsync<TestDocument, Guid>(condition, options);
 
         // Assert
         context.Verify(x => x.GetCollection<TestDocument>(null), Times.Once);
-        cursor.Verify(x => x.Current, Times.Once);
-        cursor.Verify(x => x.MoveNextAsync(CancellationToken.None), Times.Once);
+        cursor.Verify(x => x.Current, Times.Exactly(documents.Count));
+        cursor.Verify(x => x.MoveNextAsync(CancellationToken.None), Times.Exactly(documents.Count + 1));
         result.Should().NotBeNull();
-        result.Should().Be(documents[0]);
+        result.Should().OnlyContain(x => documents.Contains(x));
     }
 
     [Fact]
@@ -222,18 +222,18 @@ public class GetOneAsyncTests : BaseReaderTests
             .Without(x => x.Hint)
             .Create();
         var condition = Builders<TestDocument>.Filter.Eq("Id", documents[0].Id);
-        var token = new CancellationToken(true);
+        var token = new CancellationToken(false);
         var (context, cursor) = SetupAsyncGet(documents, collection);
 
         // Act
-        var result = await Sut.GetOneAsync<TestDocument, Guid>(condition, options, cancellationToken: token);
+        var result = await Sut.GetAllAsync<TestDocument, Guid>(condition, options, cancellationToken: token);
 
         // Assert
         context.Verify(x => x.GetCollection<TestDocument>(null), Times.Once);
-        cursor.Verify(x => x.Current, Times.Once);
-        cursor.Verify(x => x.MoveNextAsync(token), Times.Once);
+        cursor.Verify(x => x.Current, Times.Exactly(documents.Count));
+        cursor.Verify(x => x.MoveNextAsync(token), Times.Exactly(documents.Count + 1));
         result.Should().NotBeNull();
-        result.Should().Be(documents[0]);
+        result.Should().OnlyContain(x => documents.Contains(x));
     }
 
     [Fact]
@@ -248,19 +248,19 @@ public class GetOneAsyncTests : BaseReaderTests
             .Without(x => x.Hint)
             .Create();
         var condition = Builders<TestDocument>.Filter.Eq("Id", documents[0].Id);
-        var token = new CancellationToken(true);
+        var token = new CancellationToken(false);
         var partitionKey = Fixture.Create<string>();
         var (context, cursor) = SetupAsyncGet(documents, collection, partitionKey);
 
         // Act
-        var result = await Sut.GetOneAsync<TestDocument, Guid>(condition, options, partitionKey, token);
+        var result = await Sut.GetAllAsync<TestDocument, Guid>(condition, options, partitionKey, token);
 
         // Assert
         context.Verify(x => x.GetCollection<TestDocument>(partitionKey), Times.Once);
-        cursor.Verify(x => x.Current, Times.Once);
-        cursor.Verify(x => x.MoveNextAsync(token), Times.Once);
+        cursor.Verify(x => x.Current, Times.Exactly(documents.Count));
+        cursor.Verify(x => x.MoveNextAsync(token), Times.Exactly(documents.Count + 1));
         result.Should().NotBeNull();
-        result.Should().Be(documents[0]);
+        result.Should().OnlyContain(x => documents.Contains(x));
     }
 
     private (Mock<IMongoDbContext>, Mock<IAsyncCursor<TDocument>>) SetupAsyncGet<TDocument>(

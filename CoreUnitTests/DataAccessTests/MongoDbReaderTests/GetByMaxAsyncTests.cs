@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoFixture;
@@ -13,10 +14,13 @@ using Xunit;
 
 namespace CoreUnitTests.DataAccessTests.MongoDbReaderTests;
 
-public class GetByIdAsyncTests : BaseReaderTests
+public class GetByMaxAsyncTests : BaseReaderTests
 {
+    private readonly Expression<Func<TestDocument, bool>> filter = x => x.SomeContent == "SomeContent";
+    private readonly Expression<Func<TestDocument, object>> selector = x => x.SomeValue;
+
     [Fact]
-    public async Task WithId_GetsMatchingDocument()
+    public async Task WithFilterAndSelector_GetsMatchingDocument()
     {
         // Arrange
         var collection = MockOf<IMongoCollection<TestDocument>>();
@@ -24,7 +28,7 @@ public class GetByIdAsyncTests : BaseReaderTests
         var (context, cursor) = SetupAsyncGet(documents, collection);
 
         // Act
-        var result = await Sut.GetByIdAsync<TestDocument, Guid>(documents[0].Id);
+        var result = await Sut.GetByMaxAsync<TestDocument, Guid>(filter, selector);
 
         // Assert
         context.Verify(x => x.GetCollection<TestDocument>(null), Times.Once);
@@ -35,7 +39,7 @@ public class GetByIdAsyncTests : BaseReaderTests
     }
 
     [Fact]
-    public async Task WithIdAndCancellationToken_GetsMatchingDocument()
+    public async Task WithFilterAndSelectorAndCancellationToken_GetsMatchingDocument()
     {
         // Arrange
         var collection = MockOf<IMongoCollection<TestDocument>>();
@@ -44,7 +48,7 @@ public class GetByIdAsyncTests : BaseReaderTests
         var (context, cursor) = SetupAsyncGet(documents, collection);
 
         // Act
-        var result = await Sut.GetByIdAsync<TestDocument, Guid>(documents[0].Id, cancellationToken: token);
+        var result = await Sut.GetByMaxAsync<TestDocument, Guid>(filter, selector, cancellationToken: token);
 
         // Assert
         context.Verify(x => x.GetCollection<TestDocument>(null), Times.Once);
@@ -55,7 +59,7 @@ public class GetByIdAsyncTests : BaseReaderTests
     }
 
     [Fact]
-    public async Task WithIdAndPartitionKey_GetsMatchingDocument()
+    public async Task WithFilterAndSelectorAndPartitionKey_GetsMatchingDocument()
     {
         // Arrange
         var collection = MockOf<IMongoCollection<TestDocument>>();
@@ -64,7 +68,7 @@ public class GetByIdAsyncTests : BaseReaderTests
         var (context, cursor) = SetupAsyncGet(documents, collection, partitionKey);
 
         // Act
-        var result = await Sut.GetByIdAsync<TestDocument, Guid>(documents[0].Id, partitionKey);
+        var result = await Sut.GetByMaxAsync<TestDocument, Guid>(filter, selector, partitionKey);
 
         // Assert
         context.Verify(x => x.GetCollection<TestDocument>(partitionKey), Times.Once);
@@ -75,7 +79,7 @@ public class GetByIdAsyncTests : BaseReaderTests
     }
 
     [Fact]
-    public async Task WithIdAndPartitionKeyAndCancellationToken_GetsMatchingDocument()
+    public async Task WithFilterAndSelectorAndPartitionKeyAndCancellationToken_GetsMatchingDocument()
     {
         // Arrange
         var collection = MockOf<IMongoCollection<TestDocument>>();
@@ -85,7 +89,7 @@ public class GetByIdAsyncTests : BaseReaderTests
         var (context, cursor) = SetupAsyncGet(documents, collection, partitionKey);
 
         // Act
-        var result = await Sut.GetByIdAsync<TestDocument, Guid>(documents[0].Id, partitionKey, token);
+        var result = await Sut.GetByMaxAsync<TestDocument, Guid>(filter, selector, partitionKey, token);
 
         // Assert
         context.Verify(x => x.GetCollection<TestDocument>(partitionKey), Times.Once);

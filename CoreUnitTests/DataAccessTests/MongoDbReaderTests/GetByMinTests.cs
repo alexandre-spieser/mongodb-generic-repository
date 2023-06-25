@@ -14,7 +14,7 @@ using Xunit;
 
 namespace CoreUnitTests.DataAccessTests.MongoDbReaderTests;
 
-public class GetByMaxTests : BaseReaderTests
+public class GetByMinTests : BaseReaderTests
 {
     private readonly Expression<Func<TestDocument, bool>> filter = x => x.SomeContent == "SomeContent";
     private readonly Expression<Func<TestDocument, object>> selector = x => x.SomeValue;
@@ -28,7 +28,7 @@ public class GetByMaxTests : BaseReaderTests
         var (context, cursor) = SetupSyncGet(documents, collection);
 
         // Act
-        var result = Sut.GetByMax<TestDocument, Guid>(filter, selector);
+        var result = Sut.GetByMin<TestDocument, Guid>(filter, selector);
 
         // Assert
         context.Verify(x => x.GetCollection<TestDocument>(null), Times.Once);
@@ -48,7 +48,7 @@ public class GetByMaxTests : BaseReaderTests
         var (context, cursor) = SetupSyncGet(documents, collection);
 
         // Act
-        var result = Sut.GetByMax<TestDocument, Guid>(filter, selector, cancellationToken: token);
+        var result = Sut.GetByMin<TestDocument, Guid>(filter, selector, cancellationToken: token);
 
         // Assert
         context.Verify(x => x.GetCollection<TestDocument>(null), Times.Once);
@@ -68,7 +68,7 @@ public class GetByMaxTests : BaseReaderTests
         var (context, cursor) = SetupSyncGet(documents, collection, partitionKey);
 
         // Act
-        var result = Sut.GetByMax<TestDocument, Guid>(filter, selector, partitionKey);
+        var result = Sut.GetByMin<TestDocument, Guid>(filter, selector, partitionKey);
 
         // Assert
         context.Verify(x => x.GetCollection<TestDocument>(partitionKey), Times.Once);
@@ -89,7 +89,7 @@ public class GetByMaxTests : BaseReaderTests
         var (context, cursor) = SetupSyncGet(documents, collection, partitionKey);
 
         // Act
-        var result = Sut.GetByMax<TestDocument, Guid>(filter, selector, partitionKey, token);
+        var result = Sut.GetByMin<TestDocument, Guid>(filter, selector, partitionKey, token);
 
         // Assert
         context.Verify(x => x.GetCollection<TestDocument>(partitionKey), Times.Once);
