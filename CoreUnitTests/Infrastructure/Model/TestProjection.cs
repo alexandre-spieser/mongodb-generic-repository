@@ -7,4 +7,6 @@ public class TestProjection
     public Guid TestDocumentId { get; set; }
 
     public DateTime NestedData { get; set; }
+
+    public int Count { get; set; }
 }

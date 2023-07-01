@@ -12,13 +12,13 @@ namespace CoreUnitTests.Infrastructure;
 public class TestKeyedMongoRepositoryContext<TKey>
     where TKey : IEquatable<TKey>
 {
-    private readonly Mock<IMongoDatabase> _mongoDatabase;
+    private readonly Mock<IMongoDatabase> mongoDatabase;
 
-    private TestKeyedMongoRepository<TKey> _sut;
+    private TestKeyedMongoRepository<TKey> sut;
 
     protected TestKeyedMongoRepositoryContext()
     {
-        _mongoDatabase = new Mock<IMongoDatabase>();
+        mongoDatabase = new Mock<IMongoDatabase>();
         Fixture = new Fixture();
     }
 
@@ -28,33 +28,33 @@ public class TestKeyedMongoRepositoryContext<TKey>
     {
         get
         {
-            if (_sut != null)
+            if (sut != null)
             {
-                return _sut;
+                return sut;
             }
 
-            _sut = new TestKeyedMongoRepository<TKey>(_mongoDatabase.Object);
+            sut = new TestKeyedMongoRepository<TKey>(mongoDatabase.Object);
             if (IndexHandler != null)
             {
-                _sut.SetIndexHandler(IndexHandler.Object);
+                sut.SetIndexHandler(IndexHandler.Object);
             }
 
             if (Creator != null)
             {
-                _sut.SetDbCreator(Creator.Object);
+                sut.SetDbCreator(Creator.Object);
             }
 
             if (Reader != null)
             {
-                _sut.SetReader(Reader.Object);
+                sut.SetReader(Reader.Object);
             }
 
             if (Eraser != null)
             {
-                _sut.SetEraser(Eraser.Object);
+                sut.SetEraser(Eraser.Object);
             }
 
-            return _sut;
+            return sut;
         }
     }
 

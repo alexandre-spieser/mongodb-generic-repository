@@ -16,23 +16,11 @@ public class TestKeyedMongoRepository<TKey> : BaseMongoRepository<TKey>
     {
     }
 
-    public void SetIndexHandler(IMongoDbIndexHandler indexHandler)
-    {
-        MongoDbIndexHandler = indexHandler;
-    }
+    public void SetIndexHandler(IMongoDbIndexHandler indexHandler) => MongoDbIndexHandler = indexHandler;
 
-    public void SetDbCreator(IMongoDbCreator creator)
-    {
-        MongoDbCreator = creator;
-    }
+    public void SetDbCreator(IMongoDbCreator creator) => MongoDbCreator = creator;
 
-    public void SetReader(IMongoDbReader reader)
-    {
-        MongoDbReader = reader;
-    }
+    public void SetReader(IMongoDbReader reader) => MongoDbReader = reader;
 
-    public void SetEraser(IMongoDbEraser eraser)
-    {
-        MongoDbEraser = eraser;
-    }
+    public void SetEraser(IMongoDbEraser eraser) => MongoDbEraser = eraser;
 }
