@@ -13,7 +13,7 @@ using MongoDbGenericRepository.DataAccess.Read;
 using Moq;
 using Xunit;
 
-namespace CoreUnitTests.ReadOnlyMongoRepositoryTests;
+namespace CoreUnitTests.KeyedReadOnlyMongoRepositoryTests;
 
 public class GetSortedPaginatedAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
 {

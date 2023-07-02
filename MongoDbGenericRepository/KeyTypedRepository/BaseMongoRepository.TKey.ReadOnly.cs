@@ -594,7 +594,7 @@ namespace MongoDbGenericRepository
             CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
         {
-            return MongoDbReader.GetByMax<TDocument, TKey>(filter, maxValueSelector, partitionKey);
+            return MongoDbReader.GetByMax<TDocument, TKey>(filter, maxValueSelector, partitionKey, cancellationToken);
         }
 
         /// <inheritdoc />
