@@ -17,7 +17,7 @@ public class GetOneAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
     private readonly Expression<Func<TestDocument, bool>> filter = document => document.SomeContent == "SomeContent";
 
     [Fact]
-    public async Task WithId_GetsOne()
+    public async Task WithFilter_GetsOne()
     {
         // Arrange
         var document = Fixture.Create<TestDocument>();
@@ -36,7 +36,7 @@ public class GetOneAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
     }
 
     [Fact]
-    public async Task WithIdAndCancellationToken_GetsOne()
+    public async Task WithFilterAndCancellationToken_GetsOne()
     {
         // Arrange
         var document = Fixture.Create<TestDocument>();
@@ -56,7 +56,7 @@ public class GetOneAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
     }
 
     [Fact]
-    public async Task WithIdAndPartitionKey_GetsOne()
+    public async Task WithFilterAndPartitionKey_GetsOne()
     {
         // Arrange
         var document = Fixture.Create<TestDocument>();
@@ -76,7 +76,7 @@ public class GetOneAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
     }
 
     [Fact]
-    public async Task WithIdAndPartitionKeyAndCancellationToken_GetsOne()
+    public async Task WithFilterAndPartitionKeyAndCancellationToken_GetsOne()
     {
         // Arrange
         var document = Fixture.Create<TestDocument>();

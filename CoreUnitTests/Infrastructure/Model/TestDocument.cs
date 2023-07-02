@@ -15,6 +15,8 @@ public class TestDocument : Document
 
     public int SomeValue { get; set; }
 
+    public decimal SomeDecimalValue { get; set; }
+
     public string SomeContent { get; set; }
 
     public string SomeContent2 { get; set; }
