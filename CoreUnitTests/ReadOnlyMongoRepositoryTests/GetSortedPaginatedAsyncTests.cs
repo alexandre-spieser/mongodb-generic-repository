@@ -13,13 +13,13 @@ using MongoDbGenericRepository.DataAccess.Read;
 using Moq;
 using Xunit;
 
-namespace CoreUnitTests.KeyedReadOnlyMongoRepositoryTests;
+namespace CoreUnitTests.ReadOnlyMongoRepositoryTests;
 
-public class GetSortedPaginatedAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<int>
+public class GetSortedPaginatedAsyncTests : TestReadOnlyMongoRepositoryContext
 {
-    private readonly Expression<Func<TestDocumentWithKey<int>, bool>> filter = document => document.GroupingKey == 1;
-    private readonly Expression<Func<TestDocumentWithKey<int>, object>> selector = document => document.GroupingKey;
-    private readonly SortDefinition<TestDocumentWithKey<int>> sortDefinition = Builders<TestDocumentWithKey<int>>.Sort.Ascending(document => document.GroupingKey);
+    private readonly Expression<Func<TestDocument, bool>> filter = document => document.GroupingKey == 1;
+    private readonly Expression<Func<TestDocument, object>> selector = document => document.GroupingKey;
+    private readonly SortDefinition<TestDocument> sortDefinition = Builders<TestDocument>.Sort.Ascending(document => document.GroupingKey);
 
     private const bool DefaultAscending = true;
     private const int DefaultSkipNumber = 0;
@@ -178,15 +178,15 @@ public class GetSortedPaginatedAsyncTests : TestKeyedReadOnlyMongoRepositoryCont
         VerifyDefinition(result, documents, DefaultSkipNumber, DefaultTakeNumber, null, token);
     }
 
-    private List<TestDocumentWithKey<int>> SetupReaderWithSortSelector()
+    private List<TestDocument> SetupReaderWithSortSelector()
     {
-        var documents = Fixture.CreateMany<TestDocumentWithKey<int>>().ToList();
+        var documents = Fixture.CreateMany<TestDocument>().ToList();
         Reader = new Mock<IMongoDbReader>();
 
         Reader.Setup(
-                x => x.GetSortedPaginatedAsync<TestDocumentWithKey<int>, int>(
-                    It.IsAny<Expression<Func<TestDocumentWithKey<int>, bool>>>(),
-                    It.IsAny<Expression<Func<TestDocumentWithKey<int>, object>>>(),
+                x => x.GetSortedPaginatedAsync<TestDocument, Guid>(
+                    It.IsAny<Expression<Func<TestDocument, bool>>>(),
+                    It.IsAny<Expression<Func<TestDocument, object>>>(),
                     It.IsAny<bool>(),
                     It.IsAny<int>(),
                     It.IsAny<int>(),
@@ -196,12 +196,12 @@ public class GetSortedPaginatedAsyncTests : TestKeyedReadOnlyMongoRepositoryCont
         return documents;
     }
 
-    private void VerifySelector(List<TestDocumentWithKey<int>> result, List<TestDocumentWithKey<int>> documents, bool ascending, int skipNumber, int takeNumber, string partitionKey, CancellationToken cancellationToken)
+    private void VerifySelector(List<TestDocument> result, List<TestDocument> documents, bool ascending, int skipNumber, int takeNumber, string partitionKey, CancellationToken cancellationToken)
     {
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(documents);
         Reader.Verify(
-            x => x.GetSortedPaginatedAsync<TestDocumentWithKey<int>, int>(
+            x => x.GetSortedPaginatedAsync<TestDocument, Guid>(
                 filter,
                 selector,
                 ascending,
@@ -212,15 +212,15 @@ public class GetSortedPaginatedAsyncTests : TestKeyedReadOnlyMongoRepositoryCont
             Times.Once);
     }
 
-    private List<TestDocumentWithKey<int>> SetupReaderWithSortDefinition()
+    private List<TestDocument> SetupReaderWithSortDefinition()
     {
-        var documents = Fixture.CreateMany<TestDocumentWithKey<int>>().ToList();
+        var documents = Fixture.CreateMany<TestDocument>().ToList();
         Reader = new Mock<IMongoDbReader>();
 
         Reader.Setup(
-                x => x.GetSortedPaginatedAsync<TestDocumentWithKey<int>, int>(
-                    It.IsAny<Expression<Func<TestDocumentWithKey<int>, bool>>>(),
-                    It.IsAny<SortDefinition<TestDocumentWithKey<int>>>(),
+                x => x.GetSortedPaginatedAsync<TestDocument, Guid>(
+                    It.IsAny<Expression<Func<TestDocument, bool>>>(),
+                    It.IsAny<SortDefinition<TestDocument>>(),
                     It.IsAny<int>(),
                     It.IsAny<int>(),
                     It.IsAny<string>(),
@@ -229,12 +229,12 @@ public class GetSortedPaginatedAsyncTests : TestKeyedReadOnlyMongoRepositoryCont
         return documents;
     }
 
-    private void VerifyDefinition(List<TestDocumentWithKey<int>> result, List<TestDocumentWithKey<int>> documents, int skipNumber, int takeNumber, string partitionKey, CancellationToken cancellationToken)
+    private void VerifyDefinition(List<TestDocument> result, List<TestDocument> documents, int skipNumber, int takeNumber, string partitionKey, CancellationToken cancellationToken)
     {
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(documents);
         Reader.Verify(
-            x => x.GetSortedPaginatedAsync<TestDocumentWithKey<int>, int>(
+            x => x.GetSortedPaginatedAsync<TestDocument, Guid>(
                 filter,
                 sortDefinition,
                 skipNumber,

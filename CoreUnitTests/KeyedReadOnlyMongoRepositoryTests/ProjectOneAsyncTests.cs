@@ -12,10 +12,10 @@ using Xunit;
 
 namespace CoreUnitTests.KeyedReadOnlyMongoRepositoryTests;
 
-public class ProjectOneAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
+public class ProjectOneAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<int>
 {
-    private readonly Expression<Func<TestDocument, bool>> filter = document => document.SomeContent == "SomeContent";
-    private readonly Expression<Func<TestDocument, TestProjection>> projection = document => new TestProjection {NestedData = document.Nested.SomeDate};
+    private readonly Expression<Func<TestDocumentWithKey<int>, bool>> filter = document => document.SomeContent == "SomeContent";
+    private readonly Expression<Func<TestDocumentWithKey<int>, TestProjection>> projection = document => new TestProjection {NestedData = document.Nested.SomeDate};
 
     [Fact]
     public async Task WithFilterAndProjection_Projects()
@@ -31,7 +31,7 @@ public class ProjectOneAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid
         // Assert
         result.Should().Be(expected);
         Reader.Verify(
-            x => x.ProjectOneAsync<TestDocument, TestProjection, Guid>(
+            x => x.ProjectOneAsync<TestDocumentWithKey<int>, TestProjection, int>(
                 filter,
                 projection,
                 null,
@@ -54,7 +54,7 @@ public class ProjectOneAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid
         // Assert
         result.Should().Be(expected);
         Reader.Verify(
-            x => x.ProjectOneAsync<TestDocument, TestProjection, Guid>(filter, projection, null, token),
+            x => x.ProjectOneAsync<TestDocumentWithKey<int>, TestProjection, int>(filter, projection, null, token),
             Times.Once);
     }
 
@@ -73,7 +73,7 @@ public class ProjectOneAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid
         // Assert
         result.Should().Be(expected);
         Reader.Verify(
-            x => x.ProjectOneAsync<TestDocument, TestProjection, Guid>(filter, projection, partitionKey, CancellationToken.None),
+            x => x.ProjectOneAsync<TestDocumentWithKey<int>, TestProjection, int>(filter, projection, partitionKey, CancellationToken.None),
             Times.Once);
     }
 
@@ -93,7 +93,7 @@ public class ProjectOneAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid
         // Assert
         result.Should().Be(expected);
         Reader.Verify(
-            x => x.ProjectOneAsync<TestDocument, TestProjection, Guid>(filter, projection, partitionKey, token),
+            x => x.ProjectOneAsync<TestDocumentWithKey<int>, TestProjection, int>(filter, projection, partitionKey, token),
             Times.Once);
     }
 
@@ -102,9 +102,9 @@ public class ProjectOneAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid
         Reader = new Mock<IMongoDbReader>();
         Reader
             .Setup(
-                x => x.ProjectOneAsync<TestDocument, TestProjection, Guid>(
-                    It.IsAny<Expression<Func<TestDocument, bool>>>(),
-                    It.IsAny<Expression<Func<TestDocument, TestProjection>>>(),
+                x => x.ProjectOneAsync<TestDocumentWithKey<int>, TestProjection, int>(
+                    It.IsAny<Expression<Func<TestDocumentWithKey<int>, bool>>>(),
+                    It.IsAny<Expression<Func<TestDocumentWithKey<int>, TestProjection>>>(),
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);

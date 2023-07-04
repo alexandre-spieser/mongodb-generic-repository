@@ -22,6 +22,8 @@ public class TestDocumentWithKey<TKey> : IDocument<TKey>
 
     public int SomeValue { get; set; }
 
+    public int SomeDecimalValue { get; set; }
+
     public string SomeContent { get; set; }
     public string SomeContent2 { get; set; }
     public string SomeContent3 { get; set; }

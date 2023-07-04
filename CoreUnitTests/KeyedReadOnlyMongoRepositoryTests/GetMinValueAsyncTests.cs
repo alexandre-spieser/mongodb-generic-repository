@@ -12,10 +12,10 @@ using Xunit;
 
 namespace CoreUnitTests.KeyedReadOnlyMongoRepositoryTests;
 
-public class GetMinValueAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
+public class GetMinValueAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<int>
 {
-    private readonly Expression<Func<TestDocument, bool>> filter = document => document.SomeContent == "SomeContent";
-    private readonly Expression<Func<TestDocument, int>> selector = document => document.SomeValue;
+    private readonly Expression<Func<TestDocumentWithKey<int>, bool>> filter = document => document.SomeContent == "SomeContent";
+    private readonly Expression<Func<TestDocumentWithKey<int>, int>> selector = document => document.SomeValue;
 
     [Fact]
     public async Task WithFilterAndSelector_GetsMaxValue()
@@ -31,7 +31,7 @@ public class GetMinValueAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Gui
         // Assert
         result.Should().Be(value);
         Reader.Verify(
-            x => x.GetMinValueAsync<TestDocument, Guid, int>(filter, selector, null, CancellationToken.None),
+            x => x.GetMinValueAsync<TestDocumentWithKey<int>, int, int>(filter, selector, null, CancellationToken.None),
             Times.Once);
     }
 
@@ -50,7 +50,7 @@ public class GetMinValueAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Gui
         // Assert
         result.Should().Be(value);
         Reader.Verify(
-            x => x.GetMinValueAsync<TestDocument, Guid, int>(filter, selector, null, token),
+            x => x.GetMinValueAsync<TestDocumentWithKey<int>, int, int>(filter, selector, null, token),
             Times.Once);
     }
 
@@ -69,7 +69,7 @@ public class GetMinValueAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Gui
         // Assert
         result.Should().Be(value);
         Reader.Verify(
-            x => x.GetMinValueAsync<TestDocument, Guid, int>(filter, selector, partitionKey, CancellationToken.None),
+            x => x.GetMinValueAsync<TestDocumentWithKey<int>, int, int>(filter, selector, partitionKey, CancellationToken.None),
             Times.Once);
     }
 
@@ -89,7 +89,7 @@ public class GetMinValueAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Gui
         // Assert
         result.Should().Be(value);
         Reader.Verify(
-            x => x.GetMinValueAsync<TestDocument, Guid, int>(filter, selector, partitionKey, token),
+            x => x.GetMinValueAsync<TestDocumentWithKey<int>, int, int>(filter, selector, partitionKey, token),
             Times.Once);
     }
 
@@ -98,9 +98,9 @@ public class GetMinValueAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Gui
         Reader = new Mock<IMongoDbReader>();
         Reader
             .Setup(
-                x => x.GetMinValueAsync<TestDocument, Guid, int>(
-                    It.IsAny<Expression<Func<TestDocument, bool>>>(),
-                    It.IsAny<Expression<Func<TestDocument, int>>>(),
+                x => x.GetMinValueAsync<TestDocumentWithKey<int>, int, int>(
+                    It.IsAny<Expression<Func<TestDocumentWithKey<int>, bool>>>(),
+                    It.IsAny<Expression<Func<TestDocumentWithKey<int>, int>>>(),
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()))
             .ReturnsAsync(value);

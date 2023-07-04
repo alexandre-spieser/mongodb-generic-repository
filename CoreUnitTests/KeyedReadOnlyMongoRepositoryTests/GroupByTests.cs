@@ -12,11 +12,11 @@ using Xunit;
 
 namespace CoreUnitTests.KeyedReadOnlyMongoRepositoryTests;
 
-public class GroupByTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
+public class GroupByTests : TestKeyedReadOnlyMongoRepositoryContext<int>
 {
-    private readonly Expression<Func<TestDocument, int>> grouping = document => document.GroupingKey;
-    private readonly Expression<Func<IGrouping<int, TestDocument>, TestProjection>> projection = documents => new TestProjection {Count = documents.Count()};
-    private readonly Expression<Func<TestDocument, bool>> filter = document => document.GroupingKey == 1;
+    private readonly Expression<Func<TestDocumentWithKey<int>, int>> grouping = document => document.GroupingKey;
+    private readonly Expression<Func<IGrouping<int, TestDocumentWithKey<int>>, TestProjection>> projection = documents => new TestProjection {Count = documents.Count()};
+    private readonly Expression<Func<TestDocumentWithKey<int>, bool>> filter = document => document.GroupingKey == 1;
 
     [Fact]
     public void WithGroupingCriteriaAndProjection_Groups()
@@ -26,9 +26,9 @@ public class GroupByTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         Reader = new Mock<IMongoDbReader>();
 
         Reader.Setup(
-                x => x.GroupBy<TestDocument, int, TestProjection, Guid>(
-                    It.IsAny<Expression<Func<TestDocument, int>>>(),
-                    It.IsAny<Expression<Func<IGrouping<int, TestDocument>, TestProjection>>>(),
+                x => x.GroupBy<TestDocumentWithKey<int>, int, TestProjection, int>(
+                    It.IsAny<Expression<Func<TestDocumentWithKey<int>, int>>>(),
+                    It.IsAny<Expression<Func<IGrouping<int, TestDocumentWithKey<int>>, TestProjection>>>(),
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()))
             .Returns(projections);
@@ -40,7 +40,7 @@ public class GroupByTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(projections);
         Reader.Verify(
-            x => x.GroupBy<TestDocument, int, TestProjection, Guid>(grouping, projection, null, CancellationToken.None),
+            x => x.GroupBy<TestDocumentWithKey<int>, int, TestProjection, int>(grouping, projection, null, CancellationToken.None),
             Times.Once);
     }
 
@@ -54,9 +54,9 @@ public class GroupByTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
 
         Reader
             .Setup(
-                x => x.GroupBy<TestDocument, int, TestProjection, Guid>(
-                    It.IsAny<Expression<Func<TestDocument, int>>>(),
-                    It.IsAny<Expression<Func<IGrouping<int, TestDocument>, TestProjection>>>(),
+                x => x.GroupBy<TestDocumentWithKey<int>, int, TestProjection, int>(
+                    It.IsAny<Expression<Func<TestDocumentWithKey<int>, int>>>(),
+                    It.IsAny<Expression<Func<IGrouping<int, TestDocumentWithKey<int>>, TestProjection>>>(),
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()))
             .Returns(projections);
@@ -68,7 +68,7 @@ public class GroupByTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(projections);
         Reader.Verify(
-            x => x.GroupBy<TestDocument, int, TestProjection, Guid>(grouping, projection, null, token),
+            x => x.GroupBy<TestDocumentWithKey<int>, int, TestProjection, int>(grouping, projection, null, token),
             Times.Once);
     }
 
@@ -82,9 +82,9 @@ public class GroupByTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
 
         Reader
             .Setup(
-                x => x.GroupBy<TestDocument, int, TestProjection, Guid>(
-                    It.IsAny<Expression<Func<TestDocument, int>>>(),
-                    It.IsAny<Expression<Func<IGrouping<int, TestDocument>, TestProjection>>>(),
+                x => x.GroupBy<TestDocumentWithKey<int>, int, TestProjection, int>(
+                    It.IsAny<Expression<Func<TestDocumentWithKey<int>, int>>>(),
+                    It.IsAny<Expression<Func<IGrouping<int, TestDocumentWithKey<int>>, TestProjection>>>(),
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()))
             .Returns(projections);
@@ -96,7 +96,7 @@ public class GroupByTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(projections);
         Reader.Verify(
-            x => x.GroupBy<TestDocument, int, TestProjection, Guid>(grouping, projection, partitionKey, CancellationToken.None),
+            x => x.GroupBy<TestDocumentWithKey<int>, int, TestProjection, int>(grouping, projection, partitionKey, CancellationToken.None),
             Times.Once);
     }
 
@@ -111,9 +111,9 @@ public class GroupByTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
 
         Reader
             .Setup(
-                x => x.GroupBy<TestDocument, int, TestProjection, Guid>(
-                    It.IsAny<Expression<Func<TestDocument, int>>>(),
-                    It.IsAny<Expression<Func<IGrouping<int, TestDocument>, TestProjection>>>(),
+                x => x.GroupBy<TestDocumentWithKey<int>, int, TestProjection, int>(
+                    It.IsAny<Expression<Func<TestDocumentWithKey<int>, int>>>(),
+                    It.IsAny<Expression<Func<IGrouping<int, TestDocumentWithKey<int>>, TestProjection>>>(),
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()))
             .Returns(projections);
@@ -125,7 +125,7 @@ public class GroupByTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(projections);
         Reader.Verify(
-            x => x.GroupBy<TestDocument, int, TestProjection, Guid>(grouping, projection, partitionKey, token),
+            x => x.GroupBy<TestDocumentWithKey<int>, int, TestProjection, int>(grouping, projection, partitionKey, token),
             Times.Once);
     }
 
@@ -137,10 +137,10 @@ public class GroupByTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         Reader = new Mock<IMongoDbReader>();
 
         Reader.Setup(
-                x => x.GroupBy<TestDocument, int, TestProjection, Guid>(
-                    It.IsAny<Expression<Func<TestDocument,bool>>>(),
-                    It.IsAny<Expression<Func<TestDocument, int>>>(),
-                    It.IsAny<Expression<Func<IGrouping<int, TestDocument>, TestProjection>>>(),
+                x => x.GroupBy<TestDocumentWithKey<int>, int, TestProjection, int>(
+                    It.IsAny<Expression<Func<TestDocumentWithKey<int>,bool>>>(),
+                    It.IsAny<Expression<Func<TestDocumentWithKey<int>, int>>>(),
+                    It.IsAny<Expression<Func<IGrouping<int, TestDocumentWithKey<int>>, TestProjection>>>(),
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()))
             .Returns(projections);
@@ -152,7 +152,7 @@ public class GroupByTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(projections);
         Reader.Verify(
-            x => x.GroupBy<TestDocument, int, TestProjection, Guid>(filter, grouping, projection, null, CancellationToken.None),
+            x => x.GroupBy<TestDocumentWithKey<int>, int, TestProjection, int>(filter, grouping, projection, null, CancellationToken.None),
             Times.Once);
     }
 
@@ -165,10 +165,10 @@ public class GroupByTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         Reader = new Mock<IMongoDbReader>();
 
         Reader.Setup(
-                x => x.GroupBy<TestDocument, int, TestProjection, Guid>(
-                    It.IsAny<Expression<Func<TestDocument,bool>>>(),
-                    It.IsAny<Expression<Func<TestDocument, int>>>(),
-                    It.IsAny<Expression<Func<IGrouping<int, TestDocument>, TestProjection>>>(),
+                x => x.GroupBy<TestDocumentWithKey<int>, int, TestProjection, int>(
+                    It.IsAny<Expression<Func<TestDocumentWithKey<int>,bool>>>(),
+                    It.IsAny<Expression<Func<TestDocumentWithKey<int>, int>>>(),
+                    It.IsAny<Expression<Func<IGrouping<int, TestDocumentWithKey<int>>, TestProjection>>>(),
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()))
             .Returns(projections);
@@ -180,7 +180,7 @@ public class GroupByTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(projections);
         Reader.Verify(
-            x => x.GroupBy<TestDocument, int, TestProjection, Guid>(filter, grouping, projection, null, token),
+            x => x.GroupBy<TestDocumentWithKey<int>, int, TestProjection, int>(filter, grouping, projection, null, token),
             Times.Once);
     }
 
@@ -193,10 +193,10 @@ public class GroupByTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         Reader = new Mock<IMongoDbReader>();
 
         Reader.Setup(
-                x => x.GroupBy<TestDocument, int, TestProjection, Guid>(
-                    It.IsAny<Expression<Func<TestDocument,bool>>>(),
-                    It.IsAny<Expression<Func<TestDocument, int>>>(),
-                    It.IsAny<Expression<Func<IGrouping<int, TestDocument>, TestProjection>>>(),
+                x => x.GroupBy<TestDocumentWithKey<int>, int, TestProjection, int>(
+                    It.IsAny<Expression<Func<TestDocumentWithKey<int>,bool>>>(),
+                    It.IsAny<Expression<Func<TestDocumentWithKey<int>, int>>>(),
+                    It.IsAny<Expression<Func<IGrouping<int, TestDocumentWithKey<int>>, TestProjection>>>(),
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()))
             .Returns(projections);
@@ -208,7 +208,7 @@ public class GroupByTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(projections);
         Reader.Verify(
-            x => x.GroupBy<TestDocument, int, TestProjection, Guid>(filter, grouping, projection, partitionKey, CancellationToken.None),
+            x => x.GroupBy<TestDocumentWithKey<int>, int, TestProjection, int>(filter, grouping, projection, partitionKey, CancellationToken.None),
             Times.Once);
     }
 
@@ -222,10 +222,10 @@ public class GroupByTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         Reader = new Mock<IMongoDbReader>();
 
         Reader.Setup(
-                x => x.GroupBy<TestDocument, int, TestProjection, Guid>(
-                    It.IsAny<Expression<Func<TestDocument,bool>>>(),
-                    It.IsAny<Expression<Func<TestDocument, int>>>(),
-                    It.IsAny<Expression<Func<IGrouping<int, TestDocument>, TestProjection>>>(),
+                x => x.GroupBy<TestDocumentWithKey<int>, int, TestProjection, int>(
+                    It.IsAny<Expression<Func<TestDocumentWithKey<int>,bool>>>(),
+                    It.IsAny<Expression<Func<TestDocumentWithKey<int>, int>>>(),
+                    It.IsAny<Expression<Func<IGrouping<int, TestDocumentWithKey<int>>, TestProjection>>>(),
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()))
             .Returns(projections);
@@ -237,7 +237,7 @@ public class GroupByTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(projections);
         Reader.Verify(
-            x => x.GroupBy<TestDocument, int, TestProjection, Guid>(filter, grouping, projection, partitionKey, token),
+            x => x.GroupBy<TestDocumentWithKey<int>, int, TestProjection, int>(filter, grouping, projection, partitionKey, token),
             Times.Once);
     }
 }

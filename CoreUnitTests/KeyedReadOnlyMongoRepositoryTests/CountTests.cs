@@ -11,9 +11,9 @@ using Xunit;
 
 namespace CoreUnitTests.KeyedReadOnlyMongoRepositoryTests;
 
-public class CountTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
+public class CountTests : TestKeyedReadOnlyMongoRepositoryContext<int>
 {
-    private readonly Expression<Func<TestDocument, bool>> filter = document => document.SomeContent == "SomeContent";
+    private readonly Expression<Func<TestDocumentWithKey<int>, bool>> filter = document => document.SomeContent == "SomeContent";
 
     [Fact]
     public void WithFilter_GetsOne()
@@ -29,7 +29,7 @@ public class CountTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         // Assert
         result.Should().Be(count);
         Reader.Verify(
-            x => x.Count<TestDocument, Guid>(filter, null, CancellationToken.None),
+            x => x.Count<TestDocumentWithKey<int>, int>(filter, null, CancellationToken.None),
             Times.Once);
     }
 
@@ -48,7 +48,7 @@ public class CountTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         // Assert
         result.Should().Be(count);
         Reader.Verify(
-            x => x.Count<TestDocument, Guid>(filter, null, token),
+            x => x.Count<TestDocumentWithKey<int>, int>(filter, null, token),
             Times.Once);
     }
 
@@ -67,7 +67,7 @@ public class CountTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         // Assert
         result.Should().Be(count);
         Reader.Verify(
-            x => x.Count<TestDocument, Guid>(filter, partitionKey, CancellationToken.None),
+            x => x.Count<TestDocumentWithKey<int>, int>(filter, partitionKey, CancellationToken.None),
             Times.Once);
     }
 
@@ -87,7 +87,7 @@ public class CountTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         // Assert
         result.Should().Be(count);
         Reader.Verify(
-            x => x.Count<TestDocument, Guid>(filter, partitionKey, token),
+            x => x.Count<TestDocumentWithKey<int>, int>(filter, partitionKey, token),
             Times.Once);
     }
 
@@ -96,8 +96,8 @@ public class CountTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         Reader = new Mock<IMongoDbReader>();
         Reader
             .Setup(
-                x => x.Count<TestDocument, Guid>(
-                    It.IsAny<Expression<Func<TestDocument, bool>>>(),
+                x => x.Count<TestDocumentWithKey<int>, int>(
+                    It.IsAny<Expression<Func<TestDocumentWithKey<int>, bool>>>(),
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()))
             .Returns(count);

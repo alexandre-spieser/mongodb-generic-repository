@@ -12,11 +12,11 @@ using Xunit;
 
 namespace CoreUnitTests.KeyedReadOnlyMongoRepositoryTests;
 
-public class SumByAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
+public class SumByAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<int>
 {
-    private readonly Expression<Func<TestDocument, bool>> filter = document => document.SomeContent == "SomeContent";
-    private readonly Expression<Func<TestDocument, int>> intSelector = document => document.SomeValue;
-    private readonly Expression<Func<TestDocument, decimal>> decimalSelector = document => document.SomeDecimalValue;
+    private readonly Expression<Func<TestDocumentWithKey<int>, bool>> filter = document => document.SomeContent == "SomeContent";
+    private readonly Expression<Func<TestDocumentWithKey<int>, int>> intSelector = document => document.SomeValue;
+    private readonly Expression<Func<TestDocumentWithKey<int>, decimal>> decimalSelector = document => document.SomeDecimalValue;
 
     [Fact]
     public async Task Int_WithFilterAndSelector_Sums()
@@ -32,7 +32,7 @@ public class SumByAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         // Assert
         result.Should().Be(expected);
         Reader.Verify(
-            x => x.SumByAsync<TestDocument, Guid>(filter, intSelector, null, CancellationToken.None),
+            x => x.SumByAsync<TestDocumentWithKey<int>, int>(filter, intSelector, null, CancellationToken.None),
             Times.Once);
     }
 
@@ -51,7 +51,7 @@ public class SumByAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         // Assert
         result.Should().Be(expected);
         Reader.Verify(
-            x => x.SumByAsync<TestDocument, Guid>(filter, intSelector, null, token),
+            x => x.SumByAsync<TestDocumentWithKey<int>, int>(filter, intSelector, null, token),
             Times.Once);
     }
 
@@ -70,7 +70,7 @@ public class SumByAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         // Assert
         result.Should().Be(expected);
         Reader.Verify(
-            x => x.SumByAsync<TestDocument, Guid>(filter, intSelector, partitionKey, CancellationToken.None),
+            x => x.SumByAsync<TestDocumentWithKey<int>, int>(filter, intSelector, partitionKey, CancellationToken.None),
             Times.Once);
     }
 
@@ -90,7 +90,7 @@ public class SumByAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         // Assert
         result.Should().Be(expected);
         Reader.Verify(
-            x => x.SumByAsync<TestDocument, Guid>(filter, intSelector, partitionKey, token),
+            x => x.SumByAsync<TestDocumentWithKey<int>, int>(filter, intSelector, partitionKey, token),
             Times.Once);
     }
 
@@ -108,7 +108,7 @@ public class SumByAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         // Assert
         result.Should().Be(expected);
         Reader.Verify(
-            x => x.SumByAsync<TestDocument, Guid>(filter, decimalSelector, null, CancellationToken.None),
+            x => x.SumByAsync<TestDocumentWithKey<int>, int>(filter, decimalSelector, null, CancellationToken.None),
             Times.Once);
     }
 
@@ -127,7 +127,7 @@ public class SumByAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         // Assert
         result.Should().Be(expected);
         Reader.Verify(
-            x => x.SumByAsync<TestDocument, Guid>(filter, decimalSelector, null, token),
+            x => x.SumByAsync<TestDocumentWithKey<int>, int>(filter, decimalSelector, null, token),
             Times.Once);
     }
 
@@ -146,7 +146,7 @@ public class SumByAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         // Assert
         result.Should().Be(expected);
         Reader.Verify(
-            x => x.SumByAsync<TestDocument, Guid>(filter, decimalSelector, partitionKey, CancellationToken.None),
+            x => x.SumByAsync<TestDocumentWithKey<int>, int>(filter, decimalSelector, partitionKey, CancellationToken.None),
             Times.Once);
     }
 
@@ -166,7 +166,7 @@ public class SumByAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         // Assert
         result.Should().Be(expected);
         Reader.Verify(
-            x => x.SumByAsync<TestDocument, Guid>(filter, decimalSelector, partitionKey, token),
+            x => x.SumByAsync<TestDocumentWithKey<int>, int>(filter, decimalSelector, partitionKey, token),
             Times.Once);
     }
 
@@ -175,9 +175,9 @@ public class SumByAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         Reader = new Mock<IMongoDbReader>();
         Reader
             .Setup(
-                x => x.SumByAsync<TestDocument, Guid>(
-                    It.IsAny<Expression<Func<TestDocument, bool>>>(),
-                    It.IsAny<Expression<Func<TestDocument,int>>>(),
+                x => x.SumByAsync<TestDocumentWithKey<int>, int>(
+                    It.IsAny<Expression<Func<TestDocumentWithKey<int>, bool>>>(),
+                    It.IsAny<Expression<Func<TestDocumentWithKey<int>,int>>>(),
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()))
             .ReturnsAsync(expected);
@@ -188,9 +188,9 @@ public class SumByAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         Reader = new Mock<IMongoDbReader>();
         Reader
             .Setup(
-                x => x.SumByAsync<TestDocument, Guid>(
-                    It.IsAny<Expression<Func<TestDocument, bool>>>(),
-                    It.IsAny<Expression<Func<TestDocument, decimal>>>(),
+                x => x.SumByAsync<TestDocumentWithKey<int>, int>(
+                    It.IsAny<Expression<Func<TestDocumentWithKey<int>, bool>>>(),
+                    It.IsAny<Expression<Func<TestDocumentWithKey<int>, decimal>>>(),
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()))
             .ReturnsAsync(expected);

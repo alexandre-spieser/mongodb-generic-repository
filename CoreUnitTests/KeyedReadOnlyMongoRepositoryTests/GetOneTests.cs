@@ -1,7 +1,6 @@
 using System;
 using System.Linq.Expressions;
 using System.Threading;
-using System.Threading.Tasks;
 using AutoFixture;
 using CoreUnitTests.Infrastructure;
 using CoreUnitTests.Infrastructure.Model;
@@ -12,15 +11,15 @@ using Xunit;
 
 namespace CoreUnitTests.KeyedReadOnlyMongoRepositoryTests;
 
-public class GetOneTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
+public class GetOneTests : TestKeyedReadOnlyMongoRepositoryContext<int>
 {
-    private readonly Expression<Func<TestDocument, bool>> filter = document => document.SomeContent == "SomeContent";
+    private readonly Expression<Func<TestDocumentWithKey<int>, bool>> filter = document => document.SomeContent == "SomeContent";
 
     [Fact]
-    public void WithId_GetsOne()
+    public void WithFilter_GetsOne()
     {
         // Arrange
-        var document = Fixture.Create<TestDocument>();
+        var document = Fixture.Create<TestDocumentWithKey<int>>();
 
         SetupReader(document);
 
@@ -31,15 +30,15 @@ public class GetOneTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(document);
         Reader.Verify(
-            x => x.GetOne<TestDocument, Guid>(filter, null, CancellationToken.None),
+            x => x.GetOne<TestDocumentWithKey<int>, int>(filter, null, CancellationToken.None),
             Times.Once);
     }
 
     [Fact]
-    public void WithIdAndCancellationToken_GetsOne()
+    public void WithFilterAndCancellationToken_GetsOne()
     {
         // Arrange
-        var document = Fixture.Create<TestDocument>();
+        var document = Fixture.Create<TestDocumentWithKey<int>>();
         var token = new CancellationToken(true);
 
         SetupReader(document);
@@ -51,15 +50,15 @@ public class GetOneTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(document);
         Reader.Verify(
-            x => x.GetOne<TestDocument, Guid>(filter, null, token),
+            x => x.GetOne<TestDocumentWithKey<int>, int>(filter, null, token),
             Times.Once);
     }
 
     [Fact]
-    public void WithIdAndPartitionKey_GetsOne()
+    public void WithFilterAndPartitionKey_GetsOne()
     {
         // Arrange
-        var document = Fixture.Create<TestDocument>();
+        var document = Fixture.Create<TestDocumentWithKey<int>>();
         var partitionKey = Fixture.Create<string>();
 
         SetupReader(document);
@@ -71,15 +70,15 @@ public class GetOneTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(document);
         Reader.Verify(
-            x => x.GetOne<TestDocument, Guid>(filter, partitionKey, CancellationToken.None),
+            x => x.GetOne<TestDocumentWithKey<int>, int>(filter, partitionKey, CancellationToken.None),
             Times.Once);
     }
 
     [Fact]
-    public void WithIdAndPartitionKeyAndCancellationToken_GetsOne()
+    public void WithFilterAndPartitionKeyAndCancellationToken_GetsOne()
     {
         // Arrange
-        var document = Fixture.Create<TestDocument>();
+        var document = Fixture.Create<TestDocumentWithKey<int>>();
         var partitionKey = Fixture.Create<string>();
         var token = new CancellationToken(true);
 
@@ -92,17 +91,17 @@ public class GetOneTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(document);
         Reader.Verify(
-            x => x.GetOne<TestDocument, Guid>(filter, partitionKey, token),
+            x => x.GetOne<TestDocumentWithKey<int>, int>(filter, partitionKey, token),
             Times.Once);
     }
 
-    private void SetupReader(TestDocument document)
+    private void SetupReader(TestDocumentWithKey<int> document)
     {
         Reader = new Mock<IMongoDbReader>();
         Reader
             .Setup(
-                x => x.GetOne<TestDocument, Guid>(
-                    It.IsAny<Expression<Func<TestDocument, bool>>>(),
+                x => x.GetOne<TestDocumentWithKey<int>, int>(
+                    It.IsAny<Expression<Func<TestDocumentWithKey<int>, bool>>>(),
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()))
             .Returns(document);

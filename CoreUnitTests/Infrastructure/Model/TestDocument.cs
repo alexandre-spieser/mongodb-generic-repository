@@ -25,6 +25,8 @@ public class TestDocument : Document
 
     public int GroupingKey { get; set; }
 
+    public Guid OtherGroupingKey { get; set; }
+
     public Nested Nested { get; set; }
 
     public List<Child> Children { get; set; }

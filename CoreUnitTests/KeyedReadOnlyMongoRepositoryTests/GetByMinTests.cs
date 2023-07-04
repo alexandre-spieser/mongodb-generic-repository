@@ -11,16 +11,16 @@ using Xunit;
 
 namespace CoreUnitTests.KeyedReadOnlyMongoRepositoryTests;
 
-public class GetByMinTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
+public class GetByMinTests : TestKeyedReadOnlyMongoRepositoryContext<int>
 {
-    private readonly Expression<Func<TestDocument, bool>> filter = document => document.SomeContent == "SomeContent";
-    private readonly Expression<Func<TestDocument, object>> selector = document => document.SomeValue;
+    private readonly Expression<Func<TestDocumentWithKey<int>, bool>> filter = document => document.SomeContent == "SomeContent";
+    private readonly Expression<Func<TestDocumentWithKey<int>, object>> selector = document => document.SomeValue;
 
     [Fact]
     public void WithFilterAndSelector_GetsOne()
     {
         // Arrange
-        var document = Fixture.Create<TestDocument>();
+        var document = Fixture.Create<TestDocumentWithKey<int>>();
 
         SetupReader(document);
 
@@ -31,7 +31,7 @@ public class GetByMinTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(document);
         Reader.Verify(
-            x => x.GetByMin<TestDocument, Guid>(filter, selector, null, CancellationToken.None),
+            x => x.GetByMin<TestDocumentWithKey<int>, int>(filter, selector, null, CancellationToken.None),
             Times.Once);
     }
 
@@ -39,7 +39,7 @@ public class GetByMinTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
     public void WithFilterAndSelectorAndCancellationToken_GetsOne()
     {
         // Arrange
-        var document = Fixture.Create<TestDocument>();
+        var document = Fixture.Create<TestDocumentWithKey<int>>();
         var token = new CancellationToken(true);
 
         SetupReader(document);
@@ -51,7 +51,7 @@ public class GetByMinTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(document);
         Reader.Verify(
-            x => x.GetByMin<TestDocument, Guid>(filter, selector, null, token),
+            x => x.GetByMin<TestDocumentWithKey<int>, int>(filter, selector, null, token),
             Times.Once);
     }
 
@@ -59,7 +59,7 @@ public class GetByMinTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
     public void WithFilterAndSelectorAndPartitionKey_GetsOne()
     {
         // Arrange
-        var document = Fixture.Create<TestDocument>();
+        var document = Fixture.Create<TestDocumentWithKey<int>>();
         var partitionKey = Fixture.Create<string>();
 
         SetupReader(document);
@@ -71,7 +71,7 @@ public class GetByMinTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(document);
         Reader.Verify(
-            x => x.GetByMin<TestDocument, Guid>(filter, selector, partitionKey, CancellationToken.None),
+            x => x.GetByMin<TestDocumentWithKey<int>, int>(filter, selector, partitionKey, CancellationToken.None),
             Times.Once);
     }
 
@@ -79,7 +79,7 @@ public class GetByMinTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
     public void WithFilterAndSelectorAndPartitionKeyAndCancellationToken_GetsOne()
     {
         // Arrange
-        var document = Fixture.Create<TestDocument>();
+        var document = Fixture.Create<TestDocumentWithKey<int>>();
         var partitionKey = Fixture.Create<string>();
         var token = new CancellationToken(true);
 
@@ -92,18 +92,18 @@ public class GetByMinTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(document);
         Reader.Verify(
-            x => x.GetByMin<TestDocument, Guid>(filter, selector, partitionKey, token),
+            x => x.GetByMin<TestDocumentWithKey<int>, int>(filter, selector, partitionKey, token),
             Times.Once);
     }
 
-    private void SetupReader(TestDocument document)
+    private void SetupReader(TestDocumentWithKey<int> document)
     {
         Reader = new Mock<IMongoDbReader>();
         Reader
             .Setup(
-                x => x.GetByMin<TestDocument, Guid>(
-                    It.IsAny<Expression<Func<TestDocument, bool>>>(),
-                    It.IsAny<Expression<Func<TestDocument, object>>>(),
+                x => x.GetByMin<TestDocumentWithKey<int>, int>(
+                    It.IsAny<Expression<Func<TestDocumentWithKey<int>, bool>>>(),
+                    It.IsAny<Expression<Func<TestDocumentWithKey<int>, object>>>(),
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()))
             .Returns(document);

@@ -1,8 +1,4 @@
-using System;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Threading;
-using System.Threading.Tasks;
 using AutoFixture;
 using CoreUnitTests.Infrastructure;
 using CoreUnitTests.Infrastructure.Model;
@@ -13,24 +9,24 @@ using Xunit;
 
 namespace CoreUnitTests.KeyedReadOnlyMongoRepositoryTests;
 
-public class GetByIdTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
+public class GetByIdTests : TestKeyedReadOnlyMongoRepositoryContext<int>
 {
     [Fact]
     public void WithId_Gets()
     {
         // Arrange
-        var document = Fixture.Create<TestDocument>();
+        var document = Fixture.Create<TestDocumentWithKey<int>>();
 
         SetupReader(document);
 
         // Act
-        var result = Sut.GetById<TestDocument>(document.Id);
+        var result = Sut.GetById<TestDocumentWithKey<int>>(document.Id);
 
         // Assert
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(document);
         Reader.Verify(
-            x => x.GetById<TestDocument, Guid>(document.Id, null, CancellationToken.None),
+            x => x.GetById<TestDocumentWithKey<int>, int>(document.Id, null, CancellationToken.None),
             Times.Once);
     }
 
@@ -38,19 +34,19 @@ public class GetByIdTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
     public void WithIdAndCancellationToken_Gets()
     {
         // Arrange
-        var document = Fixture.Create<TestDocument>();
+        var document = Fixture.Create<TestDocumentWithKey<int>>();
         var token = new CancellationToken(true);
 
         SetupReader(document);
 
         // Act
-        var result = Sut.GetById<TestDocument>(document.Id, token);
+        var result = Sut.GetById<TestDocumentWithKey<int>>(document.Id, token);
 
         // Assert
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(document);
         Reader.Verify(
-            x => x.GetById<TestDocument, Guid>(document.Id, null, token),
+            x => x.GetById<TestDocumentWithKey<int>, int>(document.Id, null, token),
             Times.Once);
     }
 
@@ -58,19 +54,19 @@ public class GetByIdTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
     public void WithIdAndPartitionKey_Gets()
     {
         // Arrange
-        var document = Fixture.Create<TestDocument>();
+        var document = Fixture.Create<TestDocumentWithKey<int>>();
         var partitionKey = Fixture.Create<string>();
 
         SetupReader(document);
 
         // Act
-        var result = Sut.GetById<TestDocument>(document.Id, partitionKey);
+        var result = Sut.GetById<TestDocumentWithKey<int>>(document.Id, partitionKey);
 
         // Assert
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(document);
         Reader.Verify(
-            x => x.GetById<TestDocument, Guid>(document.Id, partitionKey, CancellationToken.None),
+            x => x.GetById<TestDocumentWithKey<int>, int>(document.Id, partitionKey, CancellationToken.None),
             Times.Once);
     }
 
@@ -78,30 +74,30 @@ public class GetByIdTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
     public void WithIdAndPartitionKeyAndCancellationToken_Gets()
     {
         // Arrange
-        var document = Fixture.Create<TestDocument>();
+        var document = Fixture.Create<TestDocumentWithKey<int>>();
         var partitionKey = Fixture.Create<string>();
         var token = new CancellationToken(true);
 
         SetupReader(document);
 
         // Act
-        var result = Sut.GetById<TestDocument>(document.Id, partitionKey, token);
+        var result = Sut.GetById<TestDocumentWithKey<int>>(document.Id, partitionKey, token);
 
         // Assert
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(document);
         Reader.Verify(
-            x => x.GetById<TestDocument, Guid>(document.Id, partitionKey, token),
+            x => x.GetById<TestDocumentWithKey<int>, int>(document.Id, partitionKey, token),
             Times.Once);
     }
 
-    private void SetupReader(TestDocument document)
+    private void SetupReader(TestDocumentWithKey<int> document)
     {
         Reader = new Mock<IMongoDbReader>();
         Reader
             .Setup(
-                x => x.GetById<TestDocument, Guid>(
-                    It.IsAny<Guid>(),
+                x => x.GetById<TestDocumentWithKey<int>, int>(
+                    It.IsAny<int>(),
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()))
             .Returns(document);

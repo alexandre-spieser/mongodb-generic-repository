@@ -14,9 +14,9 @@ using Xunit;
 
 namespace CoreUnitTests.KeyedReadOnlyMongoRepositoryTests;
 
-public class CountAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
+public class CountAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<int>
 {
-    private readonly Expression<Func<TestDocument, bool>> filter = document => document.SomeContent == "SomeContent";
+    private readonly Expression<Func<TestDocumentWithKey<int>, bool>> filter = document => document.SomeContent == "SomeContent";
 
     [Fact]
     public async Task WithFilter_GetsOne()
@@ -32,7 +32,7 @@ public class CountAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         // Assert
         result.Should().Be(count);
         Reader.Verify(
-            x => x.CountAsync<TestDocument, Guid>(filter, null, CancellationToken.None),
+            x => x.CountAsync<TestDocumentWithKey<int>, int>(filter, null, CancellationToken.None),
             Times.Once);
     }
 
@@ -51,7 +51,7 @@ public class CountAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         // Assert
         result.Should().Be(count);
         Reader.Verify(
-            x => x.CountAsync<TestDocument, Guid>(filter, null, token),
+            x => x.CountAsync<TestDocumentWithKey<int>, int>(filter, null, token),
             Times.Once);
     }
 
@@ -70,7 +70,7 @@ public class CountAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         // Assert
         result.Should().Be(count);
         Reader.Verify(
-            x => x.CountAsync<TestDocument, Guid>(filter, partitionKey, CancellationToken.None),
+            x => x.CountAsync<TestDocumentWithKey<int>, int>(filter, partitionKey, CancellationToken.None),
             Times.Once);
     }
 
@@ -90,7 +90,7 @@ public class CountAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         // Assert
         result.Should().Be(count);
         Reader.Verify(
-            x => x.CountAsync<TestDocument, Guid>(filter, partitionKey, token),
+            x => x.CountAsync<TestDocumentWithKey<int>, int>(filter, partitionKey, token),
             Times.Once);
     }
 
@@ -99,8 +99,8 @@ public class CountAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         Reader = new Mock<IMongoDbReader>();
         Reader
             .Setup(
-                x => x.CountAsync<TestDocument, Guid>(
-                    It.IsAny<Expression<Func<TestDocument, bool>>>(),
+                x => x.CountAsync<TestDocumentWithKey<int>, int>(
+                    It.IsAny<Expression<Func<TestDocumentWithKey<int>, bool>>>(),
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()))
             .ReturnsAsync(count);

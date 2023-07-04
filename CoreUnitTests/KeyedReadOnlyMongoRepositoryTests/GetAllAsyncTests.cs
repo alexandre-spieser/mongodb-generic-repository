@@ -14,15 +14,15 @@ using Xunit;
 
 namespace CoreUnitTests.KeyedReadOnlyMongoRepositoryTests;
 
-public class GetAllAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
+public class GetAllAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<int>
 {
-    private readonly Expression<Func<TestDocument, bool>> filter = document => document.SomeContent == "SomeContent";
+    private readonly Expression<Func<TestDocumentWithKey<int>, bool>> filter = document => document.SomeContent == "SomeContent";
 
     [Fact]
     public async Task WithFilter_GetsOne()
     {
         // Arrange
-        var document = Fixture.CreateMany<TestDocument>().ToList();
+        var document = Fixture.CreateMany<TestDocumentWithKey<int>>().ToList();
 
         SetupReader(document);
 
@@ -33,7 +33,7 @@ public class GetAllAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(document);
         Reader.Verify(
-            x => x.GetAllAsync<TestDocument, Guid>(filter, null, CancellationToken.None),
+            x => x.GetAllAsync<TestDocumentWithKey<int>, int>(filter, null, CancellationToken.None),
             Times.Once);
     }
 
@@ -41,7 +41,7 @@ public class GetAllAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
     public async Task WithFilterAndCancellationToken_GetsOne()
     {
         // Arrange
-        var document = Fixture.CreateMany<TestDocument>().ToList();
+        var document = Fixture.CreateMany<TestDocumentWithKey<int>>().ToList();
         var token = new CancellationToken(true);
 
         SetupReader(document);
@@ -53,7 +53,7 @@ public class GetAllAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(document);
         Reader.Verify(
-            x => x.GetAllAsync<TestDocument, Guid>(filter, null, token),
+            x => x.GetAllAsync<TestDocumentWithKey<int>, int>(filter, null, token),
             Times.Once);
     }
 
@@ -61,7 +61,7 @@ public class GetAllAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
     public async Task WithFilterAndPartitionKey_GetsOne()
     {
         // Arrange
-        var document = Fixture.CreateMany<TestDocument>().ToList();
+        var document = Fixture.CreateMany<TestDocumentWithKey<int>>().ToList();
         var partitionKey = Fixture.Create<string>();
 
         SetupReader(document);
@@ -73,7 +73,7 @@ public class GetAllAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(document);
         Reader.Verify(
-            x => x.GetAllAsync<TestDocument, Guid>(filter, partitionKey, CancellationToken.None),
+            x => x.GetAllAsync<TestDocumentWithKey<int>, int>(filter, partitionKey, CancellationToken.None),
             Times.Once);
     }
 
@@ -81,7 +81,7 @@ public class GetAllAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
     public async Task WithFilterAndPartitionKeyAndCancellationToken_GetsOne()
     {
         // Arrange
-        var document = Fixture.CreateMany<TestDocument>().ToList();
+        var document = Fixture.CreateMany<TestDocumentWithKey<int>>().ToList();
         var partitionKey = Fixture.Create<string>();
         var token = new CancellationToken(true);
 
@@ -94,17 +94,17 @@ public class GetAllAsyncTests : TestKeyedReadOnlyMongoRepositoryContext<Guid>
         result.Should().NotBeNull();
         result.Should().BeEquivalentTo(document);
         Reader.Verify(
-            x => x.GetAllAsync<TestDocument, Guid>(filter, partitionKey, token),
+            x => x.GetAllAsync<TestDocumentWithKey<int>, int>(filter, partitionKey, token),
             Times.Once);
     }
 
-    private void SetupReader(List<TestDocument> documents)
+    private void SetupReader(List<TestDocumentWithKey<int>> documents)
     {
         Reader = new Mock<IMongoDbReader>();
         Reader
             .Setup(
-                x => x.GetAllAsync<TestDocument, Guid>(
-                    It.IsAny<Expression<Func<TestDocument, bool>>>(),
+                x => x.GetAllAsync<TestDocumentWithKey<int>, int>(
+                    It.IsAny<Expression<Func<TestDocumentWithKey<int>, bool>>>(),
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()))
             .ReturnsAsync(documents);
