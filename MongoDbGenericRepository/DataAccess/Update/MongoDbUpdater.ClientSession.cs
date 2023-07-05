@@ -10,7 +10,7 @@ namespace MongoDbGenericRepository.DataAccess.Update
     public partial class MongoDbUpdater
     {
         /// <inheritdoc cref="IMongoDbUpdater" />
-        public virtual async Task<bool> UpdateOneAsync<TDocument, TKey>(IClientSessionHandle session, TDocument modifiedDocument, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual async Task<bool> UpdateOneAsync<TDocument, TKey>(IClientSessionHandle session, TDocument modifiedDocument, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -22,7 +22,7 @@ namespace MongoDbGenericRepository.DataAccess.Update
         }
 
         /// <inheritdoc cref="IMongoDbUpdater" />
-        public virtual bool UpdateOne<TDocument, TKey>(IClientSessionHandle session, TDocument modifiedDocument, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual bool UpdateOne<TDocument, TKey>(IClientSessionHandle session, TDocument modifiedDocument, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -32,7 +32,7 @@ namespace MongoDbGenericRepository.DataAccess.Update
         }
 
         /// <inheritdoc cref="IMongoDbUpdater" />
-        public virtual async Task<bool> UpdateOneAsync<TDocument, TKey>(IClientSessionHandle session, TDocument documentToModify, UpdateDefinition<TDocument> update, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual async Task<bool> UpdateOneAsync<TDocument, TKey>(IClientSessionHandle session, TDocument documentToModify, UpdateDefinition<TDocument> update, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -42,7 +42,7 @@ namespace MongoDbGenericRepository.DataAccess.Update
         }
 
         /// <inheritdoc cref="IMongoDbUpdater" />
-        public virtual bool UpdateOne<TDocument, TKey>(IClientSessionHandle session, TDocument documentToModify, UpdateDefinition<TDocument> update, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual bool UpdateOne<TDocument, TKey>(IClientSessionHandle session, TDocument documentToModify, UpdateDefinition<TDocument> update, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -52,7 +52,7 @@ namespace MongoDbGenericRepository.DataAccess.Update
         }
 
         /// <inheritdoc cref="IMongoDbUpdater" />
-        public virtual async Task<bool> UpdateOneAsync<TDocument, TKey, TField>(IClientSessionHandle session, TDocument documentToModify, Expression<Func<TDocument, TField>> field, TField value, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual async Task<bool> UpdateOneAsync<TDocument, TKey, TField>(IClientSessionHandle session, TDocument documentToModify, Expression<Func<TDocument, TField>> field, TField value, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -65,7 +65,7 @@ namespace MongoDbGenericRepository.DataAccess.Update
         }
 
         /// <inheritdoc cref="IMongoDbUpdater" />
-        public virtual bool UpdateOne<TDocument, TKey, TField>(IClientSessionHandle session, TDocument documentToModify, Expression<Func<TDocument, TField>> field, TField value, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual bool UpdateOne<TDocument, TKey, TField>(IClientSessionHandle session, TDocument documentToModify, Expression<Func<TDocument, TField>> field, TField value, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -75,7 +75,7 @@ namespace MongoDbGenericRepository.DataAccess.Update
         }
 
         /// <inheritdoc cref="IMongoDbUpdater" />
-        public virtual async Task<bool> UpdateOneAsync<TDocument, TKey, TField>(IClientSessionHandle session, FilterDefinition<TDocument> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual async Task<bool> UpdateOneAsync<TDocument, TKey, TField>(IClientSessionHandle session, FilterDefinition<TDocument> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -85,7 +85,7 @@ namespace MongoDbGenericRepository.DataAccess.Update
         }
 
         /// <inheritdoc cref="IMongoDbUpdater" />
-        public virtual Task<bool> UpdateOneAsync<TDocument, TKey, TField>(IClientSessionHandle session, Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual Task<bool> UpdateOneAsync<TDocument, TKey, TField>(IClientSessionHandle session, Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -93,7 +93,7 @@ namespace MongoDbGenericRepository.DataAccess.Update
         }
 
         /// <inheritdoc cref="IMongoDbUpdater" />
-        public virtual bool UpdateOne<TDocument, TKey, TField>(IClientSessionHandle session, FilterDefinition<TDocument> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual bool UpdateOne<TDocument, TKey, TField>(IClientSessionHandle session, FilterDefinition<TDocument> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -103,7 +103,7 @@ namespace MongoDbGenericRepository.DataAccess.Update
         }
 
         /// <inheritdoc cref="IMongoDbUpdater" />
-        public virtual bool UpdateOne<TDocument, TKey, TField>(IClientSessionHandle session, Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual bool UpdateOne<TDocument, TKey, TField>(IClientSessionHandle session, Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TField>> field, TField value, string partitionKey = null, CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
