@@ -410,7 +410,10 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="orderByDescending">A property selector to order by descending.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        Task<TDocument> GetByMaxAsync<TDocument>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> orderByDescending, CancellationToken cancellationToken)
+        Task<TDocument> GetByMaxAsync<TDocument>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, object>> orderByDescending,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>;
 
         /// <summary>
@@ -421,7 +424,10 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="orderByDescending">A property selector to order by descending.</param>
         /// <param name="partitionKey">An optional partitionKey.</param>
-        Task<TDocument> GetByMaxAsync<TDocument>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> orderByDescending, string partitionKey)
+        Task<TDocument> GetByMaxAsync<TDocument>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, object>> orderByDescending,
+            string partitionKey)
             where TDocument : IDocument<TKey>;
 
         /// <summary>
@@ -433,7 +439,11 @@ namespace MongoDbGenericRepository
         /// <param name="orderByDescending">A property selector to order by descending.</param>
         /// <param name="partitionKey">An optional partitionKey.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        Task<TDocument> GetByMaxAsync<TDocument>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> orderByDescending, string partitionKey, CancellationToken cancellationToken)
+        Task<TDocument> GetByMaxAsync<TDocument>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, object>> orderByDescending,
+            string partitionKey,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>;
 
         /// <summary>
@@ -456,7 +466,10 @@ namespace MongoDbGenericRepository
         /// <param name="orderByDescending">A property selector to order by descending.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns></returns>
-        TDocument GetByMax<TDocument>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> orderByDescending, CancellationToken cancellationToken)
+        TDocument GetByMax<TDocument>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, object>> orderByDescending,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>;
 
         /// <summary>
@@ -481,7 +494,11 @@ namespace MongoDbGenericRepository
         /// <param name="partitionKey">An optional partitionKey.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns></returns>
-        TDocument GetByMax<TDocument>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> orderByDescending, string partitionKey, CancellationToken cancellationToken)
+        TDocument GetByMax<TDocument>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, object>> orderByDescending,
+            string partitionKey,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>;
 
         /// <summary>
@@ -502,7 +519,10 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="orderByAscending">A property selector to order by ascending.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        Task<TDocument> GetByMinAsync<TDocument>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> orderByAscending, CancellationToken cancellationToken)
+        Task<TDocument> GetByMinAsync<TDocument>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, object>> orderByAscending,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>;
 
         /// <summary>
@@ -513,7 +533,10 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="orderByAscending">A property selector to order by ascending.</param>
         /// <param name="partitionKey">An optional partitionKey.</param>
-        Task<TDocument> GetByMinAsync<TDocument>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> orderByAscending, string partitionKey)
+        Task<TDocument> GetByMinAsync<TDocument>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, object>> orderByAscending,
+            string partitionKey)
             where TDocument : IDocument<TKey>;
 
         /// <summary>
@@ -525,7 +548,11 @@ namespace MongoDbGenericRepository
         /// <param name="orderByAscending">A property selector to order by ascending.</param>
         /// <param name="partitionKey">An optional partitionKey.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        Task<TDocument> GetByMinAsync<TDocument>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> orderByAscending, string partitionKey, CancellationToken cancellationToken)
+        Task<TDocument> GetByMinAsync<TDocument>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, object>> orderByAscending,
+            string partitionKey,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>;
 
         /// <summary>
@@ -546,7 +573,10 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="orderByAscending">A property selector to order by ascending.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        TDocument GetByMin<TDocument>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> orderByAscending, CancellationToken cancellationToken)
+        TDocument GetByMin<TDocument>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, object>> orderByAscending,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>;
 
         /// <summary>
@@ -569,7 +599,11 @@ namespace MongoDbGenericRepository
         /// <param name="orderByAscending">A property selector to order by ascending.</param>
         /// <param name="partitionKey">An optional partitionKey.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        TDocument GetByMin<TDocument>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, object>> orderByAscending, string partitionKey, CancellationToken cancellationToken)
+        TDocument GetByMin<TDocument>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, object>> orderByAscending,
+            string partitionKey,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>;
 
         /// <summary>
@@ -590,7 +624,10 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="maxValueSelector">A property selector to order by ascending.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        Task<TValue> GetMaxValueAsync<TDocument, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> maxValueSelector, CancellationToken cancellationToken)
+        Task<TValue> GetMaxValueAsync<TDocument, TValue>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TValue>> maxValueSelector,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>;
 
         /// <summary>
@@ -601,7 +638,10 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="maxValueSelector">A property selector to order by ascending.</param>
         /// <param name="partitionKey">An optional partitionKey.</param>
-        Task<TValue> GetMaxValueAsync<TDocument, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> maxValueSelector, string partitionKey)
+        Task<TValue> GetMaxValueAsync<TDocument, TValue>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TValue>> maxValueSelector,
+            string partitionKey)
             where TDocument : IDocument<TKey>;
 
         /// <summary>
@@ -613,7 +653,11 @@ namespace MongoDbGenericRepository
         /// <param name="maxValueSelector">A property selector to order by ascending.</param>
         /// <param name="partitionKey">An optional partitionKey.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        Task<TValue> GetMaxValueAsync<TDocument, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> maxValueSelector, string partitionKey, CancellationToken cancellationToken)
+        Task<TValue> GetMaxValueAsync<TDocument, TValue>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TValue>> maxValueSelector,
+            string partitionKey,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>;
 
         /// <summary>
@@ -634,7 +678,10 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="maxValueSelector">A property selector to order by ascending.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        TValue GetMaxValue<TDocument, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> maxValueSelector, CancellationToken cancellationToken)
+        TValue GetMaxValue<TDocument, TValue>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TValue>> maxValueSelector,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>;
 
 
@@ -646,7 +693,10 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="maxValueSelector">A property selector to order by ascending.</param>
         /// <param name="partitionKey">An optional partitionKey.</param>
-        TValue GetMaxValue<TDocument, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> maxValueSelector, string partitionKey)
+        TValue GetMaxValue<TDocument, TValue>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TValue>> maxValueSelector,
+            string partitionKey)
             where TDocument : IDocument<TKey>;
 
         /// <summary>
@@ -658,7 +708,11 @@ namespace MongoDbGenericRepository
         /// <param name="maxValueSelector">A property selector to order by ascending.</param>
         /// <param name="partitionKey">An optional partitionKey.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        TValue GetMaxValue<TDocument, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> maxValueSelector, string partitionKey, CancellationToken cancellationToken)
+        TValue GetMaxValue<TDocument, TValue>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TValue>> maxValueSelector,
+            string partitionKey,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>;
 
         /// <summary>
@@ -680,7 +734,10 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="minValueSelector">A property selector to order by ascending.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        Task<TValue> GetMinValueAsync<TDocument, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> minValueSelector, CancellationToken cancellationToken)
+        Task<TValue> GetMinValueAsync<TDocument, TValue>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TValue>> minValueSelector,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>;
 
 
@@ -692,7 +749,10 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="minValueSelector">A property selector to order by ascending.</param>
         /// <param name="partitionKey">An optional partition key.</param>
-        Task<TValue> GetMinValueAsync<TDocument, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> minValueSelector, string partitionKey)
+        Task<TValue> GetMinValueAsync<TDocument, TValue>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TValue>> minValueSelector,
+            string partitionKey)
             where TDocument : IDocument<TKey>;
 
         /// <summary>
@@ -704,7 +764,11 @@ namespace MongoDbGenericRepository
         /// <param name="minValueSelector">A property selector to order by ascending.</param>
         /// <param name="partitionKey">An optional partition key.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        Task<TValue> GetMinValueAsync<TDocument, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> minValueSelector, string partitionKey, CancellationToken cancellationToken)
+        Task<TValue> GetMinValueAsync<TDocument, TValue>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TValue>> minValueSelector,
+            string partitionKey,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>;
 
         /// <summary>
@@ -725,7 +789,10 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="minValueSelector">A property selector to order by ascending.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        TValue GetMinValue<TDocument, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> minValueSelector, CancellationToken cancellationToken)
+        TValue GetMinValue<TDocument, TValue>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TValue>> minValueSelector,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>;
 
 
@@ -737,7 +804,10 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="minValueSelector">A property selector to order by ascending.</param>
         /// <param name="partitionKey">An optional partition key.</param>
-        TValue GetMinValue<TDocument, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> minValueSelector, string partitionKey)
+        TValue GetMinValue<TDocument, TValue>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TValue>> minValueSelector,
+            string partitionKey)
             where TDocument : IDocument<TKey>;
 
         /// <summary>
@@ -749,7 +819,11 @@ namespace MongoDbGenericRepository
         /// <param name="minValueSelector">A property selector to order by ascending.</param>
         /// <param name="partitionKey">An optional partition key.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        TValue GetMinValue<TDocument, TValue>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TValue>> minValueSelector, string partitionKey, CancellationToken cancellationToken)
+        TValue GetMinValue<TDocument, TValue>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TValue>> minValueSelector,
+            string partitionKey,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>;
 
         #endregion
@@ -772,7 +846,10 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="selector">The field you want to sum.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        Task<int> SumByAsync<TDocument>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, int>> selector, CancellationToken cancellationToken)
+        Task<int> SumByAsync<TDocument>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, int>> selector,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>;
 
         /// <summary>
@@ -793,7 +870,11 @@ namespace MongoDbGenericRepository
         /// <param name="selector">The field you want to sum.</param>
         /// <param name="partitionKey">The partition key of your document, if any.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        Task<int> SumByAsync<TDocument>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, int>> selector, string partitionKey, CancellationToken cancellationToken)
+        Task<int> SumByAsync<TDocument>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, int>> selector,
+            string partitionKey,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>;
 
         /// <summary>
@@ -812,7 +893,10 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="selector">The field you want to sum.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        Task<decimal> SumByAsync<TDocument>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, decimal>> selector, CancellationToken cancellationToken)
+        Task<decimal> SumByAsync<TDocument>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, decimal>> selector,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>;
 
         /// <summary>
@@ -833,7 +917,11 @@ namespace MongoDbGenericRepository
         /// <param name="selector">The field you want to sum.</param>
         /// <param name="partitionKey">The partition key of your document, if any.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        Task<decimal> SumByAsync<TDocument>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, decimal>> selector, string partitionKey, CancellationToken cancellationToken)
+        Task<decimal> SumByAsync<TDocument>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, decimal>> selector,
+            string partitionKey,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>;
 
         /// <summary>
@@ -885,7 +973,10 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="projection">The projection expression.</param>
         /// <param name="cancellationToken">The cancellation token</param>
-        Task<TProjection> ProjectOneAsync<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, CancellationToken cancellationToken)
+        Task<TProjection> ProjectOneAsync<TDocument, TProjection>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TProjection>> projection,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
             where TProjection : class;
 
@@ -897,7 +988,10 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="projection">The projection expression.</param>
         /// <param name="partitionKey">An optional partition key.</param>
-        Task<TProjection> ProjectOneAsync<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey)
+        Task<TProjection> ProjectOneAsync<TDocument, TProjection>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TProjection>> projection,
+            string partitionKey)
             where TDocument : IDocument<TKey>
             where TProjection : class;
 
@@ -910,9 +1004,14 @@ namespace MongoDbGenericRepository
         /// <param name="projection">The projection expression.</param>
         /// <param name="partitionKey">An optional partition key.</param>
         /// <param name="cancellationToken">The cancellation token</param>
-        Task<TProjection> ProjectOneAsync<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey, CancellationToken cancellationToken)
+        Task<TProjection> ProjectOneAsync<TDocument, TProjection>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TProjection>> projection,
+            string partitionKey,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
             where TProjection : class;
+
         /// <summary>
         ///     Returns a projected document matching the filter condition.
         /// </summary>
@@ -932,7 +1031,10 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="projection">The projection expression.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        TProjection ProjectOne<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, CancellationToken cancellationToken)
+        TProjection ProjectOne<TDocument, TProjection>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TProjection>> projection,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
             where TProjection : class;
 
@@ -944,7 +1046,10 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="projection">The projection expression.</param>
         /// <param name="partitionKey">An optional partition key.</param>
-        TProjection ProjectOne<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey)
+        TProjection ProjectOne<TDocument, TProjection>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TProjection>> projection,
+            string partitionKey)
             where TDocument : IDocument<TKey>
             where TProjection : class;
 
@@ -957,7 +1062,11 @@ namespace MongoDbGenericRepository
         /// <param name="projection">The projection expression.</param>
         /// <param name="partitionKey">An optional partition key.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        TProjection ProjectOne<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey, CancellationToken cancellationToken)
+        TProjection ProjectOne<TDocument, TProjection>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TProjection>> projection,
+            string partitionKey,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
             where TProjection : class;
 
@@ -968,7 +1077,9 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TProjection">The type representing the model you want to project to.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="projection">The projection expression.</param>
-        Task<List<TProjection>> ProjectManyAsync<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection)
+        Task<List<TProjection>> ProjectManyAsync<TDocument, TProjection>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TProjection>> projection)
             where TDocument : IDocument<TKey>
             where TProjection : class;
 
@@ -980,7 +1091,10 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="projection">The projection expression.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        Task<List<TProjection>> ProjectManyAsync<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, CancellationToken cancellationToken)
+        Task<List<TProjection>> ProjectManyAsync<TDocument, TProjection>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TProjection>> projection,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
             where TProjection : class;
 
@@ -992,7 +1106,10 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="projection">The projection expression.</param>
         /// <param name="partitionKey">An optional partition key.</param>
-        Task<List<TProjection>> ProjectManyAsync<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey)
+        Task<List<TProjection>> ProjectManyAsync<TDocument, TProjection>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TProjection>> projection,
+            string partitionKey)
             where TDocument : IDocument<TKey>
             where TProjection : class;
 
@@ -1005,7 +1122,11 @@ namespace MongoDbGenericRepository
         /// <param name="projection">The projection expression.</param>
         /// <param name="partitionKey">An optional partition key.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        Task<List<TProjection>> ProjectManyAsync<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey, CancellationToken cancellationToken)
+        Task<List<TProjection>> ProjectManyAsync<TDocument, TProjection>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TProjection>> projection,
+            string partitionKey,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
             where TProjection : class;
 
@@ -1028,7 +1149,10 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="projection">The projection expression.</param>
         /// <param name="cancellationToken">The cancellation token</param>
-        List<TProjection> ProjectMany<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, CancellationToken cancellationToken)
+        List<TProjection> ProjectMany<TDocument, TProjection>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TProjection>> projection,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
             where TProjection : class;
 
@@ -1040,7 +1164,10 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="projection">The projection expression.</param>
         /// <param name="partitionKey">An optional partition key.</param>
-        List<TProjection> ProjectMany<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey)
+        List<TProjection> ProjectMany<TDocument, TProjection>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TProjection>> projection,
+            string partitionKey)
             where TDocument : IDocument<TKey>
             where TProjection : class;
 
@@ -1053,7 +1180,11 @@ namespace MongoDbGenericRepository
         /// <param name="projection">The projection expression.</param>
         /// <param name="partitionKey">An optional partition key.</param>
         /// <param name="cancellationToken">The cancellation token</param>
-        List<TProjection> ProjectMany<TDocument, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TProjection>> projection, string partitionKey, CancellationToken cancellationToken)
+        List<TProjection> ProjectMany<TDocument, TProjection>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TProjection>> projection,
+            string partitionKey,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
             where TProjection : class;
 
@@ -1070,7 +1201,9 @@ namespace MongoDbGenericRepository
         /// <typeparam name="TProjection">The type of the projected group.</typeparam>
         /// <param name="groupingCriteria">The grouping criteria.</param>
         /// <param name="groupProjection">The projected group result.</param>
-        List<TProjection> GroupBy<TDocument, TGroupKey, TProjection>(Expression<Func<TDocument, TGroupKey>> groupingCriteria, Expression<Func<IGrouping<TGroupKey, TDocument>, TProjection>> groupProjection)
+        List<TProjection> GroupBy<TDocument, TGroupKey, TProjection>(
+            Expression<Func<TDocument, TGroupKey>> groupingCriteria,
+            Expression<Func<IGrouping<TGroupKey, TDocument>, TProjection>> groupProjection)
             where TDocument : IDocument<TKey>
             where TProjection : class, new();
 
@@ -1084,7 +1217,10 @@ namespace MongoDbGenericRepository
         /// <param name="groupingCriteria">The grouping criteria.</param>
         /// <param name="groupProjection">The projected group result.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        List<TProjection> GroupBy<TDocument, TGroupKey, TProjection>(Expression<Func<TDocument, TGroupKey>> groupingCriteria, Expression<Func<IGrouping<TGroupKey, TDocument>, TProjection>> groupProjection, CancellationToken cancellationToken)
+        List<TProjection> GroupBy<TDocument, TGroupKey, TProjection>(
+            Expression<Func<TDocument, TGroupKey>> groupingCriteria,
+            Expression<Func<IGrouping<TGroupKey, TDocument>, TProjection>> groupProjection,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
             where TProjection : class, new();
 
@@ -1098,7 +1234,10 @@ namespace MongoDbGenericRepository
         /// <param name="groupingCriteria">The grouping criteria.</param>
         /// <param name="groupProjection">The projected group result.</param>
         /// <param name="partitionKey">The partition key of your document, if any.</param>
-        List<TProjection> GroupBy<TDocument, TGroupKey, TProjection>(Expression<Func<TDocument, TGroupKey>> groupingCriteria, Expression<Func<IGrouping<TGroupKey, TDocument>, TProjection>> groupProjection, string partitionKey)
+        List<TProjection> GroupBy<TDocument, TGroupKey, TProjection>(
+            Expression<Func<TDocument, TGroupKey>> groupingCriteria,
+            Expression<Func<IGrouping<TGroupKey, TDocument>, TProjection>> groupProjection,
+            string partitionKey)
             where TDocument : IDocument<TKey>
             where TProjection : class, new();
 
@@ -1113,7 +1252,11 @@ namespace MongoDbGenericRepository
         /// <param name="groupProjection">The projected group result.</param>
         /// <param name="partitionKey">The partition key of your document, if any.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        List<TProjection> GroupBy<TDocument, TGroupKey, TProjection>(Expression<Func<TDocument, TGroupKey>> groupingCriteria, Expression<Func<IGrouping<TGroupKey, TDocument>, TProjection>> groupProjection, string partitionKey, CancellationToken cancellationToken)
+        List<TProjection> GroupBy<TDocument, TGroupKey, TProjection>(
+            Expression<Func<TDocument, TGroupKey>> groupingCriteria,
+            Expression<Func<IGrouping<TGroupKey, TDocument>, TProjection>> groupProjection,
+            string partitionKey,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
             where TProjection : class, new();
 
@@ -1127,7 +1270,10 @@ namespace MongoDbGenericRepository
         /// <param name="filter">A LINQ expression filter.</param>
         /// <param name="groupingCriteria">The grouping criteria.</param>
         /// <param name="groupProjection">The projected group result.</param>
-        List<TProjection> GroupBy<TDocument, TGroupKey, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TGroupKey>> groupingCriteria, Expression<Func<IGrouping<TGroupKey, TDocument>, TProjection>> groupProjection)
+        List<TProjection> GroupBy<TDocument, TGroupKey, TProjection>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TGroupKey>> groupingCriteria,
+            Expression<Func<IGrouping<TGroupKey, TDocument>, TProjection>> groupProjection)
             where TDocument : IDocument<TKey>
             where TProjection : class, new();
 
@@ -1142,7 +1288,11 @@ namespace MongoDbGenericRepository
         /// <param name="groupingCriteria">The grouping criteria.</param>
         /// <param name="groupProjection">The projected group result.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        List<TProjection> GroupBy<TDocument, TGroupKey, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TGroupKey>> groupingCriteria, Expression<Func<IGrouping<TGroupKey, TDocument>, TProjection>> groupProjection, CancellationToken cancellationToken)
+        List<TProjection> GroupBy<TDocument, TGroupKey, TProjection>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TGroupKey>> groupingCriteria,
+            Expression<Func<IGrouping<TGroupKey, TDocument>, TProjection>> groupProjection,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
             where TProjection : class, new();
 
@@ -1157,7 +1307,11 @@ namespace MongoDbGenericRepository
         /// <param name="groupingCriteria">The grouping criteria.</param>
         /// <param name="groupProjection">The projected group result.</param>
         /// <param name="partitionKey">The partition key of your document, if any.</param>
-        List<TProjection> GroupBy<TDocument, TGroupKey, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TGroupKey>> groupingCriteria, Expression<Func<IGrouping<TGroupKey, TDocument>, TProjection>> groupProjection, string partitionKey)
+        List<TProjection> GroupBy<TDocument, TGroupKey, TProjection>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TGroupKey>> groupingCriteria,
+            Expression<Func<IGrouping<TGroupKey, TDocument>, TProjection>> groupProjection,
+            string partitionKey)
             where TDocument : IDocument<TKey>
             where TProjection : class, new();
 
@@ -1173,7 +1327,12 @@ namespace MongoDbGenericRepository
         /// <param name="groupProjection">The projected group result.</param>
         /// <param name="partitionKey">The partition key of your document, if any.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        List<TProjection> GroupBy<TDocument, TGroupKey, TProjection>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TGroupKey>> groupingCriteria, Expression<Func<IGrouping<TGroupKey, TDocument>, TProjection>> groupProjection, string partitionKey, CancellationToken cancellationToken)
+        List<TProjection> GroupBy<TDocument, TGroupKey, TProjection>(
+            Expression<Func<TDocument, bool>> filter,
+            Expression<Func<TDocument, TGroupKey>> groupingCriteria,
+            Expression<Func<IGrouping<TGroupKey, TDocument>, TProjection>> groupProjection,
+            string partitionKey,
+            CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
             where TProjection : class, new();
 

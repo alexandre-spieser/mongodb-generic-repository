@@ -296,6 +296,5 @@ namespace MongoDbGenericRepository
         long DeleteMany<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey, CancellationToken cancellationToken)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>;
-
     }
 }

@@ -8,14 +8,14 @@ using MongoDbGenericRepository.Models;
 namespace MongoDbGenericRepository
 {
     /// <summary>
-    /// The interface exposing deletion functionality for Key typed repositories.
+    ///     The interface exposing deletion functionality for Key typed repositories.
     /// </summary>
     /// <typeparam name="TKey">The type of the document Id.</typeparam>
     public interface IBaseMongoRepository_Delete<TKey>
         where TKey : IEquatable<TKey>
     {
         /// <summary>
-        /// Deletes a document.
+        ///     Deletes a document.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="document">The document you want to delete.</param>
@@ -24,7 +24,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>;
 
         /// <summary>
-        /// Deletes a document.
+        ///     Deletes a document.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="document">The document you want to delete.</param>
@@ -34,7 +34,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>;
 
         /// <summary>
-        /// Deletes a document matching the condition of the LINQ expression filter.
+        ///     Deletes a document matching the condition of the LINQ expression filter.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
@@ -43,7 +43,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>;
 
         /// <summary>
-        /// Deletes a document matching the condition of the LINQ expression filter.
+        ///     Deletes a document matching the condition of the LINQ expression filter.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
@@ -53,7 +53,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>;
 
         /// <summary>
-        /// Deletes a document matching the condition of the LINQ expression filter.
+        ///     Deletes a document matching the condition of the LINQ expression filter.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
@@ -63,7 +63,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>;
 
         /// <summary>
-        /// Deletes a document matching the condition of the LINQ expression filter.
+        ///     Deletes a document matching the condition of the LINQ expression filter.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
@@ -74,7 +74,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>;
 
         /// <summary>
-        /// Asynchronously deletes a document matching the condition of the LINQ expression filter.
+        ///     Asynchronously deletes a document matching the condition of the LINQ expression filter.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="document">The document you want to delete.</param>
@@ -83,7 +83,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>;
 
         /// <summary>
-        /// Asynchronously deletes a document matching the condition of the LINQ expression filter.
+        ///     Asynchronously deletes a document matching the condition of the LINQ expression filter.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="document">The document you want to delete.</param>
@@ -94,7 +94,7 @@ namespace MongoDbGenericRepository
 
 
         /// <summary>
-        /// Asynchronously deletes a document matching the condition of the LINQ expression filter.
+        ///     Asynchronously deletes a document matching the condition of the LINQ expression filter.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
@@ -103,7 +103,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>;
 
         /// <summary>
-        /// Asynchronously deletes a document matching the condition of the LINQ expression filter.
+        ///     Asynchronously deletes a document matching the condition of the LINQ expression filter.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
@@ -113,7 +113,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>;
 
         /// <summary>
-        /// Asynchronously deletes a document matching the condition of the LINQ expression filter.
+        ///     Asynchronously deletes a document matching the condition of the LINQ expression filter.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
@@ -123,7 +123,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>;
 
         /// <summary>
-        /// Asynchronously deletes a document matching the condition of the LINQ expression filter.
+        ///     Asynchronously deletes a document matching the condition of the LINQ expression filter.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
@@ -134,7 +134,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>;
 
         /// <summary>
-        /// Asynchronously deletes the documents matching the condition of the LINQ expression filter.
+        ///     Asynchronously deletes the documents matching the condition of the LINQ expression filter.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
@@ -143,7 +143,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>;
 
         /// <summary>
-        /// Asynchronously deletes the documents matching the condition of the LINQ expression filter.
+        ///     Asynchronously deletes the documents matching the condition of the LINQ expression filter.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
@@ -153,7 +153,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>;
 
         /// <summary>
-        /// Asynchronously deletes the documents matching the condition of the LINQ expression filter.
+        ///     Asynchronously deletes the documents matching the condition of the LINQ expression filter.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
@@ -163,7 +163,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>;
 
         /// <summary>
-        /// Asynchronously deletes the documents matching the condition of the LINQ expression filter.
+        ///     Asynchronously deletes the documents matching the condition of the LINQ expression filter.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
@@ -174,7 +174,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>;
 
         /// <summary>
-        /// Asynchronously deletes a list of documents.
+        ///     Asynchronously deletes a list of documents.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="documents">The list of documents to delete.</param>
@@ -183,7 +183,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>;
 
         /// <summary>
-        /// Asynchronously deletes a list of documents.
+        ///     Asynchronously deletes a list of documents.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="documents">The list of documents to delete.</param>
@@ -193,7 +193,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>;
 
         /// <summary>
-        /// Deletes a list of documents.
+        ///     Deletes a list of documents.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="documents">The list of documents to delete.</param>
@@ -202,7 +202,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>;
 
         /// <summary>
-        /// Deletes a list of documents.
+        ///     Deletes a list of documents.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="documents">The list of documents to delete.</param>
@@ -212,7 +212,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>;
 
         /// <summary>
-        /// Deletes the documents matching the condition of the LINQ expression filter.
+        ///     Deletes the documents matching the condition of the LINQ expression filter.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
@@ -221,7 +221,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>;
 
         /// <summary>
-        /// Deletes the documents matching the condition of the LINQ expression filter.
+        ///     Deletes the documents matching the condition of the LINQ expression filter.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
@@ -231,7 +231,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>;
 
         /// <summary>
-        /// Deletes the documents matching the condition of the LINQ expression filter.
+        ///     Deletes the documents matching the condition of the LINQ expression filter.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>
@@ -241,7 +241,7 @@ namespace MongoDbGenericRepository
             where TDocument : IDocument<TKey>;
 
         /// <summary>
-        /// Deletes the documents matching the condition of the LINQ expression filter.
+        ///     Deletes the documents matching the condition of the LINQ expression filter.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <param name="filter">A LINQ expression filter.</param>

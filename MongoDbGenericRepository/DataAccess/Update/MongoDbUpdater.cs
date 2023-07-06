@@ -56,7 +56,10 @@ namespace MongoDbGenericRepository.DataAccess.Update
         }
 
         /// <inheritdoc cref="IMongoDbUpdater" />
-        public virtual bool UpdateOne<TDocument, TKey>(TDocument documentToModify, UpdateDefinition<TDocument> update, CancellationToken cancellationToken = default)
+        public virtual bool UpdateOne<TDocument, TKey>(
+            TDocument documentToModify,
+            UpdateDefinition<TDocument> update,
+            CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
@@ -83,12 +86,19 @@ namespace MongoDbGenericRepository.DataAccess.Update
         }
 
         /// <inheritdoc cref="IMongoDbUpdater" />
-        public virtual bool UpdateOne<TDocument, TKey, TField>(TDocument documentToModify, Expression<Func<TDocument, TField>> field, TField value, CancellationToken cancellationToken = default)
+        public virtual bool UpdateOne<TDocument, TKey, TField>(
+            TDocument documentToModify,
+            Expression<Func<TDocument, TField>> field,
+            TField value,
+            CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
         {
             var filter = Builders<TDocument>.Filter.Eq("Id", documentToModify.Id);
-            var updateRes = HandlePartitioned<TDocument, TKey>(documentToModify).UpdateOne(filter, Builders<TDocument>.Update.Set(field, value), cancellationToken: cancellationToken);
+            var updateRes = HandlePartitioned<TDocument, TKey>(documentToModify).UpdateOne(
+                filter,
+                Builders<TDocument>.Update.Set(field, value),
+                cancellationToken: cancellationToken);
             return updateRes.ModifiedCount == 1;
         }
 

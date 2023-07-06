@@ -25,7 +25,11 @@ namespace MongoDbGenericRepository
         /// <param name="skipNumber">The number of documents you want to skip. Default value is 0.</param>
         /// <param name="takeNumber">The number of documents you want to take. Default value is 50.</param>
         /// <param name="partitionKey">An optional partition key.</param>
-        Task<List<TDocument>> GetPaginatedAsync<TDocument>(Expression<Func<TDocument, bool>> filter, int skipNumber = 0, int takeNumber = 50, string partitionKey = null)
+        Task<List<TDocument>> GetPaginatedAsync<TDocument>(
+            Expression<Func<TDocument, bool>> filter,
+            int skipNumber = 0,
+            int takeNumber = 50,
+            string partitionKey = null)
             where TDocument : IDocument;
 
         /// <summary>
@@ -37,7 +41,11 @@ namespace MongoDbGenericRepository
         /// <param name="skipNumber">The number of documents you want to skip. Default value is 0.</param>
         /// <param name="takeNumber">The number of documents you want to take. Default value is 50.</param>
         /// <param name="partitionKey">An optional partition key.</param>
-        Task<List<TDocument>> GetPaginatedAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, int skipNumber = 0, int takeNumber = 50, string partitionKey = null)
+        Task<List<TDocument>> GetPaginatedAsync<TDocument, TKey>(
+            Expression<Func<TDocument, bool>> filter,
+            int skipNumber = 0,
+            int takeNumber = 50,
+            string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>;
 
@@ -49,7 +57,10 @@ namespace MongoDbGenericRepository
         /// <param name="update"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        Task<TDocument> GetAndUpdateOne<TDocument>(FilterDefinition<TDocument> filter, UpdateDefinition<TDocument> update, FindOneAndUpdateOptions<TDocument, TDocument> options)
+        Task<TDocument> GetAndUpdateOne<TDocument>(
+            FilterDefinition<TDocument> filter,
+            UpdateDefinition<TDocument> update,
+            FindOneAndUpdateOptions<TDocument, TDocument> options)
             where TDocument : IDocument;
 
         /// <summary>
@@ -61,7 +72,10 @@ namespace MongoDbGenericRepository
         /// <param name="update"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        Task<TDocument> GetAndUpdateOne<TDocument, TKey>(FilterDefinition<TDocument> filter, UpdateDefinition<TDocument> update, FindOneAndUpdateOptions<TDocument, TDocument> options)
+        Task<TDocument> GetAndUpdateOne<TDocument, TKey>(
+            FilterDefinition<TDocument> filter,
+            UpdateDefinition<TDocument> update,
+            FindOneAndUpdateOptions<TDocument, TDocument> options)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>;
     }

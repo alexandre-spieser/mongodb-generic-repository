@@ -15,7 +15,8 @@ namespace MongoDbGenericRepository.DataAccess.Read
         public virtual List<TProjection> GroupBy<TDocument, TGroupKey, TProjection, TKey>(
             Expression<Func<TDocument, TGroupKey>> groupingCriteria,
             Expression<Func<IGrouping<TGroupKey, TDocument>, TProjection>> groupProjection,
-            string partitionKey = null, CancellationToken cancellationToken = default)
+            string partitionKey = null,
+            CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>
             where TProjection : class, new()
@@ -23,7 +24,7 @@ namespace MongoDbGenericRepository.DataAccess.Read
             return HandlePartitioned<TDocument, TKey>(partitionKey)
                 .Aggregate()
                 .Group(groupingCriteria, groupProjection)
-                .ToList(cancellationToken:cancellationToken);
+                .ToList(cancellationToken);
         }
 
         /// <inheritdoc />

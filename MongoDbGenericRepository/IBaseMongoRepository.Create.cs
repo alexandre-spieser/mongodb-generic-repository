@@ -7,14 +7,14 @@ using MongoDbGenericRepository.Models;
 namespace MongoDbGenericRepository
 {
     /// <summary>
-    /// The IBaseMongoRepository_Create interface to expose document creation functionality
-    /// with document having an Id of type Guid.
+    ///     The IBaseMongoRepository_Create interface to expose document creation functionality
+    ///     with document having an Id of type Guid.
     /// </summary>
     public interface IBaseMongoRepository_Create : IBaseMongoRepository_Create<Guid>
     {
         /// <summary>
-        /// Asynchronously adds a document to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
+        ///     Asynchronously adds a document to the collection.
+        ///     Populates the Id and AddedAtUtc fields if necessary.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
@@ -24,8 +24,8 @@ namespace MongoDbGenericRepository
             where TKey : IEquatable<TKey>;
 
         /// <summary>
-        /// Asynchronously adds a document to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
+        ///     Asynchronously adds a document to the collection.
+        ///     Populates the Id and AddedAtUtc fields if necessary.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
@@ -36,8 +36,8 @@ namespace MongoDbGenericRepository
             where TKey : IEquatable<TKey>;
 
         /// <summary>
-        /// Adds a document to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
+        ///     Adds a document to the collection.
+        ///     Populates the Id and AddedAtUtc fields if necessary.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
@@ -47,8 +47,8 @@ namespace MongoDbGenericRepository
             where TKey : IEquatable<TKey>;
 
         /// <summary>
-        /// Adds a document to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
+        ///     Adds a document to the collection.
+        ///     Populates the Id and AddedAtUtc fields if necessary.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
@@ -59,8 +59,8 @@ namespace MongoDbGenericRepository
             where TKey : IEquatable<TKey>;
 
         /// <summary>
-        /// Asynchronously adds a list of documents to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
+        ///     Asynchronously adds a list of documents to the collection.
+        ///     Populates the Id and AddedAtUtc fields if necessary.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
@@ -70,8 +70,8 @@ namespace MongoDbGenericRepository
             where TKey : IEquatable<TKey>;
 
         /// <summary>
-        /// Asynchronously adds a list of documents to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
+        ///     Asynchronously adds a list of documents to the collection.
+        ///     Populates the Id and AddedAtUtc fields if necessary.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
@@ -82,8 +82,8 @@ namespace MongoDbGenericRepository
             where TKey : IEquatable<TKey>;
 
         /// <summary>
-        /// Adds a list of documents to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
+        ///     Adds a list of documents to the collection.
+        ///     Populates the Id and AddedAtUtc fields if necessary.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
@@ -93,8 +93,8 @@ namespace MongoDbGenericRepository
             where TKey : IEquatable<TKey>;
 
         /// <summary>
-        /// Adds a list of documents to the collection.
-        /// Populates the Id and AddedAtUtc fields if necessary.
+        ///     Adds a list of documents to the collection.
+        ///     Populates the Id and AddedAtUtc fields if necessary.
         /// </summary>
         /// <typeparam name="TDocument">The type representing a Document.</typeparam>
         /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>

@@ -18,16 +18,6 @@ namespace MongoDbGenericRepository
         where TKey : IEquatable<TKey>
     {
         /// <summary>
-        ///     The MongoDbContext
-        /// </summary>
-        protected IMongoDbContext MongoDbContext { get; set; }
-
-        /// <summary>
-        ///     A MongoDb Reader for read operations
-        /// </summary>
-        protected IMongoDbReader MongoDbReader { get; set; }
-
-        /// <summary>
         ///     The constructor taking a connection string and a database name.
         /// </summary>
         /// <param name="connectionString">The connection string of the MongoDb server.</param>
@@ -54,6 +44,16 @@ namespace MongoDbGenericRepository
         {
             SetupMongoDbContext(mongoDbContext);
         }
+
+        /// <summary>
+        ///     The MongoDbContext
+        /// </summary>
+        protected IMongoDbContext MongoDbContext { get; set; }
+
+        /// <summary>
+        ///     A MongoDb Reader for read operations
+        /// </summary>
+        protected IMongoDbReader MongoDbReader { get; set; }
 
         /// <summary>
         ///     The connection string.
