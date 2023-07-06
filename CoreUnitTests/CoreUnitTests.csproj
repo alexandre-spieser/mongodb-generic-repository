@@ -30,8 +30,4 @@
       <ProjectReference Include="..\MongoDbGenericRepository\MongoDbGenericRepository.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="KeyTypedRepositoryTests\UpdateTests\" />
-    </ItemGroup>
-
 </Project>

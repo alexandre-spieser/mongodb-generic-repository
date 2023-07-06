@@ -253,5 +253,19 @@ namespace MongoDbGenericRepository.DataAccess.Update
             var updateRes = collection.UpdateMany(filter, updateDefinition, cancellationToken: cancellationToken);
             return updateRes.ModifiedCount;
         }
+
+        /// <inheritdoc cref="IMongoDbUpdater" />
+        public virtual long UpdateMany<TDocument, TKey>(
+            Expression<Func<TDocument, bool>> filter,
+            UpdateDefinition<TDocument> updateDefinition,
+            string partitionKey = null,
+            CancellationToken cancellationToken = default)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>
+        {
+            var collection = string.IsNullOrEmpty(partitionKey) ? GetCollection<TDocument, TKey>() : GetCollection<TDocument, TKey>(partitionKey);
+            var updateRes = collection.UpdateMany(filter, updateDefinition, cancellationToken: cancellationToken);
+            return updateRes.ModifiedCount;
+        }
     }
 }

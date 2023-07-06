@@ -504,5 +504,22 @@ namespace MongoDbGenericRepository.DataAccess.Update
             CancellationToken cancellationToken = default)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>;
+
+        /// <summary>
+        ///     For the entities selected by the filter, apply the update definition.
+        /// </summary>
+        /// <typeparam name="TDocument">The type representing a Document.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key for a Document.</typeparam>
+        /// <param name="filter">The document filter.</param>
+        /// <param name="updateDefinition">The update definition.</param>
+        /// <param name="partitionKey">The value of the partition key.</param>
+        /// <param name="cancellationToken">The optional cancellation token.</param>
+        long UpdateMany<TDocument, TKey>(
+            Expression<Func<TDocument, bool>> filter,
+            UpdateDefinition<TDocument> updateDefinition,
+            string partitionKey = null,
+            CancellationToken cancellationToken = default)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
     }
 }

@@ -4,6 +4,7 @@ using MongoDbGenericRepository.DataAccess.Create;
 using MongoDbGenericRepository.DataAccess.Delete;
 using MongoDbGenericRepository.DataAccess.Index;
 using MongoDbGenericRepository.DataAccess.Read;
+using MongoDbGenericRepository.DataAccess.Update;
 using Moq;
 
 namespace CoreUnitTests.Infrastructure;
@@ -48,6 +49,11 @@ public class TestMongoRepositoryContext
                 {
                     _sut.SetEraser(Eraser.Object);
                 }
+
+                if (Updater != null)
+                {
+                    _sut.SetUpdater(Updater.Object);
+                }
             }
 
             return _sut;
@@ -61,4 +67,6 @@ public class TestMongoRepositoryContext
     protected Mock<IMongoDbReader> Reader { get; set; }
 
     protected Mock<IMongoDbEraser> Eraser { get; set; }
+
+    protected Mock<IMongoDbUpdater> Updater { get; set; }
 }
