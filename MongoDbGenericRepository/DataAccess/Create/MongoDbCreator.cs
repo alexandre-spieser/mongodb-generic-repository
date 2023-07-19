@@ -69,7 +69,7 @@ namespace MongoDbGenericRepository.DataAccess.Create
             }
             else
             {
-                await GetCollection<TDocument, TKey>().InsertManyAsync(documentsList.ToList(), null, cancellationToken);
+                await GetCollection<TDocument, TKey>().InsertManyAsync(documentsList, null, cancellationToken);
             }
         }
 
@@ -100,7 +100,7 @@ namespace MongoDbGenericRepository.DataAccess.Create
             }
             else
             {
-                GetCollection<TDocument, TKey>().InsertMany(documentList.ToList(), cancellationToken: cancellationToken);
+                GetCollection<TDocument, TKey>().InsertMany(documentList, cancellationToken: cancellationToken);
             }
         }
 
