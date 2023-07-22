@@ -2,7 +2,6 @@
 using MongoDB.Driver.Linq;
 using MongoDbGenericRepository.Models;
 using System;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace MongoDbGenericRepository.DataAccess.Base
@@ -10,7 +9,7 @@ namespace MongoDbGenericRepository.DataAccess.Base
     /// <summary>
     /// A base class for accessing the Database and its Collections.
     /// </summary>
-    public class DataAccessBase
+    public class DataAccessBase : IDataAccessBase
     {
         /// <summary>
         /// The MongoDbContext
@@ -168,7 +167,6 @@ namespace MongoDbGenericRepository.DataAccess.Base
                                                                .SortByDescending(ConvertExpression(maxValueSelector))
                                                                .Limit(1);
         }
-
 
         #endregion
     }

@@ -7,6 +7,5 @@ namespace MongoDbGenericRepository
     /// </summary>
     public interface IReadOnlyMongoRepository : IBaseReadOnlyRepository, IReadOnlyMongoRepository<Guid>
     {
-
     }
 }

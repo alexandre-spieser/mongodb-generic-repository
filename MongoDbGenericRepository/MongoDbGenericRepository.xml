@@ -2364,13 +2364,13 @@
         </member>
         <member name="M:MongoDbGenericRepository.BaseMongoRepository.#ctor(MongoDbGenericRepository.IMongoDbContext)">
             <summary>
-            The contructor taking a <see cref="T:MongoDbGenericRepository.IMongoDbContext"/>.
+            The constructor taking a <see cref="T:MongoDbGenericRepository.IMongoDbContext"/>.
             </summary>
             <param name="mongoDbContext">A mongodb context implementing <see cref="T:MongoDbGenericRepository.IMongoDbContext"/></param>
         </member>
         <member name="M:MongoDbGenericRepository.BaseMongoRepository.#ctor(MongoDB.Driver.IMongoDatabase)">
             <summary>
-            The contructor taking a <see cref="T:MongoDB.Driver.IMongoDatabase"/>.
+            The constructor taking a <see cref="T:MongoDB.Driver.IMongoDatabase"/>.
             </summary>
             <param name="mongoDatabase">A mongodb context implementing <see cref="T:MongoDB.Driver.IMongoDatabase"/></param>
         </member>
@@ -3360,13 +3360,13 @@
         </member>
         <member name="M:MongoDbGenericRepository.BaseMongoRepository`1.#ctor(MongoDbGenericRepository.IMongoDbContext)">
             <summary>
-            The contructor taking a <see cref="T:MongoDbGenericRepository.IMongoDbContext"/>.
+            The constructor taking a <see cref="T:MongoDbGenericRepository.IMongoDbContext"/>.
             </summary>
             <param name="mongoDbContext">A mongodb context implementing <see cref="T:MongoDbGenericRepository.IMongoDbContext"/></param>
         </member>
         <member name="M:MongoDbGenericRepository.BaseMongoRepository`1.#ctor(MongoDB.Driver.IMongoDatabase)">
             <summary>
-            The contructor taking a <see cref="T:MongoDB.Driver.IMongoDatabase"/>.
+            The constructor taking a <see cref="T:MongoDB.Driver.IMongoDatabase"/>.
             </summary>
             <param name="mongoDatabase">A mongodb context implementing <see cref="T:MongoDB.Driver.IMongoDatabase"/></param>
         </member>
@@ -3757,13 +3757,13 @@
         </member>
         <member name="M:MongoDbGenericRepository.ReadOnlyMongoRepository`1.#ctor(MongoDB.Driver.IMongoDatabase)">
             <summary>
-            The contructor taking a <see cref="T:MongoDB.Driver.IMongoDatabase"/>.
+            The constructor taking a <see cref="T:MongoDB.Driver.IMongoDatabase"/>.
             </summary>
             <param name="mongoDatabase">A mongodb context implementing <see cref="T:MongoDB.Driver.IMongoDatabase"/></param>
         </member>
         <member name="M:MongoDbGenericRepository.ReadOnlyMongoRepository`1.#ctor(MongoDbGenericRepository.IMongoDbContext)">
             <summary>
-            The contructor taking a <see cref="T:MongoDbGenericRepository.IMongoDbContext"/>.
+            The constructor taking a <see cref="T:MongoDbGenericRepository.IMongoDbContext"/>.
             </summary>
             <param name="mongoDbContext">A mongodb context implementing <see cref="T:MongoDbGenericRepository.IMongoDbContext"/></param>
         </member>
@@ -4492,13 +4492,13 @@
         </member>
         <member name="M:MongoDbGenericRepository.ReadOnlyMongoRepository.#ctor(MongoDbGenericRepository.IMongoDbContext)">
             <summary>
-            The contructor taking a <see cref="T:MongoDbGenericRepository.IMongoDbContext"/>.
+            The constructor taking a <see cref="T:MongoDbGenericRepository.IMongoDbContext"/>.
             </summary>
             <param name="mongoDbContext">A mongodb context implementing <see cref="T:MongoDbGenericRepository.IMongoDbContext"/></param>
         </member>
         <member name="M:MongoDbGenericRepository.ReadOnlyMongoRepository.#ctor(MongoDB.Driver.IMongoDatabase)">
             <summary>
-            The contructor taking a <see cref="T:MongoDB.Driver.IMongoDatabase"/>.
+            The constructor taking a <see cref="T:MongoDB.Driver.IMongoDatabase"/>.
             </summary>
             <param name="mongoDatabase">A mongodb context implementing <see cref="T:MongoDB.Driver.IMongoDatabase"/></param>
         </member>
