@@ -754,8 +754,8 @@ public class UpdateOneTests : GenericTestContext<MongoDbUpdater>
     {
         var replacedId = Fixture.Create<Guid>();
         var count = Fixture.Create<long>();
-        var replaceResult = new ReplaceOneResult.Acknowledged(count, 1, BsonValue.Create(replacedId));
-        var updateResult = new UpdateResult.Acknowledged(count, 1, BsonValue.Create(replacedId));
+        var replaceResult = new ReplaceOneResult.Acknowledged(count, 1, new BsonBinaryData(replacedId, GuidRepresentation.Standard));
+        var updateResult = new UpdateResult.Acknowledged(count, 1, new BsonBinaryData(replacedId, GuidRepresentation.Standard));
 
         var collection = MockOf<IMongoCollection<TestDocument>>();
         collection
