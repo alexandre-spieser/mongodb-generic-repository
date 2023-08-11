@@ -531,8 +531,8 @@ public class UpdateManyAsyncTests : GenericTestContext<MongoDbUpdater>
     private Mock<IMongoCollection<TestDocument>> SetupCollection(long count, string partitionKey = null)
     {
         var replacedId = Fixture.Create<Guid>();
-        var replaceResult = new ReplaceOneResult.Acknowledged(count, count, BsonValue.Create(replacedId));
-        var updateResult = new UpdateResult.Acknowledged(count, count, BsonValue.Create(replacedId));
+        var replaceResult = new ReplaceOneResult.Acknowledged(count, count, new BsonBinaryData(replacedId, GuidRepresentation.Standard));
+        var updateResult = new UpdateResult.Acknowledged(count, count, new BsonBinaryData(replacedId, GuidRepresentation.Standard));
 
         var collection = MockOf<IMongoCollection<TestDocument>>();
         collection

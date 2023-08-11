@@ -3,6 +3,9 @@ using MongoDbGenericRepository.Attributes;
 using MongoDbGenericRepository.Utils;
 using System.Linq;
 using System.Reflection;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Serializers;
+using MongoDbGenericRepository.Internals;
 
 namespace MongoDbGenericRepository
 {
@@ -20,7 +23,6 @@ namespace MongoDbGenericRepository
         /// The IMongoDatabase from the official MongoDB driver
         /// </summary>
         public IMongoDatabase Database { get; }
-
 
         /// <summary>
         /// The constructor of the MongoDbContext, it needs an object implementing <see cref="IMongoDatabase"/>.
@@ -90,9 +92,14 @@ namespace MongoDbGenericRepository
         /// Sets the Guid representation of the MongoDB Driver.
         /// </summary>
         /// <param name="guidRepresentation">The new value of the GuidRepresentation</param>
-        public virtual void SetGuidRepresentation(MongoDB.Bson.GuidRepresentation guidRepresentation)
+        public virtual void SetGuidRepresentation(GuidRepresentation guidRepresentation)
         {
-            MongoDefaults.GuidRepresentation = guidRepresentation;
+            // GuidRepresentation and GuidRepresentationMode will be removed in the next major release of the MongoDB Driver.
+            // We can safely replace this with RepositorySerializationProvider.Instance.RegisterSerializer once we upgrade to the next major release.
+#pragma warning disable CS0618
+            BsonDefaults.GuidRepresentationMode = GuidRepresentationMode.V3;
+            RepositorySerializationProvider.Instance.RegisterSerializer(new GuidSerializer(guidRepresentation));
+#pragma warning restore CS0618
         }
 
         /// <summary>
@@ -103,8 +110,8 @@ namespace MongoDbGenericRepository
         protected virtual string GetAttributeCollectionName<TDocument>()
         {
             return (typeof(TDocument).GetTypeInfo()
-                                     .GetCustomAttributes(typeof(CollectionNameAttribute))
-                                     .FirstOrDefault() as CollectionNameAttribute)?.Name;
+                .GetCustomAttributes(typeof(CollectionNameAttribute))
+                .FirstOrDefault() as CollectionNameAttribute)?.Name;
         }
 
         /// <summary>
@@ -114,7 +121,7 @@ namespace MongoDbGenericRepository
         protected virtual void InitializeGuidRepresentation()
         {
             // by default, avoid legacy UUID representation: use Binary 0x04 subtype.
-            MongoDefaults.GuidRepresentation = MongoDB.Bson.GuidRepresentation.Standard;
+            SetGuidRepresentation(GuidRepresentation.Standard);
         }
 
         /// <summary>
