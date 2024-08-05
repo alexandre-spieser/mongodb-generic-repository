@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,13 +19,7 @@
     </PackageReference>
 	<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.3" />
   </ItemGroup>
-
-  <ItemGroup>
-    <None Update="App.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
+  
   <ItemGroup>
     <ProjectReference Include="..\MongoDbGenericRepository\MongoDbGenericRepository.csproj" />
   </ItemGroup>

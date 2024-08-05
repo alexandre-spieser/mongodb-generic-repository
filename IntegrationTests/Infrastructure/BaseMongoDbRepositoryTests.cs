@@ -41,7 +41,7 @@ namespace IntegrationTests.Infrastructure
         [OneTimeSetUp]
         public void Init()
         {
-            var connectionString = ConfigurationManager.ConnectionStrings["MongoDbTests"].ConnectionString;
+            var connectionString = ConnectionHelper.GetTestDatabaseConnectionString();
             SUT = new TestRepository(connectionString, "MongoDbTests");
         }
 
