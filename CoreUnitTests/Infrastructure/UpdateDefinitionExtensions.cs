@@ -8,13 +8,13 @@ public static class UpdateDefinitionExtensions
 {
     public static bool EquivalentTo<TDocument>(this UpdateDefinition<TDocument> update, UpdateDefinition<TDocument> expected)
     {
-        var renderedUpdate = update.Render(
+        var renderedUpdate = update.Render(new RenderArgs<TDocument>(
             BsonSerializer.SerializerRegistry.GetSerializer<TDocument>(),
-            BsonSerializer.SerializerRegistry);
+            BsonSerializer.SerializerRegistry));
 
-        var renderedExpected = expected.Render(
+        var renderedExpected = expected.Render(new RenderArgs<TDocument>(
             BsonSerializer.SerializerRegistry.GetSerializer<TDocument>(),
-            BsonSerializer.SerializerRegistry);
+            BsonSerializer.SerializerRegistry));
 
         return renderedUpdate.Equals(renderedExpected);
     }

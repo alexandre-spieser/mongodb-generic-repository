@@ -155,11 +155,11 @@ public class CreateHashedIndexAsyncTests : BaseIndexTests
         context.Verify(x => x.GetCollection<TestDocument>(partitionKey), Times.Once);
     }
 
-    private Mock<IMongoDbContext> SetupContext<TDocument>(IMock<IMongoCollection<TDocument>> collection)
+    private Mock<IMongoDbContext> SetupContext(Mock<IMongoCollection<TestDocument>> collection)
     {
         var context = MockOf<IMongoDbContext>();
         context
-            .Setup(x => x.GetCollection<TDocument>(It.IsAny<string>()))
+            .Setup(x => x.GetCollection<TestDocument>(It.IsAny<string>()))
             .Returns(collection.Object);
 
         return context;

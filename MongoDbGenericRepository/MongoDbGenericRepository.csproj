@@ -1,31 +1,31 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net472;netstandard2.0;</TargetFrameworks>
+    <TargetFrameworks>net472;netstandard2.0;netstandard2.1</TargetFrameworks>
+	<Nullable>disable</Nullable>
+	<ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>12.0</LangVersion>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>MongoDbGenericRepository</PackageId>
-    <PackageVersion>1.6.2</PackageVersion>
     <Authors>Alexandre Spieser</Authors>
-    <PackageTitle>MongoDb Generic Repository</PackageTitle>
-    <Description>A generic repository implementation using the MongoDB C# Sharp 2.0 driver.</Description>
-    <PackageLicenseUrl>http://www.opensource.org/licenses/mit-license.php</PackageLicenseUrl>
-    <PackageProjectUrl>http://www.opensource.org/licenses/mit-license.php</PackageProjectUrl>
+    <Title>MongoDb Generic Repository</Title>
+    <Description>A generic repository implementation using the MongoDB C# 2.x driver.</Description>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/alexandre-spieser/mongodb-generic-repository</PackageProjectUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>Release notes are at https://github.com/alexandre-spieser/mongodb-generic-repository/releases </PackageReleaseNotes>
-    <Copyright>Copyright 2023 (c) Alexandre Spieser. All rights reserved.</Copyright>
+    <PackageReleaseNotes>https://github.com/alexandre-spieser/mongodb-generic-repository/releases</PackageReleaseNotes>
+    <Copyright>Copyright 2024 (c) Alexandre Spieser. All rights reserved.</Copyright>
     <PackageTags>MongoDb Repository Generic NoSql</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>1.6.2</Version>
     <RepositoryUrl>https://github.com/alexandre-spieser/mongodb-generic-repository</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+	<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
 
-	<PropertyGroup>
-		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-	</PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="MongoDB.Driver" Version="2.28.0" />
+    <PackageReference Include="MongoDB.Driver" Version="[2.*,3)" />
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
-
 </Project>
