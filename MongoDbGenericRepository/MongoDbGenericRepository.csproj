@@ -17,7 +17,7 @@
     <Copyright>Copyright 2024 (c) Alexandre Spieser. All rights reserved.</Copyright>
     <PackageTags>MongoDb Repository Generic NoSql</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.6.2</Version>
+    <Version>1.6.3</Version>
     <RepositoryUrl>https://github.com/alexandre-spieser/mongodb-generic-repository</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -25,7 +25,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MongoDB.Driver" Version="[2.*,3)" />
+    <PackageReference Include="MongoDB.Driver" Version="[2.30.0,3)" />
     <None Include="..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 </Project>
