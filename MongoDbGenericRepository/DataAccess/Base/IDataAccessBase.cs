@@ -1,8 +1,7 @@
-using System;
-using System.Linq.Expressions;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using MongoDbGenericRepository.Models;
+using System.Linq.Expressions;
 
 namespace MongoDbGenericRepository.DataAccess.Base
 {
@@ -19,9 +18,15 @@ namespace MongoDbGenericRepository.DataAccess.Base
         /// <param name="filter">The filter definition.</param>
         /// <param name="partitionKey">The collection partition key.</param>
         /// <returns></returns>
+#if NETSTANDARD2_0 || NET472
         IMongoQueryable<TDocument> GetQuery<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
             where TDocument : IDocument<TKey>
             where TKey : IEquatable<TKey>;
+#elif NETSTANDARD2_1_OR_GREATER
+        IQueryable<TDocument> GetQuery<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, string partitionKey = null)
+            where TDocument : IDocument<TKey>
+            where TKey : IEquatable<TKey>;
+#endif
 
         /// <summary>
         /// Gets a collections for a potentially partitioned document type.
